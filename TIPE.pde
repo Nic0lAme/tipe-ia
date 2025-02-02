@@ -40,13 +40,47 @@ class Matrix {
     return mat[i][j];
   }
   
-  void Add(Matrix m) {
-    if (n != m.n || p != m.p) return;
+  Matrix T() {
+    Matrix new_mat = new Matrix(p, n);
     for (int i = 0; i < n; i++) {
       for (int j = 0; j < p; j++) {
-        mat[i][j] += m.Get(i,j);
+        new_mat.Set(j, i, mat[i][j]);
       }
     }
+    return new_mat;
+  }
+  
+  Matrix Add(Matrix m) {
+    if (n != m.n || p != m.p) {
+      println(this, m, "Add", "Wrong sized matrixes");
+      return this;
+    }
+    Matrix new_mat = new Matrix(n, p);
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < p; j++) {
+        new_mat.Set(i, j, mat[i][j] + m.Get(i,j));
+      }
+    }
+    return new_mat;
+  }
+  
+  Matrix Mult(Matrix m) {
+    if (p != m.n) {
+      println(this, m, "Mult", "Wrong sized matrixes");
+      return this;
+    }
+    
+    Matrix new_mat = new Matrix(n, m.p);
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < m.p; j++) {
+        float s = 0;
+        for (int k = 0; k < p; k++) {
+          s += mat[i][k] * m.Get(j, j);
+        }
+        new_mat.Set(i, j, s);
+      }
+    }
+    return new_mat;
   }
   
 }
