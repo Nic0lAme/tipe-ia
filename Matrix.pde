@@ -1,5 +1,5 @@
 class Matrix {
-  int n, p;            //n : # lines | p : # columns
+  final int n, p;            //n : # lines | p : # columns
   double [][] values;      //values stored in the matrix
   
   Matrix(int _n, int _p) {
@@ -117,7 +117,7 @@ class Matrix {
     return this;
   }
   
-  Matrix Mult(Matrix m) {                      // Create a new matrix, which is this * m
+  Matrix Mult(Matrix m) {                   // Create a new matrix, which is this * m
     if (p != m.n) { println(this, m, "Mult", "Wrong sized matrixes"); return this; }
     
     Matrix new_mat = new Matrix(n, m.p);
