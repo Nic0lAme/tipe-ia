@@ -1,7 +1,8 @@
 void setup() {
+  /*
   size(200, 200);
   background(255);
-  
+
   Matrix m = new Matrix(2,3);
   m.Fill(1);
   m.Set(1,2, -1);
@@ -24,4 +25,8 @@ void setup() {
   m2.Debug();
   m2.Map( (x) -> 5*x );
   m2.Debug();
+  */
+  
+  NeuralNetwork nn = new NeuralNetwork(12, 16, 20, 8);
+  print(nn);
 }
