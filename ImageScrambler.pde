@@ -7,6 +7,8 @@ class ImageManager {
   
   color meanColor;
   
+  int index = 0;
+  
   ImageManager(PImage _o) {
     origin = _o;
     this.origin.filter(OPAQUE); // Evite d'avoir des trucs relous
@@ -78,15 +80,18 @@ class ImageManager {
   
   PImage ScrambleImage(float move, float blur, float density) {
     
-    background(this.meanColor);
+    PGraphics pg = createGraphics(this.origin.width, this.origin.height, P3D);
+    
+    pg.beginDraw();
+    pg.background(this.meanColor);
     
     float zRot = 0.7;
     float xyRot = 0.2;
-    float d = 1.418962;
+    float d = 1.3;
     float delta = 0.02;
-    float perlin = 10;
+    float perlin = 6;
     float perlinScale = 1;
-    float scaleScale = 0.7;
+    float scaleScale = 0.5;
     
     PImage scrambledImage = this.origin.copy();
     int x = scrambledImage.width;
@@ -113,36 +118,40 @@ class ImageManager {
     
     
     
-    translate(floor(x/2) + d * random(-size * move, size * move), floor(y/2) + d * random(-size * move, size * move));
+    pg.translate(floor(x/2) + d * random(-size * move, size * move), floor(y/2) + d * random(-size * move, size * move));
     
-    rotateX(xyRot*(random(PI * move) - PI * move/2));
-    rotateY(xyRot*(random(PI * move) - PI * move/2));
-    rotateZ(zRot *(random(PI * move) - PI * move/2));
+    pg.rotateX(xyRot*(random(PI * move) - PI * move/2));
+    pg.rotateY(xyRot*(random(PI * move) - PI * move/2));
+    pg.rotateZ(zRot *(random(PI * move) - PI * move/2));
     
-    scale(random(1, 1 + scaleScale * move));
+    pg.scale(random(1, 1 + scaleScale * move));
     
-    translate(-floor(x/2) + d * random(-size * move, size * move), -floor(y/2) + d * random(-size * move, size * move));
+    pg.translate(-floor(x/2) + d * random(-size * move, size * move), -floor(y/2) + d * random(-size * move, size * move));
     
     
-    image(scrambledImage, 0, 0);
+    pg.image(scrambledImage, 0, 0);
     
-   return scrambledImage;
+    pg.save("./outputedFrame/" + str(millis()) + str(this.index) + str(second()) + str(minute()) + str(hour()) + str(day()) + str(month()) + str(year()) + ".jpg" );
+    
+    pg.endDraw();
+    this.index += 1;
+    return scrambledImage;
   }
 }
 
 /*
 void setup() {
   size(200,200,P3D);
+  ImageManager img = new ImageManager(loadImage("@ - NicolasMA.jpg"));
+  img.Resize(19,21);
+  
   background(0);
   //noLoop();
-  frameRate(10);
-}
-
-void draw() {
-  background(0);
-  ImageManager img = new ImageManager(loadImage("Text1TestTIPE.jpg"));
-  img.Resize(200,200);
+  noLoop();
+  
+  
   img.Gray();
-  img.ScrambleImage(0.2,0.1,0.05);
+  for(int i = 0; i < 5000; i++)
+    img.ScrambleImage(0.2,0.1,0.05);
 }
 */
