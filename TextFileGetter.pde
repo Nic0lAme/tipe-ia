@@ -14,13 +14,35 @@ class Zone {
   void Screen(PImage doc, String suffix) {
     doc.get(this.x, this.y, this.w, this.h).save("./output/" + name + "/" + name + " - " + suffix + ".jpg");
   }
+  
+  void Draw(float scaleRes) {
+    noFill();
+    stroke(#FF0000);
+    strokeWeight(1);
+    rect(this.x * scaleRes, this.y * scaleRes, this.w * scaleRes, this.h * scaleRes);
+  }
 }
 
+int w = 2480;
+int h = 3504;
+float scaleRes = 0.4;
+float xPageScale = 1.01;
+float yPageScale = 1;
+
+
+void settings() {
+  size(floor(w * scaleRes),floor(h * scaleRes));
+}
+
+String name;
+PImage doc;
+Zone[] zones;
+
 void setup() {
-  String name = "NicolasMA";
-  PImage doc = loadImage("./Doc/" + name + ".jpg");
+  name = "TestComp1";
+  doc = loadImage("./Doc/" + name + ".jpg");
   
-  Zone[] zones = {
+  zones = new Zone[]{
     new Zone("uA", 130, 496, 156, 175),
     new Zone("uB", 299, 496, 156, 175),
     new Zone("uC", 467, 496, 156, 175),
@@ -103,7 +125,21 @@ void setup() {
     new Zone("Message", 130, 2632, 2180, 400)
   };
   
+  
+}
+
+void draw() {
+  image(doc, 0, 0, w * scaleRes, h * scaleRes);
+  
+  for (int i = 0; i < zones.length; i++) {
+    zones[i].Draw(scaleRes);
+  }
+}
+
+void keyPressed() {
+  if (keyCode != ENTER) return;
   for (int i = 0; i < zones.length; i++) {
     zones[i].Screen(doc, name);
   }
+  
 }
