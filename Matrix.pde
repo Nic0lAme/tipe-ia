@@ -26,6 +26,10 @@ class Matrix {
     println();
   }
   
+  void DebugShape() {
+    println(this.n, this.p);
+  }
+  
   Matrix C() {                    // Crée une copie de la matrice - utile pour faire les opérations Add, Mult, T en gardant le résultat sur une autre matrice
     Matrix new_mat = new Matrix(n, p);
     for (int i = 0; i < n; i++)
@@ -97,11 +101,18 @@ class Matrix {
   }
   
   Matrix Add(Matrix m) {
-    return this.Add(m, 1, true);
+    return this.Add(m, 1, false);
+  }
+  
+  Matrix Add(Matrix m, double scal) {
+    return this.Add(m, scal, false);
   }
   
   Matrix Add(Matrix m, double scal, boolean broadcast) {                  // Add some matrix m to this ; does this + scal * m
-    if ((n != m.n) || (!broadcast && p != m.p) || (broadcast && m.p != 1 && this.p != m.p) ) { println(this, m, "Add", "Wrong sized matrixes"); return this; }
+    if ((this.n != m.n) || (!broadcast && p != m.p) || (broadcast && m.p != 1 && this.p != m.p) ) {
+      println(this, m, "Add", "Wrong sized matrixes");
+      return this;
+    }
     if (this.p == m.p) broadcast = false;
     for (int i = 0; i < n; i++)
       for (int j = 0; j < p; j++)
@@ -136,6 +147,18 @@ class Matrix {
       sum += this.Get(i,j);
     
     return sum;
+  }
+  
+  Matrix AvgLine() {
+    Matrix matrixOfAverage = new Matrix(this.n, 1);
+    for(int i = 0; i < this.n; i++) {
+      double avg = 0;
+      for(int j = 0; j < this.p; j++)
+        avg += this.Get(i,j) / this.p;
+      
+      matrixOfAverage.Set(i, 0, avg);
+    }
+    return matrixOfAverage;
   }
   
   Matrix Mult(Matrix m) {                   // Create a new matrix, which is this * m

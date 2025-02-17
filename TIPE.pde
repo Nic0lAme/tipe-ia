@@ -32,14 +32,14 @@ void setup() {
   */
   
   
-  NeuralNetwork nn = new NeuralNetwork(12, 16, 20, 8);
+  NeuralNetwork nn = new NeuralNetwork(12, 16, 6);
   println(nn);
   
-  Matrix entries = new Matrix(12, 5).Random();
-  entries.Debug();
-  Matrix[] outputs = nn.ForwardPropagation(entries);
+  Matrix entries = new Matrix(12, 100).Random(0, 1);
+  Matrix exit = new Matrix(6, 100).Random(0,1);
   
-  for (Matrix m : outputs)
-    m.Debug();
+  for(int i = 0; i < 10; i++) {
+    println(nn.Learn(entries.C(), exit.C(), 1));
+  }
   
 }

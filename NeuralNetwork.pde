@@ -7,7 +7,6 @@ class NeuralNetwork {
   // Paramètres du réseau de neurones
   Matrix[] weights; // Poids des liaisons (pour un indice i, liaisons entre couche i et couche i+1)
   Matrix[] bias; // Biais (pour un indice i, biais entre couche i et i+1)
-  FunctionMap activationFunction = (x) -> sigmoid(x);
   
   NeuralNetwork(int... sizes) {
     numLayers = sizes.length;
@@ -43,15 +42,64 @@ class NeuralNetwork {
       layerVal[i + 1] = CalcLayer(i, layerVal[i]);
     }
     
+    layerVal[this.numLayers - 1].Map((x) -> exp((float)x)).NormColumn();
+    layerVal[this.numLayers - 1].Debug();
+    
     return layerVal;
   }
   
   // Calcule la sortie correspondant à l'entrée in, de la couche from à la couche from+1
   private Matrix CalcLayer(int from, Matrix in) {
     Matrix result = weights[from].Mult(in);
-    result.Add(bias[from]);
+    result.Add(bias[from], 1, true);
     return result.Map((x) -> sigmoid(x));
   }
+  
+  public Matrix[][] BackPropagation(Matrix[] activations, Matrix expectedOutput) {
+    
+    //dJ/dZl
+    Matrix gradient = activations[this.numLayers - 1].C().Add(expectedOutput, -1);
+    
+    Matrix[] weightGrad = new Matrix[this.numLayers - 1];
+    Matrix[] biasGrad = new Matrix[this.numLayers - 1]; 
+    for(int l = this.numLayers - 2; l >= 0; l--) {
+      //dJ/dWl = dJ/dZl * dZl/dWl
+      weightGrad[l] = gradient.Mult(activations[l].T());
+      //weightGrad[l].DebugShape();
+      
+      //dJ/dbl = dJ/dZl * dZl/dbl
+      biasGrad[l] = gradient.AvgLine();
+      //biasGrad[l].DebugShape();
+      
+      Matrix a = activations[l].C();
+      gradient = (weights[l].T().Mult(gradient)).HProduct(a.Add(a.HProduct(a)));
+    }
+    
+    return new Matrix[][]{weightGrad, biasGrad};
+  }
+  
+  public double Learn(Matrix X, Matrix Y, float learning_rate) {
+    Matrix[] activations = ForwardPropagation(X.C());
+    Matrix S = activations[this.numLayers - 1].C();
+    
+    Matrix[][] gradients = BackPropagation(activations, Y.C());
+    
+    for(int l = 0; l < this.numLayers - 1; l++) {
+      this.weights[l].Add(gradients[0][l], -learning_rate);
+      this.bias[l].Add(gradients[1][l], -learning_rate);
+    }
+    
+    double J = 0;
+    for(int c = 0; c < Y.p; c++) { //colonne de la sortie
+      for(int i = 0; i < Y.n; i++) { //ligne de la sortie
+        J -= Y.Get(i, c) * log((float)S.Get(i, c)) / Y.p;
+      }
+    }
+    
+    return J;
+  }
+  
+  
   
   @Override
   public String toString() {
