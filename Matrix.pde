@@ -19,10 +19,11 @@ class Matrix {
   void Debug() {                  // Print the matrix in the console
     for(int i = 0; i < n; i++) {
       for(int j = 0; j < p; j++) {
-        print(this.Get(i, j), " "); 
+        print(this.Get(i, j), "\t"); 
       }
       println();
     }
+    println();
   }
   
   Matrix C() {                    // Crée une copie de la matrice - utile pour faire les opérations Add, Mult, T en gardant le résultat sur une autre matrice
@@ -82,29 +83,30 @@ class Matrix {
   Matrix Map(FunctionMap func) {
     for (int i = 0; i < n; i++)
       for (int j = 0; j < p; j++)
-        this.values[i][j] = func.calc(this.values[i][j]);
+        this.Set(i,j,func.calc(this.Get(i, j)));
     return this;
   }
   
-  Matrix T() {                          // Transform this to its transposed
-    double [][] n_mat = new double[p][n];
+  Matrix T() {                          // Create a new matrix, equal to the transposed matrix of this
+    double [][] n_matcoeff = new double[p][n];
     for (int i = 0; i < n; i++)
       for (int j = 0; j < p; j++)
-        n_mat[j][i] = this.Get(i, j);
+        n_matcoeff[j][i] = this.Get(i, j);
         
-    int temp = n;
-    n = p;
-    p = temp;
-    this.values = new double[n][p];
-    this.FromArray(n_mat);
-    return this;
+    return new Matrix(this.p,this.n).FromArray(n_matcoeff);
   }
   
-  Matrix Add(Matrix m) {                  // Add some matrix m to this
-    if (n != m.n || p != m.p) { println(this, m, "Add", "Wrong sized matrixes"); return this; }
+  Matrix Add(Matrix m) {
+    return this.Add(m, 1, true);
+  }
+  
+  Matrix Add(Matrix m, double scal, boolean broadcast) {                  // Add some matrix m to this ; does this + scal * m
+    if ((n != m.n) || (!broadcast && p != m.p) || (broadcast && m.p != 1 && this.p != m.p) ) { println(this, m, "Add", "Wrong sized matrixes"); return this; }
+    if (this.p == m.p) broadcast = false;
     for (int i = 0; i < n; i++)
       for (int j = 0; j < p; j++)
-        this.Set(i, j, this.Get(i, j) + m.Get(i,j));
+        // Le broadcasting permet d'additionner à une matrice un vecteur, qui s'étend sur toutes les colonnes (oui j'ai expliqué en fr celui-là)
+        this.Set(i, j, this.Get(i, j) + scal * m.Get(i, broadcast ? 0 : j));
         
     return this;
   }
@@ -115,6 +117,25 @@ class Matrix {
         this.Set(i, j, scal * this.Get(i, j));
         
     return this;
+  }
+  
+  Matrix Dilat(int j, double scal) {        // Dilat j-th column by -scal-
+    if (j < 0 || j >= this.p) { println(this, j, "Dilat", "Wrong Column Index"); return this; }
+    
+    for(int i = 0; i < this.n; i++)
+      this.Set(i,j, this.Get(i,j) * scal);
+    
+    return this;
+  }
+  
+  double SumCol(int j) {        // Sum coeff from j-th column
+    if (j < 0 || j >= this.p) { println(this, j, "SumCol", "Wrong Column Index"); return 0; }
+    
+    double sum = 0;
+    for(int i = 0; i < this.n; i++)
+      sum += this.Get(i,j);
+    
+    return sum;
   }
   
   Matrix Mult(Matrix m) {                   // Create a new matrix, which is this * m
@@ -132,6 +153,23 @@ class Matrix {
       }
     }
     return new_mat;
+  }
+  
+  Matrix HProduct(Matrix m) {      // Hadamard Product : Multiply the coefficient of this matrix by the ones of another one
+    if(p != m.p || n != m.n) { println(this, m, "HPrduct", "Wrong sized matrixes"); return this; }
+    
+    for (int i = 0; i < n; i++)
+      for (int j = 0; j < p; j++)
+        this.Set(i,j,this.Get(i,j) * m.Get(i,j));
+        
+    return this;
+  }
+  
+  Matrix NormColumn() {            // Sum of each column is scaled to be 1
+    for(int j = 0; j < this.p; j++)
+      this.Dilat(j, 1/SumCol(j));
+    
+    return this;
   }
   
   Matrix MinMatrix(int i, int j) {          // Return the associated matrix from minor i, j

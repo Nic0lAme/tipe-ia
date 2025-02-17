@@ -12,11 +12,12 @@ class NeuralNetwork {
   NeuralNetwork(int... sizes) {
     numLayers = sizes.length;
     layers = new int[numLayers];
+    for (int i = 0; i < numLayers; i++) layers[i] = sizes[i];
+    
     entrySize = layers[0];
     outputSize = layers[numLayers-1];
     weights = new Matrix[numLayers-1];
     bias = new Matrix[numLayers-1];
-    for (int i = 0; i < numLayers; i++) layers[i] = sizes[i];
     Init();
   }
   
@@ -27,17 +28,26 @@ class NeuralNetwork {
     }
   }
   
-  // Prend une matrice colonne en entrée, et renvoie la matrice colonne en sortie du réseau
-  public Matrix forwardPropagation(Matrix entry) {
-    if (entry.p != 1 || entry.n != entrySize) {
-      print("Taille de l'entrée invalide");
+  // Prend une matrice en entrée, et renvoie un tableau des valeurs de chaque couche
+  // entry.p correspond au nombre d'entrées données simultanément
+  public Matrix[] ForwardPropagation(Matrix entry) {
+    if (entry.n != entrySize) {
+      println(entry.n, entrySize);
+      println("Taille de l'entrée invalide");
       return null;
     }
-    // TODO
+    
+    Matrix[] layerVal = new Matrix[this.numLayers];
+    layerVal[0] = entry;
+    for(int i = 0; i < this.numLayers - 1; i++) {
+      layerVal[i + 1] = CalcLayer(i, layerVal[i]);
+    }
+    
+    return layerVal;
   }
   
   // Calcule la sortie correspondant à l'entrée in, de la couche from à la couche from+1
-  private Matrix calcLayer(int from, Matrix in) {
+  private Matrix CalcLayer(int from, Matrix in) {
     Matrix result = weights[from].Mult(in);
     result.Add(bias[from]);
     return result.Map((x) -> sigmoid(x));

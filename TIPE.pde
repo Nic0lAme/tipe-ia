@@ -23,10 +23,23 @@ void setup() {
   
   Matrix m2 = new Matrix(3).FromArray(arr);
   m2.Debug();
-  m2.Map( (x) -> 5*x );
+  m2.Map( (x) -> 5*x + 1 );
   m2.Debug();
+  
+  m2.Debug();
+  d.Debug();
+  m2.HProduct(d).Debug();
   */
   
+  
   NeuralNetwork nn = new NeuralNetwork(12, 16, 20, 8);
-  print(nn);
+  println(nn);
+  
+  Matrix entries = new Matrix(12, 5).Random();
+  entries.Debug();
+  Matrix[] outputs = nn.ForwardPropagation(entries);
+  
+  for (Matrix m : outputs)
+    m.Debug();
+  
 }
