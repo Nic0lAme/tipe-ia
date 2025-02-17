@@ -22,9 +22,13 @@ class NeuralNetwork {
   
   private void Init() {
     for (int i = 0; i < numLayers-1; i++) {
-      bias[i] = new Matrix(layers[i+1], 1).Random();
-      weights[i] = new Matrix(layers[i+1], layers[i]).Random();
+      bias[i] = new Matrix(layers[i+1], 1).Random(-1, 1);
+      weights[i] = new Matrix(layers[i+1], layers[i]).Random(-1, 1);
     }
+  }
+  
+  public Matrix Predict(Matrix entry) {
+    return ForwardPropagation(entry)[this.numLayers - 1];
   }
   
   // Prend une matrice en entrée, et renvoie un tableau des valeurs de chaque couche
@@ -42,9 +46,6 @@ class NeuralNetwork {
       layerVal[i + 1] = CalcLayer(i, layerVal[i]);
     }
     
-    layerVal[this.numLayers - 1].Map((x) -> exp((float)x)).NormColumn();
-    layerVal[this.numLayers - 1].Debug();
-    
     return layerVal;
   }
   
@@ -58,7 +59,8 @@ class NeuralNetwork {
   public Matrix[][] BackPropagation(Matrix[] activations, Matrix expectedOutput) {
     
     //dJ/dZl
-    Matrix gradient = activations[this.numLayers - 1].C().Add(expectedOutput, -1);
+    Matrix a = activations[this.numLayers-1].C();
+    Matrix gradient = a.C().Add(expectedOutput, -1).HProduct(a.Add(a.C().HProduct(a), -1));
     
     Matrix[] weightGrad = new Matrix[this.numLayers - 1];
     Matrix[] biasGrad = new Matrix[this.numLayers - 1]; 
@@ -71,18 +73,18 @@ class NeuralNetwork {
       biasGrad[l] = gradient.AvgLine();
       //biasGrad[l].DebugShape();
       
-      Matrix a = activations[l].C();
-      gradient = (weights[l].T().Mult(gradient)).HProduct(a.Add(a.HProduct(a)));
+      a = activations[l].C();
+      gradient = (weights[l].T().Mult(gradient)).HProduct(a.Add(a.C().HProduct(a), -1));
     }
     
     return new Matrix[][]{weightGrad, biasGrad};
   }
   
   public double Learn(Matrix X, Matrix Y, float learning_rate) {
-    Matrix[] activations = ForwardPropagation(X.C());
+    Matrix[] activations = ForwardPropagation(X);
     Matrix S = activations[this.numLayers - 1].C();
     
-    Matrix[][] gradients = BackPropagation(activations, Y.C());
+    Matrix[][] gradients = BackPropagation(activations, Y);
     
     for(int l = 0; l < this.numLayers - 1; l++) {
       this.weights[l].Add(gradients[0][l], -learning_rate);

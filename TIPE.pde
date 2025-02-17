@@ -32,14 +32,29 @@ void setup() {
   */
   
   
-  NeuralNetwork nn = new NeuralNetwork(12, 16, 6);
+  NeuralNetwork nn = new NeuralNetwork(2, 5, 2);
   println(nn);
   
-  Matrix entries = new Matrix(12, 100).Random(0, 1);
-  Matrix exit = new Matrix(6, 100).Random(0,1);
+  //Matrix entries = new Matrix(3, 10000).Random(0, 1);
+  //Matrix exit = new Matrix(2, 10000).Random(0,1);
   
-  for(int i = 0; i < 10; i++) {
-    println(nn.Learn(entries.C(), exit.C(), 1));
+  Matrix entries = new Matrix(2, 10).FromArray(new double[][]{
+    {-1,-5,3,0,-3,10,1,-1,1,0},
+    {0,1,0,1,5,-2,-7,-1,1000,-1000,-1}
+  });
+  Matrix exit = new Matrix(2, 10).FromArray(new double[][]{
+    {1,1,0,1,1,0,0,1,0,1},
+    {0,0,1,1,0,1,1,0,1,1}
+  });
+  
+  for(int i = 0; i < 100000; i++) {
+    nn.Learn(entries.C(), exit.C(), 0.01);
   }
+  
+  Matrix entriesBis = new Matrix(2, 5).FromArray(new double[][]{
+    {1,-5,0,0,-3},
+    {0,-4,0,-100,5,2}
+  });
+  nn.Predict(entriesBis).Debug();
   
 }
