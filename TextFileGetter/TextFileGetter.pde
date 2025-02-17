@@ -12,7 +12,8 @@ class Zone {
   }
   
   void Screen(PImage doc, String suffix, int dx, int dy) {
-    doc.get(this.x + dx, this.y + dy, this.w, this.h).save("./output/" + name + "/" + name + " - " + suffix + ".jpg");
+    doc.get(this.x + dx, this.y + dy, this.w, this.h)
+    .save("./output/" + name + "/" + name + " - " + suffix + ".jpg");
   }
   
   void Draw(float scaleRes, int dx, int dy) {
