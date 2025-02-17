@@ -11,20 +11,22 @@ class Zone {
     this.h = h;
   }
   
-  void Screen(PImage doc, String suffix) {
-    doc.get(this.x, this.y, this.w, this.h).save("./output/" + name + "/" + name + " - " + suffix + ".jpg");
+  void Screen(PImage doc, String suffix, int dx, int dy) {
+    doc.get(this.x + dx, this.y + dy, this.w, this.h).save("./output/" + name + "/" + name + " - " + suffix + ".jpg");
   }
   
-  void Draw(float scaleRes) {
+  void Draw(float scaleRes, int dx, int dy) {
     noFill();
     stroke(#FF0000);
     strokeWeight(1);
-    rect(this.x * scaleRes, this.y * scaleRes, this.w * scaleRes, this.h * scaleRes);
+    rect(this.x * scaleRes + dx, this.y * scaleRes + dy, this.w * scaleRes, this.h * scaleRes);
   }
 }
 
 int w = 2480;
 int h = 3504;
+int dx = 0;
+int dy = 0;
 float scaleRes = 0.4;
 float xPageScale = 1.01;
 float yPageScale = 1;
@@ -38,9 +40,19 @@ String name;
 PImage doc;
 Zone[] zones;
 
+
+
+/*
+CONSIGNES :
+  1/ Mettre le document en format jpg dans le dossier "./doc"
+  2/ Changer la variable -name- en fonction du nom du doc (Test pour Test.jpg)
+  3/ Lancer le programme
+  4/ Ajuster avec les fléches du clavier au pixel près
+  5/ Appuyer sur entrée pour enregistrer
+*/
 void setup() {
   name = "TestComp1";
-  doc = loadImage("./Doc/" + name + ".jpg");
+  doc = loadImage("./doc/" + name + ".jpg");
   
   zones = new Zone[]{
     new Zone("uA", 130, 496, 156, 175),
@@ -132,14 +144,29 @@ void draw() {
   image(doc, 0, 0, w * scaleRes, h * scaleRes);
   
   for (int i = 0; i < zones.length; i++) {
-    zones[i].Draw(scaleRes);
+    zones[i].Draw(scaleRes, dx, dy);
   }
 }
 
 void keyPressed() {
-  if (keyCode != ENTER) return;
-  for (int i = 0; i < zones.length; i++) {
-    zones[i].Screen(doc, name);
+  switch (keyCode) {
+    case ENTER:
+      for (int i = 0; i < zones.length; i++) {
+        zones[i].Screen(doc, name, dx, dy);
+      }
+      break;
+    case UP:
+      dy -= 1;
+      break;
+    case DOWN:
+      dy += 1;
+      break;
+    case LEFT:
+      dx -= 1;
+      break;
+    case RIGHT:
+      dx += 1;
+      break;
   }
-  
+  println("dx :", dx, "dy :", dy);
 }
