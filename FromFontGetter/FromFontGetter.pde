@@ -23,7 +23,7 @@ class Letter {
     pg.textAlign(CENTER, CENTER);
     pg.text(this.c, w/2, h/2);
     
-    pg.save("./output/" + this.name + "/" + name + " - " + fontName + "jpg");
+    pg.save("./output/" + this.name + "/" + name + " - " + fontName + ".jpg");
     
     pg.endDraw();
   }
@@ -31,8 +31,8 @@ class Letter {
 
 int w = 156;
 int h = 175;
-String fontName = "Arial";
-int size = 10;
+String fontName = "Consolas";
+int size = 90;
   
 void settings() {
   size(w,h);
