@@ -60,7 +60,7 @@ class NeuralNetwork {
     
     //dJ/dZl
     Matrix a = activations[this.numLayers-1].C();
-    Matrix gradient = a.C().Add(expectedOutput, -1).HProduct(a.Add(a.C().HProduct(a), -1));
+    Matrix gradient = a.C().Add(expectedOutput, -1).HProduct(a.C().Add(a.C().HProduct(a), -1));
     
     Matrix[] weightGrad = new Matrix[this.numLayers - 1];
     Matrix[] biasGrad = new Matrix[this.numLayers - 1]; 
@@ -74,7 +74,7 @@ class NeuralNetwork {
       //biasGrad[l].DebugShape();
       
       a = activations[l].C();
-      gradient = (weights[l].T().Mult(gradient)).HProduct(a.Add(a.C().HProduct(a), -1));
+      gradient = (weights[l].T().Mult(gradient)).HProduct(a.C().Add(a.C().HProduct(a), -1));
     }
     
     return new Matrix[][]{weightGrad, biasGrad};

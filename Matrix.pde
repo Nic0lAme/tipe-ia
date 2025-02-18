@@ -7,7 +7,8 @@ class Matrix {
     Init();
   }
   
-  Matrix(int _n) { // Made to create fast square matrixes
+  // Made to create fast square matrixes
+  Matrix(int _n) { 
     n=_n; p=_n;
     Init();
   }
@@ -16,8 +17,9 @@ class Matrix {
     values = new double[n][p];
   }
   
-  void Debug() {                  // Print the matrix in the console
-    //if(true) return;
+  // Print the matrix in the console
+  void Debug() {                  
+    //if(true) return; //if you want to disable all debug
     for(int i = 0; i < n; i++) {
       for(int j = 0; j < p; j++) {
         print(this.Get(i, j), "\t"); 
@@ -31,7 +33,8 @@ class Matrix {
     println(this.n, this.p);
   }
   
-  Matrix C() {                    // Crée une copie de la matrice - utile pour faire les opérations Add, Mult, T en gardant le résultat sur une autre matrice
+  // Crée une copie de la matrice - utile pour faire les opérations Add en gardant le résultat sur une autre matrice
+  Matrix C() {                    
     Matrix new_mat = new Matrix(n, p);
     for (int i = 0; i < n; i++)
       for (int j = 0; j < p; j++)
@@ -40,14 +43,16 @@ class Matrix {
     return new_mat;
   }
   
-  void Fill(double val) {          // Fill the matrix with some value
+  // Fill the matrix with some value val
+  void Fill(double val) {          
     for(int i = 0; i < n; i++)
       for(int j = 0; j < p; j++)
         this.values[i][j] = val; 
   } 
   
-  Matrix FromArray(double[][] val) {      // Copy the value of an array in the matrix
-    if (val.length != n || val[0].length != p) { println(this, "FromArray", "Wrong size array"); return this; }
+  // Copy the value of an array in the matrix
+  Matrix FromArray(double[][] val) {      
+    if (val.length != n || val[0].length != p) { println(this, "FromArray", "Wrong size array"); Exception e = new Exception(); e.printStackTrace(); return this; }
     for (int i = 0; i < n; i++)
       for (int j = 0; j < p; j++)
         this.values[i][j] = val[i][j];
@@ -55,6 +60,7 @@ class Matrix {
     return this;
   }
   
+  // Every value of the matrix random from min to max
   Matrix Random(double min, double max) {
     for (int i = 0; i < n; i++)
       for (int j = 0; j < p; j++)
@@ -66,8 +72,9 @@ class Matrix {
     return Random(0, 1);
   }
   
-  Matrix Identity() {                  // Create identity matrix if the matrix is a square one
-    if (this.n != this.p) { println(this, "Identity", "Not square matrix"); return this; }
+  // Create identity matrix if the matrix is a square one
+  Matrix Identity() {                  
+    if (this.n != this.p) { println(this, "Identity", "Not square matrix"); Exception e = new Exception(); e.printStackTrace(); return this; }
     for (int i = 0; i < this.n; i++)
       for (int j = 0; j < this.n; j++)
         this.Set(i, j, i == j ? 1 : 0);
@@ -75,16 +82,19 @@ class Matrix {
     return this;
   }
   
-  void Set(int i, int j, double val) {  // Change the i, j value to value val
-    if (i < 0 || i >= n || j < 0 || j >= p) { println(this, i, j, val, "Set", "Wrong indices"); return; }
+  // Change the i, j value to value val
+  void Set(int i, int j, double val) {  
+    if (i < 0 || i >= n || j < 0 || j >= p) { println(this, i, j, val, "Set", "Wrong indices"); Exception e = new Exception(); e.printStackTrace(); return; }
     this.values[i][j] = val;
   }
   
-  double Get(int i, int j) {            // Get value of i, j
-    if (i < 0 || i >= n || j < 0 || j >= p) { println(this, i, j, "Get", "Wrong indices"); return 0; }
+  // Get value of i, j
+  double Get(int i, int j) {            
+    if (i < 0 || i >= n || j < 0 || j >= p) { println(this, i, j, "Get", "Wrong indices"); Exception e = new Exception(); e.printStackTrace(); return 0; }
     return this.values[i][j];
   }
   
+  // Map funciton func (using (x) -> notation) to this
   Matrix Map(FunctionMap func) {
     for (int i = 0; i < n; i++)
       for (int j = 0; j < p; j++)
@@ -92,7 +102,8 @@ class Matrix {
     return this;
   }
   
-  Matrix T() {                          // Create a new matrix, equal to the transposed matrix of this
+  // Create a new matrix, equal to the transposed matrix of this
+  Matrix T() {                          
     double [][] n_matcoeff = new double[p][n];
     for (int i = 0; i < n; i++)
       for (int j = 0; j < p; j++)
@@ -109,9 +120,11 @@ class Matrix {
     return this.Add(m, scal, false);
   }
   
-  Matrix Add(Matrix m, double scal, boolean broadcast) {                  // Add some matrix m to this ; does this + scal * m
+  // Add some matrix m to this ; does this + scal * m
+  Matrix Add(Matrix m, double scal, boolean broadcast) {                  
     if ((this.n != m.n) || (!broadcast && p != m.p) || (broadcast && m.p != 1 && this.p != m.p) ) {
       println(this, m, "Add", "Wrong sized matrixes");
+      Exception e = new Exception(); e.printStackTrace();
       return this;
     }
     if (this.p == m.p) broadcast = false;
@@ -123,7 +136,8 @@ class Matrix {
     return this;
   }
   
-  Matrix Scale(double scal) {              // Scale matrix by some factor
+  // Scale matrix by some factor
+  Matrix Scale(double scal) {              
     for (int i = 0; i < n; i++)
       for (int j = 0; j < p; j++)
         this.Set(i, j, scal * this.Get(i, j));
@@ -131,8 +145,9 @@ class Matrix {
     return this;
   }
   
-  Matrix Dilat(int j, double scal) {        // Dilat j-th column by -scal-
-    if (j < 0 || j >= this.p) { println(this, j, "Dilat", "Wrong Column Index"); return this; }
+  // Dilat j-th column by -scal-
+  Matrix Dilat(int j, double scal) {        
+    if (j < 0 || j >= this.p) { println(this, j, "Dilat", "Wrong Column Index"); Exception e = new Exception(); e.printStackTrace(); return this; }
     
     for(int i = 0; i < this.n; i++)
       this.Set(i,j, this.Get(i,j) * scal);
@@ -140,8 +155,48 @@ class Matrix {
     return this;
   }
   
-  double SumCol(int j) {        // Sum coeff from j-th column
-    if (j < 0 || j >= this.p) { println(this, j, "SumCol", "Wrong Column Index"); return 0; }
+  // Comut col j1 and j2
+  Matrix ComutCol(int j1, int j2) {        
+    if (j1 < 0 || j1 >= this.p || j2 < 0 || j2 >= this.p) { println(this, j1, j2, this.p, "ComutCol", "Wrong Column Index"); Exception e = new Exception(); e.printStackTrace(); return this; }
+    
+    double temp;
+    for(int i = 0; i < this.n; i++) {
+      temp = this.Get(i, j1);
+      this.Set(i, j1, this.Get(i, j2));
+      this.Set(i, j2, temp);
+    }
+    
+    return this;
+  }
+  
+  Matrix SelectCol(int j) { return SelectCol(new int[]{j}); } // Could be optimised but it is okay I guess
+  
+  // Range is inclusive
+  Matrix SelectCol(int a, int b) { 
+    if (a > b) { println(this, a, b, this.p, "SelectCol", "Indices are in wrong order"); Exception e = new Exception(); e.printStackTrace(); return this; }
+    int[] range = new int[b-a+1];
+    for(int i = a; i < b+1; i++) range[i-a] = i;
+    return SelectCol(range);
+  }
+  
+  // Create a new matrix with the column with indices in jList
+  Matrix SelectCol(int[] jList) {
+    if (jList.length < 1) { println(this, jList, this.p, "SelectCol", "List must be of length >= 1"); Exception e = new Exception(); e.printStackTrace(); return this; }
+    for(int j : jList)
+      if (j < 0 || j >= this.p) { println(this, j, this.p, "SelectCol", "Wrong Column Index"); Exception e = new Exception(); e.printStackTrace(); return this; }
+     
+    Matrix new_mat = new Matrix(this.n, jList.length);
+    for(int k = 0; k < jList.length; k++) {
+      for(int i = 0; i < this.n; i++)
+        new_mat.Set(i, k, this.Get(i, jList[k]));
+    }
+    
+    return new_mat;
+  }
+  
+  // Sum coeff from j-th column
+  double SumCol(int j) {        
+    if (j < 0 || j >= this.p) { println(this, j, "SumCol", "Wrong Column Index"); Exception e = new Exception(); e.printStackTrace(); return 0; }
     
     double sum = 0;
     for(int i = 0; i < this.n; i++)
@@ -150,6 +205,7 @@ class Matrix {
     return sum;
   }
   
+  // Compute the column matrix of the average of each row from this
   Matrix AvgLine() {
     Matrix matrixOfAverage = new Matrix(this.n, 1);
     for(int i = 0; i < this.n; i++) {
@@ -162,8 +218,9 @@ class Matrix {
     return matrixOfAverage;
   }
   
-  Matrix Mult(Matrix m) {                   // Create a new matrix, which is this * m
-    if (p != m.n) { println(this, m, "Mult", "Wrong sized matrixes"); return this; }
+  // Create a new matrix, which is this * m
+  Matrix Mult(Matrix m) {                   
+    if (p != m.n) { println(this, m, "Mult", "Wrong sized matrixes"); Exception e = new Exception(); e.printStackTrace(); return this; }
     
     Matrix new_mat = new Matrix(n, m.p);
     double s = 0;
@@ -179,8 +236,9 @@ class Matrix {
     return new_mat;
   }
   
-  Matrix HProduct(Matrix m) {      // Hadamard Product : Multiply the coefficient of this matrix by the ones of another one
-    if(p != m.p || n != m.n) { println(this, m, "HPrduct", "Wrong sized matrixes"); return this; }
+  // Hadamard Product : Multiply the coefficient of this matrix by the ones of another one
+  Matrix HProduct(Matrix m) {      
+    if(p != m.p || n != m.n) { println(this, m, "HPrduct", "Wrong sized matrixes"); Exception e = new Exception(); e.printStackTrace(); return this; }
     
     for (int i = 0; i < n; i++)
       for (int j = 0; j < p; j++)
@@ -189,16 +247,18 @@ class Matrix {
     return this;
   }
   
-  Matrix NormColumn() {            // Sum of each column is scaled to be 1
+  // Sum of each column is scaled to be 1
+  Matrix NormColumn() {            
     for(int j = 0; j < this.p; j++)
       this.Dilat(j, 1/SumCol(j));
     
     return this;
   }
   
-  Matrix MinMatrix(int i, int j) {          // Return the associated matrix from minor i, j
-    if (i < 0 || i >= this.n || j < 0 || j >= this.p) { println(this, i, j, "MinMatrices", "Wrong indices"); return this; }
-    if (this.n == 0 || this.p == 0) { println(this, "MinMatrices", "Matrix is too small"); return this; }
+  // Return the associated matrix from minor i, j
+  Matrix MinMatrix(int i, int j) {          
+    if (i < 0 || i >= this.n || j < 0 || j >= this.p) { println(this, i, j, "MinMatrices", "Wrong indices"); Exception e = new Exception(); e.printStackTrace(); return this; }
+    if (this.n == 0 || this.p == 0) { println(this, "MinMatrices", "Matrix is too small"); Exception e = new Exception(); e.printStackTrace(); return this; }
     
     Matrix min = new Matrix(this.n - 1, this.p - 1);
     for (int e = 0; e < this.n - 1; e++)
@@ -208,8 +268,9 @@ class Matrix {
     return min;
   }
   
-  double Det() {          // Return matrix determinant
-    if (this.n != this.p) { println(this, "Det", "Not square matrix"); return 0; }
+  // Return matrix determinant
+  double Det() {          
+    if (this.n != this.p) { println(this, "Det", "Not square matrix"); Exception e = new Exception(); e.printStackTrace(); return 0; }
     if (this.n == 1) {
       return this.Get(0,0);
     }
@@ -221,8 +282,9 @@ class Matrix {
     return det;
   }
   
-  Matrix Comatrix() {      // Return the comatrix
-    if (this.n != this.p) { println(this, "Comatrix", "Not square matrix"); return new Matrix(this.n, this.p); }
+  // Return the comatrix
+  Matrix Comatrix() {      
+    if (this.n != this.p) { println(this, "Comatrix", "Not square matrix"); Exception e = new Exception(); e.printStackTrace(); return new Matrix(this.n, this.p); }
     Matrix comat = new Matrix(this.n);
     
     for (int i = 0; i < this.n; i++)
@@ -232,8 +294,9 @@ class Matrix {
     return comat;
   }
   
-  Matrix Inversed() {      // Return the inversed matrix
-    if (this.n != this.p) { println(this, "Inversed", "Not square matrix"); return new Matrix(this.n, this.p); }
+  // Return the inversed matrix
+  Matrix Inversed() {      
+    if (this.n != this.p) { println(this, "Inversed", "Not square matrix"); Exception e = new Exception(); e.printStackTrace(); return new Matrix(this.n, this.p); }
     return this.Comatrix().T().Scale(1/this.Det());
   }
     
