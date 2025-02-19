@@ -194,21 +194,21 @@ class Matrix {
     return this;
   }
 
-  Matrix SelectCol(int j) { return SelectCol(new int[]{j}); } // Could be optimised but it is okay I guess
+  Matrix GetCol(int j) { return GetCol(new int[]{j}); } // Could be optimised but it is okay I guess
 
   // Range is inclusive
-  Matrix SelectCol(int a, int b) {
-    if (a > b) { println(this, a, b, this.p, "SelectCol", "Indices are in wrong order"); Exception e = new Exception(); e.printStackTrace(); return this; }
+  Matrix GetCol(int a, int b) {
+    if (a > b) { println(this, a, b, this.p, "GetCol", "Indices are in wrong order"); Exception e = new Exception(); e.printStackTrace(); return this; }
     int[] range = new int[b-a+1];
     for(int i = a; i < b+1; i++) range[i-a] = i;
-    return SelectCol(range);
+    return GetCol(range);
   }
 
   // Create a new matrix with the column with indices in jList
-  Matrix SelectCol(int[] jList) {
-    if (jList.length < 1) { println(this, jList, this.p, "SelectCol", "List must be of length >= 1"); Exception e = new Exception(); e.printStackTrace(); return this; }
+  Matrix GetCol(int[] jList) {
+    if (jList.length < 1) { println(this, jList, this.p, "GetCol", "List must be of length >= 1"); Exception e = new Exception(); e.printStackTrace(); return this; }
     for(int j : jList)
-      if (j < 0 || j >= this.p) { println(this, j, this.p, "SelectCol", "Wrong Column Index"); Exception e = new Exception(); e.printStackTrace(); return this; }
+      if (j < 0 || j >= this.p) { println(this, j, this.p, "GetCol", "Wrong Column Index"); Exception e = new Exception(); e.printStackTrace(); return this; }
 
     Matrix new_mat = new Matrix(this.n, jList.length);
     for(int k = 0; k < jList.length; k++) {
@@ -217,6 +217,15 @@ class Matrix {
     }
 
     return new_mat;
+  }
+  
+  Matrix ColumnFromArray(int j, double[] col) {
+    if (j < 0 || j >= this.p) { println(this, j, "ColumnFromArray", "Wrong Column Index"); Exception e = new Exception(); e.printStackTrace(); return this; }
+    if (col.length != this.n) { println(this, col.length, "ColumnFromArray", "Wrong Sized Column"); Exception e = new Exception(); e.printStackTrace(); return this; }
+    
+    for(int i = 0; i < this.n; i++) this.Set(i, j, col[i]);
+    
+    return this;
   }
 
   // Sum coeff from j-th column

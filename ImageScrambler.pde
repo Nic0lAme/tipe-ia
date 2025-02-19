@@ -52,33 +52,39 @@ class ImageManager {
     return color(r,g,b);
   }
   
-  void Resize(float s) {
+  ImageManager Resize(float s) {
     int x = floor(s * this.origin.width);
     int y = floor(s * this.origin.height);
     
-    Resize(x,y);
+    return Resize(x,y);
   }
   
-  void Resize(int x, int y) {
+  ImageManager Resize(int x, int y) {
     this.origin.resize(x, y);
+    
+    return this;
   }
   
-  void Gray() {
+  ImageManager Gray() {
     this.origin.filter(GRAY);
     this.isGray = true;
     
     this.meanColor = this.TakeAvgColor();
+    
+    return this;
   }
   
-  void BlackAndWhite(float threshold) {
+  ImageManager BlackAndWhite(float threshold) {
     this.origin.filter(THRESHOLD, threshold);
     this.isBW = true;
     this.BWthreshold = threshold;
     
     this.meanColor = this.TakeAvgColor();
+    
+    return this;
   }
   
-  PImage ScrambleImage(float move, float blur, float density) {
+  PImage ScrambleImage(boolean save, float move, float blur, float density) {
     
     PGraphics pg = createGraphics(this.origin.width, this.origin.height, P3D);
     
@@ -131,9 +137,12 @@ class ImageManager {
     
     pg.image(scrambledImage, 0, 0);
     
-    pg.save("./outputedFrame/" + str(millis()) + str(this.index) + str(second()) + str(minute()) + str(hour()) + str(day()) + str(month()) + str(year()) + ".jpg" );
+    if(save) pg.save("./outputedFrame/" + str(millis()) + str(this.index) + str(second()) + str(minute()) + str(hour()) + str(day()) + str(month()) + str(year()) + ".jpg" );
     
+    pg.loadPixels();
+    scrambledImage = pg.get(0, 0, scrambledImage.width, scrambledImage.height);
     pg.endDraw();
+    
     this.index += 1;
     return scrambledImage;
   }
@@ -152,6 +161,6 @@ void setup() {
   
   img.Gray();
   for(int i = 0; i < 5000; i++)
-    img.ScrambleImage(0.2,0.1,0.05);
+    img.ScrambleImage(false, 0.2,0.1,0.05);
 }
 */
