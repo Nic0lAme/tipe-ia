@@ -148,6 +148,18 @@ class NeuralNetwork {
 
     return J;
   }
+  
+  public void LearningPhase(Matrix X, Matrix Y, int numOfEpoch, float minLearningRate, float maxLearningRate, int numOfCycle) {
+    float learningRate;
+    for(int k = 0; k < numOfEpoch; k++) {
+      learningRate = CyclicalLearningRate(k, minLearningRate, maxLearningRate, numOfEpoch / numOfCycle);
+      println(k+1,
+        "\t-\tTime Remaining", String.format("%.3f", (double)millis() / k * (numOfEpoch-k) / 1000),
+        "\t-\tLearning Rate", String.format("%.5f", learningRate),
+        "\t-\tLoss", nn.Learn(X, Y, learningRate)
+      );
+    }
+  }
 
 
 
@@ -164,4 +176,11 @@ class NeuralNetwork {
 
 double sigmoid(double x) {
   return 1/(1+exp(-(float)x));
+}
+
+// En gros ça fait un blinker de period min suivi de period max
+float CyclicalLearningRate(int iter, float min, float max, int period) {
+  float cycle = floor(1 + iter / (2 * period));
+  float x = abs(iter / period - 2 * cycle + 1);
+  return min + (max - min) * max(0, x);
 }
