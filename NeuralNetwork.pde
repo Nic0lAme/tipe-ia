@@ -149,15 +149,39 @@ class NeuralNetwork {
     return J;
   }
   
-  public void LearningPhase(Matrix X, Matrix Y, int numOfEpoch, float minLearningRate, float maxLearningRate, int numOfCycle) {
-    float learningRate;
+  public void LearningPhase(Matrix X, Matrix Y, int numOfEpoch, float minLearningRate, float maxLearningRate, int period, int numPerIter, String label) {
+    float learningRate; double loss;
+    IntList range = new IntList();
+    for(int j = 0; j < X.p; j++) range.append(j);
+    
+    int startTime = millis();
+    
+    IntList selectedIndex = range.copy();
+    Matrix selectedX;
+    Matrix selectedY;
+    int startIndex = X.p;
     for(int k = 0; k < numOfEpoch; k++) {
-      learningRate = CyclicalLearningRate(k, minLearningRate, maxLearningRate, numOfEpoch / numOfCycle);
-      println(k+1,
-        "\t-\tTime Remaining", String.format("%.3f", (double)millis() / k * (numOfEpoch-k) / 1000),
+      startIndex += numPerIter / 8; // Décalage de 10% dans l'array ie on change 10% de l'entrée
+      if(startIndex + numPerIter >= X.p) {
+        selectedIndex = range.copy();
+        selectedIndex.shuffle();
+        
+        startIndex = 0;
+      }
+      
+      selectedX = X.GetCol(selectedIndex.array(), startIndex, min(numPerIter + startIndex, X.p));
+      selectedY = Y.GetCol(selectedIndex.array(), startIndex, min(numPerIter + startIndex, Y.p));
+      
+      learningRate = CyclicalLearningRate(k, minLearningRate, maxLearningRate, period);
+      
+      
+      loss = nn.Learn(selectedX, selectedY, learningRate);
+      println(label, "\t-\t", k+1,
+        "\t-\tTime Remaining", String.format("%.3f", (double)(millis() - startTime) / k * (numOfEpoch-k) / 1000),
         "\t-\tLearning Rate", String.format("%.5f", learningRate),
-        "\t-\tLoss", nn.Learn(X, Y, learningRate)
+        "\t-\tLoss", loss
       );
+      if(loss != loss) System.exit(-1);
     }
   }
 

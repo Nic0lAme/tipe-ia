@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class LetterDataset {
   final int w, h;
   float move = 0.05;
@@ -8,12 +10,22 @@ public class LetterDataset {
     this.w = w;
     this.h = h;
   }
+  
+  public Matrix[] CreateSample(String[] characters, String[] hwSources, String[] fSources, int rep) {
+    int[] repList = new int[characters.length];
+    Arrays.fill(repList, rep);
+    
+    return CreateSample(characters, hwSources, fSources, repList);
+  }
 
   // Renvoie un couple entrée / sortie d'images pour le réseau
-  public Matrix[] CreateSample(String[] characters, String[] hwSources, String[] fSources, int rep) {
+  public Matrix[] CreateSample(String[] characters, String[] hwSources, String[] fSources, int[] repList) {
+    int repSum = 0;
+    for(int k = 0; k < repList.length; k++) repSum += repList[k];
+    
     int nbChar = characters.length;
     int nbSources = hwSources.length + fSources.length;
-    int sampleSize = nbChar * nbSources * rep;
+    int sampleSize = nbSources * repSum;
 
     Matrix inputs = new Matrix(w*h, sampleSize);
     Matrix outputs = new Matrix(nbChar, sampleSize);
@@ -21,7 +33,7 @@ public class LetterDataset {
 
     int numColonne = 0;
     for (int c = 0; c < nbChar; c++) {
-      for (int k = 0; k < rep; k++) {
+      for (int k = 0; k < repList[c]; k++) {
         for (int s = 0; s < nbSources; s++) {
           // Récupère l'image source et la modifie
           String path = s < hwSources.length

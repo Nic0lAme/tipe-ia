@@ -212,17 +212,26 @@ class Matrix {
     for(int i = a; i < b+1; i++) range[i-a] = i;
     return GetCol(range);
   }
+  
+  Matrix GetCol(int[] jList) {
+    return GetCol(jList, 0, jList.length);
+  }
+  
+  Matrix GetCol(int[] jList, int numCol) {
+    return GetCol(jList, 0, numCol);
+  }
 
   // Create a new matrix with the column with indices in jList
-  Matrix GetCol(int[] jList) {
+  Matrix GetCol(int[] jList, int startCol, int endCol) {
     if (jList.length < 1) { println(this, jList, this.p, "GetCol", "List must be of length >= 1"); Exception e = new Exception(); e.printStackTrace(); return this; }
+    if (jList.length < endCol || startCol > endCol) { println(this, jList, this.p, startCol, endCol, "GetCol", "Conflict with startCol & endCol"); Exception e = new Exception(); e.printStackTrace(); return this; }
     for(int j : jList)
       if (j < 0 || j >= this.p) { println(this, j, this.p, "GetCol", "Wrong Column Index"); Exception e = new Exception(); e.printStackTrace(); return this; }
 
-    Matrix new_mat = new Matrix(this.n, jList.length);
-    for(int k = 0; k < jList.length; k++) {
+    Matrix new_mat = new Matrix(this.n, endCol - startCol);
+    for(int k = 0; k < endCol - startCol; k++) {
       for(int i = 0; i < this.n; i++)
-        new_mat.Set(i, k, this.Get(i, jList[k]));
+        new_mat.Set(i, k, this.Get(i, jList[k + startCol]));
     }
 
     return new_mat;

@@ -5,7 +5,7 @@ int h = 21;
 
 NeuralNetwork nn;
 
-float accuracyOfTraining;
+float[] accuracyOfTraining;
 
 void settings() {
   size(w*5*10, h*5*10, P3D);
@@ -13,24 +13,38 @@ void settings() {
 
 void setup() {
   background(255);
-
-  nn = new NeuralNetwork(w*h, 128, 32, 32, 10);
+  dataset = new LetterDataset(w, h);
+  
+  nn = new NeuralNetwork().Import("./NeuralNetworkSave/Figures10kEpochTest1.nn");
   nn.UseSoftMax();
+
+
+  //nn = new NeuralNetwork(w*h, 128, 32, 32, 10);
+  //nn.UseSoftMax();
   println(nn);
 
-  dataset = new LetterDataset(w, h);
-  sample = dataset.CreateSample(
-    new String[]{"0","1","2","3","4","5","6","7","8","9"},
-    new String[]{"NicolasMA", "AntoineME", "LenaME", "ElioKE", "AkramBE", "TheoLA"},
-    new String[]{"Arial", "Consolas"},
-    8);
+  int N = 2;
+  float[] accuracy = new float[nn.outputSize];
+  Arrays.fill(accuracy, 0.5);
   
-  nn.LearningPhase(sample[0], sample[1], 10000, 0.003, 0.1, 25);
+  for(int k = 0; k <= N; k++) {   
+    sample = dataset.CreateSample(
+      new String[]{"0","1","2","3","4","5","6","7","8","9"},
+      new String[]{"NicolasMA", "AntoineME", "LenaME", "ElioKE", "AkramBE", "TheoLA", "MatteoPR", "MaximeMB"},
+      new String[]{"Arial", "Consolas", "Fira Code Retina Moyen", "Noto Serif"},
+      RepList(accuracy, 15, 0.7));
+    
+    println("Phase", 1, "/", N);
+    nn.LearningPhase(sample[0], sample[1], k == 0 ? 1 : 1024, 0.003, 0.05, 128, 512, str(k) + "/" + str(N));
+    
+    accuracy = AccuracyScore(nn, sample[0], sample[1], false);
+    
+  }
   
   nn.Export("./NeuralNetworkSave/Figures10kEpochTest1.nn");
+  accuracyOfTraining = AccuracyScore(nn, sample[0], sample[1], false);
   
-  accuracyOfTraining = AccuracyScore(nn, sample[0], sample[1]);
-
+  
   frameRate(1);
 }
 
@@ -46,31 +60,29 @@ void draw() {
   Matrix[] testSample = dataset.CreateSample(
     new String[]{"0","1","2","3","4","5","6","7","8","9"},
     new String[]{"MrMollier", "MrChauvet", "SachaBE"},
-    new String[]{"Comic Sans MS", "DejaVu Serif"},
+    new String[]{"Comic Sans MS", "Calibri"},
     2);
     
-  System.gc();
 
-  println("Training Set Score :", accuracyOfTraining, "\t-\tTraining Set Score :", AccuracyScore(nn, testSample[0], testSample[1]));
+  println("Training Set Score :", Average(accuracyOfTraining), "\t-\tTraining Set Score :", Average(AccuracyScore(nn, testSample[0], testSample[1], true)));
+
+  
+  System.gc();
+  testSample = null;
 }
 
-float AccuracyScore(NeuralNetwork nn, Matrix inputs, Matrix outputs) {
-  float score = 0;
+
+float[] AccuracyScore(NeuralNetwork nn, Matrix inputs, Matrix outputs, boolean doDraw) {
+  float[] score = new float[outputs.n];
+  int[] countOutput = new int[outputs.n]; // Compte le nombre d'output ayant pour retour i
 
   Matrix prediction = nn.Predict(inputs);
 
-  int x = 0;
-  int y = 0;
-  int mIndex;
-  double m;
+  int x = 0; int y = 0;
+  textAlign(LEFT, BOTTOM); textSize(w); fill(255,0,0);
   
-  textAlign(LEFT, BOTTOM);
-  fill(255);
+  int mIndex; double m; // Recherche de la prédiction la plus haute
   for(int j = 0; j < inputs.p; j++) {
-    x = (5*w*j) % width;
-    y = floor((5*w*j) / width) * 5 * h;
-    image(dataset.GetImageFromInputs(inputs, j), x, y, 5*w, 5*h);
-    
     mIndex = 0;
     m = outputs.Get(0, j);
     for(int i = 0; i < outputs.n; i++) {
@@ -80,12 +92,47 @@ float AccuracyScore(NeuralNetwork nn, Matrix inputs, Matrix outputs) {
       }
     }
     
-    text(str(mIndex), x, y, 5*w, 5*h);
-    
     for(int i = 0; i < outputs.n; i++) {
-      if(outputs.Get(i,j) == 1 && mIndex == i) score += 1;
+      if(outputs.Get(i,j) == 1) {
+        countOutput[i] += 1;
+        if(mIndex == i) score[i] += 1;
+      }
+    }
+    
+    
+    if(doDraw) {
+      x = (5*w*j) % width;
+      y = floor((5*w*j) / width) * 5 * h;
+      image(dataset.GetImageFromInputs(inputs, j), x, y, 5*w, 5*h);
+      text(str(mIndex), x, y, 5*w, 5*h);
     }
   }
+  
+  for(int i = 0; i < outputs.n; i++) {
+    score[i] /= (float)countOutput[i];
+  }
 
-  return score / inputs.p;
+  return score;
+}
+
+// return a list of the repetition needed depending on the performance for each characters
+int[] RepList(float[] score, int baseRep, float minProp) {
+  float[] logScore = new float[score.length];
+  for(int k = 0; k < score.length; k++) logScore[k] = -log(score[k]);
+  
+  float sum = 0;
+  for(int k = 0; k < score.length; k++) sum += logScore[k];
+  
+  if(sum == 0) sum = 1; // Dans le cas où tout vaut 1, dans tous les cas on ne changera rien
+  
+  int[] repList = new int[score.length];
+  for(int k = 0; k < score.length; k++) repList[k] = floor((minProp / score.length + (1 - minProp) * logScore[k] / sum)  * baseRep * score.length) + 1;
+  
+  return repList;
+}
+
+float Average(float[] list) {
+  float avg = 0;
+  for(int k = 0; k < list.length; k++) avg += list[k] / list.length;
+  return avg;
 }
