@@ -33,6 +33,15 @@ class Matrix {
     println(this.n, this.p);
   }
 
+  void DebugCol(int j) {
+    print("Colonne " + str(j) + " [");
+    for (int i = 0; i < this.n; i++) {
+      print(this.Get(i, j) + " ");
+    }
+    print("]");
+    println();
+  }
+
   String SaveToString() {
     String output = "";
     for (int i = 0; i < this.n; i++) {
@@ -218,13 +227,13 @@ class Matrix {
 
     return new_mat;
   }
-  
+
   Matrix ColumnFromArray(int j, double[] col) {
     if (j < 0 || j >= this.p) { println(this, j, "ColumnFromArray", "Wrong Column Index"); Exception e = new Exception(); e.printStackTrace(); return this; }
     if (col.length != this.n) { println(this, col.length, "ColumnFromArray", "Wrong Sized Column"); Exception e = new Exception(); e.printStackTrace(); return this; }
-    
+
     for(int i = 0; i < this.n; i++) this.Set(i, j, col[i]);
-    
+
     return this;
   }
 

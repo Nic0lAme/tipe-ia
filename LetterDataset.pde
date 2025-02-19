@@ -1,0 +1,62 @@
+public class LetterDataset {
+  final int w, h;
+  float move = 0.05;
+  float blur = 0.15;
+  float density = 0;
+
+  LetterDataset(int w, int h) {
+    this.w = w;
+    this.h = h;
+  }
+
+  // Renvoie un couple entrée / sortie d'images pour le réseau
+  public Matrix[] CreateSample(String[] characters, String[] hwSources, String[] fSources, int rep) {
+    int nbChar = characters.length;
+    int nbSources = hwSources.length + fSources.length;
+    int sampleSize = nbChar * nbSources * rep;
+
+    Matrix inputs = new Matrix(w*h, sampleSize);
+    Matrix outputs = new Matrix(nbChar, sampleSize);
+    outputs.Fill(0);
+
+    int numColonne = 0;
+    for (int c = 0; c < nbChar; c++) {
+      for (int k = 0; k < rep; k++) {
+        for (int s = 0; s < nbSources; s++) {
+          // Récupère l'image source et la modifie
+          String path = s < hwSources.length
+            ? "./TextFileGetter/output/" + characters[c] + "/" + characters[c] + " - " + hwSources[s] + ".jpg"
+            : "./FromFontGetter/output/" + characters[c] + "/" + characters[c] + " - " + fSources[s - hwSources.length] + ".jpg";
+          ImageManager src = new ImageManager(loadImage(path));
+          PImage img = src.Resize(w, h).Gray().ScrambleImage(move, blur, density);
+
+          // Récupère les pixels et les normalise
+          double[] imgPixels = new double[img.pixels.length];
+          img.loadPixels();
+          for (int i = 0; i < img.pixels.length; i++)
+            imgPixels[i] = 1 - (double)brightness(img.pixels[i]) / 255;
+
+          // Actualise les matrices entrées / sorties
+          inputs.ColumnFromArray(numColonne, imgPixels);
+          outputs.Set(c, numColonne, 1);
+          numColonne += 1;
+        }
+      }
+    }
+
+    return new Matrix[]{ inputs, outputs };
+  }
+
+  // Renvoie une image affichable de l'image stockée en colonne j de l'entrée
+  public PImage GetImageFromInputs(Matrix inputs, int j) {
+    PImage img = createImage(w, h, RGB);
+    img.loadPixels();
+    for(int i = 0; i < img.pixels.length; i++) {
+      int val = floor((float)inputs.Get(i, j) * 255);
+      img.pixels[i] = color(val, val, val);
+    }
+    img.updatePixels();
+    return img;
+  }
+
+}
