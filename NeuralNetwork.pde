@@ -7,11 +7,13 @@ class NeuralNetwork {
   // Paramètres du réseau de neurones
   Matrix[] weights; // Poids des liaisons (pour un indice i, liaisons entre couche i et couche i+1)
   Matrix[] bias; // Biais (pour un indice i, biais entre couche i et i+1)
+  
+  boolean useSoftMax = false; // Détermine l'utilisation de la fonction softmax sur la dernière couche du réseau
 
   NeuralNetwork() {
     this(1);
   }
-
+  
   NeuralNetwork(int... sizes) {
     numLayers = sizes.length;
     layers = new int[numLayers];
@@ -19,6 +21,8 @@ class NeuralNetwork {
 
     Init();
   }
+  
+  public void UseSoftMax() { this.useSoftMax = true; } // Lorsque SoftMax est utilisé, il est nécessaire d'avoir des sorties qui s'additionnent à 1
 
   private void Init() {
     entrySize = layers[0];
@@ -82,7 +86,7 @@ class NeuralNetwork {
     for(int i = 0; i < this.numLayers - 1; i++) {
       layerVal[i + 1] = CalcLayer(i, layerVal[i]);
     }
-
+    
     return layerVal;
   }
 
@@ -90,6 +94,12 @@ class NeuralNetwork {
   private Matrix CalcLayer(int from, Matrix in) {
     Matrix result = weights[from].Mult(in);
     result.Add(bias[from], 1, true);
+    
+    if(from == this.numLayers - 2 && this.useSoftMax) {
+      result.Map((x) -> exp((float)x));
+      return result.NormColumn();
+    }
+    
     return result.Map((x) -> sigmoid(x));
   }
 
@@ -103,7 +113,7 @@ class NeuralNetwork {
     Matrix[] biasGrad = new Matrix[this.numLayers - 1];
     for(int l = this.numLayers - 2; l >= 0; l--) {
       //dJ/dWl = dJ/dZl * dZl/dWl
-      weightGrad[l] = gradient.Mult(activations[l].T());
+      weightGrad[l] = gradient.Mult(activations[l].T()).Scale(1/ (double)expectedOutput.p);
       //weightGrad[l].DebugShape();
 
       //dJ/dbl = dJ/dZl * dZl/dbl
@@ -113,7 +123,7 @@ class NeuralNetwork {
       a = activations[l].C();
       gradient = (weights[l].T().Mult(gradient)).HProduct(a.C().Add(a.C().HProduct(a), -1));
     }
-
+    
     return new Matrix[][]{weightGrad, biasGrad};
   }
 
@@ -123,7 +133,8 @@ class NeuralNetwork {
 
     Matrix[][] gradients = BackPropagation(activations, Y);
 
-    for(int l = 0; l < this.numLayers - 1; l++) {
+
+    for(int l = 0; l < this.numLayers - 1; l++) {      
       this.weights[l].Add(gradients[0][l], -learning_rate);
       this.bias[l].Add(gradients[1][l], -learning_rate);
     }

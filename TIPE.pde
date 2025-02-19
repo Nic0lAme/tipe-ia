@@ -37,7 +37,8 @@ void setup() {
   d.Debug();
   m2.HProduct(d).Debug();
   */
-
+  
+  /*
   PImage img = loadImage("./AuxiliarFiles/UKFlag.jpg");
   img.resize(width, height);
 
@@ -57,19 +58,18 @@ void setup() {
     outputs.Set(1, k, green(c) / 255);
     outputs.Set(2, k, blue(c) / 255);
   }
+  */
 
 
-  NeuralNetwork nn = new NeuralNetwork(2, 64, 32, 32, 3);
-  println(nn);
+  
 
-  for(int i = 0; i < 5000; i++) {
-    nn.Learn(inputs.C(), outputs.C(), 0.01);
-  }
+  
 
   // Exemple :
   // nn.Export("UKFlag.nn");
   // NeuralNetwork nn2 = new NeuralNetwork().Import("UKFlag.nn");
-
+  
+  /*
   for(int i = 0; i < width; i++) {
     for(int j = 0; j < height; j++) {
       Matrix output = nn.Predict(new Matrix(2,1).FromArray(new double[][]{{(float)i/width},{(float)j/height}}));
@@ -77,27 +77,34 @@ void setup() {
       set(i, j, c);
     }
   }
+  */
 
   //Matrix entries = new Matrix(3, 10000).Random(0, 1);
   //Matrix exit = new Matrix(2, 10000).Random(0,1);
 
-  /*
+  
   Matrix entries = new Matrix(2, 10).FromArray(new double[][]{
     {-1,-5,3,0,-3,10,1,-1,1,0},
-    {0,1,0,1,5,-2,-7,-1,1000,-1000,-1}
+    {0,1,0,1,5,-2,-7,-1,1000,-1000,-10}
   });
-  Matrix exit = new Matrix(2, 10).FromArray(new double[][]{
-    {1,1,0,1,1,0,0,1,0,1},
-    {0,0,1,1,0,1,1,0,1,1}
+  Matrix exits = new Matrix(2, 10).FromArray(new double[][]{
+    {1,1,0,0.5,1,0,0,1,0,0.5},
+    {0,0,1,0.5,0,1,1,0,1,0.5}
   });
+  
+  NeuralNetwork nn = new NeuralNetwork(2, 4, 2);
+  nn.UseSoftMax();
+  println(nn);
+  
+  for(int i = 0; i < 100000; i++) {
+    nn.Learn(entries.C(), exits.C(), 0.1);
+  }
 
   Matrix entriesBis = new Matrix(2, 5).FromArray(new double[][]{
     {1,-5,0,0,-3},
     {0,-4,0,-100,5,2}
   });
 
-  */
-
-
+  nn.Predict(entriesBis).Debug();
 
 }
