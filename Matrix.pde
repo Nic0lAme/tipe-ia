@@ -12,6 +12,10 @@ class Matrix {
     n=_n; p=_n;
     Init();
   }
+  
+  void Delete() {
+    values = null;
+  }
 
   void Init() {
     values = new double[n][p];

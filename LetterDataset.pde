@@ -26,6 +26,8 @@ public class LetterDataset {
     int nbChar = characters.length;
     int nbSources = hwSources.length + fSources.length;
     int sampleSize = nbSources * repSum;
+    
+    PGraphics pg = createGraphics(w, h, P3D);
 
     Matrix inputs = new Matrix(w*h, sampleSize);
     Matrix outputs = new Matrix(nbChar, sampleSize);
@@ -39,23 +41,26 @@ public class LetterDataset {
           String path = s < hwSources.length
             ? "./TextFileGetter/output/" + characters[c] + "/" + characters[c] + " - " + hwSources[s] + ".jpg"
             : "./FromFontGetter/output/" + characters[c] + "/" + characters[c] + " - " + fSources[s - hwSources.length] + ".jpg";
-          ImageManager src = new ImageManager(loadImage(path));
-          PImage img = src.Resize(w, h).Gray().ScrambleImage(move, blur, density);
+          PImage original = loadImage(path);
+          ImageManager src = new ImageManager(original);
+          PImage img = src.Resize(w, h).Gray().ScrambleImage(move, blur, density, pg);
 
           // Récupère les pixels et les normalise
           double[] imgPixels = new double[img.pixels.length];
           img.loadPixels();
           for (int i = 0; i < img.pixels.length; i++)
             imgPixels[i] = 1 - (double)brightness(img.pixels[i]) / 255;
+          
 
           // Actualise les matrices entrées / sorties
           inputs.ColumnFromArray(numColonne, imgPixels);
           outputs.Set(c, numColonne, 1);
           numColonne += 1;
         }
+        System.gc();
       }
     }
-
+    
     return new Matrix[]{ inputs, outputs };
   }
 

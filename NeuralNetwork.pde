@@ -62,8 +62,14 @@ class NeuralNetwork {
       output[0] += str(layers[i]) + (i != layers.length - 1 ? "," : "");
     }
 
-    for (int i = 0; i < weights.length; i++) output[1+i] = weights[i].SaveToString();
-    for (int i = 0; i < bias.length; i++) output[1+weights.length+i] = bias[i].SaveToString();
+    for (int i = 0; i < weights.length; i++) {
+      output[1+i] = weights[i].SaveToString();
+      cl.pln("Exported weight\t", i+1, "/", weights.length);
+    }
+    for (int i = 0; i < bias.length; i++) {
+      output[1+weights.length+i] = bias[i].SaveToString();
+      cl.pln("Exported bias\t", i+1, "/", bias.length);
+    }
 
     saveStrings(name, output);
   }
@@ -111,13 +117,15 @@ class NeuralNetwork {
 
     Matrix[] weightGrad = new Matrix[this.numLayers - 1];
     Matrix[] biasGrad = new Matrix[this.numLayers - 1];
+    
+    float lambda = 0.005;
     for(int l = this.numLayers - 2; l >= 0; l--) {
       //dJ/dWl = dJ/dZl * dZl/dWl
-      weightGrad[l] = gradient.Mult(activations[l].T()).Scale(1/ (double)expectedOutput.p);
+      weightGrad[l] = gradient.Mult(activations[l].T()).Scale(1/ (double)expectedOutput.p).Add(weights[l], lambda / weights[l].n / weights[l].p);
       //weightGrad[l].DebugShape();
 
       //dJ/dbl = dJ/dZl * dZl/dbl
-      biasGrad[l] = gradient.AvgLine();
+      biasGrad[l] = gradient.AvgLine().Add(bias[l], lambda / bias[l].n);
       //biasGrad[l].DebugShape();
 
       a = activations[l].C();
@@ -161,7 +169,7 @@ class NeuralNetwork {
     Matrix selectedY;
     int startIndex = X.p;
     for(int k = 0; k < numOfEpoch; k++) {
-      startIndex += numPerIter / 8; // Décalage de 10% dans l'array ie on change 10% de l'entrée
+      startIndex += numPerIter / 16; // Décalage de 1/16 dans l'array ie on change 1/16 de l'entrée
       if(startIndex + numPerIter >= X.p) {
         selectedIndex = range.copy();
         selectedIndex.shuffle();
@@ -176,8 +184,8 @@ class NeuralNetwork {
       
       
       loss = nn.Learn(selectedX, selectedY, learningRate);
-      println(label, "\t-\t", k+1,
-        "\t-\tTime Remaining", String.format("%.3f", (double)(millis() - startTime) / k * (numOfEpoch-k) / 1000),
+      cl.pln(label, "\t-\t", k+1, "/", numOfEpoch,
+        "\t-\tTime Remaining", String.format("%.3f", (double)(millis() - startTime) / (k+1) * (numOfEpoch-k-1) / 1000),
         "\t-\tLearning Rate", String.format("%.5f", learningRate),
         "\t-\tLoss", loss
       );

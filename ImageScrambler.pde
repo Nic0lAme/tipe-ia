@@ -84,13 +84,11 @@ class ImageManager {
     return this;
   }
 
-  PImage ScrambleImage(float move, float blur, float density) {
-    return ScrambleImage(false, move, blur, density);
+  PImage ScrambleImage(float move, float blur, float density, PGraphics pg) {
+    return ScrambleImage(false, move, blur, density, pg);
   }
 
-  PImage ScrambleImage(boolean save, float move, float blur, float density) {
-    PGraphics pg = createGraphics(this.origin.width, this.origin.height, P3D);
-
+  PImage ScrambleImage(boolean save, float move, float blur, float density, PGraphics pg) {
     pg.beginDraw();
     pg.background(this.meanColor);
 
@@ -144,6 +142,7 @@ class ImageManager {
 
     pg.loadPixels();
     scrambledImage = pg.get(0, 0, scrambledImage.width, scrambledImage.height);
+    pg.background(0);
     pg.endDraw();
 
     this.index += 1;
