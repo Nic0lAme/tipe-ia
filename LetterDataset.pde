@@ -2,9 +2,11 @@ import java.util.Arrays;
 
 public class LetterDataset {
   final int w, h;
-  float move = 0.05;
-  float blur = 0.15;
-  float density = 0;
+  float move = 0.1;
+  float blur = 0.2;
+  float density = 0.01;
+  float perlin = 3;
+  float contrast = 1.5;
 
   LetterDataset(int w, int h) {
     this.w = w;
@@ -43,7 +45,7 @@ public class LetterDataset {
             : "./FromFontGetter/output/" + characters[c] + "/" + characters[c] + " - " + fSources[s - hwSources.length] + ".jpg";
           PImage original = loadImage(path);
           ImageManager src = new ImageManager(original);
-          PImage img = src.Resize(w, h).Gray().ScrambleImage(move, blur, density, pg);
+          PImage img = src.Resize(w, h).Gray().ScrambleImage(move, blur, density, perlin, contrast, pg);
 
           // Récupère les pixels et les normalise
           double[] imgPixels = new double[img.pixels.length];

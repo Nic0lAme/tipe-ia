@@ -84,11 +84,11 @@ class ImageManager {
     return this;
   }
 
-  PImage ScrambleImage(float move, float blur, float density, PGraphics pg) {
-    return ScrambleImage(false, move, blur, density, pg);
+  PImage ScrambleImage(float move, float blur, float density, float perlin, float contrast, PGraphics pg) {
+    return ScrambleImage(false, move, blur, density, perlin, contrast, pg);
   }
 
-  PImage ScrambleImage(boolean save, float move, float blur, float density, PGraphics pg) {
+  PImage ScrambleImage(boolean save, float move, float blur, float density, float perlin, float contrast, PGraphics pg) {
     pg.beginDraw();
     pg.background(this.meanColor);
 
@@ -96,7 +96,6 @@ class ImageManager {
     float xyRot = 0.2;
     float d = 1.3;
     float delta = 0.02;
-    float perlin = 6;
     float perlinScale = 1;
     float scaleScale = 0.5;
 
@@ -122,7 +121,18 @@ class ImageManager {
 
     if (isBW) scrambledImage.filter(THRESHOLD, this.BWthreshold);
     if (isGray) scrambledImage.filter(GRAY);
-
+    
+    color c;
+    int r; int g; int b;
+    for(int i = 0; i < x; i++) {
+      for(int j = 0; j < y; j++) {
+        c = scrambledImage.get(i,j);
+        r = floor(((c >> 16) & 0xFF) * contrast);
+        g = floor(((c >> 8) & 0xFF) * contrast);
+        b = floor((c & 0xFF) * contrast);
+        scrambledImage.set(i,j, color(r < 0 ? 0 : r > 255 ? 255 : r, g < 0 ? 0 : g > 255 ? 255 : g, b < 0 ? 0 : b > 255 ? 255 : b));
+      }
+    }
 
 
     pg.translate(floor(x/2) + d * random(-size * move, size * move), floor(y/2) + d * random(-size * move, size * move));
