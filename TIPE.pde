@@ -3,7 +3,7 @@ LetterDataset dataset;
 ConsoleLog cl;
 int w = 19;
 int h = 21;
-int rScale = 3; // Scale for the representations
+int rScale = 2; // Scale for the representations
 //String[] characters = new String[]{"0","1","2","3","4","5","6","7","8","9"};
 String[] characters = new String[]{"uA","uB","uC","uD","uE","uF","uG","uH","uI","uJ","uK","uL","uM","uN","uO","uP","uQ","uR","uS","uT","uU","uV","uW","uX","uY","uZ"};
 int numOfTestSample = 20;
@@ -19,11 +19,10 @@ void setup() {
   background(255);
   dataset = new LetterDataset(w, h);
   cl = new ConsoleLog("./Log/log1.txt");
-  nameOfProcess = "LettersTest1" + str(minute()) + str(hour()) + str(day()) + str(month()) + str(year());
+  nameOfProcess = "LetterTest2" + str(minute()) + str(hour()) + str(day()) + str(month()) + str(year());
   
-  //nn = new NeuralNetwork(w*h, 512, 128, 64, 64, characters.length);
-  nn = new NeuralNetwork().Import("./NeuralNetworkSave/LetterTest2.nn");
-  nn.UseSoftMax();
+  //nn = new NeuralNetwork(w*h, 512, 64, characters.length);
+  nn = new NeuralNetwork().Import("./NeuralNetworkSave/LetterTest3.nn");
 
   
   nn.UseSoftMax();
@@ -38,7 +37,7 @@ void setup() {
     cl.pln("\nPhase", k, "/", N);
     
     if(k != 0) {
-      repList = RepList(accuracy, 6, 0.4);
+      repList = RepList(accuracy, 8, 0.5);
       
       sample = dataset.CreateSample(
         characters,
@@ -52,8 +51,8 @@ void setup() {
         sample[0],            // X
         sample[1],            // Y
         1028,                 // Number of iteration (not epoch actually)
-        0.003,                // Min learning rate
-        0.15,                 // Max learning rate
+        0.002,                // Min learning rate
+        0.1,                 // Max learning rate
         256,                  // Learning Rate period
         96,                  // Number of sample taken by iteration
         str(k) + "/" + str(N) // Label
@@ -81,10 +80,7 @@ void setup() {
     cl.Update();
   }
   
-  nn.Export("./NeuralNetworkSave/LetterTest2.nn");
-  
-  
-  frameRate(1);
+  nn.Export("./NeuralNetworkSave/LetterTest3.nn");
 }
 
 int index = 0;
@@ -114,6 +110,8 @@ void draw() {
   System.gc();
   
   cl.Update();
+  
+  delay(10000);
 }
 
 void KeyPressed() {
