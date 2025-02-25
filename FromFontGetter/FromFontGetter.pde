@@ -31,7 +31,7 @@ class Letter {
 
 int w = 156;
 int h = 175;
-String fontName = "Consolas";
+String fontName = "Playwrite IT Moderna";
 int size = 90;
   
 void settings() {

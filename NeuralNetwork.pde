@@ -137,7 +137,7 @@ class NeuralNetwork {
     Matrix[] weightGrad = new Matrix[this.numLayers - 1];
     Matrix[] biasGrad = new Matrix[this.numLayers - 1];
 
-    float lambda = 0.01;
+    float lambda = 0.001;
     boolean hasNaN = false;
     for(int l = this.numLayers - 2; l >= 0; l--) {
       if(gradient.Contains(Double.NaN)) hasNaN = true;
@@ -208,15 +208,20 @@ class NeuralNetwork {
     int startIndex = X.p;
     for(int k = 0; k < numOfEpoch; k++) {
       startIndex += numPerIter / 16; // Décalage de 1/16 dans l'array ie on change 1/16 de l'entrée
-      if(startIndex + numPerIter >= X.p) {
-        selectedIndex = range.copy();
-        selectedIndex.shuffle();
-
-        startIndex = 0;
+      if(numPerIter != 0) {
+        if(startIndex + numPerIter >= X.p) {
+          selectedIndex = range.copy();
+          selectedIndex.shuffle();
+  
+          startIndex = 0;
+        }
+  
+        selectedX = X.GetCol(selectedIndex.array(), startIndex, min(numPerIter + startIndex, X.p - 1));
+        selectedY = Y.GetCol(selectedIndex.array(), startIndex, min(numPerIter + startIndex, Y.p - 1));
+      } else {
+        selectedX = X;
+        selectedY = Y;
       }
-
-      selectedX = X.GetCol(selectedIndex.array(), startIndex, min(numPerIter + startIndex, X.p - 1));
-      selectedY = Y.GetCol(selectedIndex.array(), startIndex, min(numPerIter + startIndex, Y.p - 1));
 
       learningRate = CyclicalLearningRate(k, minLearningRate, maxLearningRate, period);
 

@@ -2,11 +2,11 @@ import java.util.Arrays;
 
 public class LetterDataset {
   final int w, h;
-  float move = 0.1;
+  float move = 0.25;
   float blur = 0.2;
   float density = 0.01;
-  float perlin = 3;
-  float contrast = 1.5;
+  float perlin = 5;
+  float contrast = 1;
 
   LetterDataset(int w, int h) {
     this.w = w;
