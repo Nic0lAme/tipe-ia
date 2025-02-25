@@ -12,7 +12,7 @@ class Matrix {
     n=_n; p=_n;
     Init();
   }
-  
+
   void Delete() {
     values = null;
   }
@@ -46,18 +46,17 @@ class Matrix {
     cl.pln();
   }
 
-  String SaveToString() {
-    String output = "";
+  String[] SaveToString() {
+    String[] output = new String[this.n];
     for (int i = 0; i < this.n; i++) {
+      output[i] = "";
       for (int j = 0; j < this.p; j++)
-        output += this.Get(i,j) + (j != this.p - 1 ? "," : "");
-      if (i != this.n - 1) output += ";";
+        output[i] += this.Get(i,j) + (j != this.p - 1 ? "," : "");
     }
     return output;
   }
 
-  void LoadString(String str) {
-    String[] lignes = split(str, ';');
+  void LoadString(String[] lignes) {
     if (lignes.length != n || split(lignes[0], ',').length != p) {
       cl.pln(this, "LoadString", "Wrong size string load");
       return;
@@ -126,7 +125,7 @@ class Matrix {
     if(val != val) { // Val is a NaN
       Exception e = new Exception();
       e.printStackTrace();
-      
+
       cl.pln("Want to SET a NaN");
       return;
     }
@@ -138,7 +137,7 @@ class Matrix {
     if (i < 0 || i >= n || j < 0 || j >= p) { cl.pln(this, i, j, "Get", "Wrong indices"); Exception e = new Exception(); e.printStackTrace(); return 0; }
     return this.values[i][j];
   }
-  
+
   boolean Contains(double val) {
     for (int i = 0; i < this.n; i++)
       for (int j = 0; j < this.p; j++)
@@ -230,11 +229,11 @@ class Matrix {
     for(int i = a; i < b+1; i++) range[i-a] = i;
     return GetCol(range);
   }
-  
+
   Matrix GetCol(int[] jList) {
     return GetCol(jList, 0, jList.length);
   }
-  
+
   Matrix GetCol(int[] jList, int numCol) {
     return GetCol(jList, 0, numCol);
   }

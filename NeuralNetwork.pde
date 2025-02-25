@@ -7,13 +7,13 @@ class NeuralNetwork {
   // Paramètres du réseau de neurones
   Matrix[] weights; // Poids des liaisons (pour un indice i, liaisons entre couche i et couche i+1)
   Matrix[] bias; // Biais (pour un indice i, biais entre couche i et i+1)
-  
+
   boolean useSoftMax = false; // Détermine l'utilisation de la fonction softmax sur la dernière couche du réseau
 
   NeuralNetwork() {
     this(1);
   }
-  
+
   NeuralNetwork(int... sizes) {
     numLayers = sizes.length;
     layers = new int[numLayers];
@@ -21,7 +21,7 @@ class NeuralNetwork {
 
     Init();
   }
-  
+
   public void UseSoftMax() { this.useSoftMax = true; } // Lorsque SoftMax est utilisé, il est nécessaire d'avoir des sorties qui s'additionnent à 1
 
   private void Init() {
@@ -38,40 +38,59 @@ class NeuralNetwork {
 
   // Importe un réseau de neurones depuis un fichier
   public NeuralNetwork Import(String name) {
-    String[] input = loadStrings(name);
-    String[] sizes = split(input[0], ',');
+   String[] input = loadStrings(name);
+   String[] sizes = split(input[0], ',');
 
-    numLayers = sizes.length;
-    layers = new int[numLayers];
-    for (int i = 0; i < sizes.length; i++) layers[i] = int(sizes[i]);
+   numLayers = sizes.length;
+   layers = new int[numLayers];
+   for (int i = 0; i < sizes.length; i++) layers[i] = int(sizes[i]);
 
-    Init();
+   Init();
 
-    for (int i = 0; i < weights.length; i++) weights[i].LoadString(input[i+1]);
-    for (int i = 0; i < bias.length; i++) bias[i].LoadString(input[1+weights.length+i]);
+   int cpt = 1;
+   for (int i = 0; i < weights.length; i++) {
+     String[] weightMatrixString = new String[weights[i].n];
+     for (int k = 0; k < weights[i].n; k++) {
+       weightMatrixString[k] = input[cpt];
+       cpt++;
+     }
+     weights[i].LoadString(weightMatrixString);
+   }
 
-    return this;
+   for (int i = 0; i < bias.length; i++) {
+     String[] biasMatrixString = new String[bias[i].n];
+     for (int k = 0; k < bias[i].n; k++) {
+       biasMatrixString[k] = input[cpt];
+       cpt++;
+     }
+     bias[i].LoadString(biasMatrixString);
+   }
+
+   return this;
   }
 
   // Sauvegarde les paramètres du réseau de neurones
   public void Export(String name) {
-    String[] output = new String[1 + weights.length + bias.length];
+   ArrayList<String> output = new ArrayList<String>();
 
-    output[0] = "";
-    for (int i = 0; i < layers.length; i++) {
-      output[0] += str(layers[i]) + (i != layers.length - 1 ? "," : "");
-    }
+   output.add("");
+   for (int i = 0; i < layers.length; i++) {
+     output.set(0, output.get(0) + str(layers[i]) + (i != layers.length - 1 ? "," : ""));
+   }
 
-    for (int i = 0; i < weights.length; i++) {
-      output[1+i] = weights[i].SaveToString();
-      cl.pln("Exported weight\t", i+1, "/", weights.length);
-    }
-    for (int i = 0; i < bias.length; i++) {
-      output[1+weights.length+i] = bias[i].SaveToString();
-      cl.pln("Exported bias\t", i+1, "/", bias.length);
-    }
+   for (int i = 0; i < weights.length; i++) {
+     String[] matrixSave = weights[i].SaveToString();
+     for (String s : matrixSave) output.add(s);
+     cl.pln("Exported weight\t", i+1, "/", weights.length);
+   }
+   for (int i = 0; i < bias.length; i++) {
+     String[] matrixSave = bias[i].SaveToString();
+     for (String s : matrixSave) output.add(s);
+     cl.pln("Exported bias\t", i+1, "/", bias.length);
+   }
 
-    saveStrings(name, output);
+   String[] writedOutput = new String[output.size()];
+   saveStrings(name, output.toArray(writedOutput));
   }
 
   public Matrix Predict(Matrix entry) {
@@ -92,7 +111,7 @@ class NeuralNetwork {
     for(int i = 0; i < this.numLayers - 1; i++) {
       layerVal[i + 1] = CalcLayer(i, layerVal[i]);
     }
-    
+
     return layerVal;
   }
 
@@ -100,12 +119,12 @@ class NeuralNetwork {
   private Matrix CalcLayer(int from, Matrix in) {
     Matrix result = weights[from].Mult(in);
     result.Add(bias[from], 1, true);
-    
+
     if(from == this.numLayers - 2 && this.useSoftMax) {
       result.Map((x) -> Math.exp(x));
       return result.NormColumn();
     }
-    
+
     return result.Map((x) -> sigmoid(x));
   }
 
@@ -117,40 +136,40 @@ class NeuralNetwork {
 
     Matrix[] weightGrad = new Matrix[this.numLayers - 1];
     Matrix[] biasGrad = new Matrix[this.numLayers - 1];
-    
+
     float lambda = 0.01;
     boolean hasNaN = false;
     for(int l = this.numLayers - 2; l >= 0; l--) {
       if(gradient.Contains(Double.NaN)) hasNaN = true;
-      
+
       //dJ/dWl = dJ/dZl * dZl/dWl
       weightGrad[l] = gradient.Mult(activations[l].T()).Scale(1/ (double)max(1, expectedOutput.p)).Add(weights[l], lambda / max(1, weights[l].n * weights[l].p));
       //weightGrad[l].DebugShape();
-      
+
       if(weightGrad[l].Contains(Double.NaN)) hasNaN = true;
 
       //dJ/dbl = dJ/dZl * dZl/dbl
       biasGrad[l] = gradient.AvgLine().Add(bias[l], lambda / max(1, bias[l].n));
       //biasGrad[l].DebugShape();
-      
+
       if(biasGrad[l].Contains(Double.NaN)) hasNaN = true;
 
       a = activations[l].C();
       gradient = (weights[l].T().Mult(gradient)).HProduct(a.C().Add(a.C().HProduct(a), -1));
     }
-    
+
     if(hasNaN) {
       for(int l = 0; l < this.numLayers; l++) {
         cl.pln("Layer", l);
-        
+
         activations[l].Debug();
-        
+
         if(l == this.numLayers - 1) continue;
         weightGrad[l].Debug();
         biasGrad[l].Debug();
       }
     }
-    
+
     return new Matrix[][]{weightGrad, biasGrad};
   }
 
@@ -161,7 +180,7 @@ class NeuralNetwork {
     Matrix[][] gradients = BackPropagation(activations, Y);
 
 
-    for(int l = 0; l < this.numLayers - 1; l++) {      
+    for(int l = 0; l < this.numLayers - 1; l++) {
       this.weights[l].Add(gradients[0][l], -learning_rate);
       this.bias[l].Add(gradients[1][l], -learning_rate);
     }
@@ -175,14 +194,14 @@ class NeuralNetwork {
 
     return J;
   }
-  
+
   public void LearningPhase(Matrix X, Matrix Y, int numOfEpoch, float minLearningRate, float maxLearningRate, int period, int numPerIter, String label) {
     float learningRate; double loss;
     IntList range = new IntList();
     for(int j = 0; j < X.p; j++) range.append(j);
-    
+
     int startTime = millis();
-    
+
     IntList selectedIndex = range.copy();
     Matrix selectedX;
     Matrix selectedY;
@@ -192,40 +211,40 @@ class NeuralNetwork {
       if(startIndex + numPerIter >= X.p) {
         selectedIndex = range.copy();
         selectedIndex.shuffle();
-        
+
         startIndex = 0;
       }
-      
+
       selectedX = X.GetCol(selectedIndex.array(), startIndex, min(numPerIter + startIndex, X.p - 1));
       selectedY = Y.GetCol(selectedIndex.array(), startIndex, min(numPerIter + startIndex, Y.p - 1));
-      
+
       learningRate = CyclicalLearningRate(k, minLearningRate, maxLearningRate, period);
-      
-      
+
+
       loss = nn.Learn(selectedX, selectedY, learningRate);
-      
+
       if(loss != loss) { // Le loss est NaN
         for(int l = 0; l < this.numLayers - 1; l++) {
           this.weights[l].Debug();
           this.bias[l].Debug();
         }
-        System.exit(-1); 
+        System.exit(-1);
       }
-      
+
       if(k%16 != 0 && k != numOfEpoch - 1) continue;
-      
+
       float[] score = AccuracyScore(this, selectedX, selectedY, false);
-      
+
       cl.p(label, "\t-\t", k+1, "/", numOfEpoch,
         "\t-\tTime Remaining", String.format("%.1f", (double)(millis() - startTime) / (k+1) * (numOfEpoch-k-1) / 1000),
         "\t-\tLearning Rate", String.format("%.5f", learningRate),
         "\t-\tLoss", String.format("%.5f", loss),
         "\t-\tAccuracy", String.format("%.3f", Average(score))
       );
-      
+
       cl.pFloatList(score, "\t");
-      
-      
+
+
     }
   }
 
