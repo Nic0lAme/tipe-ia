@@ -6,7 +6,6 @@ public class LetterDataset {
   float blur = 0.2;
   float density = 0.01;
   float perlin = 5;
-  float contrast = 1;
 
   LetterDataset(int w, int h) {
     this.w = w;
@@ -44,8 +43,7 @@ public class LetterDataset {
             ? "./TextFileGetter/output/" + characters[c] + "/" + characters[c] + " - " + hwSources[s] + ".jpg"
             : "./FromFontGetter/output/" + characters[c] + "/" + characters[c] + " - " + fSources[s - hwSources.length] + ".jpg";
           PImage original = loadImage(path);
-          ImageManager src = new ImageManager(original);
-          PImage img = src.Resize(w, h).Gray().ScrambleImage(move, blur, density, perlin, contrast, pg);
+          PImage img = im.ScrambleImage(im.Gray(im.Resize(original, w, h)),move, blur, density, perlin, pg);
 
           // Récupère les pixels et les normalise
           double[] imgPixels = new double[img.pixels.length];

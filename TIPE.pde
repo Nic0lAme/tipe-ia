@@ -1,6 +1,7 @@
 Matrix[] sample;
 LetterDataset dataset;
 ConsoleLog cl;
+ImageManager im;
 int w = 19;
 int h = 21;
 int rScale = 2; // Scale for the representations (draw)
@@ -20,6 +21,7 @@ void setup() {
   dataset = new LetterDataset(w, h);
   cl = new ConsoleLog("./Log/log1.txt");
   nameOfProcess = "LetterTest2" + str(minute()) + str(hour()) + str(day()) + str(month()) + str(year());
+  im = new ImageManager();
 
   // println("Creating Dataset...");
   // Matrix[] data = dataset.CreateSample(
