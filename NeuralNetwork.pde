@@ -212,10 +212,10 @@ class NeuralNetwork {
         if(startIndex + numPerIter >= X.p) {
           selectedIndex = range.copy();
           selectedIndex.shuffle();
-  
+
           startIndex = 0;
         }
-  
+
         selectedX = X.GetCol(selectedIndex.array(), startIndex, min(numPerIter + startIndex, X.p - 1));
         selectedY = Y.GetCol(selectedIndex.array(), startIndex, min(numPerIter + startIndex, Y.p - 1));
       } else {
@@ -253,7 +253,28 @@ class NeuralNetwork {
     }
   }
 
+  public void MiniBatchLearn(Matrix[] data, int numOfEpoch, int batchSize, float lr) {
+    println("Mini Batch Gradient Descent - " + numOfEpoch + " Epochs - " + batchSize + " Batch Size");
+    for (int k = 0; k < numOfEpoch; k++) {
+      println("Epoch " + (k+1) + "/" + numOfEpoch + "\t");
 
+      // Mélange les données (Fisher–Yates shuffle)
+      for (int i = 0; i < data[0].p-1; i++) {
+        int j = floor(random(i, data[0].p));
+        data[0].ComutCol(i, j);
+        data[1].ComutCol(i, j);
+      }
+
+      int numberOfBatches = floor(data[0].p / batchSize);
+      for (int i = 0; i < numberOfBatches; i++) {
+        Matrix batch = data[0].GetCol(i*batchSize, i*batchSize + batchSize - 1);
+        Matrix batchAns = data[1].GetCol(i*batchSize, i*batchSize + batchSize - 1);
+        double l = this.Learn(batch, batchAns, lr);
+        if (i % (numberOfBatches / 4) == 0)
+          println("\t Epoch " + (k+1) + " / Batch " + (i+1) + " : " + l);
+      }
+    }
+  }
 
   @Override
   public String toString() {
