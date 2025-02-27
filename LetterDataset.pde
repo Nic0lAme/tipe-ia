@@ -55,6 +55,7 @@ public class LetterDataset {
         }
         System.gc();
       }
+      cl.p(characters[c], "\t");
     }
     
     return new Matrix[]{ inputs, outputs };

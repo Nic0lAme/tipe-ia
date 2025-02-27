@@ -208,6 +208,80 @@ class ImageManager {
     nImg.updatePixels();
     return nImg;
   }
+  
+  PImage AutoCrop(PImage img, float cap, float tolerance) { // Consider the object as black (or darker part)
+    int left = width / 2, right = width / 2, top = height / 2, bottom = height / 2;
+    
+    float[] minBrightnessCol = new float[img.width];
+    float[] minBrightnessRow = new float[img.height];
+    img.loadPixels();
+    
+    for(int k = 0; k < img.width; k++) {
+      minBrightnessCol[k] = 255;
+      for(int i = 0; i < img.height; i++) {
+        minBrightnessCol[k] = min(minBrightnessCol[k], brightness(img.pixels[i * img.width + k]));
+      }
+    }
+    
+    for(int k = 0; k < img.height; k++) {
+      minBrightnessRow[k] = 255;
+      for(int i = 0; i < img.width; i++) {
+        minBrightnessRow[k] = min(minBrightnessRow[k], brightness(img.pixels[k * img.width + i]));
+      }
+    }
+    
+    float counter = tolerance * img.width;
+    for(int k = img.width / 2; k >= 0; k--) {
+      if(minBrightnessCol[k] > cap) {
+        counter--;
+        if(counter <= 0) break;
+      }
+      left = k;
+    }
+    
+    counter = tolerance * img.width;
+    for(int k = img.width / 2; k < img.width; k++) {
+      if(minBrightnessCol[k] > cap) {
+        counter--;
+        if(counter <= 0) break;
+      }
+      right = k;
+    }
+    
+    counter = tolerance * img.height;
+    for(int k = img.height / 2; k >= 0; k--) {
+      if(minBrightnessRow[k] > cap) {
+        counter--;
+        if(counter <= 0) break;
+      }
+      top = k;
+    }
+    
+    counter = tolerance * img.height;
+    for(int k = img.height / 2; k < img.height; k++) {
+      if(minBrightnessRow[k] > cap) {
+        counter --;
+        if(counter <= 0) break;
+      }
+      bottom = k;
+    }
+    
+    if(top == bottom || right == left) return img; //En vrai c'est que l'image n'est pas centré, mais on renvoit qqc
+    
+    //Equilibrer le ratio width/height
+    float ratio = img.width / img.height;
+    while((right - left) / (bottom - top) > ratio * 1.1) { // Tolérance du ratio à 20%
+      bottom = constrain(bottom + 1, 0, img.height - 1);
+      top = constrain(top - 1, 0, img.height - 1);
+    }
+    
+    while((right - left) / (bottom - top) < ratio * 0.91) { // Tolérance du ratio à 20%
+      right = constrain(right + 1, 0, img.width - 1);
+      left = constrain(left - 1, 0, img.width - 1);
+    }
+    
+    return img.get(left, top, right - left, bottom - top);
+  }
 }
 
 /*

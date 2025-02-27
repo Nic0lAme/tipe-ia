@@ -254,9 +254,9 @@ class NeuralNetwork {
   }
 
   public void MiniBatchLearn(Matrix[] data, int numOfEpoch, int batchSize, float lr) {
-    println("Mini Batch Gradient Descent - " + numOfEpoch + " Epochs - " + batchSize + " Batch Size");
+    cl.pln("Mini Batch Gradient Descent - " + numOfEpoch + " Epochs - " + batchSize + " Batch Size");
     for (int k = 0; k < numOfEpoch; k++) {
-      println("Epoch " + (k+1) + "/" + numOfEpoch + "\t");
+      cl.pln("Epoch " + (k+1) + "/" + numOfEpoch + "\t");
 
       // Mélange les données (Fisher–Yates shuffle)
       for (int i = 0; i < data[0].p-1; i++) {
@@ -271,8 +271,11 @@ class NeuralNetwork {
         Matrix batchAns = data[1].GetCol(i*batchSize, i*batchSize + batchSize - 1);
         double l = this.Learn(batch, batchAns, lr);
         if (i % (numberOfBatches / 4) == 0)
-          println("\t Epoch " + (k+1) + " / Batch " + (i+1) + " : " + l);
+          cl.pln("\t Epoch " + (k+1) + " / Batch " + (i+1) + " : " + l);
       }
+      
+      float[] score = AccuracyScore(this, data[0].GetCol(0, 2*batchSize), data[1].GetCol(0, 2*batchSize), false);
+      cl.pln("\t Score:", Average(score));
     }
   }
 
