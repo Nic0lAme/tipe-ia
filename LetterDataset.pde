@@ -1,15 +1,15 @@
 import java.util.Arrays;
 
 public class LetterDataset {
-  final int w, h;
+  final int wData, hData;
   float move = 0.25;
   float blur = 0.2;
   float density = 0.01;
   float perlin = 5;
 
-  LetterDataset(int w, int h) {
-    this.w = w;
-    this.h = h;
+  LetterDataset(int wData, int hData) {
+    this.wData = wData;
+    this.hData = hData;
   }
   
   public Matrix[] CreateSample(String[] characters, String[] hwSources, String[] fSources, int rep) {
@@ -28,7 +28,7 @@ public class LetterDataset {
     int nbSources = hwSources.length + fSources.length;
     int sampleSize = nbSources * repSum;
     
-    PGraphics pg = createGraphics(w, h, P3D);
+    PGraphics pg = createGraphics(this.wData, this.hData, P3D);
 
     Matrix inputs = new Matrix(w*h, sampleSize);
     Matrix outputs = new Matrix(nbChar, sampleSize);
@@ -43,14 +43,10 @@ public class LetterDataset {
             ? "./TextFileGetter/output/" + characters[c] + "/" + characters[c] + " - " + hwSources[s] + ".jpg"
             : "./FromFontGetter/output/" + characters[c] + "/" + characters[c] + " - " + fSources[s - hwSources.length] + ".jpg";
           PImage original = loadImage(path);
-          PImage img = im.ScrambleImage(im.Gray(im.Resize(original, w, h)),move, blur, density, perlin, pg);
+          PImage img = im.ScrambleImage(im.Resize(original, this.wData, this.hData), move, blur, density, perlin, pg);
 
           // Récupère les pixels et les normalise
-          double[] imgPixels = new double[img.pixels.length];
-          img.loadPixels();
-          for (int i = 0; i < img.pixels.length; i++)
-            imgPixels[i] = 1 - (double)brightness(img.pixels[i]) / 255;
-          
+          double[] imgPixels = ImgPP(img);
 
           // Actualise les matrices entrées / sorties
           inputs.ColumnFromArray(numColonne, imgPixels);

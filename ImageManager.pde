@@ -166,6 +166,48 @@ class ImageManager {
     
     return color(r,g,b);
   }
+  
+  PImage Contrast(PImage img, float intensity) {
+    return Contrast(img, intensity, (x) -> x);
+  }
+  
+  PImage Contrast(PImage img, float intensity, FunctionMap contrastF) {
+    if(intensity < 0) intensity = 0;
+    if(intensity > 0.5) intensity = 0.5;
+    
+    PImage nImg = img.copy();
+    nImg.loadPixels();
+    float[] rVal = new float[nImg.pixels.length];
+    float[] gVal = new float[nImg.pixels.length];
+    float[] bVal = new float[nImg.pixels.length];
+    for(int k = 0; k < nImg.pixels.length; k++) {
+      rVal[k] = red(nImg.pixels[k]);
+      gVal[k] = green(nImg.pixels[k]);
+      bVal[k] = blue(nImg.pixels[k]);
+    }
+    
+    rVal = sort(rVal);
+    gVal = sort(gVal);
+    bVal = sort(bVal);
+    
+    float rMin = rVal[floor(intensity * (nImg.pixels.length - 1))];
+    float rMax = rVal[floor((1-intensity) * (nImg.pixels.length - 1))];
+    float gMin = gVal[floor(intensity * (nImg.pixels.length - 1))];
+    float gMax = gVal[floor((1-intensity) * (nImg.pixels.length - 1))];
+    float bMin = bVal[floor(intensity * (nImg.pixels.length - 1))];
+    float bMax = bVal[floor((1-intensity) * (nImg.pixels.length - 1))];
+    
+    for(int k = 0; k < nImg.pixels.length; k++) {
+      nImg.pixels[k] = color(
+        (int)Math.floor(rMax <= rMin ? red(nImg.pixels[k]) : 255 * contrastF.calc((red(nImg.pixels[k]) - rMin) / (rMax - rMin))),
+        (int)Math.floor(gMax <= gMin ? green(nImg.pixels[k]) : 255 * contrastF.calc((green(nImg.pixels[k]) - gMin) / (gMax - gMin))),
+        (int)Math.floor(bMax <= bMin ? blue(nImg.pixels[k]) : 255 * contrastF.calc((blue(nImg.pixels[k]) - bMin) / (bMax - bMin)))
+      );
+    }
+    
+    nImg.updatePixels();
+    return nImg;
+  }
 }
 
 /*

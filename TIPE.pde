@@ -4,10 +4,10 @@ ConsoleLog cl;
 ImageManager im;
 int w = 19;
 int h = 21;
-int rScale = 2; // Scale for the representations (draw)
+int rScale = 3; // Scale for the representations (draw)
 String[] characters = new String[]{"0","1","2","3","4","5","6","7","8","9"};
 // String[] characters = new String[]{"uA","uB","uC","uD","uE","uF","uG","uH","uI","uJ","uK","uL","uM","uN","uO","uP","uQ","uR","uS","uT","uU","uV","uW","uX","uY","uZ"};
-int numOfTestSample = 200;
+int numOfTestSample = 8;
 String nameOfProcess; // Name to refer these iterations
 
 NeuralNetwork nn;
@@ -18,7 +18,7 @@ void settings() {
 
 void setup() {
   background(255);
-  dataset = new LetterDataset(w, h);
+  dataset = new LetterDataset(5*w, 5*h);
   cl = new ConsoleLog("./Log/log1.txt");
   nameOfProcess = "LetterTest2" + str(minute()) + str(hour()) + str(day()) + str(month()) + str(year());
   im = new ImageManager();
@@ -79,7 +79,7 @@ void TrainForImages() {
         repList);
 
       nn.LearningPhase(
-        ImgPP(sample[0]),            // X
+        sample[0],            // X
         sample[1],            // Y
         1024,                 // Number of iteration (not epoch actually)
         0.02,                // Min learning rate
@@ -99,7 +99,7 @@ void TrainForImages() {
       new String[]{"Comic Sans MS", "Calibri"},
     5);
 
-    accuracy = AccuracyScore(nn, ImgPP(testSample[0]), testSample[1], true);
+    accuracy = AccuracyScore(nn, testSample[0], testSample[1], true);
 
     testSample[0].Delete();
     testSample[1].Delete();
@@ -123,7 +123,7 @@ void TestImages() {
     4);
 
 
-  float[] score = AccuracyScore(nn, ImgPP(testSample[0]), testSample[1], true);
+  float[] score = AccuracyScore(nn, testSample[0], testSample[1], true);
   cl.pln("Training Set Score :", Average(score));
   cl.pFloatList(score, "Accuracy");
   save("./Representation/" + str(frameCount) + " " + nameOfProcess + ".jpg");
@@ -208,29 +208,17 @@ int[] RepList(float[] score, int baseRep, float minProp) {
   return repList;
 }
 
-Matrix ImgPP(Matrix img) { // Images post-processing
-  Matrix nImg = img.C();
-
-  for(int j = 0; j < img.p; j++) {
-    double minVal = 1;
-    double maxVal = 0;
-
-    for(int i = 0; i < img.n; i++) {
-      minVal = Math.min(minVal, img.Get(i,j));
-      maxVal = Math.max(maxVal, img.Get(i,j));
-    }
-
-    if(minVal == maxVal) continue; //Dans le cas où l'image est strictement unie
-
-    for(int i = 0; i < img.n; i++) {
-      nImg.Set(i,j, ContrastF( (img.Get(i,j) - minVal) / (maxVal - minVal)));
-    }
-  }
-
+double[] ImgPP(PImage img) { // Images post-processing
+  double[] nImg = new double[w*h];
+  PImage PPImage = im.Gray(img);
+  PPImage = im.Contrast(PPImage, 0.02);
+  
+  im.Resize(PPImage, w, h);
+  PPImage.loadPixels();
+  for(int k = 0; k < PPImage.pixels.length; k++) nImg[k] = 1 - (float)brightness(PPImage.pixels[k]) / 255;
+  
   return nImg;
 }
-
-double ContrastF(double x) { return x; } //On pourra tenter des trucs plus ambitieux un jour
 
 float Sum(float[] list) {
   float sum = 0;
