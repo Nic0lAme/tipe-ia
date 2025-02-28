@@ -5,7 +5,7 @@ public class LetterDataset {
   float move = 0.25;
   float blur = 0.2;
   float density = 0.01;
-  float perlin = 5;
+  float perlin = 1;
 
   LetterDataset(int wData, int hData) {
     this.wData = wData;

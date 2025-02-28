@@ -35,7 +35,7 @@ void setup() {
     characters,
     new String[]{"NicolasMA", "LenaME", "ElioKE", "AkramBE", "MaximeMB"},
     // new String[]{},
-    new String[]{"Consolas", "Noto Serif", "Roboto", "Playwrite IT Moderna", "Just Another Hand"},
+    new String[]{"Consolas", "Noto Serif", "Lucida Handwriting Italique", "Playwrite IT Moderna", "Gabriola", "Just Another Hand"},
     32);
   dataset.Export(data, "./Sample/FullDataSet1.sp");
   */
@@ -47,7 +47,7 @@ void setup() {
   nn = new NeuralNetwork().Import("./NeuralNetworkSave/GlobalTest2.nn");
   nn.UseSoftMax();
   
-  nn.MiniBatchLearn(data, 9, 256, 0.75, 0.1, 3); // C'est peut-être mieux avec un learning rate de 1 ou un peu plus
+  nn.MiniBatchLearn(data, 9, 64, 0.75, 0.1, 3); // C'est peut-être mieux avec un learning rate de 1 ou un peu plus
   nn.Export("./NeuralNetworkSave/GlobalTest2.nn");
   */
   
@@ -63,6 +63,7 @@ void setup() {
 int index = 0;
 
 void draw() {
+  if(frameCount != 0) delay(10000);
   background(255);
   // PImage img = dataset.GetImageFromInputs(sample[0], index);
   // imageMode(CENTER);
@@ -70,8 +71,6 @@ void draw() {
   // index = (index+1)%sample[0].p;
 
   TestImages();
-
-  delay(10000);
 }
 
 void TrainForImages() {
@@ -93,7 +92,7 @@ void TrainForImages() {
       sample = dataset.CreateSample(
         characters,
         new String[]{"NicolasMA", "LenaME", "ElioKE", "AkramBE", "MaximeMB"},
-        new String[]{"Consolas", "Noto Serif", "Liberation Serif", "Roboto", "Playwrite IT Moderna", "Just Another Hand"},
+        new String[]{"Consolas", "Noto Serif", "Liberation Serif", "Lucida Handwriting Italique", "Playwrite IT Moderna", "Just Another Hand"},
         repList);
 
       nn.LearningPhase(
@@ -135,9 +134,9 @@ void TrainForImages() {
 void TestImages() {
   Matrix[] testSample = dataset.CreateSample(
     characters,
-    new String[]{"MrMollier", "MrChauvet", "SachaBE"},
-    // new String[]{},
-    new String[]{"Comic Sans MS", "Calibri", "Liberation Serif"},
+    // new String[]{"MrMollier", "MrChauvet", "SachaBE"},
+    new String[]{},
+    new String[]{"Comic Sans MS", "Calibri", "Liberation Serif", "Roboto", "Book Antiqua"},
     3);
 
 

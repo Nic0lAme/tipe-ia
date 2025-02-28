@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 class Letter {
   String name;
   String c;
@@ -31,7 +33,7 @@ class Letter {
 
 int w = 156;
 int h = 175;
-String fontName = "Playwrite IT Moderna";
+String fontName = "Gabriola";
 int size = 90;
   
 void settings() {
@@ -120,6 +122,13 @@ void setup() {
     new Letter("=")
   };
   
+  println(Arrays.asList(PFont.list()));
+  
+  if(!Arrays.asList(PFont.list()).contains(fontName)) {
+    println("The font is not available");
+    exit();
+    return;
+  }
   PFont font = createFont(fontName, size);
   
   for (Letter l : letters)
