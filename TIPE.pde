@@ -40,14 +40,16 @@ void setup() {
   dataset.Export(data, "./Sample/FullDataSet1.sp");
   */
   
+  /*
   Matrix[] data = dataset.Import("./Sample/FullDataSet1.sp");
   
   //nn = new NeuralNetwork(w*h, 1024, 256, 256, characters.length);
   nn = new NeuralNetwork().Import("./NeuralNetworkSave/GlobalTest2.nn");
   nn.UseSoftMax();
   
-  nn.MiniBatchLearn(data, 8, 256, 1, 0.25, 4); // C'est peut-être mieux avec un learning rate de 1 ou un peu plus
+  nn.MiniBatchLearn(data, 9, 256, 0.75, 0.1, 3); // C'est peut-être mieux avec un learning rate de 1 ou un peu plus
   nn.Export("./NeuralNetworkSave/GlobalTest2.nn");
+  */
   
   
   nn = new NeuralNetwork().Import("./NeuralNetworkSave/GlobalTest2.nn");
@@ -133,10 +135,10 @@ void TrainForImages() {
 void TestImages() {
   Matrix[] testSample = dataset.CreateSample(
     characters,
-    //new String[]{"MrMollier", "MrChauvet", "SachaBE"},
-     new String[]{},
+    new String[]{"MrMollier", "MrChauvet", "SachaBE"},
+    // new String[]{},
     new String[]{"Comic Sans MS", "Calibri", "Liberation Serif"},
-    6);
+    3);
 
 
   float[] score = AccuracyScore(nn, testSample[0], testSample[1], true);
@@ -187,7 +189,7 @@ float[] AccuracyScore(NeuralNetwork nn, Matrix inputs, Matrix outputs, boolean d
         countOutput[i] += 1;
         if(mIndex == i) {
           score[i] += 1;
-          stroke(0,255,0,100);
+          fill(0,255,0,100);
         }
       }
     }
