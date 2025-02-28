@@ -57,6 +57,7 @@ public class LetterDataset {
       }
       cl.p(characters[c], "\t");
     }
+    cl.pln();
     
     return new Matrix[]{ inputs, outputs };
   }
@@ -71,6 +72,47 @@ public class LetterDataset {
     }
     img.updatePixels();
     return img;
+  }
+  
+  public void Export(Matrix[] data, String name) {
+    ArrayList<String> output = new ArrayList<String>();
+
+    output.add(data[0].n + "," + data[1].n + "," + data[0].p);
+
+    String[] inputSave = data[0].SaveToString(true);
+    for (String s : inputSave) output.add(s);
+    cl.pln("Inputs exported");
+    
+    String[] outputSave = data[1].SaveToString(true);
+    for (String s : outputSave) output.add(s);
+    cl.pln("Outputs exported");
+
+    String[] writedOutput = new String[output.size()];
+    saveStrings(name, output.toArray(writedOutput));
+  }
+  
+  public Matrix[] Import(String name) {
+    String[] input = loadStrings(name);
+    String[] sizes = split(input[0], ',');
+    int n0 = int(sizes[0]); int n1 = int(sizes[1]); int p = int(sizes[2]);
+    
+    Matrix sampleInput = new Matrix(n0, p);
+    Matrix sampleOutput = new Matrix(n1, p);
+   
+    String[] inputString = new String[n0];
+    for (int k = 0; k < n0; k++) {
+      inputString[k] = input[k+1];
+    }
+    sampleInput.LoadString(inputString);
+    
+    String[] outputString = new String[n1];
+    for (int k = 0; k < n1; k++) {
+      outputString[k] = input[n0+k+1];
+    }
+    sampleOutput.LoadString(outputString);
+
+
+    return new Matrix[]{ sampleInput, sampleOutput };
   }
 
 }

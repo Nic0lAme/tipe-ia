@@ -195,6 +195,7 @@ class NeuralNetwork {
     return J;
   }
 
+  // OLD LEARNING PHASE
   public void LearningPhase(Matrix X, Matrix Y, int numOfEpoch, float minLearningRate, float maxLearningRate, int period, int numPerIter, String label) {
     float learningRate; double loss;
     IntList range = new IntList();
@@ -252,9 +253,16 @@ class NeuralNetwork {
 
     }
   }
-
+  
   public void MiniBatchLearn(Matrix[] data, int numOfEpoch, int batchSize, float lr) {
+    MiniBatchLearn(data, numOfEpoch, batchSize, lr, lr, 1);
+  }
+  
+  public void MiniBatchLearn(Matrix[] data, int numOfEpoch, int batchSize, float minLR, float maxLR, int period) {
     cl.pln("Mini Batch Gradient Descent - " + numOfEpoch + " Epochs - " + batchSize + " Batch Size");
+    
+    int startTime = millis();
+    int numOfBatches = floor(data[0].p / batchSize);
     for (int k = 0; k < numOfEpoch; k++) {
       cl.pln("Epoch " + (k+1) + "/" + numOfEpoch + "\t");
 
@@ -265,16 +273,17 @@ class NeuralNetwork {
         data[1].ComutCol(i, j);
       }
 
-      int numberOfBatches = floor(data[0].p / batchSize);
-      for (int i = 0; i < numberOfBatches; i++) {
+      for (int i = 0; i < numOfBatches; i++) {
         Matrix batch = data[0].GetCol(i*batchSize, i*batchSize + batchSize - 1);
         Matrix batchAns = data[1].GetCol(i*batchSize, i*batchSize + batchSize - 1);
-        double l = this.Learn(batch, batchAns, lr);
-        if (i % (numberOfBatches / 4) == 0)
-          cl.pln("\t Epoch " + (k+1) + " / Batch " + (i+1) + " : " + l);
+        double l = this.Learn(batch, batchAns, CyclicalLearningRate(k, minLR, maxLR, period));
+        if (i % (numOfBatches / 4) == 0)
+          cl.pln("\t Epoch " + (k+1) + 
+            " / Batch " + (i+1) + " : " + l + 
+            "\t / Time remaining " + String.format("%.3f", (float)(millis() - startTime)/1000 * (numOfEpoch * numOfBatches - k * numOfBatches - i - 1) / (k * numOfBatches + i + 1)));
       }
       
-      float[] score = AccuracyScore(this, data[0].GetCol(0, 2*batchSize), data[1].GetCol(0, 2*batchSize), false);
+      float[] score = AccuracyScore(this, data[0].GetCol(0, min(5*batchSize, data[0].p)), data[1].GetCol(0, min(5*batchSize, data[1].p)), false);
       cl.pln("\t Score:", Average(score));
     }
   }

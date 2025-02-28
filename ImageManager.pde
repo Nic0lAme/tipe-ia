@@ -230,38 +230,38 @@ class ImageManager {
       }
     }
     
-    float counter = tolerance * img.width;
+    float marge = tolerance * img.width;
     for(int k = img.width / 2; k >= 0; k--) {
       if(minBrightnessCol[k] > cap) {
-        counter--;
-        if(counter <= 0) break;
+        marge--;
+        if(marge <= 0) break;
       }
       left = k;
     }
     
-    counter = tolerance * img.width;
+    marge = tolerance * img.width;
     for(int k = img.width / 2; k < img.width; k++) {
       if(minBrightnessCol[k] > cap) {
-        counter--;
-        if(counter <= 0) break;
+        marge--;
+        if(marge <= 0) break;
       }
       right = k;
     }
     
-    counter = tolerance * img.height;
+    marge = tolerance * img.height;
     for(int k = img.height / 2; k >= 0; k--) {
       if(minBrightnessRow[k] > cap) {
-        counter--;
-        if(counter <= 0) break;
+        marge--;
+        if(marge <= 0) break;
       }
       top = k;
     }
     
-    counter = tolerance * img.height;
+    marge = tolerance * img.height;
     for(int k = img.height / 2; k < img.height; k++) {
       if(minBrightnessRow[k] > cap) {
-        counter --;
-        if(counter <= 0) break;
+        marge--;
+        if(marge <= 0) break;
       }
       bottom = k;
     }

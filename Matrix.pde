@@ -45,13 +45,19 @@ class Matrix {
     cl.p("]");
     cl.pln();
   }
-
+  
   String[] SaveToString() {
+    return SaveToString(false); 
+  }
+  
+  String[] SaveToString(boolean doLog) {
     String[] output = new String[this.n];
+    int startTime = millis();
     for (int i = 0; i < this.n; i++) {
       output[i] = "";
       for (int j = 0; j < this.p; j++)
         output[i] += this.Get(i,j) + (j != this.p - 1 ? "," : "");
+      if(doLog) cl.pln("\t" + (i + 1) + "/" + this.n + "\t Time remaining " + String.format("%.3f", (float)(millis() - startTime) / 1000 * (this.n - i - 1) / (i+1)));
     }
     return output;
   }

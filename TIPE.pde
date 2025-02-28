@@ -29,18 +29,24 @@ void setup() {
   nameOfProcess = "GlobalTest2" + str(minute()) + str(hour()) + str(day()) + str(month()) + str(year());
   im = new ImageManager();
   
-  
+  /*
   println("Creating Dataset...");
   Matrix[] data = dataset.CreateSample(
     characters,
     new String[]{"NicolasMA", "LenaME", "ElioKE", "AkramBE", "MaximeMB"},
     // new String[]{},
     new String[]{"Consolas", "Noto Serif", "Roboto", "Playwrite IT Moderna", "Just Another Hand"},
-    64);
-  //nn = new NeuralNetwork(w*h, 512, 128, 128, characters.length);
+    32);
+  dataset.Export(data, "./Sample/FullDataSet1.sp");
+  */
+  
+  Matrix[] data = dataset.Import("./Sample/FullDataSet1.sp");
+  
+  //nn = new NeuralNetwork(w*h, 1024, 256, 256, characters.length);
   nn = new NeuralNetwork().Import("./NeuralNetworkSave/GlobalTest2.nn");
   nn.UseSoftMax();
-  nn.MiniBatchLearn(data, 32, 64, 0.5); // C'est peut-être mieux avec un learning rate de 1 ou un peu plus
+  
+  nn.MiniBatchLearn(data, 8, 256, 1, 0.25, 4); // C'est peut-être mieux avec un learning rate de 1 ou un peu plus
   nn.Export("./NeuralNetworkSave/GlobalTest2.nn");
   
   
@@ -127,10 +133,10 @@ void TrainForImages() {
 void TestImages() {
   Matrix[] testSample = dataset.CreateSample(
     characters,
-    new String[]{"MrMollier", "MrChauvet", "SachaBE"},
-    // new String[]{},
+    //new String[]{"MrMollier", "MrChauvet", "SachaBE"},
+     new String[]{},
     new String[]{"Comic Sans MS", "Calibri", "Liberation Serif"},
-    3);
+    6);
 
 
   float[] score = AccuracyScore(nn, testSample[0], testSample[1], true);
@@ -165,8 +171,7 @@ float[] AccuracyScore(NeuralNetwork nn, Matrix inputs, Matrix outputs, boolean d
 
   int mIndex; double m; // Recherche de la prédiction la plus haute
   for(int j = 0; j < inputs.p; j++) {
-    fill(255,255,0);
-    stroke(255,0,0);
+    fill(255,0,0,100);
 
     mIndex = -1;
     m = -1;
@@ -182,7 +187,7 @@ float[] AccuracyScore(NeuralNetwork nn, Matrix inputs, Matrix outputs, boolean d
         countOutput[i] += 1;
         if(mIndex == i) {
           score[i] += 1;
-          stroke(0,255,0);
+          stroke(0,255,0,100);
         }
       }
     }
@@ -192,12 +197,13 @@ float[] AccuracyScore(NeuralNetwork nn, Matrix inputs, Matrix outputs, boolean d
       x = floor((rScale*h*j) / height) * rScale * w;
       y = (rScale*h*j) % height;
       image(dataset.GetImageFromInputs(inputs, j), x, y, rScale*w, rScale*h);
-      textSize(rScale * w * 0.5);
-      text(characters[mIndex], x, y, rScale*w, rScale*h);
       
-      noFill();
-      strokeWeight(1);
+      noStroke();
       rect(x, y, rScale * w, rScale * h);
+      
+      fill(100);
+      textSize(rScale * w * 0.7);
+      text(characters[mIndex], x, y, rScale*w, rScale*h);
     }
   }
 
@@ -229,7 +235,7 @@ double[] ImgPP(PImage img) { // Images post-processing
   PImage PPImage = im.Gray(img);
   PPImage = im.Contrast(PPImage, 0.03);
   PPImage = im.AutoCrop(PPImage, 32, 0.04);
-  PPImage = im.Contrast(PPImage, 0); // If there is a dark patch in the center
+  PPImage = im.Contrast(PPImage, 0.02); // If there is a dark patch in the center
   
   im.Resize(PPImage, w, h);
   PPImage.loadPixels();
