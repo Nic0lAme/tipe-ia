@@ -2,10 +2,11 @@ import java.util.Arrays;
 
 public class LetterDataset {
   final int wData, hData;
-  float move = 0.25;
-  float blur = 0.2;
-  float density = 0.01;
+  float move = 0.2;
+  float blur = 0.05;
+  float density = 0;
   float perlin = 1;
+  float deformation = 0.03;
 
   LetterDataset(int wData, int hData) {
     this.wData = wData;
@@ -28,11 +29,15 @@ public class LetterDataset {
     int nbSources = hwSources.length + fSources.length;
     int sampleSize = nbSources * repSum;
     
-    PGraphics pg = createGraphics(this.wData, this.hData, P3D);
+    cl.pln("Creating Dataset of size " + sampleSize + "...");
+    
+    PGraphics pg = createGraphics(this.wData, this.hData, P2D);
 
     Matrix inputs = new Matrix(w*h, sampleSize);
     Matrix outputs = new Matrix(nbChar, sampleSize);
     outputs.Fill(0);
+    
+    int startTime = millis();
 
     int numColonne = 0;
     for (int c = 0; c < nbChar; c++) {
@@ -43,7 +48,7 @@ public class LetterDataset {
             ? "./TextFileGetter/output/" + characters[c] + "/" + characters[c] + " - " + hwSources[s] + ".jpg"
             : "./FromFontGetter/output/" + characters[c] + "/" + characters[c] + " - " + fSources[s - hwSources.length] + ".jpg";
           PImage original = loadImage(path);
-          PImage img = im.ScrambleImage(im.Resize(original, this.wData, this.hData), move, blur, density, perlin, pg);
+          PImage img = im.ScrambleImage(im.Resize(original, this.wData, this.hData), move, blur, density, perlin, deformation, pg);
 
           // Récupère les pixels et les normalise
           double[] imgPixels = ImgPP(img);
@@ -55,7 +60,7 @@ public class LetterDataset {
         }
         System.gc();
       }
-      cl.p(characters[c], "\t");
+      cl.pln(characters[c], "\t(" + repList[c] + ")", "\t Remaining Time :", RemainingTime(startTime, c+1, nbChar));
     }
     cl.pln();
     

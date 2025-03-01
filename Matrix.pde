@@ -57,7 +57,7 @@ class Matrix {
       output[i] = "";
       for (int j = 0; j < this.p; j++)
         output[i] += this.Get(i,j) + (j != this.p - 1 ? "," : "");
-      if(doLog) cl.pln("\t" + (i + 1) + "/" + this.n + "\t Time remaining " + String.format("%.3f", (float)(millis() - startTime) / 1000 * (this.n - i - 1) / (i+1)));
+      if(doLog) cl.pln("\t" + (i + 1) + "/" + this.n + "\t Time remaining " + RemainingTime(startTime, i+1, this.n));
     }
     return output;
   }

@@ -4,7 +4,7 @@ ConsoleLog cl;
 ImageManager im;
 int w = 19;
 int h = 21;
-int rScale = 1; // Scale for the representations (draw)
+int rScale = 2; // Scale for the representations (draw)
 //String[] characters = new String[]{"0","1","2","3","4","5","6","7","8","9"};
 //String[] characters = new String[]{"uA","uB","uC","uD","uE","uF","uG","uH","uI","uJ","uK","uL","uM","uN","uO","uP","uQ","uR","uS","uT","uU","uV","uW","uX","uY","uZ"};
 String[] characters = new String[]{
@@ -13,13 +13,13 @@ String[] characters = new String[]{
   "0","1","2","3","4","5","6","7","8","9", "+", "-", "cr",
   "@","#","'","pt","im","!","tp","€","$","%","(",")","="
 };
-int numOfTestSample = 18; //This is just for the tests, not the training
+int numOfTestSample = 24; //This is just for the tests, not the training
 String nameOfProcess; // Name to refer these iterations
 
 NeuralNetwork nn;
 
 void settings() {
-  size(w * rScale * characters.length, h * rScale * numOfTestSample, P3D);
+  size(w * rScale * characters.length, h * rScale * numOfTestSample, P2D);
 }
 
 void setup() {
@@ -27,57 +27,25 @@ void setup() {
   dataset = new LetterDataset(5*w, 5*h);
   cl = new ConsoleLog("./Log/log1.txt");
   nameOfProcess = "GlobalTest2" + str(minute()) + str(hour()) + str(day()) + str(month()) + str(year());
-  im = new ImageManager();
+  im = new ImageManager(); 
   
-  /*
-  println("Creating Dataset...");
-  Matrix[] data = dataset.CreateSample(
-    characters,
-    new String[]{"NicolasMA", "LenaME", "ElioKE", "AkramBE", "MaximeMB"},
-    // new String[]{},
-    new String[]{"Consolas", "Noto Serif", "Lucida Handwriting Italique", "Playwrite IT Moderna", "Gabriola", "Just Another Hand"},
-    32);
-  dataset.Export(data, "./Sample/FullDataSet1.sp");
-  */
-  
-  /*
-  Matrix[] data = dataset.Import("./Sample/FullDataSet1.sp");
-  
+  nn = new NeuralNetwork().Import("./NeuralNetworkSave/GlobalTest4.nn");
   //nn = new NeuralNetwork(w*h, 1024, 256, 256, characters.length);
-  nn = new NeuralNetwork().Import("./NeuralNetworkSave/GlobalTest2.nn");
   nn.UseSoftMax();
   
-  nn.MiniBatchLearn(data, 9, 64, 0.75, 0.1, 3); // C'est peut-être mieux avec un learning rate de 1 ou un peu plus
-  nn.Export("./NeuralNetworkSave/GlobalTest2.nn");
-  */
+  TrainForImages(4, 12, 0.7, 0.05);
   
-  
-  nn = new NeuralNetwork().Import("./NeuralNetworkSave/GlobalTest2.nn");
-  nn.UseSoftMax();
-
-  // nn = new NeuralNetwork(w*h, 512, 64, 64, 64, characters.length);
-  // nn = new NeuralNetwork().Import("./NeuralNetworkSave/LetterTest4.nn");
-  // TrainForImages();
+  nn.Export("./NeuralNetworkSave/GlobalTest4.nn");
 }
 
 int index = 0;
 
 void draw() {
-  if(frameCount != 0) delay(10000);
-  background(255);
-  // PImage img = dataset.GetImageFromInputs(sample[0], index);
-  // imageMode(CENTER);
-  // image(img, width/2, height/2, w, h);
-  // index = (index+1)%sample[0].p;
-
   TestImages();
+  DirectTest();
 }
 
-void TrainForImages() {
-  nn.UseSoftMax();
-  cl.pln(nn);
-
-  int N = 8;
+void TrainForImages(int N, int epochPerSet, float startLR, float endLR) {
   float[] accuracy = new float[nn.outputSize];
   int[] repList;
   Arrays.fill(accuracy, 0.5);
@@ -86,56 +54,44 @@ void TrainForImages() {
     cl.pln("\nPhase", k, "/", N);
 
     if(k != 0) {
-      repList = RepList(accuracy, 8, 0.5);
-      cl.pFloatList(float(repList), "Repetition list");
+      repList = RepList(accuracy, 16, 0.6);
 
       sample = dataset.CreateSample(
         characters,
-        new String[]{"NicolasMA", "LenaME", "ElioKE", "AkramBE", "MaximeMB"},
-        new String[]{"Consolas", "Noto Serif", "Liberation Serif", "Lucida Handwriting Italique", "Playwrite IT Moderna", "Just Another Hand"},
+        new String[]{"NicolasMA", "LenaME", "ElioKE", "AkramBE", "MaximeMB", "TheoLA", "MatteoPR"},
+        //new String[]{},
+        new String[]{"Arial", "DejaVu Serif", "Fira Code Retina Moyen", "Consolas", "Noto Serif", "Lucida Handwriting Italique", "Playwrite IT Moderna", "Gabriola", "Just Another Hand"},
         repList);
-
-      nn.LearningPhase(
-        sample[0],            // X
-        sample[1],            // Y
-        1024,                 // Number of iteration (not epoch actually)
-        0.02,                // Min learning rate
-        0.8,                 // Max learning rate
-        256,                  // Learning Rate period
-        256,                  // Number of sample taken by iteration
-        str(k) + "/" + str(N) // Label
-      );
-
-      sample[0].Delete();
-      sample[1].Delete();
+      
+      float lr = startLR * pow(endLR / startLR, k/N);
+      nn.MiniBatchLearn(sample, epochPerSet, 64, lr/20, lr, 2, k + "/" + N);
     }
-
+    
+    if(k == N) break; //Pas besoin de restester
+    
     Matrix[] testSample = dataset.CreateSample(
       characters,
       new String[]{"MrMollier", "MrChauvet", "SachaBE"},
-      new String[]{"Comic Sans MS", "Calibri"},
+      new String[]{"Liberation Serif", "Calibri", "Book Antiqua"},
     5);
 
     accuracy = AccuracyScore(nn, testSample[0], testSample[1], true);
 
-    testSample[0].Delete();
-    testSample[1].Delete();
-    System.gc();
-
-    cl.pln("Accuracy :", Average(accuracy));
+    cl.pln("Accuracy for test set :", Average(accuracy));
     cl.pln();
 
     cl.Update();
   }
-
-  nn.Export("./NeuralNetworkSave/LetterTest4.nn");
 }
 
 void TestImages() {
+  if(frameCount != 0) delay(10000);
+  background(255);
+  
   Matrix[] testSample = dataset.CreateSample(
     characters,
-    // new String[]{"MrMollier", "MrChauvet", "SachaBE"},
-    new String[]{},
+    new String[]{"MrMollier", "MrChauvet", "SachaBE"},
+    // new String[]{},
     new String[]{"Comic Sans MS", "Calibri", "Liberation Serif", "Roboto", "Book Antiqua"},
     3);
 
@@ -158,6 +114,20 @@ void KeyPressed() {
     cl.End();
     exit();
   }
+}
+
+void DirectTest() {
+  if(mousePressed) {
+    ellipseMode(RADIUS);
+    fill(0);
+    noStroke();
+    circle(mouseX, mouseY, 10);
+    
+    PImage img = get(0, 0, width, height);
+    println(Result(img));
+  }
+  
+  if(keyCode == ENTER) background(255);
 }
 
 
@@ -215,6 +185,39 @@ float[] AccuracyScore(NeuralNetwork nn, Matrix inputs, Matrix outputs, boolean d
   return score;
 }
 
+double[] ImgPP(PImage img) { // Images post-processing
+  double[] nImg = new double[w*h];
+  PImage PPImage = im.Gray(img);
+  PPImage = im.Contrast(PPImage, 0.03);
+  PPImage = im.AutoCrop(PPImage, 72, 0.07);
+  //PPImage = im.Contrast(PPImage, 0.02); // If there is a dark patch in the center
+  
+  im.Resize(PPImage, w, h);
+  PPImage.loadPixels();
+  for(int k = 0; k < PPImage.pixels.length; k++) nImg[k] = (float)brightness(PPImage.pixels[k]) / 255;
+  
+  return nImg;
+}
+
+FloatDict Result(PImage img) {
+  FloatDict result = new FloatDict();
+  
+  double[] input = ImgPP(img);
+  Matrix inputMatrix = new Matrix(w*h,1).ColumnFromArray(0, input);
+  
+  Matrix outputMatrix = nn.Predict(inputMatrix);
+  for(int c = 0; c < outputMatrix.n; c++) {
+    result.set(characters[c], (float)outputMatrix.Get(c, 0));
+  }
+  
+  result.sortValuesReverse();
+  
+  return result;
+}
+
+
+// TOOL
+
 // return a list of the repetition needed depending on the performance for each characters
 int[] RepList(float[] score, int baseRep, float minProp) {
   float[] logScore = new float[score.length];
@@ -231,19 +234,7 @@ int[] RepList(float[] score, int baseRep, float minProp) {
   return repList;
 }
 
-double[] ImgPP(PImage img) { // Images post-processing
-  double[] nImg = new double[w*h];
-  PImage PPImage = im.Gray(img);
-  PPImage = im.Contrast(PPImage, 0.03);
-  PPImage = im.AutoCrop(PPImage, 32, 0.04);
-  PPImage = im.Contrast(PPImage, 0.02); // If there is a dark patch in the center
-  
-  im.Resize(PPImage, w, h);
-  PPImage.loadPixels();
-  for(int k = 0; k < PPImage.pixels.length; k++) nImg[k] = (float)brightness(PPImage.pixels[k]) / 255;
-  
-  return nImg;
-}
+
 
 float Sum(float[] list) {
   float sum = 0;
@@ -255,4 +246,8 @@ float Average(float[] list) {
   float avg = 0;
   for(int k = 0; k < list.length; k++) avg += list[k] / list.length;
   return avg;
+}
+
+String RemainingTime(int startTime, int step, int totalStep) {
+  return String.format("%.3f", (float)(millis() - startTime) / 1000 * (totalStep - step) / step);
 }

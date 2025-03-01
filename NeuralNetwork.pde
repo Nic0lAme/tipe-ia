@@ -242,7 +242,7 @@ class NeuralNetwork {
       float[] score = AccuracyScore(this, selectedX, selectedY, false);
 
       cl.p(label, "\t-\t", k+1, "/", numOfEpoch,
-        "\t-\tTime Remaining", String.format("%.1f", (double)(millis() - startTime) / (k+1) * (numOfEpoch-k-1) / 1000),
+        "\t-\tTime Remaining", RemainingTime(startTime, k+1, numOfEpoch),
         "\t-\tLearning Rate", String.format("%.5f", learningRate),
         "\t-\tLoss", String.format("%.5f", loss),
         "\t-\tAccuracy", String.format("%.3f", Average(score))
@@ -259,7 +259,11 @@ class NeuralNetwork {
   }
   
   public void MiniBatchLearn(Matrix[] data, int numOfEpoch, int batchSize, float minLR, float maxLR, int period) {
-    cl.pln("Mini Batch Gradient Descent - " + numOfEpoch + " Epochs - " + batchSize + " Batch Size");
+    MiniBatchLearn(data, numOfEpoch, batchSize, minLR, maxLR, period, "");
+  }
+  
+  public void MiniBatchLearn(Matrix[] data, int numOfEpoch, int batchSize, float minLR, float maxLR, int period, String label) {
+    cl.pln("Mini Batch Gradient Descent " + label + " - " + numOfEpoch + " Epochs - " + batchSize + " Batch Size - " + String.format("%9.3E", maxLR) + " LR");
     
     int startTime = millis();
     int numOfBatches = floor(data[0].p / batchSize);
@@ -279,8 +283,10 @@ class NeuralNetwork {
         double l = this.Learn(batch, batchAns, CyclicalLearningRate(k, minLR, maxLR, period));
         if (i % (numOfBatches / 4) == 0)
           cl.pln("\t Epoch " + (k+1) + 
-            " / Batch " + (i+1) + " : " + l + 
-            "\t / Time remaining " + String.format("%.3f", (float)(millis() - startTime)/1000 * (numOfEpoch * numOfBatches - k * numOfBatches - i - 1) / (k * numOfBatches + i + 1)));
+            " / Batch " + (i+1) + " : " + String.format("%9.3E",l) + 
+            "\t / Time remaining " + RemainingTime(startTime, k * numOfBatches + i + 1, numOfBatches * numOfEpoch) +
+            "\t (" + label + ")"
+          );
       }
       
       float[] score = AccuracyScore(this, data[0].GetCol(0, min(5*batchSize, data[0].p)), data[1].GetCol(0, min(5*batchSize, data[1].p)), false);
