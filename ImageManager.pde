@@ -1,3 +1,5 @@
+import java.util.HashSet;
+
 class ImageManager {
   int index = 0;
   
@@ -433,7 +435,7 @@ class ImageManager {
   }
   
   int[] RectFromContour(ArrayList<PVector> contour) {
-    return RectFromContour(contour.toArray(new PVector[0]));
+    return this.RectFromContour(contour.toArray(new PVector[0]));
   }
   
   int[] RectFromContour(PVector[] contour) {
@@ -453,7 +455,7 @@ class ImageManager {
   }
   
   boolean IsClockwise(ArrayList<PVector> contour) {
-    return IsClockwise(contour.toArray(new PVector[0]));
+    return this.IsClockwise(contour.toArray(new PVector[0]));
   }
   
   // Il s'agit évidemment de magie noire, toujours pas regardé d'où ça vient ce truc
@@ -464,6 +466,80 @@ class ImageManager {
       sum += (double)(contour[k+1].x - contour[k].x) / (contour[k+1].y + contour[k].y); 
     }
     return sum >= 0;
+  }
+  
+  ArrayList<ArrayList<int[]>> RectGroups(ArrayList<int[]> rect, float hMarge, float vMarge) {
+    return this.RectGroups(rect.toArray(new int[0][]), hMarge, vMarge);
+  }
+  
+  ArrayList<ArrayList<int[]>> RectGroups(int[][] rect, float hMarge, float vMarge) {
+    PVector[] centers = new PVector[rect.length];
+    for(int k = 0; k < rect.length; k++) {
+      centers[k] = new PVector(rect[k][0] + rect[k][2] / 2, rect[k][1] + rect[k][3] / 2);
+    }
+    
+    ArrayList<ArrayList<Integer>> indexGroups = new ArrayList<ArrayList<Integer>>();
+    for(int k = 0; k < rect.length; k++) {
+      ArrayList<Integer> indexGroup = new ArrayList<Integer>();
+      
+      float size = pow((float)rect[k][2] * rect[k][3] * rect[k][3], 0.33);
+      // float size = rect[k][3];
+      
+      for(int dx = -floor(hMarge * size); dx <= floor(hMarge * size); dx++) {
+        for(int dy = -floor(vMarge * size); dy <= floor(vMarge * size); dy++) {
+          forelem:
+          for(int l = 0; l < rect.length; l++) {
+            if(centers[l].x != centers[k].x + dx || centers[l].y != centers[k].y + dy) continue;
+            
+            // L'élément l est dans le voisinage de k
+            for(ArrayList<Integer> g : indexGroups) {
+              if(g.contains(l)) {
+                indexGroup.addAll(g);
+                indexGroups.remove(g);
+                continue forelem;
+              }
+            }
+            // L'élément l n'appartient pour le moment à aucun voisinage
+            indexGroup.add(l);
+          }
+        }
+      }
+      
+      HashSet<Integer> set = new HashSet<>(indexGroup);
+      indexGroup.clear();
+      indexGroup.addAll(set);
+      
+      indexGroups.add(indexGroup);
+    }
+    
+    println(indexGroups);
+    
+    ArrayList<ArrayList<int[]>> groups = new ArrayList<ArrayList<int[]>>();
+    for(ArrayList<Integer> g : indexGroups) {
+      ArrayList<int[]> group = new ArrayList<int[]>();
+      for(int e : g) group.add(rect[e]);
+      groups.add(group);
+    }
+    
+    return groups;
+  }
+  
+  int[] CompilRect(ArrayList<int[]> rects) {
+    return this.CompilRect(rects.toArray(new int[0][]));
+  }
+  
+  int[] CompilRect(int[][] rects) {
+    int left = rects[0][0]; int right = rects[0][2] + rects[0][0];
+    int top = rects[0][1]; int bottom = rects[0][3] + rects[0][1];
+    
+    for(int k = 1; k < rects.length; k++) {
+      left = min(rects[k][0], left);
+      right = max(rects[k][2] + rects[k][0], right);
+      top = min(rects[k][1], top);
+      bottom = max(rects[k][3] + rects[k][1], bottom);
+    }
+    
+    return new int[]{left, top, right - left, bottom - top};
   }
 }
 

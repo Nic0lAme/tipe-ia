@@ -34,7 +34,7 @@ void setup() {
   //nn = new NeuralNetwork(w*h, 1024, 256, 256, characters.length);
   nn.UseSoftMax();
   
-  //TrainForImages(4, 12, 0.7, 0.05);
+  TrainForImages(8, 8, 1.2, 0.1);
   
   nn.Export("./NeuralNetworkSave/GlobalTest4.nn");
 }
@@ -42,8 +42,8 @@ void setup() {
 int index = 0;
 
 void draw() {
-  //TestImages();
-  DirectTest();
+  TestImages();
+  //DirectTest();
 }
 
 void TrainForImages(int N, int epochPerSet, float startLR, float endLR) {
@@ -55,11 +55,11 @@ void TrainForImages(int N, int epochPerSet, float startLR, float endLR) {
     cl.pln("\nPhase", k, "/", N);
 
     if(k != 0) {
-      repList = RepList(accuracy, 16, 0.6);
+      repList = RepList(accuracy, 12, 0.4);
 
       sample = dataset.CreateSample(
         characters,
-        new String[]{"NicolasMA", "LenaME", "ElioKE", "AkramBE", "MaximeMB", "TheoLA", "MatteoPR"},
+        new String[]{"NicolasMA", "LenaME", "ElioKE", "AkramBE", "MaximeMB", "TheoLA", "MatteoPR", "ValerieAR"},
         //new String[]{},
         new String[]{"Arial", "DejaVu Serif", "Fira Code Retina Moyen", "Consolas", "Noto Serif", "Lucida Handwriting Italique", "Playwrite IT Moderna", "Gabriola", "Just Another Hand"},
         repList);

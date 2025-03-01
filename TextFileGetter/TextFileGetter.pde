@@ -52,7 +52,7 @@ CONSIGNES :
   5/ Appuyer sur entrée pour enregistrer
 */
 void setup() {
-  name = "TestComp1";
+  name = "ValerieAR";
   doc = loadImage("./doc/" + name + ".jpg");
   
   zones = new Zone[]{
