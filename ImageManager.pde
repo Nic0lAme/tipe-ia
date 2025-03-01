@@ -217,7 +217,8 @@ class ImageManager {
     int objectIndex = 0;
     for(int k = 0; k < contours.size(); k++) {
       ArrayList contour = contours.get(k);
-      if(this.IsClockwise(contour));
+      if(!this.IsClockwise(contour)) continue;
+      
       int[] rect = this.RectFromContour(contour);
       if(rect[2] * rect[3] > mArea) {
         mArea = rect[2] * rect[3];
@@ -225,7 +226,11 @@ class ImageManager {
       }
     }
     
-    int[] rect = this.RectFromContour(contours.get(objectIndex));
+    return ImageFromContour(img, contours.get(objectIndex), marge, (float)img.width / img.height);
+  }
+  
+  PImage ImageFromContour(PImage img, ArrayList<PVector> contour, float marge, float ratio) {
+   int[] rect = this.RectFromContour(contour);
     int left = rect[0];         int top = rect[1];
     int right = rect[2] + left; int bottom = rect[3] + top;
     
@@ -238,15 +243,14 @@ class ImageManager {
     if(top == bottom || right == left) return img; //En vrai c'est que l'image n'est pas centré, mais on renvoit qqc
     
     //Equilibrer le ratio width/height
-    float ratio = (float)img.width / img.height;
-    while((float)(right - left) / (bottom - top) > ratio * 1.4) { // Tolérance du ratio à 40%
+    while((float)(right - left) / (bottom - top) > ratio * 1.2) { // Tolérance du ratio à 40%
       bottom = constrain(bottom + 1, 0, img.height - 1);
       top = constrain(top - 1, 0, img.height - 1);
       
       if(top == 0 && bottom == img.height - 1) break;
     }
     
-    while((float)(right - left) / (bottom - top) < ratio * 0.71) { // Tolérance du ratio à 40%
+    while((float)(right - left) / (bottom - top) < ratio * 0.83) { // Tolérance du ratio à 40%
       right = constrain(right + 1, 0, img.width - 1);
       left = constrain(left - 1, 0, img.width - 1);
       
@@ -254,7 +258,7 @@ class ImageManager {
     }
     
     
-    return img.get(left, top, right - left, bottom - top);
+    return img.get(left, top, right - left, bottom - top); 
   }
   
   PImage OLD_AutoCrop(PImage img, float cap, float tolerance) { // Consider the object as black (or darker part)

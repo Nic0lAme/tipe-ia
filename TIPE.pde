@@ -19,7 +19,8 @@ String nameOfProcess; // Name to refer these iterations
 NeuralNetwork nn;
 
 void settings() {
-  size(w * rScale * characters.length, h * rScale * numOfTestSample, P2D);
+  size(w * rScale * characters.length, h * rScale * numOfTestSample, P2D); // For Global Test
+  //size(119, 180, P2D); // For Direct Test
 }
 
 void setup() {
@@ -33,7 +34,7 @@ void setup() {
   //nn = new NeuralNetwork(w*h, 1024, 256, 256, characters.length);
   nn.UseSoftMax();
   
-  TrainForImages(4, 12, 0.7, 0.05);
+  //TrainForImages(4, 12, 0.7, 0.05);
   
   nn.Export("./NeuralNetworkSave/GlobalTest4.nn");
 }
@@ -41,7 +42,7 @@ void setup() {
 int index = 0;
 
 void draw() {
-  TestImages();
+  //TestImages();
   DirectTest();
 }
 
@@ -116,18 +117,47 @@ void KeyPressed() {
   }
 }
 
+/* HOW TO USE DIRECT TEST
+  click to write (left -> black, right -> white)
+  +/- to change brush size
+  space to reset
+  enter to show prediction directly on the sketch
+*/
+int brushSize = 32;
 void DirectTest() {
-  if(mousePressed) {
-    ellipseMode(RADIUS);
-    fill(0);
-    noStroke();
-    circle(mouseX, mouseY, 10);
-    
-    PImage img = get(0, 0, width, height);
-    println(Result(img));
+  if(keyPressed && key == ' ') background(255);
+  if(keyPressed && key == '+') {
+    brushSize += 1;
+    println("Brush Size", brushSize);
+  }
+  if(keyPressed && key == '-') {
+    brushSize -= 1;
+    println("Brush Size", brushSize);
   }
   
-  if(keyCode == ENTER) background(255);
+  if(!mousePressed && (!keyPressed || keyCode != ENTER)) return;
+  
+  if(mouseButton == LEFT) stroke(0);
+  if(mouseButton == RIGHT) stroke(255);
+  
+  strokeWeight(brushSize);
+  line(mouseX, mouseY, pmouseX, pmouseY);
+
+  PImage img = get(0, 0, width, height);
+  img.filter(THRESHOLD, 0.5);
+  
+  ArrayList<ArrayList<PVector>> contours = im.ContourDetection(img);
+  for(ArrayList<PVector> contour : contours) {
+    if(!im.IsClockwise(contour)) continue;
+    
+    PImage c = im.ImageFromContour(img, contour, 0.02, 0.89);
+    if(keyPressed && keyCode == ENTER) {
+      fill(0,255,0);
+      text(Result(c).keyArray()[0], contour.get(0).x, contour.get(0).y);
+    }
+    print(Result(c).keyArray()[0], "");
+  }
+  println();  
 }
 
 
