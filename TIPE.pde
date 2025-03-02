@@ -2,8 +2,8 @@ Matrix[] sample;
 LetterDataset dataset;
 ConsoleLog cl;
 ImageManager im;
-int w = 19;
-int h = 21;
+int w = 20;
+int h = 22;
 int rScale = 2; // Scale for the representations (draw)
 //String[] characters = new String[]{"0","1","2","3","4","5","6","7","8","9"};
 //String[] characters = new String[]{"uA","uB","uC","uD","uE","uF","uG","uH","uI","uJ","uK","uL","uM","uN","uO","uP","uQ","uR","uS","uT","uU","uV","uW","uX","uY","uZ"};
@@ -27,14 +27,14 @@ void setup() {
   background(255);
   dataset = new LetterDataset(5*w, 5*h);
   cl = new ConsoleLog("./Log/log1.txt");
-  nameOfProcess = "GlobalTest2" + str(minute()) + str(hour()) + str(day()) + str(month()) + str(year());
-  im = new ImageManager(); 
+  nameOfProcess = "GlobalTest5" + str(minute()) + str(hour()) + str(day()) + str(month()) + str(year());
+  im = new ImageManager();
   
-  nn = new NeuralNetwork().Import("./NeuralNetworkSave/GlobalTest4.nn");
-  //nn = new NeuralNetwork(w*h, 1024, 256, 256, characters.length);
+  //nn = new NeuralNetwork().Import("./NeuralNetworkSave/GlobalTest4.nn");
+  nn = new NeuralNetwork(w*h, 1024, 512, 256, 256, characters.length);
   nn.UseSoftMax();
   
-  TrainForImages(8, 8, 1.2, 0.1);
+  TrainForImages(12, 12, 2, 0.1, 12, 0.65);
   
   nn.Export("./NeuralNetworkSave/GlobalTest4.nn");
 }
@@ -46,7 +46,7 @@ void draw() {
   //DirectTest();
 }
 
-void TrainForImages(int N, int epochPerSet, float startLR, float endLR) {
+void TrainForImages(int N, int epochPerSet, float startLR, float endLR, int rep, float minProp) {
   float[] accuracy = new float[nn.outputSize];
   int[] repList;
   Arrays.fill(accuracy, 0.5);
@@ -55,7 +55,7 @@ void TrainForImages(int N, int epochPerSet, float startLR, float endLR) {
     cl.pln("\nPhase", k, "/", N);
 
     if(k != 0) {
-      repList = RepList(accuracy, 12, 0.4);
+      repList = RepList(accuracy, rep, minProp);
 
       sample = dataset.CreateSample(
         characters,
@@ -64,7 +64,7 @@ void TrainForImages(int N, int epochPerSet, float startLR, float endLR) {
         new String[]{"Arial", "DejaVu Serif", "Fira Code Retina Moyen", "Consolas", "Noto Serif", "Lucida Handwriting Italique", "Playwrite IT Moderna", "Gabriola", "Just Another Hand"},
         repList);
       
-      float lr = startLR * pow(endLR / startLR, k/N);
+      float lr = startLR * pow(endLR / startLR, (float)(k-1)/(N-1));
       nn.MiniBatchLearn(sample, epochPerSet, 64, lr/20, lr, 2, k + "/" + N);
     }
     
@@ -218,8 +218,8 @@ float[] AccuracyScore(NeuralNetwork nn, Matrix inputs, Matrix outputs, boolean d
 double[] ImgPP(PImage img) { // Images post-processing
   double[] nImg = new double[w*h];
   PImage PPImage = im.Gray(img);
-  PPImage = im.Contrast(PPImage, 0.03);
-  PPImage = im.AutoCrop(PPImage, 72, 0.07);
+  PPImage = im.Contrast(PPImage, 0.01);
+  PPImage = im.AutoCrop(PPImage, 128, 0.06);
   //PPImage = im.Contrast(PPImage, 0.02); // If there is a dark patch in the center
   
   im.Resize(PPImage, w, h);

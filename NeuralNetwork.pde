@@ -137,7 +137,7 @@ class NeuralNetwork {
     Matrix[] weightGrad = new Matrix[this.numLayers - 1];
     Matrix[] biasGrad = new Matrix[this.numLayers - 1];
 
-    float lambda = 0.001;
+    float lambda = 0.0003;
     boolean hasNaN = false;
     for(int l = this.numLayers - 2; l >= 0; l--) {
       if(gradient.Contains(Double.NaN)) hasNaN = true;
@@ -289,7 +289,7 @@ class NeuralNetwork {
           );
       }
       
-      float[] score = AccuracyScore(this, data[0].GetCol(0, min(5*batchSize, data[0].p)), data[1].GetCol(0, min(5*batchSize, data[1].p)), false);
+      float[] score = AccuracyScore(this, data[0].GetCol(0, data[0].p / 10), data[1].GetCol(0, data[0].p / 10), false);
       cl.pln("\t Score:", Average(score));
     }
   }

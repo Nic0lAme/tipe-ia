@@ -213,7 +213,9 @@ class ImageManager {
   PImage AutoCrop(PImage img, float cap, float marge) {
     PImage cImg = img.copy();
     cImg.filter(THRESHOLD, cap / 255);
-    ArrayList<ArrayList<PVector>> contours = this.ContourDetection(cImg, 3);
+    ArrayList<ArrayList<PVector>> contours = this.ContourDetection(cImg, 2);
+    
+    if(contours.size() == 0) return OLD_AutoCrop(img, cap, marge);
     
     int mArea = 0;
     int objectIndex = 0;
