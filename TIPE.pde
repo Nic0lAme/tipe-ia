@@ -1,10 +1,16 @@
+String nameOfProcess = "GlobalTest5" + str(minute()) + str(hour()) + str(day()) + str(month()) + str(year());
+
+NeuralNetwork nn;
 Matrix[] sample;
 LetterDataset dataset;
 ConsoleLog cl;
 ImageManager im;
+GraphApplet graphApplet = new GraphApplet(nameOfProcess);
+
 int w = 20;
 int h = 22;
 int rScale = 2; // Scale for the representations (draw)
+
 //String[] characters = new String[]{"0","1","2","3","4","5","6","7","8","9"};
 //String[] characters = new String[]{"uA","uB","uC","uD","uE","uF","uG","uH","uI","uJ","uK","uL","uM","uN","uO","uP","uQ","uR","uS","uT","uU","uV","uW","uX","uY","uZ"};
 String[] characters = new String[]{
@@ -14,9 +20,6 @@ String[] characters = new String[]{
   "@","#","'","pt","im","!","tp","€","$","%","(",")","="
 };
 int numOfTestSample = 24; //This is just for the tests, not the training
-String nameOfProcess; // Name to refer these iterations
-
-NeuralNetwork nn;
 
 void settings() {
   size(w * rScale * characters.length, h * rScale * numOfTestSample, P2D); // For Global Test
@@ -29,14 +32,14 @@ void setup() {
   cl = new ConsoleLog("./Log/log1.txt");
   nameOfProcess = "GlobalTest5" + str(minute()) + str(hour()) + str(day()) + str(month()) + str(year());
   im = new ImageManager();
-  
+
   //nn = new NeuralNetwork().Import("./NeuralNetworkSave/GlobalTest4.nn");
   nn = new NeuralNetwork(w*h, 1024, 512, 256, 256, characters.length);
   nn.UseSoftMax();
-  
+
   TrainForImages(12, 12, 2, 0.1, 12, 0.65);
-  
-  nn.Export("./NeuralNetworkSave/GlobalTest4.nn");
+
+  // nn.Export("./NeuralNetworkSave/GlobalTest4.nn");
 }
 
 int index = 0;
@@ -63,13 +66,13 @@ void TrainForImages(int N, int epochPerSet, float startLR, float endLR, int rep,
         //new String[]{},
         new String[]{"Arial", "DejaVu Serif", "Fira Code Retina Moyen", "Consolas", "Noto Serif", "Lucida Handwriting Italique", "Playwrite IT Moderna", "Gabriola", "Just Another Hand"},
         repList);
-      
+
       float lr = startLR * pow(endLR / startLR, (float)(k-1)/(N-1));
       nn.MiniBatchLearn(sample, epochPerSet, 64, lr/20, lr, 2, k + "/" + N);
     }
-    
+
     if(k == N) break; //Pas besoin de restester
-    
+
     Matrix[] testSample = dataset.CreateSample(
       characters,
       new String[]{"MrMollier", "MrChauvet", "SachaBE"},
@@ -88,7 +91,7 @@ void TrainForImages(int N, int epochPerSet, float startLR, float endLR, int rep,
 void TestImages() {
   if(frameCount != 0) delay(10000);
   background(255);
-  
+
   Matrix[] testSample = dataset.CreateSample(
     characters,
     new String[]{"MrMollier", "MrChauvet", "SachaBE"},
@@ -134,22 +137,22 @@ void DirectTest() {
     brushSize -= 1;
     println("Brush Size", brushSize);
   }
-  
+
   if(!mousePressed && (!keyPressed || keyCode != ENTER)) return;
-  
+
   if(mouseButton == LEFT) stroke(0);
   if(mouseButton == RIGHT) stroke(255);
-  
+
   strokeWeight(brushSize);
   line(mouseX, mouseY, pmouseX, pmouseY);
 
   PImage img = get(0, 0, width, height);
   img.filter(THRESHOLD, 0.5);
-  
+
   ArrayList<ArrayList<PVector>> contours = im.ContourDetection(img);
   for(ArrayList<PVector> contour : contours) {
     if(!im.IsClockwise(contour)) continue;
-    
+
     PImage c = im.ImageFromContour(img, contour, 0.02, 0.89);
     if(keyPressed && keyCode == ENTER) {
       fill(0,255,0);
@@ -157,7 +160,7 @@ void DirectTest() {
     }
     print(Result(c).keyArray()[0], "");
   }
-  println();  
+  println();
 }
 
 
@@ -198,10 +201,10 @@ float[] AccuracyScore(NeuralNetwork nn, Matrix inputs, Matrix outputs, boolean d
       x = floor((rScale*h*j) / height) * rScale * w;
       y = (rScale*h*j) % height;
       image(dataset.GetImageFromInputs(inputs, j), x, y, rScale*w, rScale*h);
-      
+
       noStroke();
       rect(x, y, rScale * w, rScale * h);
-      
+
       fill(100);
       textSize(rScale * w * 0.7);
       text(characters[mIndex], x, y, rScale*w, rScale*h);
@@ -221,27 +224,27 @@ double[] ImgPP(PImage img) { // Images post-processing
   PPImage = im.Contrast(PPImage, 0.01);
   PPImage = im.AutoCrop(PPImage, 128, 0.06);
   //PPImage = im.Contrast(PPImage, 0.02); // If there is a dark patch in the center
-  
+
   im.Resize(PPImage, w, h);
   PPImage.loadPixels();
   for(int k = 0; k < PPImage.pixels.length; k++) nImg[k] = (float)brightness(PPImage.pixels[k]) / 255;
-  
+
   return nImg;
 }
 
 FloatDict Result(PImage img) {
   FloatDict result = new FloatDict();
-  
+
   double[] input = ImgPP(img);
   Matrix inputMatrix = new Matrix(w*h,1).ColumnFromArray(0, input);
-  
+
   Matrix outputMatrix = nn.Predict(inputMatrix);
   for(int c = 0; c < outputMatrix.n; c++) {
     result.set(characters[c], (float)outputMatrix.Get(c, 0));
   }
-  
+
   result.sortValuesReverse();
-  
+
   return result;
 }
 

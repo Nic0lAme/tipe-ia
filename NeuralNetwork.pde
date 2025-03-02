@@ -253,18 +253,18 @@ class NeuralNetwork {
 
     }
   }
-  
+
   public void MiniBatchLearn(Matrix[] data, int numOfEpoch, int batchSize, float lr) {
     MiniBatchLearn(data, numOfEpoch, batchSize, lr, lr, 1);
   }
-  
+
   public void MiniBatchLearn(Matrix[] data, int numOfEpoch, int batchSize, float minLR, float maxLR, int period) {
     MiniBatchLearn(data, numOfEpoch, batchSize, minLR, maxLR, period, "");
   }
-  
+
   public void MiniBatchLearn(Matrix[] data, int numOfEpoch, int batchSize, float minLR, float maxLR, int period, String label) {
     cl.pln("Mini Batch Gradient Descent " + label + " - " + numOfEpoch + " Epochs - " + batchSize + " Batch Size - " + String.format("%9.3E", maxLR) + " LR");
-    
+
     int startTime = millis();
     int numOfBatches = floor(data[0].p / batchSize);
     for (int k = 0; k < numOfEpoch; k++) {
@@ -281,14 +281,15 @@ class NeuralNetwork {
         Matrix batch = data[0].GetCol(i*batchSize, i*batchSize + batchSize - 1);
         Matrix batchAns = data[1].GetCol(i*batchSize, i*batchSize + batchSize - 1);
         double l = this.Learn(batch, batchAns, CyclicalLearningRate(k, minLR, maxLR, period));
+        graphApplet.AddValue(l);
         if (i % (numOfBatches / 4) == 0)
-          cl.pln("\t Epoch " + (k+1) + 
-            " / Batch " + (i+1) + " : " + String.format("%9.3E",l) + 
-            "\t / Time remaining " + RemainingTime(startTime, k * numOfBatches + i + 1, numOfBatches * numOfEpoch) +
+          cl.pln("\t Epoch " + (k+1) +
+            " Batch " + (i+1) + " : " + String.format("%9.3E",l) +
+            "\t Time remaining " + RemainingTime(startTime, k * numOfBatches + i + 1, numOfBatches * numOfEpoch) +
             "\t (" + label + ")"
           );
       }
-      
+
       float[] score = AccuracyScore(this, data[0].GetCol(0, data[0].p / 10), data[1].GetCol(0, data[0].p / 10), false);
       cl.pln("\t Score:", Average(score));
     }
