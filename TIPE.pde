@@ -11,7 +11,7 @@ GraphApplet graphApplet = new GraphApplet(nameOfProcess);
 
 int w = 20;
 int h = 22;
-int rScale = 2; // Scale for the representations (draw)
+int rScale = 1; // Scale for the representations (draw)
 
 //String[] characters = new String[]{"0","1","2","3","4","5","6","7","8","9"};
 //String[] characters = new String[]{"uA","uB","uC","uD","uE","uF","uG","uH","uI","uJ","uK","uL","uM","uN","uO","uP","uQ","uR","uS","uT","uU","uV","uW","uX","uY","uZ"};
@@ -38,9 +38,9 @@ void setup() {
   //nn = new NeuralNetwork(w*h, 1024, 512, 256, 256, characters.length);
   nn.UseSoftMax();
 
-  TrainForImages(1, 8, 1, 1, 10, 0.6);
+  //TrainForImages(1, 4, 1, 1, 10, 0.1);
 
-  nn.Export("./NeuralNetworkSave/GlobalTest5.nn");
+  //nn.Export("./NeuralNetworkSave/GlobalTest5.nn");
 }
 
 int index = 0;
@@ -86,7 +86,7 @@ void TrainForImages(int N, int epochPerSet, float startLR, float endLR, int rep,
 
     if(k == N) break; //Pas besoin de restester
     
-    accuracy = AccuracyScore(nn, new Matrix[][]{testSampleHand, testSampleFont}, true);
+    accuracy = CompilScore(AccuracyScore(nn, new Matrix[][]{testSampleHand, testSampleFont}, true));
 
     cl.pln("Accuracy for test set :", Average(accuracy));
     cl.pln();
@@ -107,7 +107,7 @@ void TestImages() {
     3);
 
 
-  float[] score = AccuracyScore(nn, testSample, true);
+  float[] score = CompilScore(AccuracyScore(nn, testSample, true));
   cl.pln("Training Set Score :", Average(score));
   cl.pFloatList(score, "Accuracy");
   save("./Representation/" + str(frameCount) + " " + str(Average(score)) + " " + nameOfProcess + ".jpg");
@@ -170,16 +170,17 @@ void DirectTest() {
   println();
 }
 
-float[] AccuracyScore(NeuralNetwork nn, Matrix[] data, boolean doDraw) {
+float[][] AccuracyScore(NeuralNetwork nn, Matrix[] data, boolean doDraw) {
   return AccuracyScore(nn, new Matrix[][]{data}, doDraw);
 }
 
-float[] AccuracyScore(NeuralNetwork nn, Matrix[][] data, boolean doDraw) {
-  float[] score = new float[data[0][0].n];
-  int[] countOutput = new int[data[0][1].n]; // Compte le nombre d'output ayant pour retour i
+float[][] AccuracyScore(NeuralNetwork nn, Matrix[][] data, boolean doDraw) {
+  float[][] score = new float[data[0][0].n][];
+  int[][] countOutput = new int[data.length][data[0][1].n]; // Compte le nombre d'output ayant pour retour i
   
   int ret = 0; // To draw
-  for(Matrix[] d : data) {
+  for(int k = 0; k < data.length; k++) {
+    Matrix[] d = data[k];
     Matrix prediction = nn.Predict(d[0]);
   
     int x = 0; int y = 0;
@@ -200,9 +201,9 @@ float[] AccuracyScore(NeuralNetwork nn, Matrix[][] data, boolean doDraw) {
   
       for(int i = 0; i < d[1].n; i++) {
         if(d[1].Get(i,j) == 1) {
-          countOutput[i] += 1;
+          countOutput[k][i] += 1;
           if(mIndex == i) {
-            score[i] += 1;
+            score[k][i] += 1;
             fill(0,255,0,100);
           }
         }
@@ -224,12 +225,11 @@ float[] AccuracyScore(NeuralNetwork nn, Matrix[][] data, boolean doDraw) {
       
       ret++;
     }
+    for(int i = 0; i < data[0][1].n; i++) {
+      score[k][i] = countOutput[k][i] != 0 ? score[k][i] / (float)countOutput[k][i] : 0;
+    }
   }
-
-  for(int i = 0; i < data[0][1].n; i++) {
-    score[i] = countOutput[i] != 0 ? score[i] / (float)countOutput[i] : 0;
-  }
-
+  
   return score;
 }
 
@@ -288,6 +288,31 @@ float Sum(float[] list) {
   float sum = 0;
   for(int k = 0; k < list.length; k++) sum += list[k];
   return sum;
+}
+
+float[] CompilScore(float[][] list) {
+  float[] score = new float[list[0].length];
+  for(float[] l : list) {
+    for(int s = 0; s < list[0].length; s++) score[s] += (float)l[s] / list.length;
+  }
+  
+  return score;
+}
+
+float Average(float[][] list) {
+  int s = 0;
+  for(int k = 0; k < list.length; k++) s+=list[k].length;
+  float[] lst = new float[s];
+  
+  int index = 0;
+  for(int k = 0; k < list.length; k++) {
+    for(int i = 0; i < list[k].length; i++) {
+      lst[index] = list[k][i];
+      index++;
+    }
+  }
+  
+  return Average(lst);
 }
 
 float Average(float[] list) {

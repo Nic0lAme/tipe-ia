@@ -292,7 +292,7 @@ class NeuralNetwork {
       }
       
       for(int s = 0; s < testSets.length; s++) {
-        float[] score = AccuracyScore(this, testSets[s], false);
+        float[] score = CompilScore(AccuracyScore(this, testSets[s], false));
         cl.p("\t Score", s, ":", String.format("%7.5f", Average(score)));
       }
       cl.pln();
