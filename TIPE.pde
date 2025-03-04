@@ -9,6 +9,8 @@ ConsoleLog cl;
 ImageManager im;
 GraphApplet graphApplet = new GraphApplet(nameOfProcess);
 
+final int numThreads = 10;
+
 int w = 20;
 int h = 22;
 int rScale = 2; // Scale for the representations (draw)
@@ -24,8 +26,8 @@ String[] characters = new String[]{
 int numOfTestSample = 24; //This is just for the tests, not the training
 
 void settings() {
-  size(w * rScale * characters.length, h * rScale * numOfTestSample, P2D); // For Global Test
-  //size(119, 180, P2D); // For Direct Test
+  //size(w * rScale * characters.length, h * rScale * numOfTestSample, P2D); // For Global Test
+  size(119, 180, P2D); // For Direct Test
 }
 
 void setup() {
@@ -34,20 +36,20 @@ void setup() {
   cl = new ConsoleLog("./Log/log1.txt");
   im = new ImageManager();
 
-  nn = new NeuralNetwork().Import("./NeuralNetworkSave/GlobalTest5.nn");
-  //nn = new NeuralNetwork(w*h, 1024, 512, 256, 256, characters.length);
+  //nn = new NeuralNetwork().Import("./NeuralNetworkSave/GlobalTest5.nn");
+  nn = new NeuralNetwork(w*h, 1024, 512, 256, 256, characters.length);
   nn.UseSoftMax();
 
-  TrainForImages(1, 8, 1, 1, 10, 0.6);
+  TrainForImages(1, 8, 1, 1, 1, 0.6);
 
-  nn.Export("./NeuralNetworkSave/GlobalTest5.nn");
+  //nn.Export("./NeuralNetworkSave/GlobalTest5.nn");
 }
 
 int index = 0;
 
 void draw() {
-  TestImages();
-  //DirectTest();
+  //TestImages();
+  DirectTest();
 }
 
 void TrainForImages(int N, int epochPerSet, float startLR, float endLR, int rep, float minProp) {
@@ -57,6 +59,9 @@ void TrainForImages(int N, int epochPerSet, float startLR, float endLR, int rep,
 
   for(int k = 0; k <= N; k++) {
     cl.pln("\nPhase", k, "/", N);
+     
+    // TODO: à enlever
+    if (k == 0) continue;
     
     Matrix[] testSampleHand = dataset.CreateSample(
       characters,

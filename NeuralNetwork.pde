@@ -278,17 +278,40 @@ class NeuralNetwork {
         data[0].ComutCol(i, j);
         data[1].ComutCol(i, j);
       }
-
-      for (int i = 0; i < numOfBatches; i++) {
-        Matrix batch = data[0].GetCol(i*batchSize, i*batchSize + batchSize - 1);
-        Matrix batchAns = data[1].GetCol(i*batchSize, i*batchSize + batchSize - 1);
-        double l = this.Learn(batch, batchAns, CyclicalLearningRate(k, minLR, maxLR, period));
-        graphApplet.AddValue(l);
-        if (i % (numOfBatches / 4) == 0)
-          cl.pln("\t Epoch " + String.format("%05d",k+1) +
-            " Batch " + String.format("%05d",i+1) + " : " + String.format("%9.3E",l) +
-            "\t Time remaining " + RemainingTime(startTime, k * numOfBatches + i + 1, numOfBatches * numOfEpoch)
-          );
+      
+      // Pour chaque thread, on lui envoie 1/N des batchs
+      ArrayList<Thread> threads = new ArrayList<Thread>();
+      for (int num = 0; num < numThreads; num++) {
+        final int n = new Integer(num);
+        final int epochNumber = new Integer(k);
+        Runnable runnable = new Runnable() {
+          @Override
+          public void run() {
+            int startIndex = n * numOfBatches / numThreads;
+            int endIndex = (n+1)*numOfBatches / numThreads;
+            if (endIndex >= numOfBatches*batchSize) return;
+            for (int i = startIndex; i < endIndex; i++) {
+              Matrix batch = data[0].GetCol(i*batchSize, i*batchSize + batchSize - 1);
+              Matrix batchAns = data[1].GetCol(i*batchSize, i*batchSize + batchSize - 1);
+              double l = Learn(batch, batchAns, CyclicalLearningRate(epochNumber, minLR, maxLR, period));
+              graphApplet.AddValue(l);
+              cl.pln("\t Epoch " + String.format("%05d",epochNumber+1) +
+                " Batch " + String.format("%05d",i+1) + " : " + String.format("%9.3E",l) +
+                "\t Time remaining " + RemainingTime(startTime, epochNumber * numOfBatches + i + 1, numOfBatches * epochNumber)
+              );
+            }
+          }
+        };
+        Thread thread = new Thread(runnable);
+        threads.add(thread);
+        thread.start();
+      }
+      
+      for (Thread thread : threads) {
+        try {
+          thread.join();
+        } catch (InterruptedException e) {
+        }
       }
       
       for(int s = 0; s < testSets.length; s++) {
