@@ -3,10 +3,10 @@ import java.util.Arrays;
 public class LetterDataset {
   final int wData, hData;
   float move = 0.2;
-  float blur = 0.1;
+  float blur = 0.05;
   float density = 0.01;
   float perlin = 1;
-  float deformation = 0.05;
+  float deformation = 0.03;
 
   LetterDataset(int wData, int hData) {
     this.wData = wData;

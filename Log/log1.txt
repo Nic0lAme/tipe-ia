@@ -1,0 +1,3814 @@
+Creating Dataset of size 1170... 
+uA 	(3) 	 Remaining Time :    40,425 
+uB 	(3) 	 Remaining Time :    29,754 
+uC 	(3) 	 Remaining Time :    25,425 
+uD 	(3) 	 Remaining Time :    23,069 
+uE 	(3) 	 Remaining Time :    21,550 
+uF 	(3) 	 Remaining Time :    20,376 
+uG 	(3) 	 Remaining Time :    19,596 
+uH 	(3) 	 Remaining Time :    18,917 
+uI 	(3) 	 Remaining Time :    18,185 
+uJ 	(3) 	 Remaining Time :    17,544 
+uK 	(3) 	 Remaining Time :    17,000 
+uL 	(3) 	 Remaining Time :    16,764 
+uM 	(3) 	 Remaining Time :    16,305 
+uN 	(3) 	 Remaining Time :    15,858 
+uO 	(3) 	 Remaining Time :    15,448 
+uP 	(3) 	 Remaining Time :    15,058 
+uQ 	(3) 	 Remaining Time :    14,719 
+uR 	(3) 	 Remaining Time :    14,367 
+uS 	(3) 	 Remaining Time :    14,033 
+uT 	(3) 	 Remaining Time :    13,702 
+uU 	(3) 	 Remaining Time :    13,398 
+uV 	(3) 	 Remaining Time :    13,099 
+uW 	(3) 	 Remaining Time :    12,805 
+uX 	(3) 	 Remaining Time :    12,546 
+uY 	(3) 	 Remaining Time :    12,294 
+uZ 	(3) 	 Remaining Time :    12,048 
+la 	(3) 	 Remaining Time :    11,783 
+lb 	(3) 	 Remaining Time :    11,530 
+lc 	(3) 	 Remaining Time :    11,275 
+ld 	(3) 	 Remaining Time :    11,027 
+le 	(3) 	 Remaining Time :    10,780 
+lf 	(3) 	 Remaining Time :    10,543 
+lg 	(3) 	 Remaining Time :    10,305 
+lh 	(3) 	 Remaining Time :    10,059 
+li 	(3) 	 Remaining Time :     9,814 
+lj 	(3) 	 Remaining Time :     9,575 
+lk 	(3) 	 Remaining Time :     9,332 
+ll 	(3) 	 Remaining Time :     9,095 
+lm 	(3) 	 Remaining Time :     8,857 
+ln 	(3) 	 Remaining Time :     8,624 
+lo 	(3) 	 Remaining Time :     8,387 
+lp 	(3) 	 Remaining Time :     8,153 
+lq 	(3) 	 Remaining Time :     7,920 
+lr 	(3) 	 Remaining Time :     7,689 
+ls 	(3) 	 Remaining Time :     7,452 
+lt 	(3) 	 Remaining Time :     7,219 
+lu 	(3) 	 Remaining Time :     6,986 
+lv 	(3) 	 Remaining Time :     6,756 
+lw 	(3) 	 Remaining Time :     6,526 
+lx 	(3) 	 Remaining Time :     6,303 
+ly 	(3) 	 Remaining Time :     6,076 
+lz 	(3) 	 Remaining Time :     5,845 
+0 	(3) 	 Remaining Time :     5,617 
+1 	(3) 	 Remaining Time :     5,393 
+2 	(3) 	 Remaining Time :     5,165 
+3 	(3) 	 Remaining Time :     4,936 
+4 	(3) 	 Remaining Time :     4,709 
+5 	(3) 	 Remaining Time :     4,486 
+6 	(3) 	 Remaining Time :     4,259 
+7 	(3) 	 Remaining Time :     4,033 
+8 	(3) 	 Remaining Time :     3,807 
+9 	(3) 	 Remaining Time :     3,582 
++ 	(3) 	 Remaining Time :     3,357 
+- 	(3) 	 Remaining Time :     3,133 
+cr 	(3) 	 Remaining Time :     2,908 
+@ 	(3) 	 Remaining Time :     2,684 
+# 	(3) 	 Remaining Time :     2,462 
+' 	(3) 	 Remaining Time :     2,238 
+pt 	(3) 	 Remaining Time :     2,013 
+im 	(3) 	 Remaining Time :     1,788 
+! 	(3) 	 Remaining Time :     1,564 
+tp 	(3) 	 Remaining Time :     1,340 
+€ 	(3) 	 Remaining Time :     1,116 
+$ 	(3) 	 Remaining Time :     0,893 
+% 	(3) 	 Remaining Time :     0,670 
+( 	(3) 	 Remaining Time :     0,446 
+) 	(3) 	 Remaining Time :     0,223 
+= 	(3) 	 Remaining Time :     0,000 
+
+Creating Dataset of size 1170... 
+uA 	(3) 	 Remaining Time :    17,017 
+uB 	(3) 	 Remaining Time :    16,758 
+uC 	(3) 	 Remaining Time :    16,375 
+uD 	(3) 	 Remaining Time :    16,114 
+uE 	(3) 	 Remaining Time :    15,914 
+uF 	(3) 	 Remaining Time :    15,684 
+uG 	(3) 	 Remaining Time :    15,620 
+uH 	(3) 	 Remaining Time :    15,505 
+uI 	(3) 	 Remaining Time :    15,295 
+uJ 	(3) 	 Remaining Time :    15,035 
+uK 	(3) 	 Remaining Time :    14,807 
+uL 	(3) 	 Remaining Time :    14,531 
+uM 	(3) 	 Remaining Time :    14,310 
+uN 	(3) 	 Remaining Time :    14,107 
+uO 	(3) 	 Remaining Time :    13,885 
+uP 	(3) 	 Remaining Time :    13,663 
+uQ 	(3) 	 Remaining Time :    13,434 
+uR 	(3) 	 Remaining Time :    13,193 
+uS 	(3) 	 Remaining Time :    12,961 
+uT 	(3) 	 Remaining Time :    12,717 
+uU 	(3) 	 Remaining Time :    12,499 
+uV 	(3) 	 Remaining Time :    12,289 
+uW 	(3) 	 Remaining Time :    12,074 
+uX 	(3) 	 Remaining Time :    11,842 
+uY 	(3) 	 Remaining Time :    11,624 
+uZ 	(3) 	 Remaining Time :    11,420 
+la 	(3) 	 Remaining Time :    11,205 
+lb 	(3) 	 Remaining Time :    10,973 
+lc 	(3) 	 Remaining Time :    10,741 
+ld 	(3) 	 Remaining Time :    10,518 
+le 	(3) 	 Remaining Time :    10,298 
+lf 	(3) 	 Remaining Time :    10,071 
+lg 	(3) 	 Remaining Time :     9,852 
+lh 	(3) 	 Remaining Time :     9,624 
+li 	(3) 	 Remaining Time :     9,405 
+lj 	(3) 	 Remaining Time :     9,194 
+lk 	(3) 	 Remaining Time :     8,977 
+ll 	(3) 	 Remaining Time :     8,749 
+lm 	(3) 	 Remaining Time :     8,533 
+ln 	(3) 	 Remaining Time :     8,311 
+lo 	(3) 	 Remaining Time :     8,087 
+lp 	(3) 	 Remaining Time :     7,865 
+lq 	(3) 	 Remaining Time :     7,650 
+lr 	(3) 	 Remaining Time :     7,431 
+ls 	(3) 	 Remaining Time :     7,209 
+lt 	(3) 	 Remaining Time :     6,989 
+lu 	(3) 	 Remaining Time :     6,769 
+lv 	(3) 	 Remaining Time :     6,546 
+lw 	(3) 	 Remaining Time :     6,328 
+lx 	(3) 	 Remaining Time :     6,108 
+ly 	(3) 	 Remaining Time :     5,888 
+lz 	(3) 	 Remaining Time :     5,668 
+0 	(3) 	 Remaining Time :     5,448 
+1 	(3) 	 Remaining Time :     5,228 
+2 	(3) 	 Remaining Time :     5,010 
+3 	(3) 	 Remaining Time :     4,791 
+4 	(3) 	 Remaining Time :     4,572 
+5 	(3) 	 Remaining Time :     4,355 
+6 	(3) 	 Remaining Time :     4,137 
+7 	(3) 	 Remaining Time :     3,919 
+8 	(3) 	 Remaining Time :     3,699 
+9 	(3) 	 Remaining Time :     3,481 
++ 	(3) 	 Remaining Time :     3,262 
+- 	(3) 	 Remaining Time :     3,049 
+cr 	(3) 	 Remaining Time :     2,833 
+@ 	(3) 	 Remaining Time :     2,616 
+# 	(3) 	 Remaining Time :     2,397 
+' 	(3) 	 Remaining Time :     2,179 
+pt 	(3) 	 Remaining Time :     1,962 
+im 	(3) 	 Remaining Time :     1,744 
+! 	(3) 	 Remaining Time :     1,525 
+tp 	(3) 	 Remaining Time :     1,307 
+€ 	(3) 	 Remaining Time :     1,090 
+$ 	(3) 	 Remaining Time :     0,872 
+% 	(3) 	 Remaining Time :     0,654 
+( 	(3) 	 Remaining Time :     0,436 
+) 	(3) 	 Remaining Time :     0,218 
+= 	(3) 	 Remaining Time :     0,000 
+
+
+Phase 0 / 8 
+Accuracy for test set : 0.012820513 
+
+
+Phase 1 / 8 
+Creating Dataset of size 15444... 
+uA 	(9) 	 Remaining Time :   190,575 
+uB 	(9) 	 Remaining Time :   186,846 
+uC 	(9) 	 Remaining Time :   182,400 
+uD 	(9) 	 Remaining Time :   179,709 
+uE 	(9) 	 Remaining Time :   176,529 
+uF 	(9) 	 Remaining Time :   173,376 
+uG 	(9) 	 Remaining Time :   170,877 
+uH 	(9) 	 Remaining Time :   168,473 
+uI 	(9) 	 Remaining Time :   165,945 
+uJ 	(9) 	 Remaining Time :   163,424 
+uK 	(9) 	 Remaining Time :   160,879 
+uL 	(9) 	 Remaining Time :   158,252 
+uM 	(9) 	 Remaining Time :   155,990 
+uN 	(9) 	 Remaining Time :   153,568 
+uO 	(9) 	 Remaining Time :   151,259 
+uP 	(9) 	 Remaining Time :   148,769 
+uQ 	(9) 	 Remaining Time :   146,418 
+uR 	(9) 	 Remaining Time :   144,053 
+uS 	(9) 	 Remaining Time :   141,491 
+uT 	(9) 	 Remaining Time :   138,927 
+uU 	(9) 	 Remaining Time :   136,496 
+uV 	(9) 	 Remaining Time :   133,988 
+uW 	(9) 	 Remaining Time :   131,605 
+uX 	(9) 	 Remaining Time :   129,152 
+uY 	(9) 	 Remaining Time :   126,674 
+uZ 	(9) 	 Remaining Time :   124,218 
+la 	(9) 	 Remaining Time :   121,733 
+lb 	(9) 	 Remaining Time :   119,268 
+lc 	(9) 	 Remaining Time :   116,759 
+ld 	(9) 	 Remaining Time :   114,323 
+le 	(9) 	 Remaining Time :   111,848 
+lf 	(9) 	 Remaining Time :   109,431 
+lg 	(9) 	 Remaining Time :   107,022 
+lh 	(9) 	 Remaining Time :   104,615 
+li 	(9) 	 Remaining Time :   102,151 
+lj 	(9) 	 Remaining Time :    99,716 
+lk 	(9) 	 Remaining Time :    97,322 
+ll 	(9) 	 Remaining Time :    94,904 
+lm 	(9) 	 Remaining Time :    92,529 
+ln 	(9) 	 Remaining Time :    90,104 
+lo 	(9) 	 Remaining Time :    87,698 
+lp 	(9) 	 Remaining Time :    85,299 
+lq 	(9) 	 Remaining Time :    82,909 
+lr 	(9) 	 Remaining Time :    80,509 
+ls 	(9) 	 Remaining Time :    78,101 
+lt 	(9) 	 Remaining Time :    75,750 
+lu 	(9) 	 Remaining Time :    73,355 
+lv 	(9) 	 Remaining Time :    70,957 
+lw 	(9) 	 Remaining Time :    68,567 
+lx 	(9) 	 Remaining Time :    66,184 
+ly 	(9) 	 Remaining Time :    63,813 
+lz 	(9) 	 Remaining Time :    61,446 
+0 	(9) 	 Remaining Time :    59,083 
+1 	(9) 	 Remaining Time :    56,696 
+2 	(9) 	 Remaining Time :    54,319 
+3 	(9) 	 Remaining Time :    51,942 
+4 	(9) 	 Remaining Time :    49,572 
+5 	(9) 	 Remaining Time :    47,207 
+6 	(9) 	 Remaining Time :    44,846 
+7 	(9) 	 Remaining Time :    42,476 
+8 	(9) 	 Remaining Time :    40,114 
+9 	(9) 	 Remaining Time :    37,754 
++ 	(9) 	 Remaining Time :    35,379 
+- 	(9) 	 Remaining Time :    33,009 
+cr 	(9) 	 Remaining Time :    30,641 
+@ 	(9) 	 Remaining Time :    28,292 
+# 	(9) 	 Remaining Time :    25,936 
+' 	(9) 	 Remaining Time :    23,575 
+pt 	(9) 	 Remaining Time :    21,212 
+im 	(9) 	 Remaining Time :    18,852 
+! 	(9) 	 Remaining Time :    16,491 
+tp 	(9) 	 Remaining Time :    14,132 
+€ 	(9) 	 Remaining Time :    11,777 
+$ 	(9) 	 Remaining Time :     9,421 
+% 	(9) 	 Remaining Time :     7,066 
+( 	(9) 	 Remaining Time :     4,710 
+) 	(9) 	 Remaining Time :     2,354 
+= 	(9) 	 Remaining Time :     0,000 
+
+Mini Batch Gradient Descent 1/8 - 8 Epochs - 64 Batch Size - 2,000E+00 LR 
+(1/8) 	Epoch 1/8	 
+	 Epoch 00001 Batch 00001 : 1,644E+01	 Time remaining   976,989 
+	 Epoch 00001 Batch 00061 : 5,420E+00	 Time remaining   536,870 
+	 Epoch 00001 Batch 00121 : 4,803E+00	 Time remaining   509,888 
+	 Epoch 00001 Batch 00181 : 4,981E+00	 Time remaining   486,486 
+	 Epoch 00001 Batch 00241 : 4,809E+00	 Time remaining   467,040 
+	 Score 0 : 0,07009 	 Score 1 : 0,07521 
+(1/8) 	Epoch 2/8	 
+	 Epoch 00002 Batch 00001 : 4,961E+00	 Time remaining   526,025 
+	 Epoch 00002 Batch 00061 : 4,886E+00	 Time remaining   493,722 
+	 Epoch 00002 Batch 00121 : 4,148E+00	 Time remaining   467,313 
+	 Epoch 00002 Batch 00181 : 4,144E+00	 Time remaining   443,720 
+	 Epoch 00002 Batch 00241 : 4,388E+00	 Time remaining   421,704 
+	 Score 0 : 0,11026 	 Score 1 : 0,14701 
+(1/8) 	Epoch 3/8	 
+	 Epoch 00003 Batch 00001 : 4,185E+00	 Time remaining   447,082 
+	 Epoch 00003 Batch 00061 : 4,090E+00	 Time remaining   423,024 
+	 Epoch 00003 Batch 00121 : 4,314E+00	 Time remaining   401,675 
+	 Epoch 00003 Batch 00181 : 4,348E+00	 Time remaining   379,599 
+	 Epoch 00003 Batch 00241 : 4,523E+00	 Time remaining   358,638 
+	 Score 0 : 0,13675 	 Score 1 : 0,17521 
+(1/8) 	Epoch 4/8	 
+	 Epoch 00004 Batch 00001 : 4,300E+00	 Time remaining   372,904 
+	 Epoch 00004 Batch 00061 : 3,877E+00	 Time remaining   350,886 
+	 Epoch 00004 Batch 00121 : 4,242E+00	 Time remaining   329,846 
+	 Epoch 00004 Batch 00181 : 3,974E+00	 Time remaining   309,279 
+	 Epoch 00004 Batch 00241 : 4,369E+00	 Time remaining   289,676 
+	 Score 0 : 0,14786 	 Score 1 : 0,18974 
+(1/8) 	Epoch 5/8	 
+	 Epoch 00005 Batch 00001 : 4,220E+00	 Time remaining   298,380 
+	 Epoch 00005 Batch 00061 : 3,935E+00	 Time remaining   277,731 
+	 Epoch 00005 Batch 00121 : 4,152E+00	 Time remaining   257,549 
+	 Epoch 00005 Batch 00181 : 4,456E+00	 Time remaining   237,727 
+	 Epoch 00005 Batch 00241 : 4,358E+00	 Time remaining   218,291 
+	 Score 0 : 0,14444 	 Score 1 : 0,17949 
+(1/8) 	Epoch 6/8	 
+	 Epoch 00006 Batch 00001 : 4,137E+00	 Time remaining   223,181 
+	 Epoch 00006 Batch 00061 : 4,041E+00	 Time remaining   203,852 
+	 Epoch 00006 Batch 00121 : 4,039E+00	 Time remaining   185,080 
+	 Epoch 00006 Batch 00181 : 4,058E+00	 Time remaining   165,744 
+	 Epoch 00006 Batch 00241 : 3,934E+00	 Time remaining   146,703 
+	 Score 0 : 0,20171 	 Score 1 : 0,25385 
+(1/8) 	Epoch 7/8	 
+	 Epoch 00007 Batch 00001 : 3,933E+00	 Time remaining   149,247 
+	 Epoch 00007 Batch 00061 : 3,891E+00	 Time remaining   129,951 
+	 Epoch 00007 Batch 00121 : 4,121E+00	 Time remaining   110,946 
+	 Epoch 00007 Batch 00181 : 4,150E+00	 Time remaining    92,076 
+	 Epoch 00007 Batch 00241 : 4,113E+00	 Time remaining    73,430 
+	 Score 0 : 0,22479 	 Score 1 : 0,30513 
+(1/8) 	Epoch 8/8	 
+	 Epoch 00008 Batch 00001 : 3,238E+00	 Time remaining    74,399 
+	 Epoch 00008 Batch 00061 : 3,495E+00	 Time remaining    55,565 
+	 Epoch 00008 Batch 00121 : 3,554E+00	 Time remaining    36,891 
+	 Epoch 00008 Batch 00181 : 3,918E+00	 Time remaining    18,375 
+	 Epoch 00008 Batch 00241 : 3,964E+00	 Time remaining     0,000 
+	 Score 0 : 0,23419 	 Score 1 : 0,31282 
+Accuracy for test set : 0.27350426 
+
+
+Phase 2 / 8 
+Creating Dataset of size 1170... 
+uA 	(3) 	 Remaining Time :    20,251 
+uB 	(3) 	 Remaining Time :    18,468 
+uC 	(3) 	 Remaining Time :    17,650 
+uD 	(3) 	 Remaining Time :    17,131 
+uE 	(3) 	 Remaining Time :    16,834 
+uF 	(3) 	 Remaining Time :    16,452 
+uG 	(3) 	 Remaining Time :    16,188 
+uH 	(3) 	 Remaining Time :    15,890 
+uI 	(3) 	 Remaining Time :    15,640 
+uJ 	(3) 	 Remaining Time :    15,388 
+uK 	(3) 	 Remaining Time :    15,136 
+uL 	(3) 	 Remaining Time :    14,894 
+uM 	(3) 	 Remaining Time :    14,655 
+uN 	(3) 	 Remaining Time :    14,427 
+uO 	(3) 	 Remaining Time :    14,192 
+uP 	(3) 	 Remaining Time :    13,934 
+uQ 	(3) 	 Remaining Time :    13,707 
+uR 	(3) 	 Remaining Time :    13,463 
+uS 	(3) 	 Remaining Time :    13,241 
+uT 	(3) 	 Remaining Time :    13,007 
+uU 	(3) 	 Remaining Time :    12,776 
+uV 	(3) 	 Remaining Time :    12,567 
+uW 	(3) 	 Remaining Time :    12,325 
+uX 	(3) 	 Remaining Time :    12,094 
+uY 	(3) 	 Remaining Time :    11,866 
+uZ 	(3) 	 Remaining Time :    11,630 
+la 	(3) 	 Remaining Time :    11,392 
+lb 	(3) 	 Remaining Time :    11,175 
+lc 	(3) 	 Remaining Time :    10,944 
+ld 	(3) 	 Remaining Time :    10,726 
+le 	(3) 	 Remaining Time :    10,492 
+lf 	(3) 	 Remaining Time :    10,268 
+lg 	(3) 	 Remaining Time :    10,043 
+lh 	(3) 	 Remaining Time :     9,816 
+li 	(3) 	 Remaining Time :     9,585 
+lj 	(3) 	 Remaining Time :     9,362 
+lk 	(3) 	 Remaining Time :     9,135 
+ll 	(3) 	 Remaining Time :     8,905 
+lm 	(3) 	 Remaining Time :     8,677 
+ln 	(3) 	 Remaining Time :     8,447 
+lo 	(3) 	 Remaining Time :     8,232 
+lp 	(3) 	 Remaining Time :     8,007 
+lq 	(3) 	 Remaining Time :     7,782 
+lr 	(3) 	 Remaining Time :     7,550 
+ls 	(3) 	 Remaining Time :     7,322 
+lt 	(3) 	 Remaining Time :     7,094 
+lu 	(3) 	 Remaining Time :     6,869 
+lv 	(3) 	 Remaining Time :     6,643 
+lw 	(3) 	 Remaining Time :     6,420 
+lx 	(3) 	 Remaining Time :     6,196 
+ly 	(3) 	 Remaining Time :     5,974 
+lz 	(3) 	 Remaining Time :     5,752 
+0 	(3) 	 Remaining Time :     5,533 
+1 	(3) 	 Remaining Time :     5,309 
+2 	(3) 	 Remaining Time :     5,086 
+3 	(3) 	 Remaining Time :     4,862 
+4 	(3) 	 Remaining Time :     4,642 
+5 	(3) 	 Remaining Time :     4,420 
+6 	(3) 	 Remaining Time :     4,199 
+7 	(3) 	 Remaining Time :     3,977 
+8 	(3) 	 Remaining Time :     3,754 
+9 	(3) 	 Remaining Time :     3,533 
++ 	(3) 	 Remaining Time :     3,311 
+- 	(3) 	 Remaining Time :     3,089 
+cr 	(3) 	 Remaining Time :     2,868 
+@ 	(3) 	 Remaining Time :     2,649 
+# 	(3) 	 Remaining Time :     2,429 
+' 	(3) 	 Remaining Time :     2,207 
+pt 	(3) 	 Remaining Time :     1,986 
+im 	(3) 	 Remaining Time :     1,765 
+! 	(3) 	 Remaining Time :     1,544 
+tp 	(3) 	 Remaining Time :     1,323 
+€ 	(3) 	 Remaining Time :     1,103 
+$ 	(3) 	 Remaining Time :     0,883 
+% 	(3) 	 Remaining Time :     0,662 
+( 	(3) 	 Remaining Time :     0,441 
+) 	(3) 	 Remaining Time :     0,221 
+= 	(3) 	 Remaining Time :     0,000 
+
+Creating Dataset of size 1170... 
+uA 	(3) 	 Remaining Time :    17,017 
+uB 	(3) 	 Remaining Time :    16,872 
+uC 	(3) 	 Remaining Time :    16,600 
+uD 	(3) 	 Remaining Time :    16,336 
+uE 	(3) 	 Remaining Time :    16,031 
+uF 	(3) 	 Remaining Time :    15,780 
+uG 	(3) 	 Remaining Time :    15,590 
+uH 	(3) 	 Remaining Time :    15,417 
+uI 	(3) 	 Remaining Time :    15,172 
+uJ 	(3) 	 Remaining Time :    14,933 
+uK 	(3) 	 Remaining Time :    14,697 
+uL 	(3) 	 Remaining Time :    14,476 
+uM 	(3) 	 Remaining Time :    14,280 
+uN 	(3) 	 Remaining Time :    14,075 
+uO 	(3) 	 Remaining Time :    13,852 
+uP 	(3) 	 Remaining Time :    13,621 
+uQ 	(3) 	 Remaining Time :    13,420 
+uR 	(3) 	 Remaining Time :    13,183 
+uS 	(3) 	 Remaining Time :    12,952 
+uT 	(3) 	 Remaining Time :    12,714 
+uU 	(3) 	 Remaining Time :    12,513 
+uV 	(3) 	 Remaining Time :    12,289 
+uW 	(3) 	 Remaining Time :    12,081 
+uX 	(3) 	 Remaining Time :    11,851 
+uY 	(3) 	 Remaining Time :    11,626 
+uZ 	(3) 	 Remaining Time :    11,404 
+la 	(3) 	 Remaining Time :    11,171 
+lb 	(3) 	 Remaining Time :    10,955 
+lc 	(3) 	 Remaining Time :    10,724 
+ld 	(3) 	 Remaining Time :    10,499 
+le 	(3) 	 Remaining Time :    10,276 
+lf 	(3) 	 Remaining Time :    10,078 
+lg 	(3) 	 Remaining Time :     9,882 
+lh 	(3) 	 Remaining Time :     9,661 
+li 	(3) 	 Remaining Time :     9,435 
+lj 	(3) 	 Remaining Time :     9,206 
+lk 	(3) 	 Remaining Time :     8,986 
+ll 	(3) 	 Remaining Time :     8,756 
+lm 	(3) 	 Remaining Time :     8,538 
+ln 	(3) 	 Remaining Time :     8,324 
+lo 	(3) 	 Remaining Time :     8,126 
+lp 	(3) 	 Remaining Time :     7,952 
+lq 	(3) 	 Remaining Time :     7,746 
+lr 	(3) 	 Remaining Time :     7,538 
+ls 	(3) 	 Remaining Time :     7,322 
+lt 	(3) 	 Remaining Time :     7,098 
+lu 	(3) 	 Remaining Time :     6,873 
+lv 	(3) 	 Remaining Time :     6,649 
+lw 	(3) 	 Remaining Time :     6,426 
+lx 	(3) 	 Remaining Time :     6,201 
+ly 	(3) 	 Remaining Time :     5,979 
+lz 	(3) 	 Remaining Time :     5,756 
+0 	(3) 	 Remaining Time :     5,538 
+1 	(3) 	 Remaining Time :     5,322 
+2 	(3) 	 Remaining Time :     5,098 
+3 	(3) 	 Remaining Time :     4,875 
+4 	(3) 	 Remaining Time :     4,651 
+5 	(3) 	 Remaining Time :     4,429 
+6 	(3) 	 Remaining Time :     4,205 
+7 	(3) 	 Remaining Time :     3,983 
+8 	(3) 	 Remaining Time :     3,761 
+9 	(3) 	 Remaining Time :     3,539 
++ 	(3) 	 Remaining Time :     3,316 
+- 	(3) 	 Remaining Time :     3,095 
+cr 	(3) 	 Remaining Time :     2,873 
+@ 	(3) 	 Remaining Time :     2,654 
+# 	(3) 	 Remaining Time :     2,432 
+' 	(3) 	 Remaining Time :     2,209 
+pt 	(3) 	 Remaining Time :     1,988 
+im 	(3) 	 Remaining Time :     1,766 
+! 	(3) 	 Remaining Time :     1,545 
+tp 	(3) 	 Remaining Time :     1,324 
+€ 	(3) 	 Remaining Time :     1,103 
+$ 	(3) 	 Remaining Time :     0,882 
+% 	(3) 	 Remaining Time :     0,662 
+( 	(3) 	 Remaining Time :     0,441 
+) 	(3) 	 Remaining Time :     0,221 
+= 	(3) 	 Remaining Time :     0,000 
+
+Creating Dataset of size 15444... 
+uA 	(9) 	 Remaining Time :   188,650 
+uB 	(9) 	 Remaining Time :   185,516 
+uC 	(9) 	 Remaining Time :   182,825 
+uD 	(9) 	 Remaining Time :   181,059 
+uE 	(9) 	 Remaining Time :   178,208 
+uF 	(9) 	 Remaining Time :   175,116 
+uG 	(9) 	 Remaining Time :   172,520 
+uH 	(9) 	 Remaining Time :   170,065 
+uI 	(9) 	 Remaining Time :   168,007 
+uJ 	(9) 	 Remaining Time :   166,484 
+uK 	(9) 	 Remaining Time :   163,894 
+uL 	(9) 	 Remaining Time :   161,046 
+uM 	(9) 	 Remaining Time :   158,620 
+uN 	(9) 	 Remaining Time :   156,466 
+uO 	(9) 	 Remaining Time :   153,913 
+uP 	(9) 	 Remaining Time :   151,307 
+uQ 	(9) 	 Remaining Time :   148,840 
+uR 	(9) 	 Remaining Time :   146,347 
+uS 	(9) 	 Remaining Time :   143,817 
+uT 	(9) 	 Remaining Time :   141,268 
+uU 	(9) 	 Remaining Time :   138,722 
+uV 	(9) 	 Remaining Time :   136,210 
+uW 	(9) 	 Remaining Time :   133,755 
+uX 	(9) 	 Remaining Time :   131,236 
+uY 	(9) 	 Remaining Time :   128,695 
+uZ 	(9) 	 Remaining Time :   126,250 
+la 	(9) 	 Remaining Time :   123,732 
+lb 	(9) 	 Remaining Time :   121,264 
+lc 	(9) 	 Remaining Time :   118,735 
+ld 	(9) 	 Remaining Time :   116,280 
+le 	(9) 	 Remaining Time :   113,792 
+lf 	(9) 	 Remaining Time :   111,370 
+lg 	(9) 	 Remaining Time :   108,938 
+lh 	(9) 	 Remaining Time :   106,479 
+li 	(9) 	 Remaining Time :   103,985 
+lj 	(9) 	 Remaining Time :   101,534 
+lk 	(9) 	 Remaining Time :    99,099 
+ll 	(9) 	 Remaining Time :    96,647 
+lm 	(9) 	 Remaining Time :    94,222 
+ln 	(9) 	 Remaining Time :    91,772 
+lo 	(9) 	 Remaining Time :    89,323 
+lp 	(9) 	 Remaining Time :    86,901 
+lq 	(9) 	 Remaining Time :    84,492 
+lr 	(9) 	 Remaining Time :    82,049 
+ls 	(9) 	 Remaining Time :    79,597 
+lt 	(9) 	 Remaining Time :    77,160 
+lu 	(9) 	 Remaining Time :    74,728 
+lv 	(9) 	 Remaining Time :    72,297 
+lw 	(9) 	 Remaining Time :    69,883 
+lx 	(9) 	 Remaining Time :    67,453 
+ly 	(9) 	 Remaining Time :    65,035 
+lz 	(9) 	 Remaining Time :    62,621 
+0 	(9) 	 Remaining Time :    60,216 
+1 	(9) 	 Remaining Time :    57,790 
+2 	(9) 	 Remaining Time :    55,372 
+3 	(9) 	 Remaining Time :    52,978 
+4 	(9) 	 Remaining Time :    50,568 
+5 	(9) 	 Remaining Time :    48,156 
+6 	(9) 	 Remaining Time :    45,746 
+7 	(9) 	 Remaining Time :    43,334 
+8 	(9) 	 Remaining Time :    40,924 
+9 	(9) 	 Remaining Time :    38,512 
++ 	(9) 	 Remaining Time :    36,094 
+- 	(9) 	 Remaining Time :    33,676 
+cr 	(9) 	 Remaining Time :    31,261 
+@ 	(9) 	 Remaining Time :    28,870 
+# 	(9) 	 Remaining Time :    26,472 
+' 	(9) 	 Remaining Time :    24,059 
+pt 	(9) 	 Remaining Time :    21,648 
+im 	(9) 	 Remaining Time :    19,239 
+! 	(9) 	 Remaining Time :    16,831 
+tp 	(9) 	 Remaining Time :    14,422 
+€ 	(9) 	 Remaining Time :    12,021 
+$ 	(9) 	 Remaining Time :     9,619 
+% 	(9) 	 Remaining Time :     7,215 
+( 	(9) 	 Remaining Time :     4,809 
+) 	(9) 	 Remaining Time :     2,404 
+= 	(9) 	 Remaining Time :     0,000 
+
+Mini Batch Gradient Descent 2/8 - 8 Epochs - 64 Batch Size - 1,641E+00 LR 
+(2/8) 	Epoch 1/8	 
+	 Epoch 00001 Batch 00001 : 3,914E+00	 Time remaining   859,442 
+	 Epoch 00001 Batch 00061 : 3,822E+00	 Time remaining   511,466 
+	 Epoch 00001 Batch 00121 : 3,499E+00	 Time remaining   490,294 
+	 Epoch 00001 Batch 00181 : 3,619E+00	 Time remaining   472,559 
+	 Epoch 00001 Batch 00241 : 3,877E+00	 Time remaining   455,749 
+	 Score 0 : 0,23590 	 Score 1 : 0,34188 
+(2/8) 	Epoch 2/8	 
+	 Epoch 00002 Batch 00001 : 3,305E+00	 Time remaining   515,373 
+	 Epoch 00002 Batch 00061 : 3,219E+00	 Time remaining   485,872 
+	 Epoch 00002 Batch 00121 : 3,443E+00	 Time remaining   459,889 
+	 Epoch 00002 Batch 00181 : 3,428E+00	 Time remaining   437,143 
+	 Epoch 00002 Batch 00241 : 3,326E+00	 Time remaining   415,653 
+	 Score 0 : 0,28718 	 Score 1 : 0,41880 
+(2/8) 	Epoch 3/8	 
+	 Epoch 00003 Batch 00001 : 3,534E+00	 Time remaining   439,744 
+	 Epoch 00003 Batch 00061 : 2,881E+00	 Time remaining   415,857 
+	 Epoch 00003 Batch 00121 : 3,010E+00	 Time remaining   393,332 
+	 Epoch 00003 Batch 00181 : 2,936E+00	 Time remaining   372,416 
+	 Epoch 00003 Batch 00241 : 3,420E+00	 Time remaining   352,105 
+	 Score 0 : 0,33761 	 Score 1 : 0,48034 
+(2/8) 	Epoch 4/8	 
+	 Epoch 00004 Batch 00001 : 2,682E+00	 Time remaining   365,790 
+	 Epoch 00004 Batch 00061 : 2,783E+00	 Time remaining   344,529 
+	 Epoch 00004 Batch 00121 : 3,213E+00	 Time remaining   323,934 
+	 Epoch 00004 Batch 00181 : 2,951E+00	 Time remaining   304,170 
+	 Epoch 00004 Batch 00241 : 2,668E+00	 Time remaining   284,630 
+	 Score 0 : 0,34274 	 Score 1 : 0,49573 
+(2/8) 	Epoch 5/8	 
+	 Epoch 00005 Batch 00001 : 3,528E+00	 Time remaining   292,544 
+	 Epoch 00005 Batch 00061 : 3,237E+00	 Time remaining   272,475 
+	 Epoch 00005 Batch 00121 : 3,423E+00	 Time remaining   252,849 
+	 Epoch 00005 Batch 00181 : 2,867E+00	 Time remaining   233,713 
+	 Epoch 00005 Batch 00241 : 3,208E+00	 Time remaining   217,261 
+	 Score 0 : 0,28205 	 Score 1 : 0,39487 
+(2/8) 	Epoch 6/8	 
+	 Epoch 00006 Batch 00001 : 3,235E+00	 Time remaining   222,078 
+	 Epoch 00006 Batch 00061 : 3,150E+00	 Time remaining   204,926 
+	 Epoch 00006 Batch 00121 : 3,430E+00	 Time remaining   187,550 
+	 Epoch 00006 Batch 00181 : 2,790E+00	 Time remaining   170,169 
+	 Epoch 00006 Batch 00241 : 2,711E+00	 Time remaining   152,384 
+	 Score 0 : 0,34103 	 Score 1 : 0,47521 
+(2/8) 	Epoch 7/8	 
+	 Epoch 00007 Batch 00001 : 2,667E+00	 Time remaining   154,979 
+	 Epoch 00007 Batch 00061 : 2,598E+00	 Time remaining   136,146 
+	 Epoch 00007 Batch 00121 : 2,123E+00	 Time remaining   117,124 
+	 Epoch 00007 Batch 00181 : 2,868E+00	 Time remaining    97,929 
+	 Epoch 00007 Batch 00241 : 2,449E+00	 Time remaining    78,629 
+	 Score 0 : 0,39915 	 Score 1 : 0,55556 
+(2/8) 	Epoch 8/8	 
+	 Epoch 00008 Batch 00001 : 2,274E+00	 Time remaining    79,495 
+	 Epoch 00008 Batch 00061 : 2,523E+00	 Time remaining    59,741 
+	 Epoch 00008 Batch 00121 : 2,911E+00	 Time remaining    39,905 
+	 Epoch 00008 Batch 00181 : 3,023E+00	 Time remaining    19,987 
+	 Epoch 00008 Batch 00241 : 3,402E+00	 Time remaining     0,000 
+	 Score 0 : 0,39658 	 Score 1 : 0,56410 
+Accuracy for test set : 0.48034197 
+
+
+Phase 3 / 8 
+Creating Dataset of size 1170... 
+uA 	(3) 	 Remaining Time :    22,099 
+uB 	(3) 	 Remaining Time :    21,622 
+uC 	(3) 	 Remaining Time :    19,875 
+uD 	(3) 	 Remaining Time :    18,981 
+uE 	(3) 	 Remaining Time :    18,279 
+uF 	(3) 	 Remaining Time :    17,688 
+uG 	(3) 	 Remaining Time :    17,223 
+uH 	(3) 	 Remaining Time :    16,826 
+uI 	(3) 	 Remaining Time :    16,422 
+uJ 	(3) 	 Remaining Time :    16,089 
+uK 	(3) 	 Remaining Time :    15,763 
+uL 	(3) 	 Remaining Time :    15,438 
+uM 	(3) 	 Remaining Time :    15,355 
+uN 	(3) 	 Remaining Time :    15,118 
+uO 	(3) 	 Remaining Time :    14,818 
+uP 	(3) 	 Remaining Time :    14,531 
+uQ 	(3) 	 Remaining Time :    14,252 
+uR 	(3) 	 Remaining Time :    13,967 
+uS 	(3) 	 Remaining Time :    13,707 
+uT 	(3) 	 Remaining Time :    13,442 
+uU 	(3) 	 Remaining Time :    13,167 
+uV 	(3) 	 Remaining Time :    12,898 
+uW 	(3) 	 Remaining Time :    12,640 
+uX 	(3) 	 Remaining Time :    12,377 
+uY 	(3) 	 Remaining Time :    12,129 
+uZ 	(3) 	 Remaining Time :    11,886 
+la 	(3) 	 Remaining Time :    11,643 
+lb 	(3) 	 Remaining Time :    11,412 
+lc 	(3) 	 Remaining Time :    11,165 
+ld 	(3) 	 Remaining Time :    10,917 
+le 	(3) 	 Remaining Time :    10,675 
+lf 	(3) 	 Remaining Time :    10,461 
+lg 	(3) 	 Remaining Time :    10,276 
+lh 	(3) 	 Remaining Time :    10,023 
+li 	(3) 	 Remaining Time :     9,763 
+lj 	(3) 	 Remaining Time :     9,513 
+lk 	(3) 	 Remaining Time :     9,268 
+ll 	(3) 	 Remaining Time :     9,023 
+lm 	(3) 	 Remaining Time :     8,780 
+ln 	(3) 	 Remaining Time :     8,535 
+lo 	(3) 	 Remaining Time :     8,299 
+lp 	(3) 	 Remaining Time :     8,067 
+lq 	(3) 	 Remaining Time :     7,841 
+lr 	(3) 	 Remaining Time :     7,611 
+ls 	(3) 	 Remaining Time :     7,380 
+lt 	(3) 	 Remaining Time :     7,151 
+lu 	(3) 	 Remaining Time :     6,923 
+lv 	(3) 	 Remaining Time :     6,696 
+lw 	(3) 	 Remaining Time :     6,473 
+lx 	(3) 	 Remaining Time :     6,247 
+ly 	(3) 	 Remaining Time :     6,024 
+lz 	(3) 	 Remaining Time :     5,800 
+0 	(3) 	 Remaining Time :     5,576 
+1 	(3) 	 Remaining Time :     5,350 
+2 	(3) 	 Remaining Time :     5,125 
+3 	(3) 	 Remaining Time :     4,900 
+4 	(3) 	 Remaining Time :     4,675 
+5 	(3) 	 Remaining Time :     4,450 
+6 	(3) 	 Remaining Time :     4,226 
+7 	(3) 	 Remaining Time :     4,004 
+8 	(3) 	 Remaining Time :     3,781 
+9 	(3) 	 Remaining Time :     3,559 
++ 	(3) 	 Remaining Time :     3,336 
+- 	(3) 	 Remaining Time :     3,112 
+cr 	(3) 	 Remaining Time :     2,889 
+@ 	(3) 	 Remaining Time :     2,667 
+# 	(3) 	 Remaining Time :     2,444 
+' 	(3) 	 Remaining Time :     2,221 
+pt 	(3) 	 Remaining Time :     1,997 
+im 	(3) 	 Remaining Time :     1,775 
+! 	(3) 	 Remaining Time :     1,553 
+tp 	(3) 	 Remaining Time :     1,330 
+€ 	(3) 	 Remaining Time :     1,108 
+$ 	(3) 	 Remaining Time :     0,887 
+% 	(3) 	 Remaining Time :     0,665 
+( 	(3) 	 Remaining Time :     0,443 
+) 	(3) 	 Remaining Time :     0,222 
+= 	(3) 	 Remaining Time :     0,000 
+
+Creating Dataset of size 1170... 
+uA 	(3) 	 Remaining Time :    17,017 
+uB 	(3) 	 Remaining Time :    16,834 
+uC 	(3) 	 Remaining Time :    16,575 
+uD 	(3) 	 Remaining Time :    16,280 
+uE 	(3) 	 Remaining Time :    16,133 
+uF 	(3) 	 Remaining Time :    15,972 
+uG 	(3) 	 Remaining Time :    15,711 
+uH 	(3) 	 Remaining Time :    15,470 
+uI 	(3) 	 Remaining Time :    15,211 
+uJ 	(3) 	 Remaining Time :    14,940 
+uK 	(3) 	 Remaining Time :    14,722 
+uL 	(3) 	 Remaining Time :    14,459 
+uM 	(3) 	 Remaining Time :    14,255 
+uN 	(3) 	 Remaining Time :    14,016 
+uO 	(3) 	 Remaining Time :    13,831 
+uP 	(3) 	 Remaining Time :    13,597 
+uQ 	(3) 	 Remaining Time :    13,391 
+uR 	(3) 	 Remaining Time :    13,173 
+uS 	(3) 	 Remaining Time :    12,943 
+uT 	(3) 	 Remaining Time :    12,711 
+uU 	(3) 	 Remaining Time :    12,480 
+uV 	(3) 	 Remaining Time :    12,256 
+uW 	(3) 	 Remaining Time :    12,057 
+uX 	(3) 	 Remaining Time :    11,862 
+uY 	(3) 	 Remaining Time :    11,632 
+uZ 	(3) 	 Remaining Time :    11,406 
+la 	(3) 	 Remaining Time :    11,186 
+lb 	(3) 	 Remaining Time :    10,966 
+lc 	(3) 	 Remaining Time :    10,745 
+ld 	(3) 	 Remaining Time :    10,528 
+le 	(3) 	 Remaining Time :    10,296 
+lf 	(3) 	 Remaining Time :    10,074 
+lg 	(3) 	 Remaining Time :     9,884 
+lh 	(3) 	 Remaining Time :     9,670 
+li 	(3) 	 Remaining Time :     9,440 
+lj 	(3) 	 Remaining Time :     9,213 
+lk 	(3) 	 Remaining Time :     8,988 
+ll 	(3) 	 Remaining Time :     8,766 
+lm 	(3) 	 Remaining Time :     8,552 
+ln 	(3) 	 Remaining Time :     8,332 
+lo 	(3) 	 Remaining Time :     8,111 
+lp 	(3) 	 Remaining Time :     7,890 
+lq 	(3) 	 Remaining Time :     7,666 
+lr 	(3) 	 Remaining Time :     7,443 
+ls 	(3) 	 Remaining Time :     7,222 
+lt 	(3) 	 Remaining Time :     6,997 
+lu 	(3) 	 Remaining Time :     6,781 
+lv 	(3) 	 Remaining Time :     6,561 
+lw 	(3) 	 Remaining Time :     6,341 
+lx 	(3) 	 Remaining Time :     6,120 
+ly 	(3) 	 Remaining Time :     5,898 
+lz 	(3) 	 Remaining Time :     5,680 
+0 	(3) 	 Remaining Time :     5,462 
+1 	(3) 	 Remaining Time :     5,241 
+2 	(3) 	 Remaining Time :     5,021 
+3 	(3) 	 Remaining Time :     4,802 
+4 	(3) 	 Remaining Time :     4,584 
+5 	(3) 	 Remaining Time :     4,367 
+6 	(3) 	 Remaining Time :     4,147 
+7 	(3) 	 Remaining Time :     3,927 
+8 	(3) 	 Remaining Time :     3,709 
+9 	(3) 	 Remaining Time :     3,490 
++ 	(3) 	 Remaining Time :     3,272 
+- 	(3) 	 Remaining Time :     3,054 
+cr 	(3) 	 Remaining Time :     2,835 
+@ 	(3) 	 Remaining Time :     2,619 
+# 	(3) 	 Remaining Time :     2,401 
+' 	(3) 	 Remaining Time :     2,182 
+pt 	(3) 	 Remaining Time :     1,964 
+im 	(3) 	 Remaining Time :     1,747 
+! 	(3) 	 Remaining Time :     1,529 
+tp 	(3) 	 Remaining Time :     1,311 
+€ 	(3) 	 Remaining Time :     1,092 
+$ 	(3) 	 Remaining Time :     0,874 
+% 	(3) 	 Remaining Time :     0,656 
+( 	(3) 	 Remaining Time :     0,437 
+) 	(3) 	 Remaining Time :     0,219 
+= 	(3) 	 Remaining Time :     0,000 
+
+Creating Dataset of size 15444... 
+uA 	(9) 	 Remaining Time :   189,343 
+uB 	(9) 	 Remaining Time :   185,478 
+uC 	(9) 	 Remaining Time :   181,600 
+uD 	(9) 	 Remaining Time :   179,043 
+uE 	(9) 	 Remaining Time :   176,587 
+uF 	(9) 	 Remaining Time :   173,868 
+uG 	(9) 	 Remaining Time :   171,536 
+uH 	(9) 	 Remaining Time :   169,041 
+uI 	(9) 	 Remaining Time :   166,727 
+uJ 	(9) 	 Remaining Time :   164,118 
+uK 	(9) 	 Remaining Time :   161,775 
+uL 	(9) 	 Remaining Time :   159,225 
+uM 	(9) 	 Remaining Time :   156,920 
+uN 	(9) 	 Remaining Time :   154,583 
+uO 	(9) 	 Remaining Time :   152,124 
+uP 	(9) 	 Remaining Time :   149,703 
+uQ 	(9) 	 Remaining Time :   147,365 
+uR 	(9) 	 Remaining Time :   145,210 
+uS 	(9) 	 Remaining Time :   143,050 
+uT 	(9) 	 Remaining Time :   140,522 
+uU 	(9) 	 Remaining Time :   138,089 
+uV 	(9) 	 Remaining Time :   135,571 
+uW 	(9) 	 Remaining Time :   133,232 
+uX 	(9) 	 Remaining Time :   130,781 
+uY 	(9) 	 Remaining Time :   128,305 
+uZ 	(9) 	 Remaining Time :   125,916 
+la 	(9) 	 Remaining Time :   123,431 
+lb 	(9) 	 Remaining Time :   120,964 
+lc 	(9) 	 Remaining Time :   118,455 
+ld 	(9) 	 Remaining Time :   116,019 
+le 	(9) 	 Remaining Time :   113,547 
+lf 	(9) 	 Remaining Time :   111,136 
+lg 	(9) 	 Remaining Time :   108,704 
+lh 	(9) 	 Remaining Time :   106,288 
+li 	(9) 	 Remaining Time :   103,823 
+lj 	(9) 	 Remaining Time :   101,394 
+lk 	(9) 	 Remaining Time :    99,002 
+ll 	(9) 	 Remaining Time :    96,575 
+lm 	(9) 	 Remaining Time :    94,152 
+ln 	(9) 	 Remaining Time :    91,684 
+lo 	(9) 	 Remaining Time :    89,230 
+lp 	(9) 	 Remaining Time :    86,795 
+lq 	(9) 	 Remaining Time :    84,375 
+lr 	(9) 	 Remaining Time :    81,935 
+ls 	(9) 	 Remaining Time :    79,498 
+lt 	(9) 	 Remaining Time :    77,071 
+lu 	(9) 	 Remaining Time :    74,637 
+lv 	(9) 	 Remaining Time :    72,206 
+lw 	(9) 	 Remaining Time :    69,789 
+lx 	(9) 	 Remaining Time :    67,369 
+ly 	(9) 	 Remaining Time :    64,959 
+lz 	(9) 	 Remaining Time :    62,544 
+0 	(9) 	 Remaining Time :    60,133 
+1 	(9) 	 Remaining Time :    57,712 
+2 	(9) 	 Remaining Time :    55,301 
+3 	(9) 	 Remaining Time :    52,919 
+4 	(9) 	 Remaining Time :    50,512 
+5 	(9) 	 Remaining Time :    48,105 
+6 	(9) 	 Remaining Time :    45,704 
+7 	(9) 	 Remaining Time :    43,295 
+8 	(9) 	 Remaining Time :    40,892 
+9 	(9) 	 Remaining Time :    38,498 
++ 	(9) 	 Remaining Time :    36,080 
+- 	(9) 	 Remaining Time :    33,666 
+cr 	(9) 	 Remaining Time :    31,253 
+@ 	(9) 	 Remaining Time :    28,860 
+# 	(9) 	 Remaining Time :    26,465 
+' 	(9) 	 Remaining Time :    24,054 
+pt 	(9) 	 Remaining Time :    21,646 
+im 	(9) 	 Remaining Time :    19,242 
+! 	(9) 	 Remaining Time :    16,849 
+tp 	(9) 	 Remaining Time :    14,443 
+€ 	(9) 	 Remaining Time :    12,040 
+$ 	(9) 	 Remaining Time :     9,634 
+% 	(9) 	 Remaining Time :     7,233 
+( 	(9) 	 Remaining Time :     4,826 
+) 	(9) 	 Remaining Time :     2,413 
+= 	(9) 	 Remaining Time :     0,000 
+
+Mini Batch Gradient Descent 3/8 - 8 Epochs - 64 Batch Size - 1,346E+00 LR 
+(3/8) 	Epoch 1/8	 
+	 Epoch 00001 Batch 00001 : 2,598E+00	 Time remaining  1017,456 
+	 Epoch 00001 Batch 00061 : 2,554E+00	 Time remaining   699,452 
+	 Epoch 00001 Batch 00121 : 2,504E+00	 Time remaining   656,927 
+	 Epoch 00001 Batch 00181 : 2,689E+00	 Time remaining   628,959 
+	 Epoch 00001 Batch 00241 : 2,451E+00	 Time remaining   603,064 
+	 Score 0 : 0,33333 	 Score 1 : 0,49231 
+(3/8) 	Epoch 2/8	 
+	 Epoch 00002 Batch 00001 : 3,378E+00	 Time remaining   659,971 
+	 Epoch 00002 Batch 00061 : 2,433E+00	 Time remaining   623,544 
+	 Epoch 00002 Batch 00121 : 2,484E+00	 Time remaining   592,394 
+	 Epoch 00002 Batch 00181 : 3,056E+00	 Time remaining   563,883 
+	 Epoch 00002 Batch 00241 : 2,217E+00	 Time remaining   537,060 
+	 Score 0 : 0,38120 	 Score 1 : 0,57863 
+(3/8) 	Epoch 3/8	 
+	 Epoch 00003 Batch 00001 : 1,772E+00	 Time remaining   562,593 
+	 Epoch 00003 Batch 00061 : 2,473E+00	 Time remaining   533,375 
+	 Epoch 00003 Batch 00121 : 1,810E+00	 Time remaining   505,737 
+	 Epoch 00003 Batch 00181 : 2,559E+00	 Time remaining   479,525 
+	 Epoch 00003 Batch 00241 : 2,054E+00	 Time remaining   454,155 
+	 Score 0 : 0,41538 	 Score 1 : 0,62906 
+(3/8) 	Epoch 4/8	 
+	 Epoch 00004 Batch 00001 : 2,021E+00	 Time remaining   467,460 
+	 Epoch 00004 Batch 00061 : 2,367E+00	 Time remaining   440,977 
+	 Epoch 00004 Batch 00121 : 2,426E+00	 Time remaining   415,123 
+	 Epoch 00004 Batch 00181 : 2,055E+00	 Time remaining   389,931 
+	 Epoch 00004 Batch 00241 : 2,319E+00	 Time remaining   365,395 
+	 Score 0 : 0,42564 	 Score 1 : 0,63590 
+(3/8) 	Epoch 5/8	 
+	 Epoch 00005 Batch 00001 : 2,043E+00	 Time remaining   373,563 
+	 Epoch 00005 Batch 00061 : 2,832E+00	 Time remaining   348,295 
+	 Epoch 00005 Batch 00121 : 2,103E+00	 Time remaining   323,521 
+	 Epoch 00005 Batch 00181 : 2,525E+00	 Time remaining   299,091 
+	 Epoch 00005 Batch 00241 : 2,106E+00	 Time remaining   275,026 
+	 Score 0 : 0,37863 	 Score 1 : 0,55812 
+(3/8) 	Epoch 6/8	 
+	 Epoch 00006 Batch 00001 : 2,503E+00	 Time remaining   279,625 
+	 Epoch 00006 Batch 00061 : 2,711E+00	 Time remaining   255,175 
+	 Epoch 00006 Batch 00121 : 2,639E+00	 Time remaining   231,071 
+	 Epoch 00006 Batch 00181 : 2,223E+00	 Time remaining   207,536 
+	 Epoch 00006 Batch 00241 : 2,517E+00	 Time remaining   183,917 
+	 Score 0 : 0,38034 	 Score 1 : 0,60940 
+(3/8) 	Epoch 7/8	 
+	 Epoch 00007 Batch 00001 : 2,296E+00	 Time remaining   186,299 
+	 Epoch 00007 Batch 00061 : 2,211E+00	 Time remaining   162,546 
+	 Epoch 00007 Batch 00121 : 2,051E+00	 Time remaining   138,889 
+	 Epoch 00007 Batch 00181 : 2,246E+00	 Time remaining   115,437 
+	 Epoch 00007 Batch 00241 : 2,590E+00	 Time remaining    92,163 
+	 Score 0 : 0,44359 	 Score 1 : 0,66154 
+(3/8) 	Epoch 8/8	 
+	 Epoch 00008 Batch 00001 : 1,958E+00	 Time remaining    92,956 
+	 Epoch 00008 Batch 00061 : 1,929E+00	 Time remaining    69,498 
+	 Epoch 00008 Batch 00121 : 1,843E+00	 Time remaining    46,187 
+	 Epoch 00008 Batch 00181 : 2,084E+00	 Time remaining    23,033 
+	 Epoch 00008 Batch 00241 : 1,975E+00	 Time remaining     0,000 
+	 Score 0 : 0,44359 	 Score 1 : 0,67009 
+Accuracy for test set : 0.55683786 
+
+
+Phase 4 / 8 
+Creating Dataset of size 1170... 
+uA 	(3) 	 Remaining Time :    19,558 
+uB 	(3) 	 Remaining Time :    17,898 
+uC 	(3) 	 Remaining Time :    16,925 
+uD 	(3) 	 Remaining Time :    16,095 
+uE 	(3) 	 Remaining Time :    15,549 
+uF 	(3) 	 Remaining Time :    15,048 
+uG 	(3) 	 Remaining Time :    14,646 
+uH 	(3) 	 Remaining Time :    14,324 
+uI 	(3) 	 Remaining Time :    13,992 
+uJ 	(3) 	 Remaining Time :    13,784 
+uK 	(3) 	 Remaining Time :    13,668 
+uL 	(3) 	 Remaining Time :    13,535 
+uM 	(3) 	 Remaining Time :    13,400 
+uN 	(3) 	 Remaining Time :    13,303 
+uO 	(3) 	 Remaining Time :    13,138 
+uP 	(3) 	 Remaining Time :    12,962 
+uQ 	(3) 	 Remaining Time :    12,778 
+uR 	(3) 	 Remaining Time :    12,650 
+uS 	(3) 	 Remaining Time :    12,461 
+uT 	(3) 	 Remaining Time :    12,261 
+uU 	(3) 	 Remaining Time :    12,060 
+uV 	(3) 	 Remaining Time :    11,849 
+uW 	(3) 	 Remaining Time :    11,650 
+uX 	(3) 	 Remaining Time :    11,437 
+uY 	(3) 	 Remaining Time :    11,238 
+uZ 	(3) 	 Remaining Time :    11,032 
+la 	(3) 	 Remaining Time :    10,884 
+lb 	(3) 	 Remaining Time :    10,800 
+lc 	(3) 	 Remaining Time :    10,603 
+ld 	(3) 	 Remaining Time :    10,434 
+le 	(3) 	 Remaining Time :    10,252 
+lf 	(3) 	 Remaining Time :    10,081 
+lg 	(3) 	 Remaining Time :     9,884 
+lh 	(3) 	 Remaining Time :     9,692 
+li 	(3) 	 Remaining Time :     9,499 
+lj 	(3) 	 Remaining Time :     9,301 
+lk 	(3) 	 Remaining Time :     9,083 
+ll 	(3) 	 Remaining Time :     8,859 
+lm 	(3) 	 Remaining Time :     8,640 
+ln 	(3) 	 Remaining Time :     8,417 
+lo 	(3) 	 Remaining Time :     8,191 
+lp 	(3) 	 Remaining Time :     7,965 
+lq 	(3) 	 Remaining Time :     7,748 
+lr 	(3) 	 Remaining Time :     7,520 
+ls 	(3) 	 Remaining Time :     7,301 
+lt 	(3) 	 Remaining Time :     7,085 
+lu 	(3) 	 Remaining Time :     6,860 
+lv 	(3) 	 Remaining Time :     6,635 
+lw 	(3) 	 Remaining Time :     6,408 
+lx 	(3) 	 Remaining Time :     6,185 
+ly 	(3) 	 Remaining Time :     5,964 
+lz 	(3) 	 Remaining Time :     5,744 
+0 	(3) 	 Remaining Time :     5,522 
+1 	(3) 	 Remaining Time :     5,317 
+2 	(3) 	 Remaining Time :     5,100 
+3 	(3) 	 Remaining Time :     4,878 
+4 	(3) 	 Remaining Time :     4,654 
+5 	(3) 	 Remaining Time :     4,430 
+6 	(3) 	 Remaining Time :     4,208 
+7 	(3) 	 Remaining Time :     3,986 
+8 	(3) 	 Remaining Time :     3,764 
+9 	(3) 	 Remaining Time :     3,544 
++ 	(3) 	 Remaining Time :     3,326 
+- 	(3) 	 Remaining Time :     3,104 
+cr 	(3) 	 Remaining Time :     2,882 
+@ 	(3) 	 Remaining Time :     2,661 
+# 	(3) 	 Remaining Time :     2,439 
+' 	(3) 	 Remaining Time :     2,217 
+pt 	(3) 	 Remaining Time :     1,994 
+im 	(3) 	 Remaining Time :     1,771 
+! 	(3) 	 Remaining Time :     1,549 
+tp 	(3) 	 Remaining Time :     1,327 
+€ 	(3) 	 Remaining Time :     1,106 
+$ 	(3) 	 Remaining Time :     0,885 
+% 	(3) 	 Remaining Time :     0,665 
+( 	(3) 	 Remaining Time :     0,443 
+) 	(3) 	 Remaining Time :     0,222 
+= 	(3) 	 Remaining Time :     0,000 
+
+Creating Dataset of size 1170... 
+uA 	(3) 	 Remaining Time :    17,248 
+uB 	(3) 	 Remaining Time :    16,720 
+uC 	(3) 	 Remaining Time :    16,375 
+uD 	(3) 	 Remaining Time :    16,151 
+uE 	(3) 	 Remaining Time :    15,899 
+uF 	(3) 	 Remaining Time :    15,648 
+uG 	(3) 	 Remaining Time :    15,458 
+uH 	(3) 	 Remaining Time :    15,225 
+uI 	(3) 	 Remaining Time :    14,973 
+uJ 	(3) 	 Remaining Time :    14,770 
+uK 	(3) 	 Remaining Time :    14,557 
+uL 	(3) 	 Remaining Time :    14,333 
+uM 	(3) 	 Remaining Time :    14,135 
+uN 	(3) 	 Remaining Time :    13,938 
+uO 	(3) 	 Remaining Time :    13,721 
+uP 	(3) 	 Remaining Time :    13,489 
+uQ 	(3) 	 Remaining Time :    13,269 
+uR 	(3) 	 Remaining Time :    13,070 
+uS 	(3) 	 Remaining Time :    12,868 
+uT 	(3) 	 Remaining Time :    12,644 
+uU 	(3) 	 Remaining Time :    12,426 
+uV 	(3) 	 Remaining Time :    12,244 
+uW 	(3) 	 Remaining Time :    12,035 
+uX 	(3) 	 Remaining Time :    11,833 
+uY 	(3) 	 Remaining Time :    11,605 
+uZ 	(3) 	 Remaining Time :    11,390 
+la 	(3) 	 Remaining Time :    11,171 
+lb 	(3) 	 Remaining Time :    10,946 
+lc 	(3) 	 Remaining Time :    10,734 
+ld 	(3) 	 Remaining Time :    10,517 
+le 	(3) 	 Remaining Time :    10,311 
+lf 	(3) 	 Remaining Time :    10,087 
+lg 	(3) 	 Remaining Time :     9,867 
+lh 	(3) 	 Remaining Time :     9,649 
+li 	(3) 	 Remaining Time :     9,427 
+lj 	(3) 	 Remaining Time :     9,199 
+lk 	(3) 	 Remaining Time :     8,981 
+ll 	(3) 	 Remaining Time :     8,755 
+lm 	(3) 	 Remaining Time :     8,536 
+ln 	(3) 	 Remaining Time :     8,318 
+lo 	(3) 	 Remaining Time :     8,102 
+lp 	(3) 	 Remaining Time :     7,885 
+lq 	(3) 	 Remaining Time :     7,663 
+lr 	(3) 	 Remaining Time :     7,439 
+ls 	(3) 	 Remaining Time :     7,222 
+lt 	(3) 	 Remaining Time :     6,998 
+lu 	(3) 	 Remaining Time :     6,777 
+lv 	(3) 	 Remaining Time :     6,557 
+lw 	(3) 	 Remaining Time :     6,337 
+lx 	(3) 	 Remaining Time :     6,117 
+ly 	(3) 	 Remaining Time :     5,898 
+lz 	(3) 	 Remaining Time :     5,678 
+0 	(3) 	 Remaining Time :     5,460 
+1 	(3) 	 Remaining Time :     5,240 
+2 	(3) 	 Remaining Time :     5,019 
+3 	(3) 	 Remaining Time :     4,800 
+4 	(3) 	 Remaining Time :     4,584 
+5 	(3) 	 Remaining Time :     4,364 
+6 	(3) 	 Remaining Time :     4,146 
+7 	(3) 	 Remaining Time :     3,926 
+8 	(3) 	 Remaining Time :     3,709 
+9 	(3) 	 Remaining Time :     3,494 
++ 	(3) 	 Remaining Time :     3,275 
+- 	(3) 	 Remaining Time :     3,059 
+cr 	(3) 	 Remaining Time :     2,842 
+@ 	(3) 	 Remaining Time :     2,623 
+# 	(3) 	 Remaining Time :     2,405 
+' 	(3) 	 Remaining Time :     2,186 
+pt 	(3) 	 Remaining Time :     1,969 
+im 	(3) 	 Remaining Time :     1,750 
+! 	(3) 	 Remaining Time :     1,532 
+tp 	(3) 	 Remaining Time :     1,312 
+€ 	(3) 	 Remaining Time :     1,093 
+$ 	(3) 	 Remaining Time :     0,875 
+% 	(3) 	 Remaining Time :     0,656 
+( 	(3) 	 Remaining Time :     0,437 
+) 	(3) 	 Remaining Time :     0,219 
+= 	(3) 	 Remaining Time :     0,000 
+
+Creating Dataset of size 15444... 
+uA 	(9) 	 Remaining Time :   187,572 
+uB 	(9) 	 Remaining Time :   184,642 
+uC 	(9) 	 Remaining Time :   179,725 
+uD 	(9) 	 Remaining Time :   177,952 
+uE 	(9) 	 Remaining Time :   175,623 
+uF 	(9) 	 Remaining Time :   172,968 
+uG 	(9) 	 Remaining Time :   170,613 
+uH 	(9) 	 Remaining Time :   168,193 
+uI 	(9) 	 Remaining Time :   166,367 
+uJ 	(9) 	 Remaining Time :   163,839 
+uK 	(9) 	 Remaining Time :   161,269 
+uL 	(9) 	 Remaining Time :   158,730 
+uM 	(9) 	 Remaining Time :   156,430 
+uN 	(9) 	 Remaining Time :   154,039 
+uO 	(9) 	 Remaining Time :   151,670 
+uP 	(9) 	 Remaining Time :   149,246 
+uQ 	(9) 	 Remaining Time :   147,078 
+uR 	(9) 	 Remaining Time :   144,717 
+uS 	(9) 	 Remaining Time :   142,237 
+uT 	(9) 	 Remaining Time :   139,887 
+uU 	(9) 	 Remaining Time :   137,460 
+uV 	(9) 	 Remaining Time :   135,148 
+uW 	(9) 	 Remaining Time :   132,815 
+uX 	(9) 	 Remaining Time :   130,356 
+uY 	(9) 	 Remaining Time :   127,927 
+uZ 	(9) 	 Remaining Time :   125,506 
+la 	(9) 	 Remaining Time :   123,046 
+lb 	(9) 	 Remaining Time :   120,571 
+lc 	(9) 	 Remaining Time :   118,080 
+ld 	(9) 	 Remaining Time :   115,662 
+le 	(9) 	 Remaining Time :   113,208 
+lf 	(9) 	 Remaining Time :   110,803 
+lg 	(9) 	 Remaining Time :   108,404 
+lh 	(9) 	 Remaining Time :   105,971 
+li 	(9) 	 Remaining Time :   103,508 
+lj 	(9) 	 Remaining Time :   101,068 
+lk 	(9) 	 Remaining Time :    98,657 
+ll 	(9) 	 Remaining Time :    96,220 
+lm 	(9) 	 Remaining Time :    93,822 
+ln 	(9) 	 Remaining Time :    91,404 
+lo 	(9) 	 Remaining Time :    88,985 
+lp 	(9) 	 Remaining Time :    86,584 
+lq 	(9) 	 Remaining Time :    84,157 
+lr 	(9) 	 Remaining Time :    81,730 
+ls 	(9) 	 Remaining Time :    79,294 
+lt 	(9) 	 Remaining Time :    76,906 
+lu 	(9) 	 Remaining Time :    74,486 
+lv 	(9) 	 Remaining Time :    72,058 
+lw 	(9) 	 Remaining Time :    69,653 
+lx 	(9) 	 Remaining Time :    67,235 
+ly 	(9) 	 Remaining Time :    64,830 
+lz 	(9) 	 Remaining Time :    62,418 
+0 	(9) 	 Remaining Time :    60,013 
+1 	(9) 	 Remaining Time :    57,608 
+2 	(9) 	 Remaining Time :    55,211 
+3 	(9) 	 Remaining Time :    52,815 
+4 	(9) 	 Remaining Time :    50,400 
+5 	(9) 	 Remaining Time :    47,998 
+6 	(9) 	 Remaining Time :    45,594 
+7 	(9) 	 Remaining Time :    43,191 
+8 	(9) 	 Remaining Time :    40,795 
+9 	(9) 	 Remaining Time :    38,396 
++ 	(9) 	 Remaining Time :    35,997 
+- 	(9) 	 Remaining Time :    33,509 
+cr 	(9) 	 Remaining Time :    31,075 
+@ 	(9) 	 Remaining Time :    28,699 
+# 	(9) 	 Remaining Time :    26,314 
+' 	(9) 	 Remaining Time :    23,918 
+pt 	(9) 	 Remaining Time :    21,523 
+im 	(9) 	 Remaining Time :    19,130 
+! 	(9) 	 Remaining Time :    16,737 
+tp 	(9) 	 Remaining Time :    14,344 
+€ 	(9) 	 Remaining Time :    11,955 
+$ 	(9) 	 Remaining Time :     9,566 
+% 	(9) 	 Remaining Time :     7,176 
+( 	(9) 	 Remaining Time :     4,783 
+) 	(9) 	 Remaining Time :     2,391 
+= 	(9) 	 Remaining Time :     0,000 
+
+Mini Batch Gradient Descent 4/8 - 8 Epochs - 64 Batch Size - 1,104E+00 LR 
+(4/8) 	Epoch 1/8	 
+	 Epoch 00001 Batch 00001 : 2,448E+00	 Time remaining  1239,061 
+	 Epoch 00001 Batch 00061 : 2,564E+00	 Time remaining   665,509 
+	 Epoch 00001 Batch 00121 : 2,675E+00	 Time remaining   640,634 
+	 Epoch 00001 Batch 00181 : 2,163E+00	 Time remaining   616,575 
+	 Epoch 00001 Batch 00241 : 2,466E+00	 Time remaining   593,985 
+	 Score 0 : 0,40855 	 Score 1 : 0,63077 
+(4/8) 	Epoch 2/8	 
+	 Epoch 00002 Batch 00001 : 2,481E+00	 Time remaining   655,791 
+	 Epoch 00002 Batch 00061 : 2,437E+00	 Time remaining   620,190 
+	 Epoch 00002 Batch 00121 : 2,022E+00	 Time remaining   589,153 
+	 Epoch 00002 Batch 00181 : 1,904E+00	 Time remaining   561,267 
+	 Epoch 00002 Batch 00241 : 2,477E+00	 Time remaining   535,848 
+	 Score 0 : 0,40427 	 Score 1 : 0,62479 
+(4/8) 	Epoch 3/8	 
+	 Epoch 00003 Batch 00001 : 1,924E+00	 Time remaining   560,666 
+	 Epoch 00003 Batch 00061 : 2,926E+00	 Time remaining   531,712 
+	 Epoch 00003 Batch 00121 : 2,065E+00	 Time remaining   504,199 
+	 Epoch 00003 Batch 00181 : 1,693E+00	 Time remaining   478,567 
+	 Epoch 00003 Batch 00241 : 1,763E+00	 Time remaining   453,588 
+	 Score 0 : 0,44872 	 Score 1 : 0,68205 
+(4/8) 	Epoch 4/8	 
+	 Epoch 00004 Batch 00001 : 2,118E+00	 Time remaining   467,185 
+	 Epoch 00004 Batch 00061 : 1,674E+00	 Time remaining   440,641 
+	 Epoch 00004 Batch 00121 : 2,045E+00	 Time remaining   415,049 
+	 Epoch 00004 Batch 00181 : 2,142E+00	 Time remaining   389,955 
+	 Epoch 00004 Batch 00241 : 2,335E+00	 Time remaining   365,297 
+	 Score 0 : 0,44957 	 Score 1 : 0,67949 
+(4/8) 	Epoch 5/8	 
+	 Epoch 00005 Batch 00001 : 1,668E+00	 Time remaining   373,204 
+	 Epoch 00005 Batch 00061 : 1,944E+00	 Time remaining   347,933 
+	 Epoch 00005 Batch 00121 : 2,340E+00	 Time remaining   323,264 
+	 Epoch 00005 Batch 00181 : 1,961E+00	 Time remaining   298,947 
+	 Epoch 00005 Batch 00241 : 1,838E+00	 Time remaining   274,974 
+	 Score 0 : 0,43504 	 Score 1 : 0,65299 
+(4/8) 	Epoch 6/8	 
+	 Epoch 00006 Batch 00001 : 1,859E+00	 Time remaining   279,559 
+	 Epoch 00006 Batch 00061 : 2,537E+00	 Time remaining   255,194 
+	 Epoch 00006 Batch 00121 : 1,825E+00	 Time remaining   231,124 
+	 Epoch 00006 Batch 00181 : 1,429E+00	 Time remaining   207,318 
+	 Epoch 00006 Batch 00241 : 1,805E+00	 Time remaining   183,738 
+	 Score 0 : 0,41538 	 Score 1 : 0,65641 
+(4/8) 	Epoch 7/8	 
+	 Epoch 00007 Batch 00001 : 2,144E+00	 Time remaining   186,132 
+	 Epoch 00007 Batch 00061 : 2,193E+00	 Time remaining   162,314 
+	 Epoch 00007 Batch 00121 : 2,514E+00	 Time remaining   138,754 
+	 Epoch 00007 Batch 00181 : 2,395E+00	 Time remaining   115,387 
+	 Epoch 00007 Batch 00241 : 2,015E+00	 Time remaining    92,110 
+	 Score 0 : 0,45556 	 Score 1 : 0,67521 
+(4/8) 	Epoch 8/8	 
+	 Epoch 00008 Batch 00001 : 2,001E+00	 Time remaining    92,943 
+	 Epoch 00008 Batch 00061 : 1,530E+00	 Time remaining    69,486 
+	 Epoch 00008 Batch 00121 : 2,266E+00	 Time remaining    46,200 
+	 Epoch 00008 Batch 00181 : 1,870E+00	 Time remaining    23,040 
+	 Epoch 00008 Batch 00241 : 2,285E+00	 Time remaining     0,000 
+	 Score 0 : 0,46581 	 Score 1 : 0,68547 
+Accuracy for test set : 0.57564133 
+
+
+Phase 5 / 8 
+Creating Dataset of size 1170... 
+uA 	(3) 	 Remaining Time :    19,327 
+uB 	(3) 	 Remaining Time :    18,354 
+uC 	(3) 	 Remaining Time :    17,625 
+uD 	(3) 	 Remaining Time :    17,076 
+uE 	(3) 	 Remaining Time :    16,717 
+uF 	(3) 	 Remaining Time :    16,380 
+uG 	(3) 	 Remaining Time :    16,066 
+uH 	(3) 	 Remaining Time :    15,776 
+uI 	(3) 	 Remaining Time :    15,464 
+uJ 	(3) 	 Remaining Time :    15,212 
+uK 	(3) 	 Remaining Time :    15,014 
+uL 	(3) 	 Remaining Time :    14,790 
+uM 	(3) 	 Remaining Time :    14,565 
+uN 	(3) 	 Remaining Time :    14,327 
+uO 	(3) 	 Remaining Time :    14,095 
+uP 	(3) 	 Remaining Time :    13,861 
+uQ 	(3) 	 Remaining Time :    13,621 
+uR 	(3) 	 Remaining Time :    13,380 
+uS 	(3) 	 Remaining Time :    13,135 
+uT 	(3) 	 Remaining Time :    12,946 
+uU 	(3) 	 Remaining Time :    12,741 
+uV 	(3) 	 Remaining Time :    12,501 
+uW 	(3) 	 Remaining Time :    12,272 
+uX 	(3) 	 Remaining Time :    12,044 
+uY 	(3) 	 Remaining Time :    11,813 
+uZ 	(3) 	 Remaining Time :    11,590 
+la 	(3) 	 Remaining Time :    11,356 
+lb 	(3) 	 Remaining Time :    11,123 
+lc 	(3) 	 Remaining Time :    10,898 
+ld 	(3) 	 Remaining Time :    10,670 
+le 	(3) 	 Remaining Time :    10,454 
+lf 	(3) 	 Remaining Time :    10,234 
+lg 	(3) 	 Remaining Time :    10,005 
+lh 	(3) 	 Remaining Time :     9,782 
+li 	(3) 	 Remaining Time :     9,552 
+lj 	(3) 	 Remaining Time :     9,323 
+lk 	(3) 	 Remaining Time :     9,099 
+ll 	(3) 	 Remaining Time :     8,872 
+lm 	(3) 	 Remaining Time :     8,654 
+ln 	(3) 	 Remaining Time :     8,430 
+lo 	(3) 	 Remaining Time :     8,205 
+lp 	(3) 	 Remaining Time :     7,977 
+lq 	(3) 	 Remaining Time :     7,763 
+lr 	(3) 	 Remaining Time :     7,535 
+ls 	(3) 	 Remaining Time :     7,308 
+lt 	(3) 	 Remaining Time :     7,082 
+lu 	(3) 	 Remaining Time :     6,856 
+lv 	(3) 	 Remaining Time :     6,636 
+lw 	(3) 	 Remaining Time :     6,415 
+lx 	(3) 	 Remaining Time :     6,190 
+ly 	(3) 	 Remaining Time :     5,967 
+lz 	(3) 	 Remaining Time :     5,745 
+0 	(3) 	 Remaining Time :     5,525 
+1 	(3) 	 Remaining Time :     5,302 
+2 	(3) 	 Remaining Time :     5,079 
+3 	(3) 	 Remaining Time :     4,856 
+4 	(3) 	 Remaining Time :     4,641 
+5 	(3) 	 Remaining Time :     4,422 
+6 	(3) 	 Remaining Time :     4,200 
+7 	(3) 	 Remaining Time :     3,978 
+8 	(3) 	 Remaining Time :     3,757 
+9 	(3) 	 Remaining Time :     3,535 
++ 	(3) 	 Remaining Time :     3,313 
+- 	(3) 	 Remaining Time :     3,092 
+cr 	(3) 	 Remaining Time :     2,870 
+@ 	(3) 	 Remaining Time :     2,651 
+# 	(3) 	 Remaining Time :     2,430 
+' 	(3) 	 Remaining Time :     2,208 
+pt 	(3) 	 Remaining Time :     1,986 
+im 	(3) 	 Remaining Time :     1,766 
+! 	(3) 	 Remaining Time :     1,545 
+tp 	(3) 	 Remaining Time :     1,324 
+€ 	(3) 	 Remaining Time :     1,104 
+$ 	(3) 	 Remaining Time :     0,883 
+% 	(3) 	 Remaining Time :     0,662 
+( 	(3) 	 Remaining Time :     0,442 
+) 	(3) 	 Remaining Time :     0,221 
+= 	(3) 	 Remaining Time :     0,000 
+
+Creating Dataset of size 1170... 
+uA 	(3) 	 Remaining Time :    17,248 
+uB 	(3) 	 Remaining Time :    16,340 
+uC 	(3) 	 Remaining Time :    15,925 
+uD 	(3) 	 Remaining Time :    15,614 
+uE 	(3) 	 Remaining Time :    15,286 
+uF 	(3) 	 Remaining Time :    15,048 
+uG 	(3) 	 Remaining Time :    14,991 
+uH 	(3) 	 Remaining Time :    14,779 
+uI 	(3) 	 Remaining Time :    14,605 
+uJ 	(3) 	 Remaining Time :    14,423 
+uK 	(3) 	 Remaining Time :    14,289 
+uL 	(3) 	 Remaining Time :    14,069 
+uM 	(3) 	 Remaining Time :    13,890 
+uN 	(3) 	 Remaining Time :    13,701 
+uO 	(3) 	 Remaining Time :    13,507 
+uP 	(3) 	 Remaining Time :    13,303 
+uQ 	(3) 	 Remaining Time :    13,101 
+uR 	(3) 	 Remaining Time :    12,890 
+uS 	(3) 	 Remaining Time :    12,697 
+uT 	(3) 	 Remaining Time :    12,479 
+uU 	(3) 	 Remaining Time :    12,383 
+uV 	(3) 	 Remaining Time :    12,170 
+uW 	(3) 	 Remaining Time :    11,959 
+uX 	(3) 	 Remaining Time :    11,770 
+uY 	(3) 	 Remaining Time :    11,584 
+uZ 	(3) 	 Remaining Time :    11,360 
+la 	(3) 	 Remaining Time :    11,141 
+lb 	(3) 	 Remaining Time :    10,918 
+lc 	(3) 	 Remaining Time :    10,690 
+ld 	(3) 	 Remaining Time :    10,483 
+le 	(3) 	 Remaining Time :    10,257 
+lf 	(3) 	 Remaining Time :    10,034 
+lg 	(3) 	 Remaining Time :     9,814 
+lh 	(3) 	 Remaining Time :     9,613 
+li 	(3) 	 Remaining Time :     9,392 
+lj 	(3) 	 Remaining Time :     9,168 
+lk 	(3) 	 Remaining Time :     8,945 
+ll 	(3) 	 Remaining Time :     8,726 
+lm 	(3) 	 Remaining Time :     8,514 
+ln 	(3) 	 Remaining Time :     8,293 
+lo 	(3) 	 Remaining Time :     8,077 
+lp 	(3) 	 Remaining Time :     7,858 
+lq 	(3) 	 Remaining Time :     7,641 
+lr 	(3) 	 Remaining Time :     7,419 
+ls 	(3) 	 Remaining Time :     7,200 
+lt 	(3) 	 Remaining Time :     6,983 
+lu 	(3) 	 Remaining Time :     6,765 
+lv 	(3) 	 Remaining Time :     6,544 
+lw 	(3) 	 Remaining Time :     6,325 
+lx 	(3) 	 Remaining Time :     6,107 
+ly 	(3) 	 Remaining Time :     5,887 
+lz 	(3) 	 Remaining Time :     5,674 
+0 	(3) 	 Remaining Time :     5,453 
+1 	(3) 	 Remaining Time :     5,233 
+2 	(3) 	 Remaining Time :     5,015 
+3 	(3) 	 Remaining Time :     4,798 
+4 	(3) 	 Remaining Time :     4,581 
+5 	(3) 	 Remaining Time :     4,362 
+6 	(3) 	 Remaining Time :     4,142 
+7 	(3) 	 Remaining Time :     3,923 
+8 	(3) 	 Remaining Time :     3,705 
+9 	(3) 	 Remaining Time :     3,490 
++ 	(3) 	 Remaining Time :     3,271 
+- 	(3) 	 Remaining Time :     3,053 
+cr 	(3) 	 Remaining Time :     2,834 
+@ 	(3) 	 Remaining Time :     2,616 
+# 	(3) 	 Remaining Time :     2,398 
+' 	(3) 	 Remaining Time :     2,180 
+pt 	(3) 	 Remaining Time :     1,962 
+im 	(3) 	 Remaining Time :     1,744 
+! 	(3) 	 Remaining Time :     1,526 
+tp 	(3) 	 Remaining Time :     1,308 
+€ 	(3) 	 Remaining Time :     1,090 
+$ 	(3) 	 Remaining Time :     0,872 
+% 	(3) 	 Remaining Time :     0,654 
+( 	(3) 	 Remaining Time :     0,436 
+) 	(3) 	 Remaining Time :     0,218 
+= 	(3) 	 Remaining Time :     0,000 
+
+Creating Dataset of size 15444... 
+uA 	(9) 	 Remaining Time :   188,111 
+uB 	(9) 	 Remaining Time :   185,744 
+uC 	(9) 	 Remaining Time :   182,125 
+uD 	(9) 	 Remaining Time :   180,930 
+uE 	(9) 	 Remaining Time :   178,193 
+uF 	(9) 	 Remaining Time :   175,224 
+uG 	(9) 	 Remaining Time :   172,642 
+uH 	(9) 	 Remaining Time :   170,144 
+uI 	(9) 	 Remaining Time :   167,478 
+uJ 	(9) 	 Remaining Time :   164,954 
+uK 	(9) 	 Remaining Time :   162,396 
+uL 	(9) 	 Remaining Time :   159,890 
+uM 	(9) 	 Remaining Time :   157,570 
+uN 	(9) 	 Remaining Time :   155,154 
+uO 	(9) 	 Remaining Time :   152,725 
+uP 	(9) 	 Remaining Time :   150,272 
+uQ 	(9) 	 Remaining Time :   147,932 
+uR 	(9) 	 Remaining Time :   145,520 
+uS 	(9) 	 Remaining Time :   143,280 
+uT 	(9) 	 Remaining Time :   140,804 
+uU 	(9) 	 Remaining Time :   138,336 
+uV 	(9) 	 Remaining Time :   135,815 
+uW 	(9) 	 Remaining Time :   133,454 
+uX 	(9) 	 Remaining Time :   131,015 
+uY 	(9) 	 Remaining Time :   128,504 
+uZ 	(9) 	 Remaining Time :   126,074 
+la 	(9) 	 Remaining Time :   123,565 
+lb 	(9) 	 Remaining Time :   121,193 
+lc 	(9) 	 Remaining Time :   118,685 
+ld 	(9) 	 Remaining Time :   116,211 
+le 	(9) 	 Remaining Time :   113,716 
+lf 	(9) 	 Remaining Time :   111,298 
+lg 	(9) 	 Remaining Time :   108,859 
+lh 	(9) 	 Remaining Time :   106,423 
+li 	(9) 	 Remaining Time :   103,943 
+lj 	(9) 	 Remaining Time :   101,484 
+lk 	(9) 	 Remaining Time :    99,053 
+ll 	(9) 	 Remaining Time :    96,603 
+lm 	(9) 	 Remaining Time :    94,186 
+ln 	(9) 	 Remaining Time :    91,742 
+lo 	(9) 	 Remaining Time :    89,301 
+lp 	(9) 	 Remaining Time :    86,873 
+lq 	(9) 	 Remaining Time :    84,453 
+lr 	(9) 	 Remaining Time :    81,999 
+ls 	(9) 	 Remaining Time :    79,563 
+lt 	(9) 	 Remaining Time :    77,124 
+lu 	(9) 	 Remaining Time :    74,745 
+lv 	(9) 	 Remaining Time :    72,311 
+lw 	(9) 	 Remaining Time :    69,894 
+lx 	(9) 	 Remaining Time :    67,463 
+ly 	(9) 	 Remaining Time :    65,046 
+lz 	(9) 	 Remaining Time :    62,627 
+0 	(9) 	 Remaining Time :    60,241 
+1 	(9) 	 Remaining Time :    57,805 
+2 	(9) 	 Remaining Time :    55,386 
+3 	(9) 	 Remaining Time :    52,978 
+4 	(9) 	 Remaining Time :    50,560 
+5 	(9) 	 Remaining Time :    48,151 
+6 	(9) 	 Remaining Time :    45,684 
+7 	(9) 	 Remaining Time :    43,197 
+8 	(9) 	 Remaining Time :    40,784 
+9 	(9) 	 Remaining Time :    38,385 
++ 	(9) 	 Remaining Time :    35,982 
+- 	(9) 	 Remaining Time :    33,581 
+cr 	(9) 	 Remaining Time :    31,178 
+@ 	(9) 	 Remaining Time :    28,792 
+# 	(9) 	 Remaining Time :    26,403 
+' 	(9) 	 Remaining Time :    23,990 
+pt 	(9) 	 Remaining Time :    21,588 
+im 	(9) 	 Remaining Time :    19,187 
+! 	(9) 	 Remaining Time :    16,785 
+tp 	(9) 	 Remaining Time :    14,385 
+€ 	(9) 	 Remaining Time :    11,998 
+$ 	(9) 	 Remaining Time :     9,602 
+% 	(9) 	 Remaining Time :     7,203 
+( 	(9) 	 Remaining Time :     4,801 
+) 	(9) 	 Remaining Time :     2,400 
+= 	(9) 	 Remaining Time :     0,000 
+
+Mini Batch Gradient Descent 5/8 - 8 Epochs - 64 Batch Size - 9,057E-01 LR 
+(5/8) 	Epoch 1/8	 
+	 Epoch 00001 Batch 00001 : 1,911E+00	 Time remaining  1071,412 
+	 Epoch 00001 Batch 00061 : 2,043E+00	 Time remaining   666,366 
+	 Epoch 00001 Batch 00121 : 1,937E+00	 Time remaining   644,696 
+	 Epoch 00001 Batch 00181 : 2,125E+00	 Time remaining   621,575 
+	 Epoch 00001 Batch 00241 : 1,803E+00	 Time remaining   598,710 
+	 Score 0 : 0,44103 	 Score 1 : 0,66923 
+(5/8) 	Epoch 2/8	 
+	 Epoch 00002 Batch 00001 : 1,993E+00	 Time remaining   657,937 
+	 Epoch 00002 Batch 00061 : 2,131E+00	 Time remaining   622,634 
+	 Epoch 00002 Batch 00121 : 1,651E+00	 Time remaining   591,987 
+	 Epoch 00002 Batch 00181 : 1,822E+00	 Time remaining   564,786 
+	 Epoch 00002 Batch 00241 : 2,078E+00	 Time remaining   538,695 
+	 Score 0 : 0,44615 	 Score 1 : 0,67607 
+(5/8) 	Epoch 3/8	 
+	 Epoch 00003 Batch 00001 : 2,278E+00	 Time remaining   562,730 
+	 Epoch 00003 Batch 00061 : 2,339E+00	 Time remaining   533,975 
+	 Epoch 00003 Batch 00121 : 1,668E+00	 Time remaining   506,409 
+	 Epoch 00003 Batch 00181 : 1,624E+00	 Time remaining   480,315 
+	 Epoch 00003 Batch 00241 : 1,931E+00	 Time remaining   454,915 
+	 Score 0 : 0,48120 	 Score 1 : 0,69658 
+(5/8) 	Epoch 4/8	 
+	 Epoch 00004 Batch 00001 : 1,599E+00	 Time remaining   468,577 
+	 Epoch 00004 Batch 00061 : 1,861E+00	 Time remaining   442,408 
+	 Epoch 00004 Batch 00121 : 1,862E+00	 Time remaining   416,727 
+	 Epoch 00004 Batch 00181 : 1,992E+00	 Time remaining   391,555 
+	 Epoch 00004 Batch 00241 : 1,643E+00	 Time remaining   366,898 
+	 Score 0 : 0,47949 	 Score 1 : 0,70342 
+(5/8) 	Epoch 5/8	 
+	 Epoch 00005 Batch 00001 : 2,344E+00	 Time remaining   374,772 
+	 Epoch 00005 Batch 00061 : 1,620E+00	 Time remaining   349,584 
+	 Epoch 00005 Batch 00121 : 1,810E+00	 Time remaining   324,817 
+	 Epoch 00005 Batch 00181 : 2,233E+00	 Time remaining   300,505 
+	 Epoch 00005 Batch 00241 : 1,719E+00	 Time remaining   276,500 
+	 Score 0 : 0,45385 	 Score 1 : 0,68034 
+(5/8) 	Epoch 6/8	 
+	 Epoch 00006 Batch 00001 : 2,001E+00	 Time remaining   281,105 
+	 Epoch 00006 Batch 00061 : 1,893E+00	 Time remaining   256,709 
+	 Epoch 00006 Batch 00121 : 1,990E+00	 Time remaining   232,741 
+	 Epoch 00006 Batch 00181 : 2,102E+00	 Time remaining   208,800 
+	 Epoch 00006 Batch 00241 : 1,716E+00	 Time remaining   185,075 
+	 Score 0 : 0,47607 	 Score 1 : 0,66410 
+(5/8) 	Epoch 7/8	 
+	 Epoch 00007 Batch 00001 : 2,053E+00	 Time remaining   187,544 
+	 Epoch 00007 Batch 00061 : 1,661E+00	 Time remaining   163,567 
+	 Epoch 00007 Batch 00121 : 1,597E+00	 Time remaining   139,778 
+	 Epoch 00007 Batch 00181 : 1,961E+00	 Time remaining   116,307 
+	 Epoch 00007 Batch 00241 : 1,523E+00	 Time remaining    92,855 
+	 Score 0 : 0,49060 	 Score 1 : 0,70855 
+(5/8) 	Epoch 8/8	 
+	 Epoch 00008 Batch 00001 : 1,654E+00	 Time remaining    93,692 
+	 Epoch 00008 Batch 00061 : 1,703E+00	 Time remaining    70,047 
+	 Epoch 00008 Batch 00121 : 1,247E+00	 Time remaining    46,568 
+	 Epoch 00008 Batch 00181 : 1,454E+00	 Time remaining    23,221 
+	 Epoch 00008 Batch 00241 : 1,768E+00	 Time remaining     0,000 
+	 Score 0 : 0,48889 	 Score 1 : 0,71111 
+Accuracy for test set : 0.60000026 
+
+
+Phase 6 / 8 
+Creating Dataset of size 1170... 
+uA 	(3) 	 Remaining Time :    23,023 
+uB 	(3) 	 Remaining Time :    21,166 
+uC 	(3) 	 Remaining Time :    20,325 
+uD 	(3) 	 Remaining Time :    19,777 
+uE 	(3) 	 Remaining Time :    19,476 
+uF 	(3) 	 Remaining Time :    19,020 
+uG 	(3) 	 Remaining Time :    18,450 
+uH 	(3) 	 Remaining Time :    17,876 
+uI 	(3) 	 Remaining Time :    17,480 
+uJ 	(3) 	 Remaining Time :    17,102 
+uK 	(3) 	 Remaining Time :    16,835 
+uL 	(3) 	 Remaining Time :    16,687 
+uM 	(3) 	 Remaining Time :    16,795 
+uN 	(3) 	 Remaining Time :    16,855 
+uO 	(3) 	 Remaining Time :    16,750 
+uP 	(3) 	 Remaining Time :    16,558 
+uQ 	(3) 	 Remaining Time :    16,359 
+uR 	(3) 	 Remaining Time :    16,160 
+uS 	(3) 	 Remaining Time :    15,809 
+uT 	(3) 	 Remaining Time :    15,495 
+uU 	(3) 	 Remaining Time :    15,205 
+uV 	(3) 	 Remaining Time :    14,843 
+uW 	(3) 	 Remaining Time :    14,558 
+uX 	(3) 	 Remaining Time :    14,299 
+uY 	(3) 	 Remaining Time :    13,998 
+uZ 	(3) 	 Remaining Time :    13,688 
+la 	(3) 	 Remaining Time :    13,500 
+lb 	(3) 	 Remaining Time :    13,291 
+lc 	(3) 	 Remaining Time :    13,124 
+ld 	(3) 	 Remaining Time :    12,885 
+le 	(3) 	 Remaining Time :    12,675 
+lf 	(3) 	 Remaining Time :    12,528 
+lg 	(3) 	 Remaining Time :    12,303 
+lh 	(3) 	 Remaining Time :    12,083 
+li 	(3) 	 Remaining Time :    11,830 
+lj 	(3) 	 Remaining Time :    11,540 
+lk 	(3) 	 Remaining Time :    11,300 
+ll 	(3) 	 Remaining Time :    11,165 
+lm 	(3) 	 Remaining Time :    10,883 
+ln 	(3) 	 Remaining Time :    10,557 
+lo 	(3) 	 Remaining Time :    10,264 
+lp 	(3) 	 Remaining Time :    10,040 
+lq 	(3) 	 Remaining Time :     9,789 
+lr 	(3) 	 Remaining Time :     9,490 
+ls 	(3) 	 Remaining Time :     9,174 
+lt 	(3) 	 Remaining Time :     8,955 
+lu 	(3) 	 Remaining Time :     8,695 
+lv 	(3) 	 Remaining Time :     8,439 
+lw 	(3) 	 Remaining Time :     8,179 
+lx 	(3) 	 Remaining Time :     7,918 
+ly 	(3) 	 Remaining Time :     7,615 
+lz 	(3) 	 Remaining Time :     7,331 
+0 	(3) 	 Remaining Time :     7,053 
+1 	(3) 	 Remaining Time :     6,762 
+2 	(3) 	 Remaining Time :     6,460 
+3 	(3) 	 Remaining Time :     6,159 
+4 	(3) 	 Remaining Time :     5,866 
+5 	(3) 	 Remaining Time :     5,573 
+6 	(3) 	 Remaining Time :     5,282 
+7 	(3) 	 Remaining Time :     4,992 
+8 	(3) 	 Remaining Time :     4,703 
+9 	(3) 	 Remaining Time :     4,411 
++ 	(3) 	 Remaining Time :     4,136 
+- 	(3) 	 Remaining Time :     3,860 
+cr 	(3) 	 Remaining Time :     3,584 
+@ 	(3) 	 Remaining Time :     3,302 
+# 	(3) 	 Remaining Time :     3,022 
+' 	(3) 	 Remaining Time :     2,745 
+pt 	(3) 	 Remaining Time :     2,469 
+im 	(3) 	 Remaining Time :     2,189 
+! 	(3) 	 Remaining Time :     1,911 
+tp 	(3) 	 Remaining Time :     1,638 
+€ 	(3) 	 Remaining Time :     1,386 
+$ 	(3) 	 Remaining Time :     1,115 
+% 	(3) 	 Remaining Time :     0,838 
+( 	(3) 	 Remaining Time :     0,563 
+) 	(3) 	 Remaining Time :     0,285 
+= 	(3) 	 Remaining Time :     0,000 
+
+Creating Dataset of size 1170... 
+uA 	(3) 	 Remaining Time :    33,341 
+uB 	(3) 	 Remaining Time :    32,376 
+uC 	(3) 	 Remaining Time :    29,725 
+uD 	(3) 	 Remaining Time :    30,044 
+uE 	(3) 	 Remaining Time :    27,798 
+uF 	(3) 	 Remaining Time :    25,836 
+uG 	(3) 	 Remaining Time :    24,262 
+uH 	(3) 	 Remaining Time :    23,048 
+uI 	(3) 	 Remaining Time :    21,911 
+uJ 	(3) 	 Remaining Time :    20,971 
+uK 	(3) 	 Remaining Time :    20,137 
+uL 	(3) 	 Remaining Time :    19,520 
+uM 	(3) 	 Remaining Time :    19,010 
+uN 	(3) 	 Remaining Time :    18,505 
+uO 	(3) 	 Remaining Time :    17,938 
+uP 	(3) 	 Remaining Time :    17,391 
+uQ 	(3) 	 Remaining Time :    16,893 
+uR 	(3) 	 Remaining Time :    16,433 
+uS 	(3) 	 Remaining Time :    16,169 
+uT 	(3) 	 Remaining Time :    15,933 
+uU 	(3) 	 Remaining Time :    15,816 
+uV 	(3) 	 Remaining Time :    15,568 
+uW 	(3) 	 Remaining Time :    15,335 
+uX 	(3) 	 Remaining Time :    15,059 
+uY 	(3) 	 Remaining Time :    14,795 
+uZ 	(3) 	 Remaining Time :    14,494 
+la 	(3) 	 Remaining Time :    14,146 
+lb 	(3) 	 Remaining Time :    13,893 
+lc 	(3) 	 Remaining Time :    13,543 
+ld 	(3) 	 Remaining Time :    13,336 
+le 	(3) 	 Remaining Time :    13,075 
+lf 	(3) 	 Remaining Time :    12,810 
+lg 	(3) 	 Remaining Time :    12,509 
+lh 	(3) 	 Remaining Time :    12,166 
+li 	(3) 	 Remaining Time :    11,870 
+lj 	(3) 	 Remaining Time :    11,619 
+lk 	(3) 	 Remaining Time :    11,308 
+ll 	(3) 	 Remaining Time :    10,975 
+lm 	(3) 	 Remaining Time :    10,664 
+ln 	(3) 	 Remaining Time :    10,358 
+lo 	(3) 	 Remaining Time :    10,055 
+lp 	(3) 	 Remaining Time :     9,759 
+lq 	(3) 	 Remaining Time :     9,448 
+lr 	(3) 	 Remaining Time :     9,142 
+ls 	(3) 	 Remaining Time :     8,842 
+lt 	(3) 	 Remaining Time :     8,536 
+lu 	(3) 	 Remaining Time :     8,231 
+lv 	(3) 	 Remaining Time :     7,931 
+lw 	(3) 	 Remaining Time :     7,682 
+lx 	(3) 	 Remaining Time :     7,452 
+ly 	(3) 	 Remaining Time :     7,260 
+lz 	(3) 	 Remaining Time :     7,006 
+0 	(3) 	 Remaining Time :     6,759 
+1 	(3) 	 Remaining Time :     6,506 
+2 	(3) 	 Remaining Time :     6,251 
+3 	(3) 	 Remaining Time :     5,996 
+4 	(3) 	 Remaining Time :     5,714 
+5 	(3) 	 Remaining Time :     5,433 
+6 	(3) 	 Remaining Time :     5,154 
+7 	(3) 	 Remaining Time :     4,879 
+8 	(3) 	 Remaining Time :     4,610 
+9 	(3) 	 Remaining Time :     4,333 
++ 	(3) 	 Remaining Time :     4,050 
+- 	(3) 	 Remaining Time :     3,768 
+cr 	(3) 	 Remaining Time :     3,490 
+@ 	(3) 	 Remaining Time :     3,219 
+# 	(3) 	 Remaining Time :     2,950 
+' 	(3) 	 Remaining Time :     2,682 
+pt 	(3) 	 Remaining Time :     2,408 
+im 	(3) 	 Remaining Time :     2,137 
+! 	(3) 	 Remaining Time :     1,866 
+tp 	(3) 	 Remaining Time :     1,596 
+€ 	(3) 	 Remaining Time :     1,327 
+$ 	(3) 	 Remaining Time :     1,058 
+% 	(3) 	 Remaining Time :     0,792 
+( 	(3) 	 Remaining Time :     0,527 
+) 	(3) 	 Remaining Time :     0,263 
+= 	(3) 	 Remaining Time :     0,000 
+
+Creating Dataset of size 15444... 
+uA 	(9) 	 Remaining Time :   201,432 
+uB 	(9) 	 Remaining Time :   205,808 
+uC 	(9) 	 Remaining Time :   206,750 
+uD 	(9) 	 Remaining Time :   203,241 
+uE 	(9) 	 Remaining Time :   197,173 
+uF 	(9) 	 Remaining Time :   192,972 
+uG 	(9) 	 Remaining Time :   188,586 
+uH 	(9) 	 Remaining Time :   187,617 
+uI 	(9) 	 Remaining Time :   186,959 
+uJ 	(9) 	 Remaining Time :   183,260 
+uK 	(9) 	 Remaining Time :   181,296 
+uL 	(9) 	 Remaining Time :   177,699 
+uM 	(9) 	 Remaining Time :   174,520 
+uN 	(9) 	 Remaining Time :   172,155 
+uO 	(9) 	 Remaining Time :   169,302 
+uP 	(9) 	 Remaining Time :   166,524 
+uQ 	(9) 	 Remaining Time :   163,476 
+uR 	(9) 	 Remaining Time :   160,953 
+uS 	(9) 	 Remaining Time :   158,639 
+uT 	(9) 	 Remaining Time :   155,376 
+uU 	(9) 	 Remaining Time :   152,714 
+uV 	(9) 	 Remaining Time :   149,993 
+uW 	(9) 	 Remaining Time :   147,503 
+uX 	(9) 	 Remaining Time :   144,799 
+uY 	(9) 	 Remaining Time :   142,651 
+uZ 	(9) 	 Remaining Time :   142,236 
+la 	(9) 	 Remaining Time :   140,248 
+lb 	(9) 	 Remaining Time :   139,384 
+lc 	(9) 	 Remaining Time :   137,092 
+ld 	(9) 	 Remaining Time :   134,171 
+le 	(9) 	 Remaining Time :   131,555 
+lf 	(9) 	 Remaining Time :   128,423 
+lg 	(9) 	 Remaining Time :   125,294 
+lh 	(9) 	 Remaining Time :   122,710 
+li 	(9) 	 Remaining Time :   119,773 
+lj 	(9) 	 Remaining Time :   117,149 
+lk 	(9) 	 Remaining Time :   114,136 
+ll 	(9) 	 Remaining Time :   111,453 
+lm 	(9) 	 Remaining Time :   108,719 
+ln 	(9) 	 Remaining Time :   105,922 
+lo 	(9) 	 Remaining Time :   103,102 
+lp 	(9) 	 Remaining Time :   100,107 
+lq 	(9) 	 Remaining Time :    97,369 
+lr 	(9) 	 Remaining Time :    94,347 
+ls 	(9) 	 Remaining Time :    91,678 
+lt 	(9) 	 Remaining Time :    88,909 
+lu 	(9) 	 Remaining Time :    85,741 
+lv 	(9) 	 Remaining Time :    82,866 
+lw 	(9) 	 Remaining Time :    79,933 
+lx 	(9) 	 Remaining Time :    77,048 
+ly 	(9) 	 Remaining Time :    74,154 
+lz 	(9) 	 Remaining Time :    71,273 
+0 	(9) 	 Remaining Time :    68,411 
+1 	(9) 	 Remaining Time :    65,571 
+2 	(9) 	 Remaining Time :    62,724 
+3 	(9) 	 Remaining Time :    59,891 
+4 	(9) 	 Remaining Time :    57,072 
+5 	(9) 	 Remaining Time :    54,269 
+6 	(9) 	 Remaining Time :    51,473 
+7 	(9) 	 Remaining Time :    48,682 
+8 	(9) 	 Remaining Time :    45,920 
+9 	(9) 	 Remaining Time :    43,162 
++ 	(9) 	 Remaining Time :    40,400 
+- 	(9) 	 Remaining Time :    37,647 
+cr 	(9) 	 Remaining Time :    34,906 
+@ 	(9) 	 Remaining Time :    32,200 
+# 	(9) 	 Remaining Time :    29,489 
+' 	(9) 	 Remaining Time :    26,766 
+pt 	(9) 	 Remaining Time :    24,061 
+im 	(9) 	 Remaining Time :    21,364 
+! 	(9) 	 Remaining Time :    18,669 
+tp 	(9) 	 Remaining Time :    15,984 
+€ 	(9) 	 Remaining Time :    13,308 
+$ 	(9) 	 Remaining Time :    10,639 
+% 	(9) 	 Remaining Time :     7,975 
+( 	(9) 	 Remaining Time :     5,312 
+) 	(9) 	 Remaining Time :     2,653 
+= 	(9) 	 Remaining Time :     0,000 
+
+Mini Batch Gradient Descent 6/8 - 8 Epochs - 64 Batch Size - 7,430E-01 LR 
+(6/8) 	Epoch 1/8	 
+	 Epoch 00001 Batch 00001 : 1,763E+00	 Time remaining  1023,237 
+	 Epoch 00001 Batch 00061 : 2,018E+00	 Time remaining   706,736 
+	 Epoch 00001 Batch 00121 : 1,541E+00	 Time remaining   742,662 
+	 Epoch 00001 Batch 00181 : 1,677E+00	 Time remaining   716,753 
+	 Epoch 00001 Batch 00241 : 2,058E+00	 Time remaining   697,130 
+	 Score 0 : 0,47350 	 Score 1 : 0,70427 
+(6/8) 	Epoch 2/8	 
+	 Epoch 00002 Batch 00001 : 1,370E+00	 Time remaining   760,003 
+	 Epoch 00002 Batch 00061 : 1,436E+00	 Time remaining   710,142 
+	 Epoch 00002 Batch 00121 : 1,458E+00	 Time remaining   668,297 
+	 Epoch 00002 Batch 00181 : 1,539E+00	 Time remaining   633,537 
+	 Epoch 00002 Batch 00241 : 2,185E+00	 Time remaining   600,492 
+	 Score 0 : 0,47350 	 Score 1 : 0,69487 
+(6/8) 	Epoch 3/8	 
+	 Epoch 00003 Batch 00001 : 1,443E+00	 Time remaining   627,929 
+	 Epoch 00003 Batch 00061 : 1,737E+00	 Time remaining   592,650 
+	 Epoch 00003 Batch 00121 : 1,745E+00	 Time remaining   560,684 
+	 Epoch 00003 Batch 00181 : 1,661E+00	 Time remaining   530,329 
+	 Epoch 00003 Batch 00241 : 1,506E+00	 Time remaining   500,907 
+	 Score 0 : 0,48376 	 Score 1 : 0,74017 
+(6/8) 	Epoch 4/8	 
+	 Epoch 00004 Batch 00001 : 1,231E+00	 Time remaining   516,285 
+	 Epoch 00004 Batch 00061 : 1,528E+00	 Time remaining   487,475 
+	 Epoch 00004 Batch 00121 : 1,444E+00	 Time remaining   458,219 
+	 Epoch 00004 Batch 00181 : 1,810E+00	 Time remaining   429,892 
+	 Epoch 00004 Batch 00241 : 1,381E+00	 Time remaining   402,255 
+	 Score 0 : 0,48547 	 Score 1 : 0,74017 
+(6/8) 	Epoch 5/8	 
+	 Epoch 00005 Batch 00001 : 1,555E+00	 Time remaining   411,078 
+	 Epoch 00005 Batch 00061 : 1,336E+00	 Time remaining   382,503 
+	 Epoch 00005 Batch 00121 : 1,600E+00	 Time remaining   355,163 
+	 Epoch 00005 Batch 00181 : 2,157E+00	 Time remaining   329,577 
+	 Epoch 00005 Batch 00241 : 1,965E+00	 Time remaining   304,604 
+	 Score 0 : 0,47692 	 Score 1 : 0,71282 
+(6/8) 	Epoch 6/8	 
+	 Epoch 00006 Batch 00001 : 1,361E+00	 Time remaining   309,960 
+	 Epoch 00006 Batch 00061 : 1,435E+00	 Time remaining   283,056 
+	 Epoch 00006 Batch 00121 : 2,147E+00	 Time remaining   256,680 
+	 Epoch 00006 Batch 00181 : 1,439E+00	 Time remaining   231,044 
+	 Epoch 00006 Batch 00241 : 1,547E+00	 Time remaining   204,942 
+	 Score 0 : 0,48205 	 Score 1 : 0,70598 
+(6/8) 	Epoch 7/8	 
+	 Epoch 00007 Batch 00001 : 1,909E+00	 Time remaining   207,853 
+	 Epoch 00007 Batch 00061 : 1,505E+00	 Time remaining   181,284 
+	 Epoch 00007 Batch 00121 : 1,702E+00	 Time remaining   154,836 
+	 Epoch 00007 Batch 00181 : 1,230E+00	 Time remaining   128,472 
+	 Epoch 00007 Batch 00241 : 1,451E+00	 Time remaining   102,545 
+	 Score 0 : 0,49829 	 Score 1 : 0,74103 
+(6/8) 	Epoch 8/8	 
+	 Epoch 00008 Batch 00001 : 1,656E+00	 Time remaining   103,479 
+	 Epoch 00008 Batch 00061 : 1,105E+00	 Time remaining    77,382 
+	 Epoch 00008 Batch 00121 : 1,256E+00	 Time remaining    51,384 
+	 Epoch 00008 Batch 00181 : 1,357E+00	 Time remaining    25,593 
+	 Epoch 00008 Batch 00241 : 1,153E+00	 Time remaining     0,000 
+	 Score 0 : 0,49060 	 Score 1 : 0,74359 
+Accuracy for test set : 0.61709434 
+
+
+Phase 7 / 8 
+Creating Dataset of size 1170... 
+uA 	(3) 	 Remaining Time :    19,712 
+uB 	(3) 	 Remaining Time :    18,506 
+uC 	(3) 	 Remaining Time :    18,000 
+uD 	(3) 	 Remaining Time :    17,501 
+uE 	(3) 	 Remaining Time :    17,243 
+uF 	(3) 	 Remaining Time :    16,968 
+uG 	(3) 	 Remaining Time :    16,675 
+uH 	(3) 	 Remaining Time :    16,345 
+uI 	(3) 	 Remaining Time :    16,100 
+uJ 	(3) 	 Remaining Time :    15,932 
+uK 	(3) 	 Remaining Time :    15,623 
+uL 	(3) 	 Remaining Time :    15,395 
+uM 	(3) 	 Remaining Time :    15,120 
+uN 	(3) 	 Remaining Time :    14,857 
+uO 	(3) 	 Remaining Time :    14,599 
+uP 	(3) 	 Remaining Time :    14,368 
+uQ 	(3) 	 Remaining Time :    14,134 
+uR 	(3) 	 Remaining Time :    13,897 
+uS 	(3) 	 Remaining Time :    13,725 
+uT 	(3) 	 Remaining Time :    13,500 
+uU 	(3) 	 Remaining Time :    13,267 
+uV 	(3) 	 Remaining Time :    13,045 
+uW 	(3) 	 Remaining Time :    12,793 
+uX 	(3) 	 Remaining Time :    12,539 
+uY 	(3) 	 Remaining Time :    12,292 
+uZ 	(3) 	 Remaining Time :    12,052 
+la 	(3) 	 Remaining Time :    11,804 
+lb 	(3) 	 Remaining Time :    11,564 
+lc 	(3) 	 Remaining Time :    11,333 
+ld 	(3) 	 Remaining Time :    11,107 
+le 	(3) 	 Remaining Time :    10,862 
+lf 	(3) 	 Remaining Time :    10,626 
+lg 	(3) 	 Remaining Time :    10,387 
+lh 	(3) 	 Remaining Time :    10,152 
+li 	(3) 	 Remaining Time :     9,910 
+lj 	(3) 	 Remaining Time :     9,681 
+lk 	(3) 	 Remaining Time :     9,447 
+ll 	(3) 	 Remaining Time :     9,207 
+lm 	(3) 	 Remaining Time :     8,976 
+ln 	(3) 	 Remaining Time :     8,758 
+lo 	(3) 	 Remaining Time :     8,595 
+lp 	(3) 	 Remaining Time :     8,387 
+lq 	(3) 	 Remaining Time :     8,162 
+lr 	(3) 	 Remaining Time :     7,927 
+ls 	(3) 	 Remaining Time :     7,705 
+lt 	(3) 	 Remaining Time :     7,510 
+lu 	(3) 	 Remaining Time :     7,321 
+lv 	(3) 	 Remaining Time :     7,148 
+lw 	(3) 	 Remaining Time :     6,986 
+lx 	(3) 	 Remaining Time :     6,741 
+ly 	(3) 	 Remaining Time :     6,526 
+lz 	(3) 	 Remaining Time :     6,298 
+0 	(3) 	 Remaining Time :     6,077 
+1 	(3) 	 Remaining Time :     5,840 
+2 	(3) 	 Remaining Time :     5,604 
+3 	(3) 	 Remaining Time :     5,364 
+4 	(3) 	 Remaining Time :     5,118 
+5 	(3) 	 Remaining Time :     4,888 
+6 	(3) 	 Remaining Time :     4,655 
+7 	(3) 	 Remaining Time :     4,420 
+8 	(3) 	 Remaining Time :     4,175 
+9 	(3) 	 Remaining Time :     3,931 
++ 	(3) 	 Remaining Time :     3,693 
+- 	(3) 	 Remaining Time :     3,458 
+cr 	(3) 	 Remaining Time :     3,215 
+@ 	(3) 	 Remaining Time :     2,968 
+# 	(3) 	 Remaining Time :     2,724 
+' 	(3) 	 Remaining Time :     2,477 
+pt 	(3) 	 Remaining Time :     2,231 
+im 	(3) 	 Remaining Time :     1,982 
+! 	(3) 	 Remaining Time :     1,734 
+tp 	(3) 	 Remaining Time :     1,488 
+€ 	(3) 	 Remaining Time :     1,240 
+$ 	(3) 	 Remaining Time :     0,993 
+% 	(3) 	 Remaining Time :     0,744 
+( 	(3) 	 Remaining Time :     0,497 
+) 	(3) 	 Remaining Time :     0,249 
+= 	(3) 	 Remaining Time :     0,000 
+
+Creating Dataset of size 1170... 
+uA 	(3) 	 Remaining Time :    19,789 
+uB 	(3) 	 Remaining Time :    18,962 
+uC 	(3) 	 Remaining Time :    20,600 
+uD 	(3) 	 Remaining Time :    20,664 
+uE 	(3) 	 Remaining Time :    19,462 
+uF 	(3) 	 Remaining Time :    18,768 
+uG 	(3) 	 Remaining Time :    18,186 
+uH 	(3) 	 Remaining Time :    17,719 
+uI 	(3) 	 Remaining Time :    17,265 
+uJ 	(3) 	 Remaining Time :    16,918 
+uK 	(3) 	 Remaining Time :    16,628 
+uL 	(3) 	 Remaining Time :    16,412 
+uM 	(3) 	 Remaining Time :    16,360 
+uN 	(3) 	 Remaining Time :    16,169 
+uO 	(3) 	 Remaining Time :    15,901 
+uP 	(3) 	 Remaining Time :    15,748 
+uQ 	(3) 	 Remaining Time :    15,594 
+uR 	(3) 	 Remaining Time :    15,380 
+uS 	(3) 	 Remaining Time :    15,442 
+uT 	(3) 	 Remaining Time :    15,356 
+uU 	(3) 	 Remaining Time :    15,094 
+uV 	(3) 	 Remaining Time :    14,756 
+uW 	(3) 	 Remaining Time :    14,453 
+uX 	(3) 	 Remaining Time :    14,150 
+uY 	(3) 	 Remaining Time :    13,886 
+uZ 	(3) 	 Remaining Time :    13,600 
+la 	(3) 	 Remaining Time :    13,377 
+lb 	(3) 	 Remaining Time :    13,139 
+lc 	(3) 	 Remaining Time :    12,872 
+ld 	(3) 	 Remaining Time :    12,584 
+le 	(3) 	 Remaining Time :    12,294 
+lf 	(3) 	 Remaining Time :    11,999 
+lg 	(3) 	 Remaining Time :    11,693 
+lh 	(3) 	 Remaining Time :    11,414 
+li 	(3) 	 Remaining Time :    11,148 
+lj 	(3) 	 Remaining Time :    10,863 
+lk 	(3) 	 Remaining Time :    10,648 
+ll 	(3) 	 Remaining Time :    10,406 
+lm 	(3) 	 Remaining Time :    10,123 
+ln 	(3) 	 Remaining Time :     9,914 
+lo 	(3) 	 Remaining Time :     9,638 
+lp 	(3) 	 Remaining Time :     9,337 
+lq 	(3) 	 Remaining Time :     9,079 
+lr 	(3) 	 Remaining Time :     8,817 
+ls 	(3) 	 Remaining Time :     8,569 
+lt 	(3) 	 Remaining Time :     8,285 
+lu 	(3) 	 Remaining Time :     8,005 
+lv 	(3) 	 Remaining Time :     7,733 
+lw 	(3) 	 Remaining Time :     7,474 
+lx 	(3) 	 Remaining Time :     7,201 
+ly 	(3) 	 Remaining Time :     6,933 
+lz 	(3) 	 Remaining Time :     6,690 
+0 	(3) 	 Remaining Time :     6,508 
+1 	(3) 	 Remaining Time :     6,257 
+2 	(3) 	 Remaining Time :     5,980 
+3 	(3) 	 Remaining Time :     5,707 
+4 	(3) 	 Remaining Time :     5,439 
+5 	(3) 	 Remaining Time :     5,172 
+6 	(3) 	 Remaining Time :     4,899 
+7 	(3) 	 Remaining Time :     4,641 
+8 	(3) 	 Remaining Time :     4,380 
+9 	(3) 	 Remaining Time :     4,118 
++ 	(3) 	 Remaining Time :     3,853 
+- 	(3) 	 Remaining Time :     3,590 
+cr 	(3) 	 Remaining Time :     3,331 
+@ 	(3) 	 Remaining Time :     3,088 
+# 	(3) 	 Remaining Time :     2,855 
+' 	(3) 	 Remaining Time :     2,612 
+pt 	(3) 	 Remaining Time :     2,352 
+im 	(3) 	 Remaining Time :     2,091 
+! 	(3) 	 Remaining Time :     1,827 
+tp 	(3) 	 Remaining Time :     1,571 
+€ 	(3) 	 Remaining Time :     1,312 
+$ 	(3) 	 Remaining Time :     1,052 
+% 	(3) 	 Remaining Time :     0,791 
+( 	(3) 	 Remaining Time :     0,529 
+) 	(3) 	 Remaining Time :     0,265 
+= 	(3) 	 Remaining Time :     0,000 
+
+Creating Dataset of size 15444... 
+uA 	(9) 	 Remaining Time :   266,035 
+uB 	(9) 	 Remaining Time :   228,646 
+uC 	(9) 	 Remaining Time :   225,125 
+uD 	(9) 	 Remaining Time :   215,951 
+uE 	(9) 	 Remaining Time :   208,357 
+uF 	(9) 	 Remaining Time :   202,704 
+uG 	(9) 	 Remaining Time :   200,575 
+uH 	(9) 	 Remaining Time :   193,375 
+uI 	(9) 	 Remaining Time :   187,757 
+uJ 	(9) 	 Remaining Time :   185,307 
+uK 	(9) 	 Remaining Time :   182,344 
+uL 	(9) 	 Remaining Time :   178,684 
+uM 	(9) 	 Remaining Time :   174,820 
+uN 	(9) 	 Remaining Time :   172,992 
+uO 	(9) 	 Remaining Time :   170,297 
+uP 	(9) 	 Remaining Time :   167,140 
+uQ 	(9) 	 Remaining Time :   165,253 
+uR 	(9) 	 Remaining Time :   161,743 
+uS 	(9) 	 Remaining Time :   159,989 
+uT 	(9) 	 Remaining Time :   159,042 
+uU 	(9) 	 Remaining Time :   156,479 
+uV 	(9) 	 Remaining Time :   154,168 
+uW 	(9) 	 Remaining Time :   152,890 
+uX 	(9) 	 Remaining Time :   150,390 
+uY 	(9) 	 Remaining Time :   148,222 
+uZ 	(9) 	 Remaining Time :   146,186 
+la 	(9) 	 Remaining Time :   143,435 
+lb 	(9) 	 Remaining Time :   140,895 
+lc 	(9) 	 Remaining Time :   138,592 
+ld 	(9) 	 Remaining Time :   136,059 
+le 	(9) 	 Remaining Time :   133,965 
+lf 	(9) 	 Remaining Time :   130,971 
+lg 	(9) 	 Remaining Time :   128,332 
+lh 	(9) 	 Remaining Time :   125,617 
+li 	(9) 	 Remaining Time :   122,853 
+lj 	(9) 	 Remaining Time :   119,994 
+lk 	(9) 	 Remaining Time :   116,923 
+ll 	(9) 	 Remaining Time :   113,813 
+lm 	(9) 	 Remaining Time :   110,591 
+ln 	(9) 	 Remaining Time :   107,433 
+lo 	(9) 	 Remaining Time :   104,613 
+lp 	(9) 	 Remaining Time :   101,907 
+lq 	(9) 	 Remaining Time :    98,912 
+lr 	(9) 	 Remaining Time :    96,037 
+ls 	(9) 	 Remaining Time :    93,114 
+lt 	(9) 	 Remaining Time :    90,235 
+lu 	(9) 	 Remaining Time :    87,350 
+lv 	(9) 	 Remaining Time :    84,263 
+lw 	(9) 	 Remaining Time :    81,379 
+lx 	(9) 	 Remaining Time :    78,388 
+ly 	(9) 	 Remaining Time :    75,847 
+lz 	(9) 	 Remaining Time :    73,271 
+0 	(9) 	 Remaining Time :    70,416 
+1 	(9) 	 Remaining Time :    67,552 
+2 	(9) 	 Remaining Time :    64,791 
+3 	(9) 	 Remaining Time :    61,970 
+4 	(9) 	 Remaining Time :    59,102 
+5 	(9) 	 Remaining Time :    56,296 
+6 	(9) 	 Remaining Time :    53,406 
+7 	(9) 	 Remaining Time :    50,503 
+8 	(9) 	 Remaining Time :    47,670 
+9 	(9) 	 Remaining Time :    44,847 
++ 	(9) 	 Remaining Time :    42,006 
+- 	(9) 	 Remaining Time :    39,185 
+cr 	(9) 	 Remaining Time :    36,345 
+@ 	(9) 	 Remaining Time :    33,581 
+# 	(9) 	 Remaining Time :    30,799 
+' 	(9) 	 Remaining Time :    27,998 
+pt 	(9) 	 Remaining Time :    25,168 
+im 	(9) 	 Remaining Time :    22,395 
+! 	(9) 	 Remaining Time :    19,632 
+tp 	(9) 	 Remaining Time :    16,815 
+€ 	(9) 	 Remaining Time :    14,026 
+$ 	(9) 	 Remaining Time :    11,223 
+% 	(9) 	 Remaining Time :     8,405 
+( 	(9) 	 Remaining Time :     5,596 
+) 	(9) 	 Remaining Time :     2,794 
+= 	(9) 	 Remaining Time :     0,000 
+
+Mini Batch Gradient Descent 7/8 - 8 Epochs - 64 Batch Size - 6,095E-01 LR 
+(7/8) 	Epoch 1/8	 
+	 Epoch 00001 Batch 00001 : 1,601E+00	 Time remaining  1296,871 
+	 Epoch 00001 Batch 00061 : 1,596E+00	 Time remaining   866,319 
+	 Epoch 00001 Batch 00121 : 1,778E+00	 Time remaining   842,824 
+	 Epoch 00001 Batch 00181 : 1,486E+00	 Time remaining   785,629 
+	 Epoch 00001 Batch 00241 : 1,149E+00	 Time remaining   727,475 
+	 Score 0 : 0,48034 	 Score 1 : 0,73162 
+(7/8) 	Epoch 2/8	 
+	 Epoch 00002 Batch 00001 : 1,555E+00	 Time remaining   791,981 
+	 Epoch 00002 Batch 00061 : 1,587E+00	 Time remaining   733,283 
+	 Epoch 00002 Batch 00121 : 1,197E+00	 Time remaining   687,292 
+	 Epoch 00002 Batch 00181 : 1,616E+00	 Time remaining   647,459 
+	 Epoch 00002 Batch 00241 : 1,259E+00	 Time remaining   619,959 
+	 Score 0 : 0,49231 	 Score 1 : 0,72051 
+(7/8) 	Epoch 3/8	 
+	 Epoch 00003 Batch 00001 : 1,529E+00	 Time remaining   648,575 
+	 Epoch 00003 Batch 00061 : 1,181E+00	 Time remaining   622,709 
+	 Epoch 00003 Batch 00121 : 1,707E+00	 Time remaining   591,631 
+	 Epoch 00003 Batch 00181 : 1,727E+00	 Time remaining   564,902 
+	 Epoch 00003 Batch 00241 : 1,894E+00	 Time remaining   543,998 
+	 Score 0 : 0,50769 	 Score 1 : 0,75385 
+(7/8) 	Epoch 4/8	 
+	 Epoch 00004 Batch 00001 : 1,156E+00	 Time remaining   561,671 
+	 Epoch 00004 Batch 00061 : 1,291E+00	 Time remaining   532,916 
+	 Epoch 00004 Batch 00121 : 1,787E+00	 Time remaining   500,326 
+	 Epoch 00004 Batch 00181 : 1,339E+00	 Time remaining   467,272 
+	 Epoch 00004 Batch 00241 : 1,488E+00	 Time remaining   435,263 
+	 Score 0 : 0,50513 	 Score 1 : 0,74957 
+(7/8) 	Epoch 5/8	 
+	 Epoch 00005 Batch 00001 : 1,539E+00	 Time remaining   443,943 
+	 Epoch 00005 Batch 00061 : 8,522E-01	 Time remaining   412,033 
+	 Epoch 00005 Batch 00121 : 1,746E+00	 Time remaining   381,491 
+	 Epoch 00005 Batch 00181 : 1,337E+00	 Time remaining   351,718 
+	 Epoch 00005 Batch 00241 : 1,965E+00	 Time remaining   322,438 
+	 Score 0 : 0,50427 	 Score 1 : 0,74957 
+(7/8) 	Epoch 6/8	 
+	 Epoch 00006 Batch 00001 : 1,372E+00	 Time remaining   327,324 
+	 Epoch 00006 Batch 00061 : 1,798E+00	 Time remaining   298,239 
+	 Epoch 00006 Batch 00121 : 1,305E+00	 Time remaining   269,382 
+	 Epoch 00006 Batch 00181 : 1,555E+00	 Time remaining   241,403 
+	 Epoch 00006 Batch 00241 : 1,725E+00	 Time remaining   213,378 
+	 Score 0 : 0,49829 	 Score 1 : 0,74786 
+(7/8) 	Epoch 7/8	 
+	 Epoch 00007 Batch 00001 : 1,623E+00	 Time remaining   215,918 
+	 Epoch 00007 Batch 00061 : 1,494E+00	 Time remaining   187,848 
+	 Epoch 00007 Batch 00121 : 1,484E+00	 Time remaining   160,193 
+	 Epoch 00007 Batch 00181 : 1,202E+00	 Time remaining   132,873 
+	 Epoch 00007 Batch 00241 : 1,911E+00	 Time remaining   105,887 
+	 Score 0 : 0,51966 	 Score 1 : 0,75556 
+(7/8) 	Epoch 8/8	 
+	 Epoch 00008 Batch 00001 : 1,736E+00	 Time remaining   106,733 
+	 Epoch 00008 Batch 00061 : 1,647E+00	 Time remaining    79,654 
+	 Epoch 00008 Batch 00121 : 1,680E+00	 Time remaining    52,854 
+	 Epoch 00008 Batch 00181 : 1,583E+00	 Time remaining    26,319 
+	 Epoch 00008 Batch 00241 : 1,238E+00	 Time remaining     0,000 
+	 Score 0 : 0,51197 	 Score 1 : 0,75128 
+Accuracy for test set : 0.63162404 
+
+
+Phase 8 / 8 
+Creating Dataset of size 1170... 
+uA 	(3) 	 Remaining Time :    19,866 
+uB 	(3) 	 Remaining Time :    18,468 
+uC 	(3) 	 Remaining Time :    17,750 
+uD 	(3) 	 Remaining Time :    16,983 
+uE 	(3) 	 Remaining Time :    16,323 
+uF 	(3) 	 Remaining Time :    15,792 
+uG 	(3) 	 Remaining Time :    15,356 
+uH 	(3) 	 Remaining Time :    14,971 
+uI 	(3) 	 Remaining Time :    14,651 
+uJ 	(3) 	 Remaining Time :    14,389 
+uK 	(3) 	 Remaining Time :    14,198 
+uL 	(3) 	 Remaining Time :    13,959 
+uM 	(3) 	 Remaining Time :    13,820 
+uN 	(3) 	 Remaining Time :    13,637 
+uO 	(3) 	 Remaining Time :    13,461 
+uP 	(3) 	 Remaining Time :    13,249 
+uQ 	(3) 	 Remaining Time :    13,050 
+uR 	(3) 	 Remaining Time :    12,837 
+uS 	(3) 	 Remaining Time :    12,632 
+uT 	(3) 	 Remaining Time :    12,424 
+uU 	(3) 	 Remaining Time :    12,239 
+uV 	(3) 	 Remaining Time :    12,015 
+uW 	(3) 	 Remaining Time :    11,830 
+uX 	(3) 	 Remaining Time :    11,628 
+uY 	(3) 	 Remaining Time :    11,435 
+uZ 	(3) 	 Remaining Time :    11,214 
+la 	(3) 	 Remaining Time :    10,990 
+lb 	(3) 	 Remaining Time :    10,771 
+lc 	(3) 	 Remaining Time :    10,554 
+ld 	(3) 	 Remaining Time :    10,336 
+le 	(3) 	 Remaining Time :    10,140 
+lf 	(3) 	 Remaining Time :     9,945 
+lg 	(3) 	 Remaining Time :     9,761 
+lh 	(3) 	 Remaining Time :     9,571 
+li 	(3) 	 Remaining Time :     9,375 
+lj 	(3) 	 Remaining Time :     9,190 
+lk 	(3) 	 Remaining Time :     9,012 
+ll 	(3) 	 Remaining Time :     8,837 
+lm 	(3) 	 Remaining Time :     8,637 
+ln 	(3) 	 Remaining Time :     8,446 
+lo 	(3) 	 Remaining Time :     8,254 
+lp 	(3) 	 Remaining Time :     8,087 
+lq 	(3) 	 Remaining Time :     7,912 
+lr 	(3) 	 Remaining Time :     7,733 
+ls 	(3) 	 Remaining Time :     7,530 
+lt 	(3) 	 Remaining Time :     7,306 
+lu 	(3) 	 Remaining Time :     7,084 
+lv 	(3) 	 Remaining Time :     6,866 
+lw 	(3) 	 Remaining Time :     6,648 
+lx 	(3) 	 Remaining Time :     6,436 
+ly 	(3) 	 Remaining Time :     6,213 
+lz 	(3) 	 Remaining Time :     5,979 
+0 	(3) 	 Remaining Time :     5,753 
+1 	(3) 	 Remaining Time :     5,520 
+2 	(3) 	 Remaining Time :     5,290 
+3 	(3) 	 Remaining Time :     5,068 
+4 	(3) 	 Remaining Time :     4,836 
+5 	(3) 	 Remaining Time :     4,615 
+6 	(3) 	 Remaining Time :     4,387 
+7 	(3) 	 Remaining Time :     4,156 
+8 	(3) 	 Remaining Time :     3,923 
+9 	(3) 	 Remaining Time :     3,691 
++ 	(3) 	 Remaining Time :     3,459 
+- 	(3) 	 Remaining Time :     3,227 
+cr 	(3) 	 Remaining Time :     2,995 
+@ 	(3) 	 Remaining Time :     2,766 
+# 	(3) 	 Remaining Time :     2,536 
+' 	(3) 	 Remaining Time :     2,304 
+pt 	(3) 	 Remaining Time :     2,072 
+im 	(3) 	 Remaining Time :     1,841 
+! 	(3) 	 Remaining Time :     1,610 
+tp 	(3) 	 Remaining Time :     1,379 
+€ 	(3) 	 Remaining Time :     1,153 
+$ 	(3) 	 Remaining Time :     0,923 
+% 	(3) 	 Remaining Time :     0,692 
+( 	(3) 	 Remaining Time :     0,461 
+) 	(3) 	 Remaining Time :     0,231 
+= 	(3) 	 Remaining Time :     0,000 
+
+Creating Dataset of size 1170... 
+uA 	(3) 	 Remaining Time :    17,556 
+uB 	(3) 	 Remaining Time :    17,632 
+uC 	(3) 	 Remaining Time :    17,350 
+uD 	(3) 	 Remaining Time :    17,131 
+uE 	(3) 	 Remaining Time :    16,746 
+uF 	(3) 	 Remaining Time :    16,608 
+uG 	(3) 	 Remaining Time :    16,421 
+uH 	(3) 	 Remaining Time :    16,170 
+uI 	(3) 	 Remaining Time :    15,855 
+uJ 	(3) 	 Remaining Time :    15,552 
+uK 	(3) 	 Remaining Time :    15,313 
+uL 	(3) 	 Remaining Time :    15,037 
+uM 	(3) 	 Remaining Time :    14,810 
+uN 	(3) 	 Remaining Time :    14,583 
+uO 	(3) 	 Remaining Time :    14,343 
+uP 	(3) 	 Remaining Time :    14,082 
+uQ 	(3) 	 Remaining Time :    13,861 
+uR 	(3) 	 Remaining Time :    13,630 
+uS 	(3) 	 Remaining Time :    13,381 
+uT 	(3) 	 Remaining Time :    13,134 
+uU 	(3) 	 Remaining Time :    12,901 
+uV 	(3) 	 Remaining Time :    12,661 
+uW 	(3) 	 Remaining Time :    12,444 
+uX 	(3) 	 Remaining Time :    12,258 
+uY 	(3) 	 Remaining Time :    12,029 
+uZ 	(3) 	 Remaining Time :    11,800 
+la 	(3) 	 Remaining Time :    11,551 
+lb 	(3) 	 Remaining Time :    11,316 
+lc 	(3) 	 Remaining Time :    11,077 
+ld 	(3) 	 Remaining Time :    10,842 
+le 	(3) 	 Remaining Time :    10,614 
+lf 	(3) 	 Remaining Time :    10,382 
+lg 	(3) 	 Remaining Time :    10,151 
+lh 	(3) 	 Remaining Time :     9,918 
+li 	(3) 	 Remaining Time :     9,689 
+lj 	(3) 	 Remaining Time :     9,460 
+lk 	(3) 	 Remaining Time :     9,231 
+ll 	(3) 	 Remaining Time :     9,001 
+lm 	(3) 	 Remaining Time :     8,774 
+ln 	(3) 	 Remaining Time :     8,550 
+lo 	(3) 	 Remaining Time :     8,321 
+lp 	(3) 	 Remaining Time :     8,100 
+lq 	(3) 	 Remaining Time :     7,872 
+lr 	(3) 	 Remaining Time :     7,641 
+ls 	(3) 	 Remaining Time :     7,412 
+lt 	(3) 	 Remaining Time :     7,181 
+lu 	(3) 	 Remaining Time :     6,955 
+lv 	(3) 	 Remaining Time :     6,727 
+lw 	(3) 	 Remaining Time :     6,504 
+lx 	(3) 	 Remaining Time :     6,274 
+ly 	(3) 	 Remaining Time :     6,062 
+lz 	(3) 	 Remaining Time :     5,838 
+0 	(3) 	 Remaining Time :     5,611 
+1 	(3) 	 Remaining Time :     5,385 
+2 	(3) 	 Remaining Time :     5,160 
+3 	(3) 	 Remaining Time :     4,935 
+4 	(3) 	 Remaining Time :     4,708 
+5 	(3) 	 Remaining Time :     4,483 
+6 	(3) 	 Remaining Time :     4,259 
+7 	(3) 	 Remaining Time :     4,038 
+8 	(3) 	 Remaining Time :     3,813 
+9 	(3) 	 Remaining Time :     3,589 
++ 	(3) 	 Remaining Time :     3,363 
+- 	(3) 	 Remaining Time :     3,138 
+cr 	(3) 	 Remaining Time :     2,913 
+@ 	(3) 	 Remaining Time :     2,690 
+# 	(3) 	 Remaining Time :     2,466 
+' 	(3) 	 Remaining Time :     2,241 
+pt 	(3) 	 Remaining Time :     2,019 
+im 	(3) 	 Remaining Time :     1,795 
+! 	(3) 	 Remaining Time :     1,570 
+tp 	(3) 	 Remaining Time :     1,345 
+€ 	(3) 	 Remaining Time :     1,121 
+$ 	(3) 	 Remaining Time :     0,898 
+% 	(3) 	 Remaining Time :     0,674 
+( 	(3) 	 Remaining Time :     0,449 
+) 	(3) 	 Remaining Time :     0,224 
+= 	(3) 	 Remaining Time :     0,000 
+
+Creating Dataset of size 15444... 
+uA 	(9) 	 Remaining Time :   191,499 
+uB 	(9) 	 Remaining Time :   189,544 
+uC 	(9) 	 Remaining Time :   185,975 
+uD 	(9) 	 Remaining Time :   183,501 
+uE 	(9) 	 Remaining Time :   180,646 
+uF 	(9) 	 Remaining Time :   177,888 
+uG 	(9) 	 Remaining Time :   175,847 
+uH 	(9) 	 Remaining Time :   173,478 
+uI 	(9) 	 Remaining Time :   170,951 
+uJ 	(9) 	 Remaining Time :   168,375 
+uK 	(9) 	 Remaining Time :   165,831 
+uL 	(9) 	 Remaining Time :   163,191 
+uM 	(9) 	 Remaining Time :   160,850 
+uN 	(9) 	 Remaining Time :   158,546 
+uO 	(9) 	 Remaining Time :   156,051 
+uP 	(9) 	 Remaining Time :   153,617 
+uQ 	(9) 	 Remaining Time :   151,215 
+uR 	(9) 	 Remaining Time :   148,947 
+uS 	(9) 	 Remaining Time :   146,531 
+uT 	(9) 	 Remaining Time :   143,994 
+uU 	(9) 	 Remaining Time :   141,420 
+uV 	(9) 	 Remaining Time :   138,916 
+uW 	(9) 	 Remaining Time :   136,479 
+uX 	(9) 	 Remaining Time :   133,936 
+uY 	(9) 	 Remaining Time :   131,482 
+uZ 	(9) 	 Remaining Time :   129,014 
+la 	(9) 	 Remaining Time :   126,435 
+lb 	(9) 	 Remaining Time :   123,929 
+lc 	(9) 	 Remaining Time :   121,327 
+ld 	(9) 	 Remaining Time :   118,800 
+le 	(9) 	 Remaining Time :   116,249 
+lf 	(9) 	 Remaining Time :   113,781 
+lg 	(9) 	 Remaining Time :   111,304 
+lh 	(9) 	 Remaining Time :   108,793 
+li 	(9) 	 Remaining Time :   106,232 
+lj 	(9) 	 Remaining Time :   103,738 
+lk 	(9) 	 Remaining Time :   101,253 
+ll 	(9) 	 Remaining Time :    98,749 
+lm 	(9) 	 Remaining Time :    96,277 
+ln 	(9) 	 Remaining Time :    93,796 
+lo 	(9) 	 Remaining Time :    91,302 
+lp 	(9) 	 Remaining Time :    88,895 
+lq 	(9) 	 Remaining Time :    86,436 
+lr 	(9) 	 Remaining Time :    83,945 
+ls 	(9) 	 Remaining Time :    81,451 
+lt 	(9) 	 Remaining Time :    78,952 
+lu 	(9) 	 Remaining Time :    76,460 
+lv 	(9) 	 Remaining Time :    73,964 
+lw 	(9) 	 Remaining Time :    71,497 
+lx 	(9) 	 Remaining Time :    69,021 
+ly 	(9) 	 Remaining Time :    66,566 
+lz 	(9) 	 Remaining Time :    64,101 
+0 	(9) 	 Remaining Time :    61,630 
+1 	(9) 	 Remaining Time :    59,148 
+2 	(9) 	 Remaining Time :    56,674 
+3 	(9) 	 Remaining Time :    54,208 
+4 	(9) 	 Remaining Time :    51,733 
+5 	(9) 	 Remaining Time :    49,264 
+6 	(9) 	 Remaining Time :    46,799 
+7 	(9) 	 Remaining Time :    44,334 
+8 	(9) 	 Remaining Time :    41,875 
+9 	(9) 	 Remaining Time :    39,413 
++ 	(9) 	 Remaining Time :    36,938 
+- 	(9) 	 Remaining Time :    34,466 
+cr 	(9) 	 Remaining Time :    31,996 
+@ 	(9) 	 Remaining Time :    29,555 
+# 	(9) 	 Remaining Time :    27,100 
+' 	(9) 	 Remaining Time :    24,627 
+pt 	(9) 	 Remaining Time :    22,160 
+im 	(9) 	 Remaining Time :    19,701 
+! 	(9) 	 Remaining Time :    17,233 
+tp 	(9) 	 Remaining Time :    14,767 
+€ 	(9) 	 Remaining Time :    12,307 
+$ 	(9) 	 Remaining Time :     9,848 
+% 	(9) 	 Remaining Time :     7,388 
+( 	(9) 	 Remaining Time :     4,926 
+) 	(9) 	 Remaining Time :     2,462 
+= 	(9) 	 Remaining Time :     0,000 
+
+Mini Batch Gradient Descent 8/8 - 8 Epochs - 64 Batch Size - 5,000E-01 LR 
+(8/8) 	Epoch 1/8	 
+	 Epoch 00001 Batch 00001 : 1,736E+00	 Time remaining  1054,069 
+	 Epoch 00001 Batch 00061 : 1,381E+00	 Time remaining   717,907 
+	 Epoch 00001 Batch 00121 : 1,406E+00	 Time remaining   694,874 
+	 Epoch 00001 Batch 00181 : 1,359E+00	 Time remaining   668,570 
+	 Epoch 00001 Batch 00241 : 1,570E+00	 Time remaining   644,959 
+	 Score 0 : 0,50598 	 Score 1 : 0,75641 
+(8/8) 	Epoch 2/8	 
+	 Epoch 00002 Batch 00001 : 1,119E+00	 Time remaining   709,081 
+	 Epoch 00002 Batch 00061 : 1,808E+00	 Time remaining   669,675 
+	 Epoch 00002 Batch 00121 : 1,461E+00	 Time remaining   635,454 
+	 Epoch 00002 Batch 00181 : 1,488E+00	 Time remaining   605,169 
+	 Epoch 00002 Batch 00241 : 1,339E+00	 Time remaining   576,840 
+	 Score 0 : 0,51966 	 Score 1 : 0,75128 
+(8/8) 	Epoch 3/8	 
+	 Epoch 00003 Batch 00001 : 1,646E+00	 Time remaining   604,902 
+	 Epoch 00003 Batch 00061 : 1,382E+00	 Time remaining   574,196 
+	 Epoch 00003 Batch 00121 : 1,220E+00	 Time remaining   544,764 
+	 Epoch 00003 Batch 00181 : 1,212E+00	 Time remaining   516,616 
+	 Epoch 00003 Batch 00241 : 1,748E+00	 Time remaining   489,485 
+	 Score 0 : 0,52906 	 Score 1 : 0,76068 
+(8/8) 	Epoch 4/8	 
+	 Epoch 00004 Batch 00001 : 2,048E+00	 Time remaining   504,203 
+	 Epoch 00004 Batch 00061 : 1,523E+00	 Time remaining   475,916 
+	 Epoch 00004 Batch 00121 : 8,461E-01	 Time remaining   448,334 
+	 Epoch 00004 Batch 00181 : 1,369E+00	 Time remaining   421,364 
+	 Epoch 00004 Batch 00241 : 1,102E+00	 Time remaining   394,776 
+	 Score 0 : 0,53333 	 Score 1 : 0,75812 
+(8/8) 	Epoch 5/8	 
+	 Epoch 00005 Batch 00001 : 1,726E+00	 Time remaining   403,786 
+	 Epoch 00005 Batch 00061 : 1,699E+00	 Time remaining   376,687 
+	 Epoch 00005 Batch 00121 : 1,375E+00	 Time remaining   350,332 
+	 Epoch 00005 Batch 00181 : 1,323E+00	 Time remaining   324,038 
+	 Epoch 00005 Batch 00241 : 1,335E+00	 Time remaining   298,007 
+	 Score 0 : 0,51624 	 Score 1 : 0,73333 
+(8/8) 	Epoch 6/8	 
+	 Epoch 00006 Batch 00001 : 1,186E+00	 Time remaining   303,150 
+	 Epoch 00006 Batch 00061 : 1,649E+00	 Time remaining   276,799 
+	 Epoch 00006 Batch 00121 : 1,611E+00	 Time remaining   250,733 
+	 Epoch 00006 Batch 00181 : 1,309E+00	 Time remaining   224,953 
+	 Epoch 00006 Batch 00241 : 1,439E+00	 Time remaining   199,484 
+	 Score 0 : 0,51709 	 Score 1 : 0,73846 
+(8/8) 	Epoch 7/8	 
+	 Epoch 00007 Batch 00001 : 9,593E-01	 Time remaining   202,132 
+	 Epoch 00007 Batch 00061 : 9,967E-01	 Time remaining   176,275 
+	 Epoch 00007 Batch 00121 : 1,008E+00	 Time remaining   150,648 
+	 Epoch 00007 Batch 00181 : 1,440E+00	 Time remaining   125,247 
+	 Epoch 00007 Batch 00241 : 1,379E+00	 Time remaining    99,985 
+	 Score 0 : 0,53846 	 Score 1 : 0,75385 
+(8/8) 	Epoch 8/8	 
+	 Epoch 00008 Batch 00001 : 1,637E+00	 Time remaining   100,833 
+	 Epoch 00008 Batch 00061 : 1,617E+00	 Time remaining    75,406 
+	 Epoch 00008 Batch 00121 : 1,371E+00	 Time remaining    50,121 
+	 Epoch 00008 Batch 00181 : 1,119E+00	 Time remaining    24,995 
+	 Epoch 00008 Batch 00241 : 1,470E+00	 Time remaining     0,000 
+	 Score 0 : 0,53590 	 Score 1 : 0,75043 
+Exported weight	 1 / 5 
+Exported weight	 2 / 5 
+Exported weight	 3 / 5 
+Exported weight	 4 / 5 
+Exported weight	 5 / 5 
+Exported bias	 1 / 5 
+Exported bias	 2 / 5 
+Exported bias	 3 / 5 
+Exported bias	 4 / 5 
+Exported bias	 5 / 5 
+Creating Dataset of size 3120... 
+uA 	(4) 	 Remaining Time :    48,433 
+uB 	(4) 	 Remaining Time :    45,752 
+uC 	(4) 	 Remaining Time :    43,425 
+uD 	(4) 	 Remaining Time :    42,088 
+uE 	(4) 	 Remaining Time :    41,011 
+uF 	(4) 	 Remaining Time :    40,044 
+uG 	(4) 	 Remaining Time :    39,283 
+uH 	(4) 	 Remaining Time :    38,570 
+uI 	(4) 	 Remaining Time :    38,372 
+uJ 	(4) 	 Remaining Time :    37,645 
+uK 	(4) 	 Remaining Time :    36,972 
+uL 	(4) 	 Remaining Time :    36,289 
+uM 	(4) 	 Remaining Time :    35,730 
+uN 	(4) 	 Remaining Time :    35,177 
+uO 	(4) 	 Remaining Time :    34,587 
+uP 	(4) 	 Remaining Time :    33,995 
+uQ 	(4) 	 Remaining Time :    33,457 
+uR 	(4) 	 Remaining Time :    32,877 
+uS 	(4) 	 Remaining Time :    32,279 
+uT 	(4) 	 Remaining Time :    31,697 
+uU 	(4) 	 Remaining Time :    31,119 
+uV 	(4) 	 Remaining Time :    30,566 
+uW 	(4) 	 Remaining Time :    30,042 
+uX 	(4) 	 Remaining Time :    29,473 
+uY 	(4) 	 Remaining Time :    28,917 
+uZ 	(4) 	 Remaining Time :    28,374 
+la 	(4) 	 Remaining Time :    27,803 
+lb 	(4) 	 Remaining Time :    27,232 
+lc 	(4) 	 Remaining Time :    26,673 
+ld 	(4) 	 Remaining Time :    26,150 
+le 	(4) 	 Remaining Time :    25,597 
+lf 	(4) 	 Remaining Time :    25,056 
+lg 	(4) 	 Remaining Time :    24,495 
+lh 	(4) 	 Remaining Time :    23,937 
+li 	(4) 	 Remaining Time :    23,378 
+lj 	(4) 	 Remaining Time :    22,828 
+lk 	(4) 	 Remaining Time :    22,279 
+ll 	(4) 	 Remaining Time :    21,715 
+lm 	(4) 	 Remaining Time :    21,166 
+ln 	(4) 	 Remaining Time :    20,606 
+lo 	(4) 	 Remaining Time :    20,060 
+lp 	(4) 	 Remaining Time :    19,508 
+lq 	(4) 	 Remaining Time :    18,958 
+lr 	(4) 	 Remaining Time :    18,407 
+ls 	(4) 	 Remaining Time :    17,854 
+lt 	(4) 	 Remaining Time :    17,304 
+lu 	(4) 	 Remaining Time :    16,760 
+lv 	(4) 	 Remaining Time :    16,209 
+lw 	(4) 	 Remaining Time :    15,666 
+lx 	(4) 	 Remaining Time :    15,125 
+ly 	(4) 	 Remaining Time :    14,584 
+lz 	(4) 	 Remaining Time :    14,039 
+0 	(4) 	 Remaining Time :    13,497 
+1 	(4) 	 Remaining Time :    12,955 
+2 	(4) 	 Remaining Time :    12,409 
+3 	(4) 	 Remaining Time :    11,867 
+4 	(4) 	 Remaining Time :    11,329 
+5 	(4) 	 Remaining Time :    10,790 
+6 	(4) 	 Remaining Time :    10,249 
+7 	(4) 	 Remaining Time :     9,707 
+8 	(4) 	 Remaining Time :     9,169 
+9 	(4) 	 Remaining Time :     8,629 
++ 	(4) 	 Remaining Time :     8,089 
+- 	(4) 	 Remaining Time :     7,549 
+cr 	(4) 	 Remaining Time :     7,008 
+@ 	(4) 	 Remaining Time :     6,470 
+# 	(4) 	 Remaining Time :     5,931 
+' 	(4) 	 Remaining Time :     5,390 
+pt 	(4) 	 Remaining Time :     4,852 
+im 	(4) 	 Remaining Time :     4,313 
+! 	(4) 	 Remaining Time :     3,773 
+tp 	(4) 	 Remaining Time :     3,232 
+€ 	(4) 	 Remaining Time :     2,693 
+$ 	(4) 	 Remaining Time :     2,154 
+% 	(4) 	 Remaining Time :     1,616 
+( 	(4) 	 Remaining Time :     1,077 
+) 	(4) 	 Remaining Time :     0,539 
+= 	(4) 	 Remaining Time :     0,000 
+
+Training Set Score : 0.62916666 
+Accuracy  - [ 0,675 ,  0,725 ,  0,850 ,  0,750 ,  0,875 ,  0,875 ,  0,650 ,  0,825 ,  0,450 ,  0,475 ,  0,750 ,  0,875 ,  0,750 ,  0,700 ,  0,550 ,  0,575 ,  0,575 ,  0,825 ,  0,725 ,  0,775 ,  0,675 ,  0,600 ,  0,450 ,  0,675 ,  0,825 ,  0,675 ,  0,300 ,  0,525 ,  0,800 ,  0,800 ,  0,550 ,  0,675 ,  0,100 ,  0,600 ,  0,000 ,  0,625 ,  0,625 ,  0,300 ,  0,700 ,  0,575 ,  0,625 ,  0,525 ,  0,900 ,  0,550 ,  0,525 ,  0,700 ,  0,675 ,  0,750 ,  0,650 ,  0,275 ,  0,550 ,  0,550 ,  0,400 ,  0,325 ,  0,500 ,  0,850 ,  0,675 ,  0,625 ,  0,800 ,  0,700 ,  0,525 ,  0,750 ,  0,750 ,  0,700 ,  0,675 ,  0,650 ,  0,725 ,  0,400 ,  0,350 ,  0,825 ,  0,650 ,  0,325 ,  0,575 ,  0,350 ,  0,725 ,  0,900 ,  0,950 ,  0,775  ] 
+Creating Dataset of size 3120... 
+uA 	(4) 	 Remaining Time :    47,278 
+uB 	(4) 	 Remaining Time :    46,664 
+uC 	(4) 	 Remaining Time :    45,575 
+uD 	(4) 	 Remaining Time :    44,234 
+uE 	(4) 	 Remaining Time :    43,012 
+uF 	(4) 	 Remaining Time :    41,796 
+uG 	(4) 	 Remaining Time :    40,835 
+uH 	(4) 	 Remaining Time :    39,917 
+uI 	(4) 	 Remaining Time :    39,023 
+uJ 	(4) 	 Remaining Time :    38,250 
+uK 	(4) 	 Remaining Time :    37,502 
+uL 	(4) 	 Remaining Time :    36,762 
+uM 	(4) 	 Remaining Time :    36,120 
+uN 	(4) 	 Remaining Time :    35,502 
+uO 	(4) 	 Remaining Time :    34,881 
+uP 	(4) 	 Remaining Time :    34,251 
+uQ 	(4) 	 Remaining Time :    33,740 
+uR 	(4) 	 Remaining Time :    33,130 
+uS 	(4) 	 Remaining Time :    32,534 
+uT 	(4) 	 Remaining Time :    31,906 
+uU 	(4) 	 Remaining Time :    31,317 
+uV 	(4) 	 Remaining Time :    30,711 
+uW 	(4) 	 Remaining Time :    30,147 
+uX 	(4) 	 Remaining Time :    29,608 
+uY 	(4) 	 Remaining Time :    29,016 
+uZ 	(4) 	 Remaining Time :    28,440 
+la 	(4) 	 Remaining Time :    27,835 
+lb 	(4) 	 Remaining Time :    27,284 
+lc 	(4) 	 Remaining Time :    26,710 
+ld 	(4) 	 Remaining Time :    26,149 
+le 	(4) 	 Remaining Time :    25,580 
+lf 	(4) 	 Remaining Time :    25,023 
+lg 	(4) 	 Remaining Time :    24,462 
+lh 	(4) 	 Remaining Time :    23,913 
+li 	(4) 	 Remaining Time :    23,347 
+lj 	(4) 	 Remaining Time :    22,783 
+lk 	(4) 	 Remaining Time :    22,231 
+ll 	(4) 	 Remaining Time :    21,676 
+lm 	(4) 	 Remaining Time :    21,126 
+ln 	(4) 	 Remaining Time :    20,572 
+lo 	(4) 	 Remaining Time :    20,017 
+lp 	(4) 	 Remaining Time :    19,465 
+lq 	(4) 	 Remaining Time :    18,915 
+lr 	(4) 	 Remaining Time :    18,375 
+ls 	(4) 	 Remaining Time :    17,818 
+lt 	(4) 	 Remaining Time :    17,267 
+lu 	(4) 	 Remaining Time :    16,725 
+lv 	(4) 	 Remaining Time :    16,175 
+lw 	(4) 	 Remaining Time :    15,629 
+lx 	(4) 	 Remaining Time :    15,086 
+ly 	(4) 	 Remaining Time :    14,549 
+lz 	(4) 	 Remaining Time :    14,006 
+0 	(4) 	 Remaining Time :    13,461 
+1 	(4) 	 Remaining Time :    12,920 
+2 	(4) 	 Remaining Time :    12,379 
+3 	(4) 	 Remaining Time :    11,836 
+4 	(4) 	 Remaining Time :    11,298 
+5 	(4) 	 Remaining Time :    10,757 
+6 	(4) 	 Remaining Time :    10,217 
+7 	(4) 	 Remaining Time :     9,676 
+8 	(4) 	 Remaining Time :     9,137 
+9 	(4) 	 Remaining Time :     8,599 
++ 	(4) 	 Remaining Time :     8,058 
+- 	(4) 	 Remaining Time :     7,519 
+cr 	(4) 	 Remaining Time :     6,979 
+@ 	(4) 	 Remaining Time :     6,444 
+# 	(4) 	 Remaining Time :     5,907 
+' 	(4) 	 Remaining Time :     5,368 
+pt 	(4) 	 Remaining Time :     4,830 
+im 	(4) 	 Remaining Time :     4,294 
+! 	(4) 	 Remaining Time :     3,756 
+tp 	(4) 	 Remaining Time :     3,218 
+€ 	(4) 	 Remaining Time :     2,682 
+$ 	(4) 	 Remaining Time :     2,145 
+% 	(4) 	 Remaining Time :     1,609 
+( 	(4) 	 Remaining Time :     1,072 
+) 	(4) 	 Remaining Time :     0,536 
+= 	(4) 	 Remaining Time :     0,000 
+
+Training Set Score : 0.62467974 
+Accuracy  - [ 0,625 ,  0,725 ,  0,850 ,  0,725 ,  0,750 ,  0,875 ,  0,700 ,  0,800 ,  0,425 ,  0,425 ,  0,675 ,  0,875 ,  0,675 ,  0,650 ,  0,550 ,  0,650 ,  0,575 ,  0,775 ,  0,625 ,  0,875 ,  0,575 ,  0,475 ,  0,650 ,  0,600 ,  0,700 ,  0,700 ,  0,300 ,  0,650 ,  0,750 ,  0,775 ,  0,750 ,  0,625 ,  0,175 ,  0,500 ,  0,000 ,  0,550 ,  0,725 ,  0,350 ,  0,675 ,  0,650 ,  0,600 ,  0,500 ,  0,900 ,  0,675 ,  0,600 ,  0,675 ,  0,600 ,  0,525 ,  0,650 ,  0,400 ,  0,550 ,  0,550 ,  0,475 ,  0,300 ,  0,550 ,  0,775 ,  0,700 ,  0,525 ,  0,800 ,  0,625 ,  0,650 ,  0,625 ,  0,800 ,  0,550 ,  0,625 ,  0,700 ,  0,650 ,  0,475 ,  0,525 ,  0,725 ,  0,800 ,  0,375 ,  0,550 ,  0,500 ,  0,600 ,  0,950 ,  0,925 ,  0,725  ] 
+Creating Dataset of size 3120... 
+uA 	(4) 	 Remaining Time :    44,737 
+uB 	(4) 	 Remaining Time :    43,662 
+uC 	(4) 	 Remaining Time :    42,200 
+uD 	(4) 	 Remaining Time :    41,273 
+uE 	(4) 	 Remaining Time :    40,340 
+uF 	(4) 	 Remaining Time :    39,588 
+uG 	(4) 	 Remaining Time :    39,030 
+uH 	(4) 	 Remaining Time :    38,360 
+uI 	(4) 	 Remaining Time :    37,689 
+uJ 	(4) 	 Remaining Time :    37,067 
+uK 	(4) 	 Remaining Time :    36,515 
+uL 	(4) 	 Remaining Time :    35,876 
+uM 	(4) 	 Remaining Time :    35,655 
+uN 	(4) 	 Remaining Time :    35,040 
+uO 	(4) 	 Remaining Time :    34,448 
+uP 	(4) 	 Remaining Time :    33,844 
+uQ 	(4) 	 Remaining Time :    33,277 
+uR 	(4) 	 Remaining Time :    32,710 
+uS 	(4) 	 Remaining Time :    32,155 
+uT 	(4) 	 Remaining Time :    31,572 
+uU 	(4) 	 Remaining Time :    31,024 
+uV 	(4) 	 Remaining Time :    30,449 
+uW 	(4) 	 Remaining Time :    29,915 
+uX 	(4) 	 Remaining Time :    29,360 
+uY 	(4) 	 Remaining Time :    28,787 
+uZ 	(4) 	 Remaining Time :    28,234 
+la 	(4) 	 Remaining Time :    27,655 
+lb 	(4) 	 Remaining Time :    27,268 
+lc 	(4) 	 Remaining Time :    26,909 
+ld 	(4) 	 Remaining Time :    26,429 
+le 	(4) 	 Remaining Time :    25,844 
+lf 	(4) 	 Remaining Time :    25,270 
+lg 	(4) 	 Remaining Time :    24,708 
+lh 	(4) 	 Remaining Time :    24,156 
+li 	(4) 	 Remaining Time :    23,575 
+lj 	(4) 	 Remaining Time :    23,007 
+lk 	(4) 	 Remaining Time :    22,447 
+ll 	(4) 	 Remaining Time :    21,883 
+lm 	(4) 	 Remaining Time :    21,325 
+ln 	(4) 	 Remaining Time :    20,768 
+lo 	(4) 	 Remaining Time :    20,221 
+lp 	(4) 	 Remaining Time :    19,659 
+lq 	(4) 	 Remaining Time :    19,116 
+lr 	(4) 	 Remaining Time :    18,554 
+ls 	(4) 	 Remaining Time :    18,000 
+lt 	(4) 	 Remaining Time :    17,446 
+lu 	(4) 	 Remaining Time :    16,909 
+lv 	(4) 	 Remaining Time :    16,358 
+lw 	(4) 	 Remaining Time :    15,813 
+lx 	(4) 	 Remaining Time :    15,261 
+ly 	(4) 	 Remaining Time :    14,720 
+lz 	(4) 	 Remaining Time :    14,167 
+0 	(4) 	 Remaining Time :    13,621 
+1 	(4) 	 Remaining Time :    13,067 
+2 	(4) 	 Remaining Time :    12,516 
+3 	(4) 	 Remaining Time :    11,967 
+4 	(4) 	 Remaining Time :    11,418 
+5 	(4) 	 Remaining Time :    10,873 
+6 	(4) 	 Remaining Time :    10,329 
+7 	(4) 	 Remaining Time :     9,782 
+8 	(4) 	 Remaining Time :     9,238 
+9 	(4) 	 Remaining Time :     8,694 
++ 	(4) 	 Remaining Time :     8,148 
+- 	(4) 	 Remaining Time :     7,600 
+cr 	(4) 	 Remaining Time :     7,055 
+@ 	(4) 	 Remaining Time :     6,515 
+# 	(4) 	 Remaining Time :     5,971 
+' 	(4) 	 Remaining Time :     5,424 
+pt 	(4) 	 Remaining Time :     4,880 
+im 	(4) 	 Remaining Time :     4,336 
+! 	(4) 	 Remaining Time :     3,792 
+tp 	(4) 	 Remaining Time :     3,249 
+€ 	(4) 	 Remaining Time :     2,708 
+$ 	(4) 	 Remaining Time :     2,166 
+% 	(4) 	 Remaining Time :     1,624 
+( 	(4) 	 Remaining Time :     1,082 
+) 	(4) 	 Remaining Time :     0,541 
+= 	(4) 	 Remaining Time :     0,000 
+
+Training Set Score : 0.6429487 
+Accuracy  - [ 0,725 ,  0,775 ,  0,825 ,  0,775 ,  0,675 ,  0,850 ,  0,625 ,  0,775 ,  0,425 ,  0,550 ,  0,675 ,  0,975 ,  0,750 ,  0,775 ,  0,575 ,  0,800 ,  0,600 ,  0,700 ,  0,700 ,  0,825 ,  0,625 ,  0,650 ,  0,825 ,  0,650 ,  0,775 ,  0,600 ,  0,325 ,  0,650 ,  0,775 ,  0,825 ,  0,675 ,  0,600 ,  0,275 ,  0,575 ,  0,000 ,  0,600 ,  0,650 ,  0,325 ,  0,425 ,  0,600 ,  0,675 ,  0,575 ,  0,725 ,  0,625 ,  0,575 ,  0,700 ,  0,650 ,  0,600 ,  0,700 ,  0,450 ,  0,425 ,  0,450 ,  0,400 ,  0,425 ,  0,525 ,  0,925 ,  0,750 ,  0,600 ,  0,700 ,  0,750 ,  0,575 ,  0,650 ,  0,800 ,  0,575 ,  0,575 ,  0,700 ,  0,800 ,  0,500 ,  0,450 ,  0,850 ,  0,800 ,  0,400 ,  0,725 ,  0,500 ,  0,575 ,  0,950 ,  0,900 ,  0,800  ] 
+Creating Dataset of size 3120... 
+uA 	(4) 	 Remaining Time :    46,970 
+uB 	(4) 	 Remaining Time :    45,980 
+uC 	(4) 	 Remaining Time :    45,375 
+uD 	(4) 	 Remaining Time :    43,956 
+uE 	(4) 	 Remaining Time :    42,968 
+uF 	(4) 	 Remaining Time :    41,724 
+uG 	(4) 	 Remaining Time :    40,795 
+uH 	(4) 	 Remaining Time :    39,856 
+uI 	(4) 	 Remaining Time :    39,023 
+uJ 	(4) 	 Remaining Time :    38,175 
+uK 	(4) 	 Remaining Time :    37,483 
+uL 	(4) 	 Remaining Time :    36,773 
+uM 	(4) 	 Remaining Time :    36,135 
+uN 	(4) 	 Remaining Time :    35,511 
+uO 	(4) 	 Remaining Time :    34,847 
+uP 	(4) 	 Remaining Time :    34,205 
+uQ 	(4) 	 Remaining Time :    33,636 
+uR 	(4) 	 Remaining Time :    33,133 
+uS 	(4) 	 Remaining Time :    32,540 
+uT 	(4) 	 Remaining Time :    31,917 
+uU 	(4) 	 Remaining Time :    31,336 
+uV 	(4) 	 Remaining Time :    30,749 
+uW 	(4) 	 Remaining Time :    30,171 
+uX 	(4) 	 Remaining Time :    29,576 
+uY 	(4) 	 Remaining Time :    28,995 
+uZ 	(4) 	 Remaining Time :    28,428 
+la 	(4) 	 Remaining Time :    27,867 
+lb 	(4) 	 Remaining Time :    27,298 
+lc 	(4) 	 Remaining Time :    26,734 
+ld 	(4) 	 Remaining Time :    26,173 
+le 	(4) 	 Remaining Time :    25,600 
+lf 	(4) 	 Remaining Time :    25,031 
+lg 	(4) 	 Remaining Time :    24,491 
+lh 	(4) 	 Remaining Time :    23,931 
+li 	(4) 	 Remaining Time :    23,372 
+lj 	(4) 	 Remaining Time :    22,823 
+lk 	(4) 	 Remaining Time :    22,286 
+ll 	(4) 	 Remaining Time :    21,717 
+lm 	(4) 	 Remaining Time :    21,166 
+ln 	(4) 	 Remaining Time :    20,606 
+lo 	(4) 	 Remaining Time :    20,066 
+lp 	(4) 	 Remaining Time :    19,514 
+lq 	(4) 	 Remaining Time :    18,972 
+lr 	(4) 	 Remaining Time :    18,410 
+ls 	(4) 	 Remaining Time :    17,857 
+lt 	(4) 	 Remaining Time :    17,309 
+lu 	(4) 	 Remaining Time :    16,759 
+lv 	(4) 	 Remaining Time :    16,209 
+lw 	(4) 	 Remaining Time :    15,668 
+lx 	(4) 	 Remaining Time :    15,126 
+ly 	(4) 	 Remaining Time :    14,581 
+lz 	(4) 	 Remaining Time :    14,035 
+0 	(4) 	 Remaining Time :    13,492 
+1 	(4) 	 Remaining Time :    12,946 
+2 	(4) 	 Remaining Time :    12,401 
+3 	(4) 	 Remaining Time :    11,860 
+4 	(4) 	 Remaining Time :    11,316 
+5 	(4) 	 Remaining Time :    10,773 
+6 	(4) 	 Remaining Time :    10,233 
+7 	(4) 	 Remaining Time :     9,691 
+8 	(4) 	 Remaining Time :     9,150 
+9 	(4) 	 Remaining Time :     8,613 
++ 	(4) 	 Remaining Time :     8,073 
+- 	(4) 	 Remaining Time :     7,531 
+cr 	(4) 	 Remaining Time :     7,015 
+@ 	(4) 	 Remaining Time :     6,473 
+# 	(4) 	 Remaining Time :     5,929 
+' 	(4) 	 Remaining Time :     5,383 
+pt 	(4) 	 Remaining Time :     4,841 
+im 	(4) 	 Remaining Time :     4,304 
+! 	(4) 	 Remaining Time :     3,764 
+tp 	(4) 	 Remaining Time :     3,226 
+€ 	(4) 	 Remaining Time :     2,689 
+$ 	(4) 	 Remaining Time :     2,151 
+% 	(4) 	 Remaining Time :     1,614 
+( 	(4) 	 Remaining Time :     1,075 
+) 	(4) 	 Remaining Time :     0,538 
+= 	(4) 	 Remaining Time :     0,000 
+
+Training Set Score : 0.6368591 
+Accuracy  - [ 0,700 ,  0,700 ,  0,850 ,  0,750 ,  0,700 ,  0,750 ,  0,700 ,  0,800 ,  0,425 ,  0,575 ,  0,725 ,  0,950 ,  0,675 ,  0,725 ,  0,650 ,  0,775 ,  0,725 ,  0,750 ,  0,600 ,  0,875 ,  0,600 ,  0,525 ,  0,725 ,  0,600 ,  0,725 ,  0,600 ,  0,325 ,  0,650 ,  0,725 ,  0,775 ,  0,650 ,  0,750 ,  0,150 ,  0,575 ,  0,000 ,  0,600 ,  0,575 ,  0,375 ,  0,600 ,  0,675 ,  0,700 ,  0,500 ,  0,925 ,  0,575 ,  0,550 ,  0,675 ,  0,550 ,  0,600 ,  0,625 ,  0,350 ,  0,375 ,  0,500 ,  0,500 ,  0,350 ,  0,675 ,  0,900 ,  0,800 ,  0,500 ,  0,775 ,  0,600 ,  0,725 ,  0,750 ,  0,750 ,  0,625 ,  0,700 ,  0,700 ,  0,775 ,  0,325 ,  0,375 ,  0,700 ,  0,800 ,  0,300 ,  0,650 ,  0,525 ,  0,700 ,  0,950 ,  0,925 ,  0,775  ] 
+Creating Dataset of size 3120... 
+uA 	(4) 	 Remaining Time :    46,508 
+uB 	(4) 	 Remaining Time :    45,904 
+uC 	(4) 	 Remaining Time :    44,525 
+uD 	(4) 	 Remaining Time :    42,939 
+uE 	(4) 	 Remaining Time :    41,785 
+uF 	(4) 	 Remaining Time :    40,788 
+uG 	(4) 	 Remaining Time :    40,014 
+uH 	(4) 	 Remaining Time :    39,261 
+uI 	(4) 	 Remaining Time :    38,433 
+uJ 	(4) 	 Remaining Time :    37,835 
+uK 	(4) 	 Remaining Time :    37,496 
+uL 	(4) 	 Remaining Time :    37,021 
+uM 	(4) 	 Remaining Time :    36,370 
+uN 	(4) 	 Remaining Time :    35,744 
+uO 	(4) 	 Remaining Time :    35,074 
+uP 	(4) 	 Remaining Time :    34,418 
+uQ 	(4) 	 Remaining Time :    33,808 
+uR 	(4) 	 Remaining Time :    33,177 
+uS 	(4) 	 Remaining Time :    32,615 
+uT 	(4) 	 Remaining Time :    32,022 
+uU 	(4) 	 Remaining Time :    31,415 
+uV 	(4) 	 Remaining Time :    30,825 
+uW 	(4) 	 Remaining Time :    30,276 
+uX 	(4) 	 Remaining Time :    29,709 
+uY 	(4) 	 Remaining Time :    29,127 
+uZ 	(4) 	 Remaining Time :    28,558 
+la 	(4) 	 Remaining Time :    27,959 
+lb 	(4) 	 Remaining Time :    27,380 
+lc 	(4) 	 Remaining Time :    26,808 
+ld 	(4) 	 Remaining Time :    26,251 
+le 	(4) 	 Remaining Time :    25,679 
+lf 	(4) 	 Remaining Time :    25,116 
+lg 	(4) 	 Remaining Time :    24,555 
+lh 	(4) 	 Remaining Time :    23,997 
+li 	(4) 	 Remaining Time :    23,421 
+lj 	(4) 	 Remaining Time :    22,854 
+lk 	(4) 	 Remaining Time :    22,301 
+ll 	(4) 	 Remaining Time :    21,743 
+lm 	(4) 	 Remaining Time :    21,185 
+ln 	(4) 	 Remaining Time :    20,633 
+lo 	(4) 	 Remaining Time :    20,075 
+lp 	(4) 	 Remaining Time :    19,535 
+lq 	(4) 	 Remaining Time :    18,991 
+lr 	(4) 	 Remaining Time :    18,435 
+ls 	(4) 	 Remaining Time :    17,887 
+lt 	(4) 	 Remaining Time :    17,348 
+lu 	(4) 	 Remaining Time :    16,795 
+lv 	(4) 	 Remaining Time :    16,246 
+lw 	(4) 	 Remaining Time :    15,698 
+lx 	(4) 	 Remaining Time :    15,151 
+ly 	(4) 	 Remaining Time :    14,609 
+lz 	(4) 	 Remaining Time :    14,061 
+0 	(4) 	 Remaining Time :    13,520 
+1 	(4) 	 Remaining Time :    12,976 
+2 	(4) 	 Remaining Time :    12,433 
+3 	(4) 	 Remaining Time :    11,891 
+4 	(4) 	 Remaining Time :    11,347 
+5 	(4) 	 Remaining Time :    10,803 
+6 	(4) 	 Remaining Time :    10,262 
+7 	(4) 	 Remaining Time :     9,720 
+8 	(4) 	 Remaining Time :     9,181 
+9 	(4) 	 Remaining Time :     8,639 
++ 	(4) 	 Remaining Time :     8,094 
+- 	(4) 	 Remaining Time :     7,550 
+cr 	(4) 	 Remaining Time :     7,011 
+@ 	(4) 	 Remaining Time :     6,473 
+# 	(4) 	 Remaining Time :     5,933 
+' 	(4) 	 Remaining Time :     5,392 
+pt 	(4) 	 Remaining Time :     4,853 
+im 	(4) 	 Remaining Time :     4,313 
+! 	(4) 	 Remaining Time :     3,773 
+tp 	(4) 	 Remaining Time :     3,232 
+€ 	(4) 	 Remaining Time :     2,693 
+$ 	(4) 	 Remaining Time :     2,154 
+% 	(4) 	 Remaining Time :     1,616 
+( 	(4) 	 Remaining Time :     1,077 
+) 	(4) 	 Remaining Time :     0,538 
+= 	(4) 	 Remaining Time :     0,000 
+
+Training Set Score : 0.64294875 
+Accuracy  - [ 0,775 ,  0,775 ,  0,850 ,  0,750 ,  0,775 ,  0,825 ,  0,650 ,  0,800 ,  0,525 ,  0,625 ,  0,800 ,  0,825 ,  0,650 ,  0,750 ,  0,675 ,  0,625 ,  0,600 ,  0,750 ,  0,700 ,  0,875 ,  0,525 ,  0,575 ,  0,700 ,  0,500 ,  0,650 ,  0,700 ,  0,250 ,  0,650 ,  0,750 ,  0,775 ,  0,675 ,  0,675 ,  0,100 ,  0,600 ,  0,000 ,  0,650 ,  0,650 ,  0,200 ,  0,675 ,  0,600 ,  0,750 ,  0,550 ,  0,850 ,  0,675 ,  0,550 ,  0,650 ,  0,625 ,  0,700 ,  0,675 ,  0,250 ,  0,450 ,  0,425 ,  0,500 ,  0,275 ,  0,600 ,  0,900 ,  0,750 ,  0,500 ,  0,675 ,  0,775 ,  0,750 ,  0,750 ,  0,825 ,  0,600 ,  0,675 ,  0,675 ,  0,800 ,  0,325 ,  0,500 ,  0,800 ,  0,800 ,  0,400 ,  0,750 ,  0,525 ,  0,700 ,  0,925 ,  0,925 ,  0,800  ] 
+Creating Dataset of size 3120... 
+uA 	(4) 	 Remaining Time :    41,503 
+uB 	(4) 	 Remaining Time :    41,230 
+uC 	(4) 	 Remaining Time :    40,825 
+uD 	(4) 	 Remaining Time :    40,145 
+uE 	(4) 	 Remaining Time :    39,931 
+uF 	(4) 	 Remaining Time :    39,204 
+uG 	(4) 	 Remaining Time :    38,624 
+uH 	(4) 	 Remaining Time :    38,054 
+uI 	(4) 	 Remaining Time :    37,574 
+uJ 	(4) 	 Remaining Time :    36,938 
+uK 	(4) 	 Remaining Time :    36,320 
+uL 	(4) 	 Remaining Time :    35,734 
+uM 	(4) 	 Remaining Time :    35,195 
+uN 	(4) 	 Remaining Time :    34,633 
+uO 	(4) 	 Remaining Time :    34,058 
+uP 	(4) 	 Remaining Time :    33,476 
+uQ 	(4) 	 Remaining Time :    32,929 
+uR 	(4) 	 Remaining Time :    32,413 
+uS 	(4) 	 Remaining Time :    31,851 
+uT 	(4) 	 Remaining Time :    31,306 
+uU 	(4) 	 Remaining Time :    30,777 
+uV 	(4) 	 Remaining Time :    30,207 
+uW 	(4) 	 Remaining Time :    29,676 
+uX 	(4) 	 Remaining Time :    29,142 
+uY 	(4) 	 Remaining Time :    28,573 
+uZ 	(4) 	 Remaining Time :    28,026 
+la 	(4) 	 Remaining Time :    27,487 
+lb 	(4) 	 Remaining Time :    26,938 
+lc 	(4) 	 Remaining Time :    26,374 
+ld 	(4) 	 Remaining Time :    25,830 
+le 	(4) 	 Remaining Time :    25,298 
+lf 	(4) 	 Remaining Time :    24,748 
+lg 	(4) 	 Remaining Time :    24,205 
+lh 	(4) 	 Remaining Time :    23,664 
+li 	(4) 	 Remaining Time :    23,108 
+lj 	(4) 	 Remaining Time :    22,569 
+lk 	(4) 	 Remaining Time :    22,038 
+ll 	(4) 	 Remaining Time :    21,492 
+lm 	(4) 	 Remaining Time :    20,961 
+ln 	(4) 	 Remaining Time :    20,410 
+lo 	(4) 	 Remaining Time :    19,875 
+lp 	(4) 	 Remaining Time :    19,336 
+lq 	(4) 	 Remaining Time :    18,791 
+lr 	(4) 	 Remaining Time :    18,241 
+ls 	(4) 	 Remaining Time :    17,700 
+lt 	(4) 	 Remaining Time :    17,161 
+lu 	(4) 	 Remaining Time :    16,621 
+lv 	(4) 	 Remaining Time :    16,082 
+lw 	(4) 	 Remaining Time :    15,543 
+lx 	(4) 	 Remaining Time :    15,003 
+ly 	(4) 	 Remaining Time :    14,466 
+lz 	(4) 	 Remaining Time :    13,929 
+0 	(4) 	 Remaining Time :    13,395 
+1 	(4) 	 Remaining Time :    12,859 
+2 	(4) 	 Remaining Time :    12,324 
+3 	(4) 	 Remaining Time :    11,787 
+4 	(4) 	 Remaining Time :    11,250 
+5 	(4) 	 Remaining Time :    10,714 
+6 	(4) 	 Remaining Time :    10,178 
+7 	(4) 	 Remaining Time :     9,642 
+8 	(4) 	 Remaining Time :     9,107 
+9 	(4) 	 Remaining Time :     8,572 
++ 	(4) 	 Remaining Time :     8,033 
+- 	(4) 	 Remaining Time :     7,495 
+cr 	(4) 	 Remaining Time :     6,958 
+@ 	(4) 	 Remaining Time :     6,425 
+# 	(4) 	 Remaining Time :     5,894 
+' 	(4) 	 Remaining Time :     5,356 
+pt 	(4) 	 Remaining Time :     4,819 
+im 	(4) 	 Remaining Time :     4,283 
+! 	(4) 	 Remaining Time :     3,747 
+tp 	(4) 	 Remaining Time :     3,210 
+€ 	(4) 	 Remaining Time :     2,675 
+$ 	(4) 	 Remaining Time :     2,140 
+% 	(4) 	 Remaining Time :     1,605 
+( 	(4) 	 Remaining Time :     1,070 
+) 	(4) 	 Remaining Time :     0,535 
+= 	(4) 	 Remaining Time :     0,000 
+
+Training Set Score : 0.6391025 
+Accuracy  - [ 0,650 ,  0,725 ,  0,825 ,  0,775 ,  0,900 ,  0,825 ,  0,775 ,  0,925 ,  0,425 ,  0,500 ,  0,625 ,  0,950 ,  0,575 ,  0,750 ,  0,575 ,  0,650 ,  0,675 ,  0,750 ,  0,675 ,  0,925 ,  0,625 ,  0,525 ,  0,600 ,  0,650 ,  0,800 ,  0,675 ,  0,275 ,  0,675 ,  0,825 ,  0,750 ,  0,650 ,  0,700 ,  0,125 ,  0,650 ,  0,000 ,  0,400 ,  0,550 ,  0,250 ,  0,550 ,  0,625 ,  0,725 ,  0,350 ,  0,800 ,  0,625 ,  0,600 ,  0,625 ,  0,525 ,  0,725 ,  0,775 ,  0,250 ,  0,375 ,  0,500 ,  0,550 ,  0,400 ,  0,750 ,  0,900 ,  0,775 ,  0,625 ,  0,825 ,  0,725 ,  0,550 ,  0,675 ,  0,825 ,  0,575 ,  0,650 ,  0,700 ,  0,700 ,  0,325 ,  0,500 ,  0,900 ,  0,750 ,  0,475 ,  0,550 ,  0,500 ,  0,675 ,  0,950 ,  0,950 ,  0,800  ] 
+Creating Dataset of size 3120... 
+uA 	(4) 	 Remaining Time :    46,277 
+uB 	(4) 	 Remaining Time :    46,208 
+uC 	(4) 	 Remaining Time :    44,350 
+uD 	(4) 	 Remaining Time :    42,975 
+uE 	(4) 	 Remaining Time :    41,771 
+uF 	(4) 	 Remaining Time :    40,680 
+uG 	(4) 	 Remaining Time :    39,882 
+uH 	(4) 	 Remaining Time :    39,086 
+uI 	(4) 	 Remaining Time :    38,349 
+uJ 	(4) 	 Remaining Time :    37,604 
+uK 	(4) 	 Remaining Time :    36,917 
+uL 	(4) 	 Remaining Time :    36,245 
+uM 	(4) 	 Remaining Time :    35,675 
+uN 	(4) 	 Remaining Time :    35,040 
+uO 	(4) 	 Remaining Time :    34,415 
+uP 	(4) 	 Remaining Time :    33,809 
+uQ 	(4) 	 Remaining Time :    33,249 
+uR 	(4) 	 Remaining Time :    32,670 
+uS 	(4) 	 Remaining Time :    32,068 
+uT 	(4) 	 Remaining Time :    31,491 
+uU 	(4) 	 Remaining Time :    30,921 
+uV 	(4) 	 Remaining Time :    30,332 
+uW 	(4) 	 Remaining Time :    29,755 
+uX 	(4) 	 Remaining Time :    29,185 
+uY 	(4) 	 Remaining Time :    28,614 
+uZ 	(4) 	 Remaining Time :    28,062 
+la 	(4) 	 Remaining Time :    27,502 
+lb 	(4) 	 Remaining Time :    26,950 
+lc 	(4) 	 Remaining Time :    26,382 
+ld 	(4) 	 Remaining Time :    25,834 
+le 	(4) 	 Remaining Time :    25,280 
+lf 	(4) 	 Remaining Time :    24,734 
+lg 	(4) 	 Remaining Time :    24,195 
+lh 	(4) 	 Remaining Time :    23,644 
+li 	(4) 	 Remaining Time :    23,089 
+lj 	(4) 	 Remaining Time :    22,546 
+lk 	(4) 	 Remaining Time :    22,009 
+ll 	(4) 	 Remaining Time :    21,466 
+lm 	(4) 	 Remaining Time :    20,931 
+ln 	(4) 	 Remaining Time :    20,386 
+lo 	(4) 	 Remaining Time :    19,844 
+lp 	(4) 	 Remaining Time :    19,295 
+lq 	(4) 	 Remaining Time :    18,759 
+lr 	(4) 	 Remaining Time :    18,206 
+ls 	(4) 	 Remaining Time :    17,658 
+lt 	(4) 	 Remaining Time :    17,116 
+lu 	(4) 	 Remaining Time :    16,580 
+lv 	(4) 	 Remaining Time :    16,035 
+lw 	(4) 	 Remaining Time :    15,494 
+lx 	(4) 	 Remaining Time :    14,953 
+ly 	(4) 	 Remaining Time :    14,423 
+lz 	(4) 	 Remaining Time :    13,885 
+0 	(4) 	 Remaining Time :    13,356 
+1 	(4) 	 Remaining Time :    12,819 
+2 	(4) 	 Remaining Time :    12,279 
+3 	(4) 	 Remaining Time :    11,745 
+4 	(4) 	 Remaining Time :    11,209 
+5 	(4) 	 Remaining Time :    10,676 
+6 	(4) 	 Remaining Time :    10,141 
+7 	(4) 	 Remaining Time :     9,605 
+8 	(4) 	 Remaining Time :     9,071 
+9 	(4) 	 Remaining Time :     8,537 
++ 	(4) 	 Remaining Time :     8,003 
+- 	(4) 	 Remaining Time :     7,466 
+cr 	(4) 	 Remaining Time :     6,933 
+@ 	(4) 	 Remaining Time :     6,402 
+# 	(4) 	 Remaining Time :     5,870 
+' 	(4) 	 Remaining Time :     5,334 
+pt 	(4) 	 Remaining Time :     4,800 
+im 	(4) 	 Remaining Time :     4,266 
+! 	(4) 	 Remaining Time :     3,732 
+tp 	(4) 	 Remaining Time :     3,198 
+€ 	(4) 	 Remaining Time :     2,665 
+$ 	(4) 	 Remaining Time :     2,132 
+% 	(4) 	 Remaining Time :     1,599 
+( 	(4) 	 Remaining Time :     1,066 
+) 	(4) 	 Remaining Time :     0,533 
+= 	(4) 	 Remaining Time :     0,000 
+
+Training Set Score : 0.62788475 
+Accuracy  - [ 0,625 ,  0,675 ,  0,875 ,  0,800 ,  0,800 ,  0,775 ,  0,775 ,  0,775 ,  0,525 ,  0,550 ,  0,700 ,  0,875 ,  0,650 ,  0,775 ,  0,650 ,  0,750 ,  0,550 ,  0,650 ,  0,675 ,  0,825 ,  0,575 ,  0,575 ,  0,625 ,  0,650 ,  0,725 ,  0,575 ,  0,375 ,  0,650 ,  0,800 ,  0,825 ,  0,625 ,  0,625 ,  0,075 ,  0,500 ,  0,000 ,  0,525 ,  0,625 ,  0,350 ,  0,650 ,  0,600 ,  0,550 ,  0,550 ,  0,775 ,  0,650 ,  0,600 ,  0,575 ,  0,650 ,  0,675 ,  0,575 ,  0,275 ,  0,500 ,  0,450 ,  0,550 ,  0,275 ,  0,575 ,  0,875 ,  0,800 ,  0,450 ,  0,775 ,  0,650 ,  0,550 ,  0,650 ,  0,775 ,  0,650 ,  0,700 ,  0,625 ,  0,775 ,  0,450 ,  0,450 ,  0,800 ,  0,700 ,  0,450 ,  0,625 ,  0,450 ,  0,675 ,  0,950 ,  0,950 ,  0,750  ] 
+Creating Dataset of size 3120... 
+uA 	(4) 	 Remaining Time :    46,970 
+uB 	(4) 	 Remaining Time :    45,980 
+uC 	(4) 	 Remaining Time :    44,075 
+uD 	(4) 	 Remaining Time :    42,698 
+uE 	(4) 	 Remaining Time :    41,741 
+uF 	(4) 	 Remaining Time :    40,860 
+uG 	(4) 	 Remaining Time :    40,034 
+uH 	(4) 	 Remaining Time :    39,270 
+uI 	(4) 	 Remaining Time :    38,563 
+uJ 	(4) 	 Remaining Time :    37,869 
+uK 	(4) 	 Remaining Time :    37,215 
+uL 	(4) 	 Remaining Time :    36,503 
+uM 	(4) 	 Remaining Time :    35,920 
+uN 	(4) 	 Remaining Time :    35,291 
+uO 	(4) 	 Remaining Time :    34,663 
+uP 	(4) 	 Remaining Time :    34,054 
+uQ 	(4) 	 Remaining Time :    33,475 
+uR 	(4) 	 Remaining Time :    32,880 
+uS 	(4) 	 Remaining Time :    32,292 
+uT 	(4) 	 Remaining Time :    31,697 
+uU 	(4) 	 Remaining Time :    31,130 
+uV 	(4) 	 Remaining Time :    30,558 
+uW 	(4) 	 Remaining Time :    30,001 
+uX 	(4) 	 Remaining Time :    29,448 
+uY 	(4) 	 Remaining Time :    28,889 
+uZ 	(4) 	 Remaining Time :    28,332 
+la 	(4) 	 Remaining Time :    27,755 
+lb 	(4) 	 Remaining Time :    27,173 
+lc 	(4) 	 Remaining Time :    26,597 
+ld 	(4) 	 Remaining Time :    26,035 
+le 	(4) 	 Remaining Time :    25,488 
+lf 	(4) 	 Remaining Time :    24,918 
+lg 	(4) 	 Remaining Time :    24,371 
+lh 	(4) 	 Remaining Time :    23,814 
+li 	(4) 	 Remaining Time :    23,253 
+lj 	(4) 	 Remaining Time :    22,703 
+lk 	(4) 	 Remaining Time :    22,158 
+ll 	(4) 	 Remaining Time :    21,602 
+lm 	(4) 	 Remaining Time :    21,066 
+ln 	(4) 	 Remaining Time :    20,514 
+lo 	(4) 	 Remaining Time :    19,958 
+lp 	(4) 	 Remaining Time :    19,415 
+lq 	(4) 	 Remaining Time :    18,887 
+lr 	(4) 	 Remaining Time :    18,343 
+ls 	(4) 	 Remaining Time :    17,791 
+lt 	(4) 	 Remaining Time :    17,247 
+lu 	(4) 	 Remaining Time :    16,705 
+lv 	(4) 	 Remaining Time :    16,160 
+lw 	(4) 	 Remaining Time :    15,619 
+lx 	(4) 	 Remaining Time :    15,075 
+ly 	(4) 	 Remaining Time :    14,538 
+lz 	(4) 	 Remaining Time :    13,996 
+0 	(4) 	 Remaining Time :    13,452 
+1 	(4) 	 Remaining Time :    12,910 
+2 	(4) 	 Remaining Time :    12,380 
+3 	(4) 	 Remaining Time :    11,838 
+4 	(4) 	 Remaining Time :    11,296 
+5 	(4) 	 Remaining Time :    10,756 
+6 	(4) 	 Remaining Time :    10,217 
+7 	(4) 	 Remaining Time :     9,674 
+8 	(4) 	 Remaining Time :     9,137 
+9 	(4) 	 Remaining Time :     8,597 
++ 	(4) 	 Remaining Time :     8,056 
+- 	(4) 	 Remaining Time :     7,515 
+cr 	(4) 	 Remaining Time :     6,976 
+@ 	(4) 	 Remaining Time :     6,442 
+# 	(4) 	 Remaining Time :     5,904 
+' 	(4) 	 Remaining Time :     5,366 
+pt 	(4) 	 Remaining Time :     4,829 
+im 	(4) 	 Remaining Time :     4,292 
+! 	(4) 	 Remaining Time :     3,755 
+tp 	(4) 	 Remaining Time :     3,217 
+€ 	(4) 	 Remaining Time :     2,680 
+$ 	(4) 	 Remaining Time :     2,145 
+% 	(4) 	 Remaining Time :     1,609 
+( 	(4) 	 Remaining Time :     1,072 
+) 	(4) 	 Remaining Time :     0,536 
+= 	(4) 	 Remaining Time :     0,000 
+
+Training Set Score : 0.6326923 
+Accuracy  - [ 0,675 ,  0,600 ,  0,925 ,  0,650 ,  0,800 ,  0,875 ,  0,750 ,  0,825 ,  0,475 ,  0,525 ,  0,800 ,  0,925 ,  0,575 ,  0,700 ,  0,575 ,  0,675 ,  0,625 ,  0,725 ,  0,625 ,  0,800 ,  0,625 ,  0,600 ,  0,675 ,  0,650 ,  0,725 ,  0,625 ,  0,300 ,  0,650 ,  0,775 ,  0,750 ,  0,675 ,  0,650 ,  0,100 ,  0,675 ,  0,000 ,  0,600 ,  0,700 ,  0,250 ,  0,650 ,  0,550 ,  0,625 ,  0,475 ,  0,800 ,  0,625 ,  0,650 ,  0,650 ,  0,500 ,  0,675 ,  0,725 ,  0,250 ,  0,425 ,  0,500 ,  0,500 ,  0,350 ,  0,600 ,  0,725 ,  0,775 ,  0,650 ,  0,875 ,  0,625 ,  0,625 ,  0,600 ,  0,825 ,  0,575 ,  0,575 ,  0,775 ,  0,650 ,  0,400 ,  0,500 ,  0,900 ,  0,825 ,  0,500 ,  0,625 ,  0,400 ,  0,675 ,  0,925 ,  0,900 ,  0,725  ] 
+Creating Dataset of size 3120... 
+uA 	(4) 	 Remaining Time :    46,662 
+uB 	(4) 	 Remaining Time :    46,360 
+uC 	(4) 	 Remaining Time :    44,625 
+uD 	(4) 	 Remaining Time :    43,309 
+uE 	(4) 	 Remaining Time :    42,267 
+uF 	(4) 	 Remaining Time :    41,256 
+uG 	(4) 	 Remaining Time :    40,409 
+uH 	(4) 	 Remaining Time :    39,611 
+uI 	(4) 	 Remaining Time :    38,931 
+uJ 	(4) 	 Remaining Time :    38,107 
+uK 	(4) 	 Remaining Time :    37,429 
+uL 	(4) 	 Remaining Time :    36,713 
+uM 	(4) 	 Remaining Time :    36,120 
+uN 	(4) 	 Remaining Time :    35,488 
+uO 	(4) 	 Remaining Time :    34,873 
+uP 	(4) 	 Remaining Time :    34,352 
+uQ 	(4) 	 Remaining Time :    33,729 
+uR 	(4) 	 Remaining Time :    33,107 
+uS 	(4) 	 Remaining Time :    32,481 
+uT 	(4) 	 Remaining Time :    31,874 
+uU 	(4) 	 Remaining Time :    31,285 
+uV 	(4) 	 Remaining Time :    30,665 
+uW 	(4) 	 Remaining Time :    30,097 
+uX 	(4) 	 Remaining Time :    29,520 
+uY 	(4) 	 Remaining Time :    28,944 
+uZ 	(4) 	 Remaining Time :    28,374 
+la 	(4) 	 Remaining Time :    27,793 
+lb 	(4) 	 Remaining Time :    27,220 
+lc 	(4) 	 Remaining Time :    26,653 
+ld 	(4) 	 Remaining Time :    26,090 
+le 	(4) 	 Remaining Time :    25,519 
+lf 	(4) 	 Remaining Time :    24,955 
+lg 	(4) 	 Remaining Time :    24,395 
+lh 	(4) 	 Remaining Time :    23,840 
+li 	(4) 	 Remaining Time :    23,279 
+lj 	(4) 	 Remaining Time :    22,726 
+lk 	(4) 	 Remaining Time :    22,185 
+ll 	(4) 	 Remaining Time :    21,640 
+lm 	(4) 	 Remaining Time :    21,096 
+ln 	(4) 	 Remaining Time :    20,537 
+lo 	(4) 	 Remaining Time :    19,978 
+lp 	(4) 	 Remaining Time :    19,426 
+lq 	(4) 	 Remaining Time :    18,934 
+lr 	(4) 	 Remaining Time :    18,391 
+ls 	(4) 	 Remaining Time :    17,835 
+lt 	(4) 	 Remaining Time :    17,285 
+lu 	(4) 	 Remaining Time :    16,733 
+lv 	(4) 	 Remaining Time :    16,187 
+lw 	(4) 	 Remaining Time :    15,644 
+lx 	(4) 	 Remaining Time :    15,096 
+ly 	(4) 	 Remaining Time :    14,556 
+lz 	(4) 	 Remaining Time :    14,010 
+0 	(4) 	 Remaining Time :    13,471 
+1 	(4) 	 Remaining Time :    12,926 
+2 	(4) 	 Remaining Time :    12,384 
+3 	(4) 	 Remaining Time :    11,842 
+4 	(4) 	 Remaining Time :    11,301 
+5 	(4) 	 Remaining Time :    10,761 
+6 	(4) 	 Remaining Time :    10,220 
+7 	(4) 	 Remaining Time :     9,678 
+8 	(4) 	 Remaining Time :     9,140 
+9 	(4) 	 Remaining Time :     8,601 
++ 	(4) 	 Remaining Time :     8,059 
+- 	(4) 	 Remaining Time :     7,518 
+cr 	(4) 	 Remaining Time :     6,978 
+@ 	(4) 	 Remaining Time :     6,442 
+# 	(4) 	 Remaining Time :     5,904 
+' 	(4) 	 Remaining Time :     5,365 
+pt 	(4) 	 Remaining Time :     4,827 
+im 	(4) 	 Remaining Time :     4,290 
+! 	(4) 	 Remaining Time :     3,752 
+tp 	(4) 	 Remaining Time :     3,215 
+€ 	(4) 	 Remaining Time :     2,680 
+$ 	(4) 	 Remaining Time :     2,144 
+% 	(4) 	 Remaining Time :     1,608 
+( 	(4) 	 Remaining Time :     1,072 
+) 	(4) 	 Remaining Time :     0,536 
+= 	(4) 	 Remaining Time :     0,000 
+
+Training Set Score : 0.62147427 
+Accuracy  - [ 0,600 ,  0,775 ,  0,850 ,  0,750 ,  0,875 ,  0,750 ,  0,750 ,  0,775 ,  0,400 ,  0,450 ,  0,775 ,  0,900 ,  0,700 ,  0,700 ,  0,625 ,  0,750 ,  0,600 ,  0,700 ,  0,675 ,  0,825 ,  0,550 ,  0,525 ,  0,600 ,  0,750 ,  0,700 ,  0,600 ,  0,325 ,  0,650 ,  0,750 ,  0,775 ,  0,700 ,  0,575 ,  0,100 ,  0,550 ,  0,000 ,  0,450 ,  0,575 ,  0,275 ,  0,575 ,  0,575 ,  0,750 ,  0,375 ,  0,850 ,  0,700 ,  0,575 ,  0,600 ,  0,575 ,  0,675 ,  0,625 ,  0,325 ,  0,400 ,  0,450 ,  0,500 ,  0,300 ,  0,650 ,  0,900 ,  0,775 ,  0,600 ,  0,750 ,  0,725 ,  0,550 ,  0,700 ,  0,825 ,  0,600 ,  0,650 ,  0,700 ,  0,725 ,  0,325 ,  0,400 ,  0,800 ,  0,700 ,  0,350 ,  0,650 ,  0,400 ,  0,550 ,  0,925 ,  0,900 ,  0,800  ] 
+Creating Dataset of size 3120... 
+uA 	(4) 	 Remaining Time :    46,739 
+uB 	(4) 	 Remaining Time :    45,904 
+uC 	(4) 	 Remaining Time :    44,775 
+uD 	(4) 	 Remaining Time :    43,013 
+uE 	(4) 	 Remaining Time :    41,756 
+uF 	(4) 	 Remaining Time :    40,752 
+uG 	(4) 	 Remaining Time :    40,024 
+uH 	(4) 	 Remaining Time :    39,235 
+uI 	(4) 	 Remaining Time :    38,441 
+uJ 	(4) 	 Remaining Time :    37,692 
+uK 	(4) 	 Remaining Time :    37,021 
+uL 	(4) 	 Remaining Time :    36,344 
+uM 	(4) 	 Remaining Time :    35,715 
+uN 	(4) 	 Remaining Time :    35,081 
+uO 	(4) 	 Remaining Time :    34,490 
+uP 	(4) 	 Remaining Time :    33,910 
+uQ 	(4) 	 Remaining Time :    33,349 
+uR 	(4) 	 Remaining Time :    32,743 
+uS 	(4) 	 Remaining Time :    32,161 
+uT 	(4) 	 Remaining Time :    31,581 
+uU 	(4) 	 Remaining Time :    31,027 
+uV 	(4) 	 Remaining Time :    30,451 
+uW 	(4) 	 Remaining Time :    29,925 
+uX 	(4) 	 Remaining Time :    29,367 
+uY 	(4) 	 Remaining Time :    28,794 
+uZ 	(4) 	 Remaining Time :    28,216 
+la 	(4) 	 Remaining Time :    27,644 
+lb 	(4) 	 Remaining Time :    27,087 
+lc 	(4) 	 Remaining Time :    26,529 
+ld 	(4) 	 Remaining Time :    25,987 
+le 	(4) 	 Remaining Time :    25,430 
+lf 	(4) 	 Remaining Time :    24,882 
+lg 	(4) 	 Remaining Time :    24,335 
+lh 	(4) 	 Remaining Time :    23,798 
+li 	(4) 	 Remaining Time :    23,246 
+lj 	(4) 	 Remaining Time :    22,690 
+lk 	(4) 	 Remaining Time :    22,151 
+ll 	(4) 	 Remaining Time :    21,598 
+lm 	(4) 	 Remaining Time :    21,055 
+ln 	(4) 	 Remaining Time :    20,503 
+lo 	(4) 	 Remaining Time :    19,964 
+lp 	(4) 	 Remaining Time :    19,417 
+lq 	(4) 	 Remaining Time :    18,879 
+lr 	(4) 	 Remaining Time :    18,333 
+ls 	(4) 	 Remaining Time :    17,783 
+lt 	(4) 	 Remaining Time :    17,238 
+lu 	(4) 	 Remaining Time :    16,691 
+lv 	(4) 	 Remaining Time :    16,146 
+lw 	(4) 	 Remaining Time :    15,607 
+lx 	(4) 	 Remaining Time :    15,065 
+ly 	(4) 	 Remaining Time :    14,526 
+lz 	(4) 	 Remaining Time :    13,987 
+0 	(4) 	 Remaining Time :    13,445 
+1 	(4) 	 Remaining Time :    12,902 
+2 	(4) 	 Remaining Time :    12,365 
+3 	(4) 	 Remaining Time :    11,823 
+4 	(4) 	 Remaining Time :    11,287 
+5 	(4) 	 Remaining Time :    10,748 
+6 	(4) 	 Remaining Time :    10,209 
+7 	(4) 	 Remaining Time :     9,670 
+8 	(4) 	 Remaining Time :     9,142 
+9 	(4) 	 Remaining Time :     8,602 
++ 	(4) 	 Remaining Time :     8,063 
+- 	(4) 	 Remaining Time :     7,523 
+cr 	(4) 	 Remaining Time :     6,985 
+@ 	(4) 	 Remaining Time :     6,450 
+# 	(4) 	 Remaining Time :     5,913 
+' 	(4) 	 Remaining Time :     5,374 
+pt 	(4) 	 Remaining Time :     4,837 
+im 	(4) 	 Remaining Time :     4,299 
+! 	(4) 	 Remaining Time :     3,761 
+tp 	(4) 	 Remaining Time :     3,223 
+€ 	(4) 	 Remaining Time :     2,686 
+$ 	(4) 	 Remaining Time :     2,149 
+% 	(4) 	 Remaining Time :     1,612 
+( 	(4) 	 Remaining Time :     1,075 
+) 	(4) 	 Remaining Time :     0,537 
+= 	(4) 	 Remaining Time :     0,000 
+
+Training Set Score : 0.6326923 
+Accuracy  - [ 0,625 ,  0,675 ,  0,900 ,  0,750 ,  0,875 ,  0,900 ,  0,775 ,  0,825 ,  0,425 ,  0,500 ,  0,625 ,  0,950 ,  0,625 ,  0,725 ,  0,675 ,  0,750 ,  0,550 ,  0,725 ,  0,600 ,  0,800 ,  0,525 ,  0,675 ,  0,600 ,  0,600 ,  0,725 ,  0,675 ,  0,300 ,  0,600 ,  0,775 ,  0,750 ,  0,575 ,  0,650 ,  0,175 ,  0,675 ,  0,000 ,  0,650 ,  0,525 ,  0,175 ,  0,700 ,  0,600 ,  0,675 ,  0,425 ,  0,800 ,  0,600 ,  0,525 ,  0,650 ,  0,575 ,  0,700 ,  0,700 ,  0,325 ,  0,475 ,  0,400 ,  0,450 ,  0,350 ,  0,550 ,  0,900 ,  0,675 ,  0,550 ,  0,800 ,  0,700 ,  0,525 ,  0,750 ,  0,825 ,  0,675 ,  0,600 ,  0,800 ,  0,700 ,  0,500 ,  0,450 ,  0,825 ,  0,700 ,  0,375 ,  0,650 ,  0,600 ,  0,650 ,  0,975 ,  0,975 ,  0,725  ] 
+Creating Dataset of size 3120... 
+uA 	(4) 	 Remaining Time :    42,042 
+uB 	(4) 	 Remaining Time :    41,496 
+uC 	(4) 	 Remaining Time :    41,100 
+uD 	(4) 	 Remaining Time :    40,756 
+uE 	(4) 	 Remaining Time :    40,603 
+uF 	(4) 	 Remaining Time :    40,476 
+uG 	(4) 	 Remaining Time :    40,145 
+uH 	(4) 	 Remaining Time :    39,594 
+uI 	(4) 	 Remaining Time :    38,709 
+uJ 	(4) 	 Remaining Time :    37,924 
+uK 	(4) 	 Remaining Time :    37,222 
+uL 	(4) 	 Remaining Time :    36,520 
+uM 	(4) 	 Remaining Time :    35,860 
+uN 	(4) 	 Remaining Time :    35,191 
+uO 	(4) 	 Remaining Time :    34,549 
+uP 	(4) 	 Remaining Time :    33,933 
+uQ 	(4) 	 Remaining Time :    33,338 
+uR 	(4) 	 Remaining Time :    32,740 
+uS 	(4) 	 Remaining Time :    32,167 
+uT 	(4) 	 Remaining Time :    31,587 
+uU 	(4) 	 Remaining Time :    31,005 
+uV 	(4) 	 Remaining Time :    30,439 
+uW 	(4) 	 Remaining Time :    29,882 
+uX 	(4) 	 Remaining Time :    29,311 
+uY 	(4) 	 Remaining Time :    28,754 
+uZ 	(4) 	 Remaining Time :    28,202 
+la 	(4) 	 Remaining Time :    27,627 
+lb 	(4) 	 Remaining Time :    27,048 
+lc 	(4) 	 Remaining Time :    26,487 
+ld 	(4) 	 Remaining Time :    25,925 
+le 	(4) 	 Remaining Time :    25,395 
+lf 	(4) 	 Remaining Time :    24,850 
+lg 	(4) 	 Remaining Time :    24,300 
+lh 	(4) 	 Remaining Time :    23,742 
+li 	(4) 	 Remaining Time :    23,171 
+lj 	(4) 	 Remaining Time :    22,618 
+lk 	(4) 	 Remaining Time :    22,071 
+ll 	(4) 	 Remaining Time :    21,524 
+lm 	(4) 	 Remaining Time :    20,991 
+ln 	(4) 	 Remaining Time :    20,444 
+lo 	(4) 	 Remaining Time :    19,913 
+lp 	(4) 	 Remaining Time :    19,364 
+lq 	(4) 	 Remaining Time :    18,817 
+lr 	(4) 	 Remaining Time :    18,263 
+ls 	(4) 	 Remaining Time :    17,713 
+lt 	(4) 	 Remaining Time :    17,173 
+lu 	(4) 	 Remaining Time :    16,629 
+lv 	(4) 	 Remaining Time :    16,086 
+lw 	(4) 	 Remaining Time :    15,547 
+lx 	(4) 	 Remaining Time :    15,009 
+ly 	(4) 	 Remaining Time :    14,472 
+lz 	(4) 	 Remaining Time :    13,929 
+0 	(4) 	 Remaining Time :    13,392 
+1 	(4) 	 Remaining Time :    12,859 
+2 	(4) 	 Remaining Time :    12,321 
+3 	(4) 	 Remaining Time :    11,783 
+4 	(4) 	 Remaining Time :    11,248 
+5 	(4) 	 Remaining Time :    10,709 
+6 	(4) 	 Remaining Time :    10,172 
+7 	(4) 	 Remaining Time :     9,640 
+8 	(4) 	 Remaining Time :     9,106 
+9 	(4) 	 Remaining Time :     8,571 
++ 	(4) 	 Remaining Time :     8,030 
+- 	(4) 	 Remaining Time :     7,492 
+cr 	(4) 	 Remaining Time :     6,955 
+@ 	(4) 	 Remaining Time :     6,423 
+# 	(4) 	 Remaining Time :     5,890 
+' 	(4) 	 Remaining Time :     5,353 
+pt 	(4) 	 Remaining Time :     4,818 
+im 	(4) 	 Remaining Time :     4,281 
+! 	(4) 	 Remaining Time :     3,745 
+tp 	(4) 	 Remaining Time :     3,209 
+€ 	(4) 	 Remaining Time :     2,674 
+$ 	(4) 	 Remaining Time :     2,140 
+% 	(4) 	 Remaining Time :     1,605 
+( 	(4) 	 Remaining Time :     1,070 
+) 	(4) 	 Remaining Time :     0,535 
+= 	(4) 	 Remaining Time :     0,000 
+
+Training Set Score : 0.6240386 
+Accuracy  - [ 0,675 ,  0,700 ,  0,800 ,  0,775 ,  0,925 ,  0,800 ,  0,675 ,  0,825 ,  0,425 ,  0,475 ,  0,625 ,  0,925 ,  0,625 ,  0,750 ,  0,750 ,  0,700 ,  0,600 ,  0,750 ,  0,650 ,  0,825 ,  0,575 ,  0,600 ,  0,675 ,  0,700 ,  0,675 ,  0,700 ,  0,350 ,  0,650 ,  0,750 ,  0,775 ,  0,650 ,  0,600 ,  0,075 ,  0,600 ,  0,000 ,  0,450 ,  0,625 ,  0,325 ,  0,550 ,  0,600 ,  0,675 ,  0,475 ,  0,750 ,  0,625 ,  0,600 ,  0,625 ,  0,600 ,  0,725 ,  0,700 ,  0,200 ,  0,400 ,  0,425 ,  0,525 ,  0,275 ,  0,475 ,  0,900 ,  0,725 ,  0,500 ,  0,700 ,  0,675 ,  0,600 ,  0,600 ,  0,800 ,  0,625 ,  0,750 ,  0,625 ,  0,700 ,  0,400 ,  0,425 ,  0,850 ,  0,750 ,  0,400 ,  0,675 ,  0,450 ,  0,600 ,  0,925 ,  0,925 ,  0,800  ] 
+Creating Dataset of size 3120... 
+uA 	(4) 	 Remaining Time :    47,586 
+uB 	(4) 	 Remaining Time :    47,006 
+uC 	(4) 	 Remaining Time :    44,675 
+uD 	(4) 	 Remaining Time :    43,068 
+uE 	(4) 	 Remaining Time :    41,814 
+uF 	(4) 	 Remaining Time :    40,788 
+uG 	(4) 	 Remaining Time :    39,953 
+uH 	(4) 	 Remaining Time :    39,217 
+uI 	(4) 	 Remaining Time :    38,433 
+uJ 	(4) 	 Remaining Time :    37,733 
+uK 	(4) 	 Remaining Time :    37,051 
+uL 	(4) 	 Remaining Time :    36,421 
+uM 	(4) 	 Remaining Time :    35,950 
+uN 	(4) 	 Remaining Time :    35,328 
+uO 	(4) 	 Remaining Time :    34,738 
+uP 	(4) 	 Remaining Time :    34,143 
+uQ 	(4) 	 Remaining Time :    33,550 
+uR 	(4) 	 Remaining Time :    32,953 
+uS 	(4) 	 Remaining Time :    32,335 
+uT 	(4) 	 Remaining Time :    31,732 
+uU 	(4) 	 Remaining Time :    31,174 
+uV 	(4) 	 Remaining Time :    30,596 
+uW 	(4) 	 Remaining Time :    30,056 
+uX 	(4) 	 Remaining Time :    29,482 
+uY 	(4) 	 Remaining Time :    28,940 
+uZ 	(4) 	 Remaining Time :    28,370 
+la 	(4) 	 Remaining Time :    27,806 
+lb 	(4) 	 Remaining Time :    27,279 
+lc 	(4) 	 Remaining Time :    26,725 
+ld 	(4) 	 Remaining Time :    26,155 
+le 	(4) 	 Remaining Time :    25,586 
+lf 	(4) 	 Remaining Time :    25,046 
+lg 	(4) 	 Remaining Time :    24,490 
+lh 	(4) 	 Remaining Time :    23,924 
+li 	(4) 	 Remaining Time :    23,377 
+lj 	(4) 	 Remaining Time :    22,821 
+lk 	(4) 	 Remaining Time :    22,277 
+ll 	(4) 	 Remaining Time :    21,721 
+lm 	(4) 	 Remaining Time :    21,185 
+ln 	(4) 	 Remaining Time :    20,627 
+lo 	(4) 	 Remaining Time :    20,076 
+lp 	(4) 	 Remaining Time :    19,529 
+lq 	(4) 	 Remaining Time :    18,992 
+lr 	(4) 	 Remaining Time :    18,433 
+ls 	(4) 	 Remaining Time :    17,879 
+lt 	(4) 	 Remaining Time :    17,328 
+lu 	(4) 	 Remaining Time :    16,784 
+lv 	(4) 	 Remaining Time :    16,231 
+lw 	(4) 	 Remaining Time :    15,688 
+lx 	(4) 	 Remaining Time :    15,144 
+ly 	(4) 	 Remaining Time :    14,603 
+lz 	(4) 	 Remaining Time :    14,054 
+0 	(4) 	 Remaining Time :    13,512 
+1 	(4) 	 Remaining Time :    12,964 
+2 	(4) 	 Remaining Time :    12,422 
+3 	(4) 	 Remaining Time :    11,882 
+4 	(4) 	 Remaining Time :    11,340 
+5 	(4) 	 Remaining Time :    10,799 
+6 	(4) 	 Remaining Time :    10,257 
+7 	(4) 	 Remaining Time :     9,715 
+8 	(4) 	 Remaining Time :     9,171 
+9 	(4) 	 Remaining Time :     8,631 
++ 	(4) 	 Remaining Time :     8,089 
+- 	(4) 	 Remaining Time :     7,547 
+cr 	(4) 	 Remaining Time :     7,004 
+@ 	(4) 	 Remaining Time :     6,469 
+# 	(4) 	 Remaining Time :     5,931 
+' 	(4) 	 Remaining Time :     5,390 
+pt 	(4) 	 Remaining Time :     4,851 
+im 	(4) 	 Remaining Time :     4,311 
+! 	(4) 	 Remaining Time :     3,772 
+tp 	(4) 	 Remaining Time :     3,231 
+€ 	(4) 	 Remaining Time :     2,693 
+$ 	(4) 	 Remaining Time :     2,155 
+% 	(4) 	 Remaining Time :     1,617 
+( 	(4) 	 Remaining Time :     1,078 
+) 	(4) 	 Remaining Time :     0,539 
+= 	(4) 	 Remaining Time :     0,000 
+
+Training Set Score : 0.63141024 
+Accuracy  - [ 0,650 ,  0,675 ,  0,700 ,  0,775 ,  0,775 ,  0,825 ,  0,775 ,  0,825 ,  0,400 ,  0,525 ,  0,800 ,  0,925 ,  0,675 ,  0,725 ,  0,625 ,  0,750 ,  0,575 ,  0,750 ,  0,700 ,  0,800 ,  0,575 ,  0,575 ,  0,600 ,  0,625 ,  0,675 ,  0,600 ,  0,375 ,  0,600 ,  0,750 ,  0,750 ,  0,700 ,  0,575 ,  0,175 ,  0,700 ,  0,000 ,  0,525 ,  0,650 ,  0,275 ,  0,700 ,  0,600 ,  0,750 ,  0,475 ,  0,850 ,  0,600 ,  0,550 ,  0,650 ,  0,575 ,  0,575 ,  0,575 ,  0,325 ,  0,425 ,  0,450 ,  0,500 ,  0,350 ,  0,625 ,  0,825 ,  0,675 ,  0,575 ,  0,775 ,  0,625 ,  0,625 ,  0,625 ,  0,800 ,  0,675 ,  0,625 ,  0,725 ,  0,675 ,  0,350 ,  0,525 ,  0,800 ,  0,725 ,  0,475 ,  0,550 ,  0,525 ,  0,750 ,  0,975 ,  0,975 ,  0,825  ] 
+Creating Dataset of size 3120... 
+uA 	(4) 	 Remaining Time :    46,046 
+uB 	(4) 	 Remaining Time :    45,904 
+uC 	(4) 	 Remaining Time :    44,800 
+uD 	(4) 	 Remaining Time :    44,345 
+uE 	(4) 	 Remaining Time :    43,844 
+uF 	(4) 	 Remaining Time :    43,092 
+uG 	(4) 	 Remaining Time :    42,712 
+uH 	(4) 	 Remaining Time :    41,965 
+uI 	(4) 	 Remaining Time :    41,201 
+uJ 	(4) 	 Remaining Time :    40,242 
+uK 	(4) 	 Remaining Time :    39,652 
+uL 	(4) 	 Remaining Time :    39,006 
+uM 	(4) 	 Remaining Time :    38,125 
+uN 	(4) 	 Remaining Time :    37,463 
+uO 	(4) 	 Remaining Time :    36,758 
+uP 	(4) 	 Remaining Time :    35,902 
+uQ 	(4) 	 Remaining Time :    35,294 
+uR 	(4) 	 Remaining Time :    34,757 
+uS 	(4) 	 Remaining Time :    34,229 
+uT 	(4) 	 Remaining Time :    33,486 
+uU 	(4) 	 Remaining Time :    32,802 
+uV 	(4) 	 Remaining Time :    32,126 
+uW 	(4) 	 Remaining Time :    31,465 
+uX 	(4) 	 Remaining Time :    30,778 
+uY 	(4) 	 Remaining Time :    30,102 
+uZ 	(4) 	 Remaining Time :    29,470 
+la 	(4) 	 Remaining Time :    28,811 
+lb 	(4) 	 Remaining Time :    28,173 
+lc 	(4) 	 Remaining Time :    27,540 
+ld 	(4) 	 Remaining Time :    26,958 
+le 	(4) 	 Remaining Time :    26,425 
+lf 	(4) 	 Remaining Time :    25,905 
+lg 	(4) 	 Remaining Time :    25,320 
+lh 	(4) 	 Remaining Time :    24,719 
+li 	(4) 	 Remaining Time :    24,108 
+lj 	(4) 	 Remaining Time :    23,505 
+lk 	(4) 	 Remaining Time :    22,921 
+ll 	(4) 	 Remaining Time :    22,335 
+lm 	(4) 	 Remaining Time :    21,752 
+ln 	(4) 	 Remaining Time :    21,159 
+lo 	(4) 	 Remaining Time :    20,578 
+lp 	(4) 	 Remaining Time :    20,019 
+lq 	(4) 	 Remaining Time :    19,450 
+lr 	(4) 	 Remaining Time :    18,861 
+ls 	(4) 	 Remaining Time :    18,298 
+lt 	(4) 	 Remaining Time :    17,726 
+lu 	(4) 	 Remaining Time :    17,149 
+lv 	(4) 	 Remaining Time :    16,576 
+lw 	(4) 	 Remaining Time :    16,014 
+lx 	(4) 	 Remaining Time :    15,449 
+ly 	(4) 	 Remaining Time :    14,889 
+lz 	(4) 	 Remaining Time :    14,325 
+0 	(4) 	 Remaining Time :    13,765 
+1 	(4) 	 Remaining Time :    13,203 
+2 	(4) 	 Remaining Time :    12,645 
+3 	(4) 	 Remaining Time :    12,084 
+4 	(4) 	 Remaining Time :    11,530 
+5 	(4) 	 Remaining Time :    10,974 
+6 	(4) 	 Remaining Time :    10,419 
+7 	(4) 	 Remaining Time :     9,864 
+8 	(4) 	 Remaining Time :     9,316 
+9 	(4) 	 Remaining Time :     8,762 
++ 	(4) 	 Remaining Time :     8,208 
+- 	(4) 	 Remaining Time :     7,655 
+cr 	(4) 	 Remaining Time :     7,104 
+@ 	(4) 	 Remaining Time :     6,557 
+# 	(4) 	 Remaining Time :     6,008 
+' 	(4) 	 Remaining Time :     5,461 
+pt 	(4) 	 Remaining Time :     4,914 
+im 	(4) 	 Remaining Time :     4,365 
+! 	(4) 	 Remaining Time :     3,818 
+tp 	(4) 	 Remaining Time :     3,271 
+€ 	(4) 	 Remaining Time :     2,725 
+$ 	(4) 	 Remaining Time :     2,180 
+% 	(4) 	 Remaining Time :     1,635 
+( 	(4) 	 Remaining Time :     1,089 
+) 	(4) 	 Remaining Time :     0,544 
+= 	(4) 	 Remaining Time :     0,000 
+
+Training Set Score : 0.6304489 
+Accuracy  - [ 0,775 ,  0,775 ,  0,875 ,  0,725 ,  0,925 ,  0,725 ,  0,700 ,  0,750 ,  0,375 ,  0,525 ,  0,650 ,  1,000 ,  0,550 ,  0,700 ,  0,600 ,  0,750 ,  0,650 ,  0,725 ,  0,675 ,  0,850 ,  0,550 ,  0,675 ,  0,550 ,  0,650 ,  0,750 ,  0,700 ,  0,350 ,  0,575 ,  0,775 ,  0,775 ,  0,725 ,  0,750 ,  0,175 ,  0,600 ,  0,000 ,  0,550 ,  0,700 ,  0,300 ,  0,625 ,  0,475 ,  0,650 ,  0,550 ,  0,700 ,  0,575 ,  0,575 ,  0,700 ,  0,600 ,  0,625 ,  0,700 ,  0,275 ,  0,500 ,  0,475 ,  0,500 ,  0,375 ,  0,625 ,  0,825 ,  0,725 ,  0,575 ,  0,825 ,  0,700 ,  0,550 ,  0,675 ,  0,725 ,  0,625 ,  0,625 ,  0,700 ,  0,650 ,  0,400 ,  0,400 ,  0,875 ,  0,775 ,  0,250 ,  0,675 ,  0,275 ,  0,800 ,  0,850 ,  0,900 ,  0,800  ] 
+Creating Dataset of size 3120... 
+uA 	(4) 	 Remaining Time :    46,046 
+uB 	(4) 	 Remaining Time :    43,776 
+uC 	(4) 	 Remaining Time :    42,175 
+uD 	(4) 	 Remaining Time :    41,181 
+uE 	(4) 	 Remaining Time :    40,427 
+uF 	(4) 	 Remaining Time :    39,732 
+uG 	(4) 	 Remaining Time :    39,141 
+uH 	(4) 	 Remaining Time :    38,482 
+uI 	(4) 	 Remaining Time :    37,835 
+uJ 	(4) 	 Remaining Time :    37,244 
+uK 	(4) 	 Remaining Time :    36,649 
+uL 	(4) 	 Remaining Time :    36,042 
+uM 	(4) 	 Remaining Time :    35,500 
+uN 	(4) 	 Remaining Time :    34,894 
+uO 	(4) 	 Remaining Time :    34,335 
+uP 	(4) 	 Remaining Time :    33,751 
+uQ 	(4) 	 Remaining Time :    33,288 
+uR 	(4) 	 Remaining Time :    32,707 
+uS 	(4) 	 Remaining Time :    32,164 
+uT 	(4) 	 Remaining Time :    31,584 
+uU 	(4) 	 Remaining Time :    31,019 
+uV 	(4) 	 Remaining Time :    30,451 
+uW 	(4) 	 Remaining Time :    29,901 
+uX 	(4) 	 Remaining Time :    29,356 
+uY 	(4) 	 Remaining Time :    28,796 
+uZ 	(4) 	 Remaining Time :    28,224 
+la 	(4) 	 Remaining Time :    27,659 
+lb 	(4) 	 Remaining Time :    27,102 
+lc 	(4) 	 Remaining Time :    26,550 
+ld 	(4) 	 Remaining Time :    25,992 
+le 	(4) 	 Remaining Time :    25,432 
+lf 	(4) 	 Remaining Time :    24,879 
+lg 	(4) 	 Remaining Time :    24,331 
+lh 	(4) 	 Remaining Time :    23,776 
+li 	(4) 	 Remaining Time :    23,227 
+lj 	(4) 	 Remaining Time :    22,678 
+lk 	(4) 	 Remaining Time :    22,159 
+ll 	(4) 	 Remaining Time :    21,609 
+lm 	(4) 	 Remaining Time :    21,078 
+ln 	(4) 	 Remaining Time :    20,529 
+lo 	(4) 	 Remaining Time :    19,982 
+lp 	(4) 	 Remaining Time :    19,453 
+lq 	(4) 	 Remaining Time :    18,917 
+lr 	(4) 	 Remaining Time :    18,374 
+ls 	(4) 	 Remaining Time :    17,824 
+lt 	(4) 	 Remaining Time :    17,280 
+lu 	(4) 	 Remaining Time :    16,732 
+lv 	(4) 	 Remaining Time :    16,192 
+lw 	(4) 	 Remaining Time :    15,655 
+lx 	(4) 	 Remaining Time :    15,109 
+ly 	(4) 	 Remaining Time :    14,566 
+lz 	(4) 	 Remaining Time :    14,023 
+0 	(4) 	 Remaining Time :    13,486 
+1 	(4) 	 Remaining Time :    12,939 
+2 	(4) 	 Remaining Time :    12,400 
+3 	(4) 	 Remaining Time :    11,865 
+4 	(4) 	 Remaining Time :    11,331 
+5 	(4) 	 Remaining Time :    10,791 
+6 	(4) 	 Remaining Time :    10,251 
+7 	(4) 	 Remaining Time :     9,711 
+8 	(4) 	 Remaining Time :     9,174 
+9 	(4) 	 Remaining Time :     8,636 
++ 	(4) 	 Remaining Time :     8,092 
+- 	(4) 	 Remaining Time :     7,548 
+cr 	(4) 	 Remaining Time :     7,007 
+@ 	(4) 	 Remaining Time :     6,469 
+# 	(4) 	 Remaining Time :     5,931 
+' 	(4) 	 Remaining Time :     5,391 
+pt 	(4) 	 Remaining Time :     4,853 
+im 	(4) 	 Remaining Time :     4,312 
+! 	(4) 	 Remaining Time :     3,772 
+tp 	(4) 	 Remaining Time :     3,232 
+€ 	(4) 	 Remaining Time :     2,694 
+$ 	(4) 	 Remaining Time :     2,155 
+% 	(4) 	 Remaining Time :     1,617 
+( 	(4) 	 Remaining Time :     1,078 
+) 	(4) 	 Remaining Time :     0,539 
+= 	(4) 	 Remaining Time :     0,000 
+
+Training Set Score : 0.6310897 
+Accuracy  - [ 0,575 ,  0,725 ,  0,850 ,  0,775 ,  0,800 ,  0,850 ,  0,775 ,  0,875 ,  0,475 ,  0,550 ,  0,675 ,  0,850 ,  0,625 ,  0,700 ,  0,650 ,  0,775 ,  0,600 ,  0,725 ,  0,600 ,  0,875 ,  0,600 ,  0,550 ,  0,700 ,  0,625 ,  0,625 ,  0,675 ,  0,275 ,  0,675 ,  0,825 ,  0,850 ,  0,700 ,  0,575 ,  0,200 ,  0,575 ,  0,000 ,  0,575 ,  0,500 ,  0,325 ,  0,675 ,  0,575 ,  0,700 ,  0,525 ,  0,825 ,  0,625 ,  0,625 ,  0,700 ,  0,625 ,  0,650 ,  0,575 ,  0,325 ,  0,400 ,  0,550 ,  0,450 ,  0,275 ,  0,500 ,  0,850 ,  0,800 ,  0,575 ,  0,800 ,  0,575 ,  0,650 ,  0,700 ,  0,775 ,  0,675 ,  0,725 ,  0,725 ,  0,775 ,  0,325 ,  0,450 ,  0,725 ,  0,750 ,  0,450 ,  0,650 ,  0,300 ,  0,675 ,  0,875 ,  0,950 ,  0,675  ] 
+Creating Dataset of size 3120... 
+uA 	(4) 	 Remaining Time :    45,738 
+uB 	(4) 	 Remaining Time :    43,624 
+uC 	(4) 	 Remaining Time :    42,250 
+uD 	(4) 	 Remaining Time :    41,403 
+uE 	(4) 	 Remaining Time :    40,544 
+uF 	(4) 	 Remaining Time :    39,720 
+uG 	(4) 	 Remaining Time :    39,648 
+uH 	(4) 	 Remaining Time :    39,445 
+uI 	(4) 	 Remaining Time :    38,663 
+uJ 	(4) 	 Remaining Time :    37,951 
+uK 	(4) 	 Remaining Time :    37,264 
+uL 	(4) 	 Remaining Time :    36,613 
+uM 	(4) 	 Remaining Time :    36,045 
+uN 	(4) 	 Remaining Time :    35,429 
+uO 	(4) 	 Remaining Time :    34,831 
+uP 	(4) 	 Remaining Time :    34,197 
+uQ 	(4) 	 Remaining Time :    33,636 
+uR 	(4) 	 Remaining Time :    33,053 
+uS 	(4) 	 Remaining Time :    32,475 
+uT 	(4) 	 Remaining Time :    31,865 
+uU 	(4) 	 Remaining Time :    31,296 
+uV 	(4) 	 Remaining Time :    30,721 
+uW 	(4) 	 Remaining Time :    30,176 
+uX 	(4) 	 Remaining Time :    29,599 
+uY 	(4) 	 Remaining Time :    29,031 
+uZ 	(4) 	 Remaining Time :    28,500 
+la 	(4) 	 Remaining Time :    27,925 
+lb 	(4) 	 Remaining Time :    27,352 
+lc 	(4) 	 Remaining Time :    26,791 
+ld 	(4) 	 Remaining Time :    26,219 
+le 	(4) 	 Remaining Time :    25,656 
+lf 	(4) 	 Remaining Time :    25,102 
+lg 	(4) 	 Remaining Time :    24,552 
+lh 	(4) 	 Remaining Time :    23,998 
+li 	(4) 	 Remaining Time :    23,442 
+lj 	(4) 	 Remaining Time :    22,885 
+lk 	(4) 	 Remaining Time :    22,334 
+ll 	(4) 	 Remaining Time :    21,768 
+lm 	(4) 	 Remaining Time :    21,218 
+ln 	(4) 	 Remaining Time :    20,668 
+lo 	(4) 	 Remaining Time :    20,115 
+lp 	(4) 	 Remaining Time :    19,569 
+lq 	(4) 	 Remaining Time :    19,030 
+lr 	(4) 	 Remaining Time :    18,473 
+ls 	(4) 	 Remaining Time :    17,928 
+lt 	(4) 	 Remaining Time :    17,376 
+lu 	(4) 	 Remaining Time :    16,832 
+lv 	(4) 	 Remaining Time :    16,281 
+lw 	(4) 	 Remaining Time :    15,739 
+lx 	(4) 	 Remaining Time :    15,183 
+ly 	(4) 	 Remaining Time :    14,638 
+lz 	(4) 	 Remaining Time :    14,104 
+0 	(4) 	 Remaining Time :    13,560 
+1 	(4) 	 Remaining Time :    13,013 
+2 	(4) 	 Remaining Time :    12,466 
+3 	(4) 	 Remaining Time :    11,925 
+4 	(4) 	 Remaining Time :    11,381 
+5 	(4) 	 Remaining Time :    10,837 
+6 	(4) 	 Remaining Time :    10,293 
+7 	(4) 	 Remaining Time :     9,751 
+8 	(4) 	 Remaining Time :     9,209 
+9 	(4) 	 Remaining Time :     8,668 
++ 	(4) 	 Remaining Time :     8,122 
+- 	(4) 	 Remaining Time :     7,578 
+cr 	(4) 	 Remaining Time :     7,040 
+@ 	(4) 	 Remaining Time :     6,499 
+# 	(4) 	 Remaining Time :     5,957 
+' 	(4) 	 Remaining Time :     5,413 
+pt 	(4) 	 Remaining Time :     4,872 
+im 	(4) 	 Remaining Time :     4,330 
+! 	(4) 	 Remaining Time :     3,788 
+tp 	(4) 	 Remaining Time :     3,246 
+€ 	(4) 	 Remaining Time :     2,705 
+$ 	(4) 	 Remaining Time :     2,165 
+% 	(4) 	 Remaining Time :     1,624 
+( 	(4) 	 Remaining Time :     1,082 
+) 	(4) 	 Remaining Time :     0,541 
+= 	(4) 	 Remaining Time :     0,000 
+
+Training Set Score : 0.6237181 
+Accuracy  - [ 0,750 ,  0,625 ,  0,875 ,  0,725 ,  0,825 ,  0,750 ,  0,625 ,  0,825 ,  0,425 ,  0,475 ,  0,800 ,  0,900 ,  0,600 ,  0,700 ,  0,500 ,  0,750 ,  0,650 ,  0,650 ,  0,600 ,  0,875 ,  0,700 ,  0,625 ,  0,675 ,  0,625 ,  0,600 ,  0,625 ,  0,400 ,  0,600 ,  0,725 ,  0,850 ,  0,675 ,  0,625 ,  0,175 ,  0,625 ,  0,000 ,  0,475 ,  0,650 ,  0,250 ,  0,500 ,  0,625 ,  0,700 ,  0,400 ,  0,825 ,  0,600 ,  0,625 ,  0,700 ,  0,675 ,  0,675 ,  0,600 ,  0,250 ,  0,450 ,  0,425 ,  0,450 ,  0,325 ,  0,625 ,  0,825 ,  0,725 ,  0,400 ,  0,775 ,  0,725 ,  0,550 ,  0,750 ,  0,800 ,  0,575 ,  0,700 ,  0,700 ,  0,675 ,  0,300 ,  0,475 ,  0,850 ,  0,775 ,  0,475 ,  0,625 ,  0,375 ,  0,650 ,  0,975 ,  0,950 ,  0,725  ] 
+Creating Dataset of size 3120... 
+uA 	(4) 	 Remaining Time :    46,200 
+uB 	(4) 	 Remaining Time :    46,132 
+uC 	(4) 	 Remaining Time :    43,925 
+uD 	(4) 	 Remaining Time :    42,532 
+uE 	(4) 	 Remaining Time :    41,552 
+uF 	(4) 	 Remaining Time :    40,704 
+uG 	(4) 	 Remaining Time :    40,003 
+uH 	(4) 	 Remaining Time :    39,287 
+uI 	(4) 	 Remaining Time :    38,494 
+uJ 	(4) 	 Remaining Time :    37,747 
+uK 	(4) 	 Remaining Time :    37,081 
+uL 	(4) 	 Remaining Time :    36,366 
+uM 	(4) 	 Remaining Time :    35,780 
+uN 	(4) 	 Remaining Time :    35,177 
+uO 	(4) 	 Remaining Time :    34,595 
+uP 	(4) 	 Remaining Time :    33,980 
+uQ 	(4) 	 Remaining Time :    33,410 
+uR 	(4) 	 Remaining Time :    32,883 
+uS 	(4) 	 Remaining Time :    32,307 
+uT 	(4) 	 Remaining Time :    31,700 
+uU 	(4) 	 Remaining Time :    31,133 
+uV 	(4) 	 Remaining Time :    30,556 
+uW 	(4) 	 Remaining Time :    30,162 
+uX 	(4) 	 Remaining Time :    29,603 
+uY 	(4) 	 Remaining Time :    29,012 
+uZ 	(4) 	 Remaining Time :    28,444 
+la 	(4) 	 Remaining Time :    27,874 
+lb 	(4) 	 Remaining Time :    27,314 
+lc 	(4) 	 Remaining Time :    26,762 
+ld 	(4) 	 Remaining Time :    26,197 
+le 	(4) 	 Remaining Time :    25,613 
+lf 	(4) 	 Remaining Time :    25,051 
+lg 	(4) 	 Remaining Time :    24,496 
+lh 	(4) 	 Remaining Time :    23,935 
+li 	(4) 	 Remaining Time :    23,361 
+lj 	(4) 	 Remaining Time :    22,806 
+lk 	(4) 	 Remaining Time :    22,265 
+ll 	(4) 	 Remaining Time :    21,708 
+lm 	(4) 	 Remaining Time :    21,208 
+ln 	(4) 	 Remaining Time :    20,714 
+lo 	(4) 	 Remaining Time :    20,157 
+lp 	(4) 	 Remaining Time :    19,599 
+lq 	(4) 	 Remaining Time :    19,057 
+lr 	(4) 	 Remaining Time :    18,497 
+ls 	(4) 	 Remaining Time :    17,941 
+lt 	(4) 	 Remaining Time :    17,392 
+lu 	(4) 	 Remaining Time :    16,841 
+lv 	(4) 	 Remaining Time :    16,287 
+lw 	(4) 	 Remaining Time :    15,736 
+lx 	(4) 	 Remaining Time :    15,186 
+ly 	(4) 	 Remaining Time :    14,642 
+lz 	(4) 	 Remaining Time :    14,100 
+0 	(4) 	 Remaining Time :    13,551 
+1 	(4) 	 Remaining Time :    13,007 
+2 	(4) 	 Remaining Time :    12,459 
+3 	(4) 	 Remaining Time :    11,914 
+4 	(4) 	 Remaining Time :    11,369 
+5 	(4) 	 Remaining Time :    10,824 
+6 	(4) 	 Remaining Time :    10,281 
+7 	(4) 	 Remaining Time :     9,737 
+8 	(4) 	 Remaining Time :     9,193 
+9 	(4) 	 Remaining Time :     8,655 
++ 	(4) 	 Remaining Time :     8,113 
+- 	(4) 	 Remaining Time :     7,570 
+cr 	(4) 	 Remaining Time :     7,026 
+@ 	(4) 	 Remaining Time :     6,486 
+# 	(4) 	 Remaining Time :     5,946 
+' 	(4) 	 Remaining Time :     5,402 
+pt 	(4) 	 Remaining Time :     4,862 
+im 	(4) 	 Remaining Time :     4,320 
+! 	(4) 	 Remaining Time :     3,779 
+tp 	(4) 	 Remaining Time :     3,238 
+€ 	(4) 	 Remaining Time :     2,699 
+$ 	(4) 	 Remaining Time :     2,158 
+% 	(4) 	 Remaining Time :     1,618 
+( 	(4) 	 Remaining Time :     1,079 
+) 	(4) 	 Remaining Time :     0,539 
+= 	(4) 	 Remaining Time :     0,000 
+
+Training Set Score : 0.63429505 
+Accuracy  - [ 0,700 ,  0,650 ,  0,825 ,  0,725 ,  0,800 ,  0,850 ,  0,750 ,  0,850 ,  0,475 ,  0,525 ,  0,725 ,  0,925 ,  0,650 ,  0,800 ,  0,675 ,  0,675 ,  0,525 ,  0,825 ,  0,675 ,  0,850 ,  0,575 ,  0,600 ,  0,825 ,  0,575 ,  0,800 ,  0,625 ,  0,300 ,  0,625 ,  0,700 ,  0,775 ,  0,625 ,  0,625 ,  0,125 ,  0,600 ,  0,000 ,  0,575 ,  0,625 ,  0,200 ,  0,700 ,  0,575 ,  0,600 ,  0,550 ,  0,925 ,  0,625 ,  0,475 ,  0,600 ,  0,625 ,  0,625 ,  0,725 ,  0,325 ,  0,400 ,  0,550 ,  0,475 ,  0,400 ,  0,575 ,  0,775 ,  0,725 ,  0,500 ,  0,750 ,  0,700 ,  0,675 ,  0,750 ,  0,775 ,  0,600 ,  0,700 ,  0,850 ,  0,825 ,  0,425 ,  0,425 ,  0,700 ,  0,700 ,  0,325 ,  0,625 ,  0,400 ,  0,575 ,  0,950 ,  0,950 ,  0,775  ] 
+Creating Dataset of size 3120... 
+uA 	(4) 	 Remaining Time :    46,970 
+uB 	(4) 	 Remaining Time :    43,966 
+uC 	(4) 	 Remaining Time :    42,675 
+uD 	(4) 	 Remaining Time :    41,718 
+uE 	(4) 	 Remaining Time :    41,041 
+uF 	(4) 	 Remaining Time :    40,140 
+uG 	(4) 	 Remaining Time :    39,669 
+uH 	(4) 	 Remaining Time :    38,955 
+uI 	(4) 	 Remaining Time :    38,249 
+uJ 	(4) 	 Remaining Time :    37,590 
+uK 	(4) 	 Remaining Time :    36,978 
+uL 	(4) 	 Remaining Time :    36,317 
+uM 	(4) 	 Remaining Time :    35,755 
+uN 	(4) 	 Remaining Time :    35,186 
+uO 	(4) 	 Remaining Time :    34,616 
+uP 	(4) 	 Remaining Time :    34,026 
+uQ 	(4) 	 Remaining Time :    33,457 
+uR 	(4) 	 Remaining Time :    32,920 
+uS 	(4) 	 Remaining Time :    32,326 
+uT 	(4) 	 Remaining Time :    31,749 
+uU 	(4) 	 Remaining Time :    31,179 
+uV 	(4) 	 Remaining Time :    30,601 
+uW 	(4) 	 Remaining Time :    30,066 
+uX 	(4) 	 Remaining Time :    29,502 
+uY 	(4) 	 Remaining Time :    28,953 
+uZ 	(4) 	 Remaining Time :    28,410 
+la 	(4) 	 Remaining Time :    27,831 
+lb 	(4) 	 Remaining Time :    27,261 
+lc 	(4) 	 Remaining Time :    26,686 
+ld 	(4) 	 Remaining Time :    26,138 
+le 	(4) 	 Remaining Time :    25,582 
+lf 	(4) 	 Remaining Time :    25,023 
+lg 	(4) 	 Remaining Time :    24,475 
+lh 	(4) 	 Remaining Time :    23,930 
+li 	(4) 	 Remaining Time :    23,380 
+lj 	(4) 	 Remaining Time :    22,822 
+lk 	(4) 	 Remaining Time :    22,292 
+ll 	(4) 	 Remaining Time :    21,744 
+lm 	(4) 	 Remaining Time :    21,192 
+ln 	(4) 	 Remaining Time :    20,648 
+lo 	(4) 	 Remaining Time :    20,096 
+lp 	(4) 	 Remaining Time :    19,545 
+lq 	(4) 	 Remaining Time :    18,994 
+lr 	(4) 	 Remaining Time :    18,441 
+ls 	(4) 	 Remaining Time :    17,889 
+lt 	(4) 	 Remaining Time :    17,338 
+lu 	(4) 	 Remaining Time :    16,796 
+lv 	(4) 	 Remaining Time :    16,269 
+lw 	(4) 	 Remaining Time :    15,724 
+lx 	(4) 	 Remaining Time :    15,177 
+ly 	(4) 	 Remaining Time :    14,637 
+lz 	(4) 	 Remaining Time :    14,089 
+0 	(4) 	 Remaining Time :    13,550 
+1 	(4) 	 Remaining Time :    13,005 
+2 	(4) 	 Remaining Time :    12,463 
+3 	(4) 	 Remaining Time :    11,920 
+4 	(4) 	 Remaining Time :    11,377 
+5 	(4) 	 Remaining Time :    10,836 
+6 	(4) 	 Remaining Time :    10,293 
+7 	(4) 	 Remaining Time :     9,750 
+8 	(4) 	 Remaining Time :     9,205 
+9 	(4) 	 Remaining Time :     8,662 
++ 	(4) 	 Remaining Time :     8,119 
+- 	(4) 	 Remaining Time :     7,574 
+cr 	(4) 	 Remaining Time :     7,031 
+@ 	(4) 	 Remaining Time :     6,492 
+# 	(4) 	 Remaining Time :     5,951 
+' 	(4) 	 Remaining Time :     5,407 
+pt 	(4) 	 Remaining Time :     4,866 
+im 	(4) 	 Remaining Time :     4,324 
+! 	(4) 	 Remaining Time :     3,783 
+tp 	(4) 	 Remaining Time :     3,242 
+€ 	(4) 	 Remaining Time :     2,702 
+$ 	(4) 	 Remaining Time :     2,163 
+% 	(4) 	 Remaining Time :     1,622 
+( 	(4) 	 Remaining Time :     1,081 
+) 	(4) 	 Remaining Time :     0,541 
+= 	(4) 	 Remaining Time :     0,000 
+
+Training Set Score : 0.6288461 
+Accuracy  - [ 0,625 ,  0,700 ,  0,875 ,  0,800 ,  0,800 ,  0,850 ,  0,700 ,  0,875 ,  0,450 ,  0,625 ,  0,900 ,  0,950 ,  0,600 ,  0,675 ,  0,650 ,  0,800 ,  0,500 ,  0,700 ,  0,625 ,  0,875 ,  0,600 ,  0,450 ,  0,575 ,  0,625 ,  0,725 ,  0,700 ,  0,325 ,  0,675 ,  0,800 ,  0,775 ,  0,800 ,  0,500 ,  0,150 ,  0,575 ,  0,000 ,  0,525 ,  0,525 ,  0,325 ,  0,700 ,  0,625 ,  0,600 ,  0,450 ,  0,850 ,  0,650 ,  0,575 ,  0,750 ,  0,625 ,  0,675 ,  0,650 ,  0,300 ,  0,375 ,  0,475 ,  0,475 ,  0,425 ,  0,475 ,  0,800 ,  0,725 ,  0,525 ,  0,725 ,  0,725 ,  0,575 ,  0,675 ,  0,750 ,  0,475 ,  0,625 ,  0,650 ,  0,750 ,  0,350 ,  0,400 ,  0,800 ,  0,725 ,  0,350 ,  0,725 ,  0,475 ,  0,700 ,  0,925 ,  0,950 ,  0,750  ] 

@@ -21,7 +21,14 @@ String[] characters = new String[]{
   "0","1","2","3","4","5","6","7","8","9", "+", "-", "cr",
   "@","#","'","pt","im","!","tp","€","$","%","(",")","="
 };
-int numOfTestSample = 24; //This is just for the tests, not the training
+int numOfTestSample = 40; //This is just for the tests, not the training
+
+
+String[] handTrainingDatas = new String[]{"NicolasMA", "LenaME", "ElioKE", "AkramBE", "MaximeMB", "TheoLA", "MatteoPR", "ValerieAR", "NathanLU", "MatheoLB", "SachaAD", "MatisBR", "RomaneFI", "ThelioLA", "YanisIH"};
+String[] fontTrainingDatas = new String[]{"Arial", "DejaVu Serif", "Fira Code Retina Moyen", "Consolas", "Lucida Handwriting Italique", "Playwrite IT Moderna", "Just Another Hand"};
+
+String[] handTestingDatas = new String[]{"MrMollier", "MrChauvet", "SachaBE", "IrinaRU", "NoematheoBLB"};
+String[] fontTestingDatas = new String[]{"Liberation Serif", "Calibri", "Book Antiqua", "Gabriola", "Noto Serif"};
 
 void settings() {
   size(w * rScale * characters.length, h * rScale * numOfTestSample, P2D); // For Global Test
@@ -34,13 +41,13 @@ void setup() {
   cl = new ConsoleLog("./Log/log1.txt");
   im = new ImageManager();
 
-  nn = new NeuralNetwork().Import("./NeuralNetworkSave/GlobalTest5.nn");
-  //nn = new NeuralNetwork(w*h, 1024, 512, 256, 256, characters.length);
+  //nn = new NeuralNetwork().Import("./NeuralNetworkSave/GlobalTest5.nn");
+  nn = new NeuralNetwork(w*h, 1024, 512, 256, 256, characters.length);
   nn.UseSoftMax();
 
-  //TrainForImages(1, 4, 1, 1, 10, 0.1);
+  TrainForImages(8, 8, 2, 0.5, 8, 1);
 
-  //nn.Export("./NeuralNetworkSave/GlobalTest5.nn");
+  nn.Export("./NeuralNetworkSave/GlobalTest6.nn");
 }
 
 int index = 0;
@@ -54,30 +61,44 @@ void TrainForImages(int N, int epochPerSet, float startLR, float endLR, int rep,
   float[] accuracy = new float[nn.outputSize];
   int[] repList;
   Arrays.fill(accuracy, 0.5);
+  
+  Matrix[] testSampleHand = dataset.CreateSample(
+    characters,
+    handTestingDatas,
+    new String[]{},
+  3);
+    
+  Matrix[] testSampleFont = dataset.CreateSample(
+    characters,
+    new String[]{},
+    fontTestingDatas,
+  3);
 
   for(int k = 0; k <= N; k++) {
     cl.pln("\nPhase", k, "/", N);
     
-    Matrix[] testSampleHand = dataset.CreateSample(
-      characters,
-      new String[]{"MrMollier", "MrChauvet", "SachaBE"},
-      new String[]{},
-    3);
-    
-    Matrix[] testSampleFont = dataset.CreateSample(
-      characters,
-      new String[]{},
-      new String[]{"Liberation Serif", "Calibri", "Book Antiqua"},
-    3);
+    if(k > 1) {
+      testSampleHand = dataset.CreateSample(
+        characters,
+        handTestingDatas,
+        new String[]{},
+      3);
+      
+      testSampleFont = dataset.CreateSample(
+        characters,
+        new String[]{},
+        fontTestingDatas,
+      3);
+    }
 
     if(k != 0) {
       repList = RepList(accuracy, rep, minProp);
 
       sample = dataset.CreateSample(
         characters,
-        new String[]{"NicolasMA", "LenaME", "ElioKE", "AkramBE", "MaximeMB", "TheoLA", "MatteoPR", "ValerieAR"},
+        handTrainingDatas,
         //new String[]{},
-        new String[]{"Arial", "DejaVu Serif", "Fira Code Retina Moyen", "Consolas", "Noto Serif", "Lucida Handwriting Italique", "Playwrite IT Moderna", "Gabriola", "Just Another Hand"},
+        fontTrainingDatas,
         repList);
 
       float lr = startLR * pow(endLR / startLR, (float)(k-1)/max(1, (N-1)));
@@ -101,10 +122,10 @@ void TestImages() {
 
   Matrix[] testSample = dataset.CreateSample(
     characters,
-    new String[]{"MrMollier", "MrChauvet", "SachaBE"},
+    handTestingDatas,
     // new String[]{},
-    new String[]{"Comic Sans MS", "Calibri", "Liberation Serif", "Roboto", "Book Antiqua"},
-    3);
+    fontTestingDatas,
+    4);
 
 
   float[] score = CompilScore(AccuracyScore(nn, testSample, true));
@@ -175,7 +196,7 @@ float[][] AccuracyScore(NeuralNetwork nn, Matrix[] data, boolean doDraw) {
 }
 
 float[][] AccuracyScore(NeuralNetwork nn, Matrix[][] data, boolean doDraw) {
-  float[][] score = new float[data[0][0].n][];
+  float[][] score = new float[data.length][data[0][1].n];
   int[][] countOutput = new int[data.length][data[0][1].n]; // Compte le nombre d'output ayant pour retour i
   
   int ret = 0; // To draw
@@ -188,6 +209,7 @@ float[][] AccuracyScore(NeuralNetwork nn, Matrix[][] data, boolean doDraw) {
   
     int mIndex; double m; // Recherche de la prédiction la plus haute
     for(int j = 0; j < d[0].p; j++) {
+      boolean isGood = false;
       fill(255,0,0,100);
   
       mIndex = -1;
@@ -205,6 +227,7 @@ float[][] AccuracyScore(NeuralNetwork nn, Matrix[][] data, boolean doDraw) {
           if(mIndex == i) {
             score[k][i] += 1;
             fill(0,255,0,100);
+            isGood = true;
           }
         }
       }
@@ -217,10 +240,12 @@ float[][] AccuracyScore(NeuralNetwork nn, Matrix[][] data, boolean doDraw) {
   
         noStroke();
         rect(x, y, rScale * w, rScale * h);
-  
-        fill(100);
-        textSize(rScale * w * 0.7);
-        text(characters[mIndex], x, y, rScale*w, rScale*h);
+        
+        if(!isGood) {
+          fill(200);
+          textSize(rScale * w);
+          text(characters[mIndex], x, y, rScale*w, rScale*h);
+        }
       }
       
       ret++;
@@ -237,7 +262,7 @@ double[] ImgPP(PImage img) { // Images post-processing
   double[] nImg = new double[w*h];
   PImage PPImage = im.Gray(img);
   PPImage = im.Contrast(PPImage, 0.015);
-  PPImage = im.AutoCrop(PPImage, 160, 0.07);
+  PPImage = im.AutoCrop(PPImage, 210, 0.05);
   //PPImage = im.Contrast(PPImage, 0.02); // If there is a dark patch in the center
 
   im.Resize(PPImage, w, h);

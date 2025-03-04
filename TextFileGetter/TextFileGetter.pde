@@ -52,7 +52,7 @@ CONSIGNES :
   5/ Appuyer sur entrée pour enregistrer
 */
 void setup() {
-  name = "ValerieAR";
+  name = "ThelioLA";
   doc = loadImage("./doc/" + name + ".jpg");
   
   zones = new Zone[]{
@@ -155,6 +155,7 @@ void keyPressed() {
       for (int i = 0; i < zones.length; i++) {
         zones[i].Screen(doc, name, dx, dy);
       }
+      exit();
       break;
     case UP:
       dy -= 1;

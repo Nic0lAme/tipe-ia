@@ -227,8 +227,8 @@ class ImageManager {
       if(!this.IsClockwise(contour)) continue;
       
       int[] rect = this.RectFromContour(contour);
-      if(rect[2] * rect[3] > mArea) {
-        mArea = rect[2] * rect[3];
+      if(rect[2] * rect[3] * contour.size() > mArea) {
+        mArea = rect[2] * rect[3] * contour.size();
         objectIndex = k;
       }
     }
