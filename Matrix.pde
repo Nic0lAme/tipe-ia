@@ -225,6 +225,22 @@ class Matrix {
 
     return this;
   }
+  
+  Matrix ShuffleCol(Matrix mat) {
+    return ShuffleCol(new Matrix[]{mat})[0];
+  }
+  
+  Matrix[] ShuffleCol(Matrix[] mats) {
+    Matrix[] newMats = new Matrix[mats.length];
+    for(int k = 0; k < mats.length; k++) newMats[k] = mats[k].C();
+    
+    // Mélange les données (Fisher–Yates shuffle)
+    for (int i = 0; i < this.p - 1; i++) {
+      int j = floor(random(i, this.p));
+      for(int k = 0; k < mats.length; k++) newMats[k].ComutCol(i,j);
+    }
+    return newMats;
+  }
 
   Matrix GetCol(int j) { return GetCol(new int[]{j}); } // Could be optimised but it is okay I guess
 

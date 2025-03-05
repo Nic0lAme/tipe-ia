@@ -9,8 +9,8 @@ ConsoleLog cl;
 ImageManager im;
 GraphApplet graphApplet = new GraphApplet(nameOfProcess);
 
-int w = 31;
-int h = 35;
+int w = 25;
+int h = 28;
 float rScale = 0.6; // Scale for the representations (draw)
 
 //String[] characters = new String[]{"0","1","2","3","4","5","6","7","8","9"};
@@ -42,13 +42,13 @@ void setup() {
   im = new ImageManager();
 
   //nn = new NeuralNetwork().Import("./NeuralNetworkSave/GlobalTest7.nn");
-  nn = new NeuralNetwork(w*h, 512, 256, characters.length);
+  nn = new NeuralNetwork(w*h, 128, 128, 128, 128, 128, characters.length);
   nn.UseSoftMax();
 
   TrainForImages(
-    4, 8,     // # of phase - # of epoch per phase
+    2, 8,     // # of phase - # of epoch per phase
     0.8, 0.8, // Learning Rate
-    0, 0.5,     // Deformation Rate
+    0.2, 0.5,     // Deformation Rate
     8, 1);    // Repetition - Min prop
 
   nn.Export("./NeuralNetworkSave/GlobalTest7.nn");
@@ -111,10 +111,15 @@ void TrainForImages(int phaseNumber, int epochPerSet, float startLR, float endLR
       float lr = startLR * pow(endLR / startLR, (float)(k-1)/max(1, (phaseNumber-1)));
       nn.MiniBatchLearn(sample, epochPerSet, 64, lr/20, lr, 2, new Matrix[][]{testSampleHand, testSampleFont}, k + "/" + phaseNumber);
     }
+    
+    if(k >= 1) {
+      Matrix[] shuffledSample = new Matrix(0).ShuffleCol(sample);
+      cl.pln("Accuracy on training set :", Average(CompilScore(AccuracyScore(nn, shuffledSample, false))));
+    }
 
     if(k == phaseNumber) break; //Pas besoin de retester
     
-    accuracy = CompilScore(AccuracyScore(nn, new Matrix[][]{testSampleHand, testSampleFont}, true));
+    accuracy = CompilScore(AccuracyScore(nn, new Matrix[][]{testSampleHand, testSampleFont}, false));
 
     cl.pln("Accuracy for test set :", Average(accuracy));
     cl.pln();
@@ -241,8 +246,8 @@ float[][] AccuracyScore(NeuralNetwork nn, Matrix[][] data, boolean doDraw) {
   
   
       if(doDraw) {
-        x = floor((rScale*h*ret) / height * rScale * w);
-        y = floor((rScale*h*ret) % height);
+        x = floor(floor((rScale*h*ret)) / height * rScale * w);
+        y = floor( (rScale*h*ret) % height);
         image(dataset.GetImageFromInputs(d[0], j), x, y, rScale*w, rScale*h);
   
         noStroke();

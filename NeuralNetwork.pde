@@ -272,7 +272,6 @@ class NeuralNetwork {
     for (int k = 0; k < numOfEpoch; k++) {
       cl.pln("(" + label + ") \tEpoch " + (k+1) + "/" + numOfEpoch + "\t");
 
-      // Mélange les données (Fisher–Yates shuffle)
       for (int i = 0; i < data[0].p-1; i++) {
         int j = floor(random(i, data[0].p));
         data[0].ComutCol(i, j);
