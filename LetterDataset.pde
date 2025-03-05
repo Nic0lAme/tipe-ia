@@ -14,14 +14,22 @@ public class LetterDataset {
   }
   
   public Matrix[] CreateSample(String[] characters, String[] hwSources, String[] fSources, int rep) {
+    return this.CreateSample(characters, hwSources, fSources, rep, 1);
+  }
+  
+  public Matrix[] CreateSample(String[] characters, String[] hwSources, String[] fSources, int rep, float deformationRate) {
     int[] repList = new int[characters.length];
     Arrays.fill(repList, rep);
     
-    return CreateSample(characters, hwSources, fSources, repList);
+    return this.CreateSample(characters, hwSources, fSources, repList, deformationRate);
+  }
+  
+  public Matrix[] CreateSample(String[] characters, String[] hwSources, String[] fSources, int[] repList) {
+    return this.CreateSample(characters, hwSources, fSources, repList, 1);
   }
 
   // Renvoie un couple entrée / sortie d'images pour le réseau
-  public Matrix[] CreateSample(String[] characters, String[] hwSources, String[] fSources, int[] repList) {
+  public Matrix[] CreateSample(String[] characters, String[] hwSources, String[] fSources, int[] repList, float deformationRate) {
     int repSum = 0;
     for(int k = 0; k < repList.length; k++) repSum += repList[k];
     
@@ -48,8 +56,7 @@ public class LetterDataset {
             ? "./TextFileGetter/output/" + characters[c] + "/" + characters[c] + " - " + hwSources[s] + ".jpg"
             : "./FromFontGetter/output/" + characters[c] + "/" + characters[c] + " - " + fSources[s - hwSources.length] + ".jpg";
           PImage original = loadImage(path);
-          PImage img = im.ScrambleImage(im.Resize(original, this.wData, this.hData), move, blur, density, perlin, deformation, pg);
-
+          PImage img = im.ScrambleImage(im.Resize(original, this.wData, this.hData), move * deformationRate, blur * deformationRate, density * deformationRate, perlin * deformationRate, deformation * deformationRate, pg);
           // Récupère les pixels et les normalise
           double[] imgPixels = ImgPP(img);
 

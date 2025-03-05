@@ -45,7 +45,11 @@ void setup() {
   //nn = new NeuralNetwork(w*h, 512, 128, 128, characters.length);
   nn.UseSoftMax();
 
-  TrainForImages(1, 8, 0.8, 0.8, 8, 1);
+  TrainForImages(
+    1, 8,     // # of phase - # of epoch per phase
+    0.8, 0.8, // Learning Rate
+    0, 0,     // Deformation Rate
+    8, 1);    // Repetition - Min prop
 
   nn.Export("./NeuralNetworkSave/GlobalTest7.nn");
 }
@@ -57,7 +61,7 @@ void draw() {
   //DirectTest();
 }
 
-void TrainForImages(int N, int epochPerSet, float startLR, float endLR, int rep, float minProp) {
+void TrainForImages(int phaseNumber, int epochPerSet, float startLR, float endLR, float startDef, float endDef, int rep, float minProp) {
   float[] accuracy = new float[nn.outputSize];
   int[] repList;
   Arrays.fill(accuracy, 0.5);
@@ -74,21 +78,23 @@ void TrainForImages(int N, int epochPerSet, float startLR, float endLR, int rep,
     fontTestingDatas,
   3);
 
-  for(int k = 0; k <= N; k++) {
-    cl.pln("\nPhase", k, "/", N);
+  for(int k = 0; k <= phaseNumber; k++) {
+    cl.pln("\nPhase", k, "/", phaseNumber);
+    
+    float deformationRate = map(k, 0, phaseNumber, startDef, endDef);
     
     if(k > 1) {
       testSampleHand = dataset.CreateSample(
         characters,
         handTestingDatas,
         new String[]{},
-      3);
+      3, deformationRate);
       
       testSampleFont = dataset.CreateSample(
         characters,
         new String[]{},
         fontTestingDatas,
-      3);
+      3, deformationRate);
     }
 
     if(k != 0) {
@@ -99,13 +105,13 @@ void TrainForImages(int N, int epochPerSet, float startLR, float endLR, int rep,
         handTrainingDatas,
         //new String[]{},
         fontTrainingDatas,
-        repList);
+        repList, deformationRate);
 
-      float lr = startLR * pow(endLR / startLR, (float)(k-1)/max(1, (N-1)));
-      nn.MiniBatchLearn(sample, epochPerSet, 64, lr/20, lr, 2, new Matrix[][]{testSampleHand, testSampleFont}, k + "/" + N);
+      float lr = startLR * pow(endLR / startLR, (float)(k-1)/max(1, (phaseNumber-1)));
+      nn.MiniBatchLearn(sample, epochPerSet, 64, lr/20, lr, 2, new Matrix[][]{testSampleHand, testSampleFont}, k + "/" + phaseNumber);
     }
 
-    if(k == N) break; //Pas besoin de restester
+    if(k == phaseNumber) break; //Pas besoin de retester
     
     accuracy = CompilScore(AccuracyScore(nn, new Matrix[][]{testSampleHand, testSampleFont}, true));
 
