@@ -73,6 +73,8 @@ public class LetterDataset {
     
     return new Matrix[]{ inputs, outputs };
   }
+  
+  
 
   // Renvoie une image affichable de l'image stockée en colonne j de l'entrée
   public PImage GetImageFromInputs(Matrix inputs, int j) {

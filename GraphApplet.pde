@@ -22,6 +22,7 @@ class GraphApplet extends JFrame {
     setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     setContentPane(graph.GetPanel());
     setVisible(true);
+    setAlwaysOnTop(true);
   }
 
   public void AddValue(double x, double y) {
