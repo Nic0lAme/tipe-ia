@@ -57,7 +57,7 @@ public class Graph {
     panel.setRangeZoomable(false);
     panel.setMouseWheelEnabled(true);
     chart.getXYPlot().setDomainPannable(true);
-    NumberAxis absAxis = new NumberAxis(abscisses);
+    NumberAxis absAxis = new NumberAxis(abscisses );
     LogAxis ordAxis = new LogAxis(ordonnees + " (log)");
     ordAxis.setBase(10);
     chart.getXYPlot().setDomainAxis(absAxis);

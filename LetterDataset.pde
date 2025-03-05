@@ -1,4 +1,8 @@
 import java.util.Arrays;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
 
 public class LetterDataset {
   final int wData, hData;
@@ -46,30 +50,62 @@ public class LetterDataset {
     outputs.Fill(0);
     
     int startTime = millis();
+    
+    ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
+    ArrayList<Callable<Object>> tasks = new ArrayList<Callable<Object>>();
+    ArrayList<Matrix[]> results = new ArrayList<Matrix[]>();
+    for (int c1 = 0; c1 < nbChar; c1++) {
+      for (int k1 = 0; k1 < repList[c1]; k1++) {
+        for (int s1 = 0; s1 < nbSources; s1++) {
+          final int c = new Integer(c1);
+          final int k = new Integer(k1);
+          final int s = new Integer(s1);
+          
+          class ScramblingTask implements Runnable {
+            public void run() {
+              // Récupère l'image source et la modifie
+              String path = s < hwSources.length
+                ? "./TextFileGetter/output/" + characters[c] + "/" + characters[c] + " - " + hwSources[s] + ".jpg"
+                : "./FromFontGetter/output/" + characters[c] + "/" + characters[c] + " - " + fSources[s - hwSources.length] + ".jpg";
+              PImage original = loadImage(path);
+              PImage img = im.ScrambleImage(im.Resize(original, wData, hData), move * deformationRate, blur * deformationRate, density * deformationRate, perlin * deformationRate, deformation * deformationRate, pg);
+              
+              // Récupère les pixels et les normalise
+              double[] imgPixels = ImgPP(img);
+              double[] answerArray = new double[nbChar];
+              answerArray[c] = 1;
+              
+              Matrix[] r = new Matrix[2];
+              r[0] = new Matrix(sampleSize, 1).ColumnFromArray(0, imgPixels);
+              r[1] = new Matrix(nbChar, 1).ColumnFromArray(0, answerArray);
 
-    int numColonne = 0;
-    for (int c = 0; c < nbChar; c++) {
-      for (int k = 0; k < repList[c]; k++) {
-        for (int s = 0; s < nbSources; s++) {
-          // Récupère l'image source et la modifie
-          String path = s < hwSources.length
-            ? "./TextFileGetter/output/" + characters[c] + "/" + characters[c] + " - " + hwSources[s] + ".jpg"
-            : "./FromFontGetter/output/" + characters[c] + "/" + characters[c] + " - " + fSources[s - hwSources.length] + ".jpg";
-          PImage original = loadImage(path);
-          PImage img = im.ScrambleImage(im.Resize(original, this.wData, this.hData), move * deformationRate, blur * deformationRate, density * deformationRate, perlin * deformationRate, deformation * deformationRate, pg);
-          // Récupère les pixels et les normalise
-          double[] imgPixels = ImgPP(img);
-
-          // Actualise les matrices entrées / sorties
-          inputs.ColumnFromArray(numColonne, imgPixels);
-          outputs.Set(c, numColonne, 1);
-          numColonne += 1;
+              results.add(r);
+            }
+          }
+          
+          tasks.add(Executors.callable(new ScramblingTask()));
+          
         }
         System.gc();
       }
-      cl.pln(characters[c], "\t(" + repList[c] + ")", "\t Remaining Time :", RemainingTime(startTime, c+1, nbChar));
+      //cl.pln(characters[c], "\t(" + repList[c] + ")", "\t Remaining Time :", RemainingTime(startTime, c+1, nbChar));
     }
-    cl.pln();
+    //cl.pln();
+    
+    // Actualise les matrices entrées / sorties en regroupant les données
+    try {
+      List<Future<Object>> answers = executor.invokeAll(tasks);
+      int numColonne = 0;
+      for (Matrix[] ms : results) {
+        inputs.ColumnFromArray(numColonne, ms[0].ColToArray(0));
+        outputs.ColumnFromArray(numColonne, ms[1].ColToArray(0));
+        numColonne += 1;
+      }
+    } catch (InterruptedException e) {
+      cl.pln("LetterDataset, CreateSample : Erreur critique, bonne chance pour la suite");
+    }
+    //inputs.ColumnFromArray(numColonne, imgPixels);
+    //outputs.Set(c, numColonne, 1);
     
     return new Matrix[]{ inputs, outputs };
   }

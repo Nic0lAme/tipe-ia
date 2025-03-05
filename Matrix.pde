@@ -268,6 +268,15 @@ class Matrix {
 
     return this;
   }
+  
+  double[] ColToArray(int j) {
+    double[] col = new double[this.n];
+    if (j < 0 || j >= this.p) { cl.pln(this, j, "ColToArray", "Wrong Column Index"); Exception e = new Exception(); e.printStackTrace(); return col; }
+    for (int i = 0; i < this.n ;i++) {
+      col[i] = this.Get(i,j);
+    }
+    return col;
+  }
 
   // Sum coeff from j-th column
   double SumCol(int j) {
