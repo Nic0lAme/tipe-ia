@@ -1,7 +1,7 @@
 import java.util.HashSet;
 
 void setup() {
-  size(2180, 400);
+  size(1000, 200);
   
   noLoop();
 }
@@ -10,13 +10,13 @@ int wordMarge = 3;
 int lineMarge = 8;
 
 void draw() {
-  PImage img = loadImage("./Message - NicolasMA.jpg");
+  PImage img = loadImage("./Message - AntoineME.jpg");
   img.resize(width, height);
   image(img, 0, 0);
   
-  img.filter(THRESHOLD, 0.5);  
+  img.filter(THRESHOLD, 0.8);  
   
-  ArrayList<ArrayList<PVector>> chars = ContourDetection(img, 20);
+  ArrayList<ArrayList<PVector>> chars = ContourDetection(img, 5);
   println(chars.size());
   
   ArrayList<int[]> rects = new ArrayList<int[]>();
@@ -40,7 +40,7 @@ void draw() {
     //text(chars.indexOf(c), rect[0], rect[1] - 10);
   }
   
-  ArrayList<ArrayList<int[]>> words = RectGroups(rects, 1.4, 1.2);
+  ArrayList<ArrayList<int[]>> words = RectGroups(rects, 1, 1.2);
   ArrayList<int[]> wordsRects = new ArrayList<int[]>();
   for(ArrayList<int[]> w : words) {
     wordsRects.add(CompilRect(w));

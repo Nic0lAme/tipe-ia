@@ -70,7 +70,7 @@ class ImageManager {
     pg.beginDraw();
     pg.background(this.AverageColor(img));
 
-    float zRot = 0.7;
+    float zRot = 2;
     float d = 0.9;
     float delta = 0.02;
     float perlinScale = 1;
@@ -227,8 +227,8 @@ class ImageManager {
       if(!this.IsClockwise(contour)) continue;
       
       int[] rect = this.RectFromContour(contour);
-      if(rect[2] * rect[3] > mArea) {
-        mArea = rect[2] * rect[3];
+      if(rect[2] * rect[3] * contour.size() > mArea) {
+        mArea = rect[2] * rect[3] * contour.size();
         objectIndex = k;
       }
     }

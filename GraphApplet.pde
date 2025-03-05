@@ -22,6 +22,7 @@ class GraphApplet extends JFrame {
     setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     setContentPane(graph.GetPanel());
     setVisible(true);
+    setAlwaysOnTop(true);
   }
 
   public void AddValue(double x, double y) {
@@ -56,6 +57,11 @@ public class Graph {
     panel.setRangeZoomable(false);
     panel.setMouseWheelEnabled(true);
     chart.getXYPlot().setDomainPannable(true);
+    NumberAxis absAxis = new NumberAxis(abscisses );
+    LogAxis ordAxis = new LogAxis(ordonnees + " (log)");
+    ordAxis.setBase(10);
+    chart.getXYPlot().setDomainAxis(absAxis);
+    chart.getXYPlot().setRangeAxis(ordAxis);   
 
     jpanel = new JPanel();
     jpanel.setLayout(new BorderLayout());
