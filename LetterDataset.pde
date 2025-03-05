@@ -2,7 +2,7 @@ import java.util.Arrays;
 
 public class LetterDataset {
   final int wData, hData;
-  float move = 0.2;
+  float move = 0.1;
   float blur = 0.05;
   float density = 0.01;
   float perlin = 1;

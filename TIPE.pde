@@ -41,13 +41,13 @@ void setup() {
   cl = new ConsoleLog("./Log/log1.txt");
   im = new ImageManager();
 
-  //nn = new NeuralNetwork().Import("./NeuralNetworkSave/GlobalTest5.nn");
-  nn = new NeuralNetwork(w*h, 1024, 512, 256, 256, characters.length);
+  nn = new NeuralNetwork().Import("./NeuralNetworkSave/GlobalTest7.nn");
+  //nn = new NeuralNetwork(w*h, 512, 128, 128, characters.length);
   nn.UseSoftMax();
 
-  TrainForImages(8, 8, 2, 0.5, 8, 1);
+  TrainForImages(1, 8, 0.8, 0.8, 8, 1);
 
-  nn.Export("./NeuralNetworkSave/GlobalTest6.nn");
+  nn.Export("./NeuralNetworkSave/GlobalTest7.nn");
 }
 
 int index = 0;
@@ -302,7 +302,7 @@ int[] RepList(float[] score, int baseRep, float minProp) {
   if(sum == 0) sum = 1; // Dans le cas où tout vaut 1, dans tous les cas on ne changera rien
 
   int[] repList = new int[score.length];
-  for(int k = 0; k < score.length; k++) repList[k] = floor((minProp / score.length + (1 - minProp) * logScore[k] / sum)  * baseRep * score.length) + 1;
+  for(int k = 0; k < score.length; k++) repList[k] = max(floor((minProp / score.length + (1 - minProp) * logScore[k] / sum)  * baseRep * score.length), 1);
 
   return repList;
 }

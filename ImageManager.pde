@@ -70,7 +70,7 @@ class ImageManager {
     pg.beginDraw();
     pg.background(this.AverageColor(img));
 
-    float zRot = 0.7;
+    float zRot = 2;
     float d = 0.9;
     float delta = 0.02;
     float perlinScale = 1;
