@@ -13,6 +13,7 @@ GraphApplet graphApplet = new GraphApplet(nameOfProcess);
 int w = 31;
 int h = 35;
 float rScale = 0.6; // Scale for the representations (draw)
+int numThreads = 4;
 
 //String[] characters = new String[]{"0","1","2","3","4","5","6","7","8","9"};
 //String[] characters = new String[]{"uA","uB","uC","uD","uE","uF","uG","uH","uI","uJ","uK","uL","uM","uN","uO","uP","uQ","uR","uS","uT","uU","uV","uW","uX","uY","uZ"};
@@ -46,20 +47,22 @@ void setup() {
   nn = new NeuralNetwork(w*h, 512, 256, characters.length);
   nn.UseSoftMax();
 
+  /*
   TrainForImages(
     4, 8,     // # of phase - # of epoch per phase
     0.8, 0.8, // Learning Rate
     0, 0.5,     // Deformation Rate
     8, 1);    // Repetition - Min prop
+  */
 
-  nn.Export("./NeuralNetworkSave/GlobalTest7.nn");
+  //nn.Export("./NeuralNetworkSave/GlobalTest7.nn");
 }
 
 int index = 0;
 
 void draw() {
-  //TestImages();
-  DirectTest();
+  TestImages();
+  //DirectTest();
 }
 
 void TrainForImages(int phaseNumber, int epochPerSet, float startLR, float endLR, float startDef, float endDef, int rep, float minProp) {

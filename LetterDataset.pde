@@ -42,14 +42,14 @@ public class LetterDataset {
     int sampleSize = nbSources * repSum;
     
     cl.pln("Creating Dataset of size " + sampleSize + "...");
-    
-    PGraphics pg = createGraphics(this.wData, this.hData, P2D);
 
     Matrix inputs = new Matrix(w*h, sampleSize);
     Matrix outputs = new Matrix(nbChar, sampleSize);
     outputs.Fill(0);
     
-    int startTime = millis();
+    final int startTime = millis();
+    
+    int index = 0;
     
     ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
     ArrayList<Callable<Object>> tasks = new ArrayList<Callable<Object>>();
@@ -57,9 +57,10 @@ public class LetterDataset {
     for (int c1 = 0; c1 < nbChar; c1++) {
       for (int k1 = 0; k1 < repList[c1]; k1++) {
         for (int s1 = 0; s1 < nbSources; s1++) {
-          final int c = new Integer(c1);
-          final int k = new Integer(k1);
-          final int s = new Integer(s1);
+          final int c = c1;
+          final int s = s1;
+          final int idx = index;
+          index++;
           
           class ScramblingTask implements Runnable {
             public void run() {
@@ -68,7 +69,7 @@ public class LetterDataset {
                 ? "./TextFileGetter/output/" + characters[c] + "/" + characters[c] + " - " + hwSources[s] + ".jpg"
                 : "./FromFontGetter/output/" + characters[c] + "/" + characters[c] + " - " + fSources[s - hwSources.length] + ".jpg";
               PImage original = loadImage(path);
-              PImage img = im.ScrambleImage(im.Resize(original, wData, hData), move * deformationRate, blur * deformationRate, density * deformationRate, perlin * deformationRate, deformation * deformationRate, pg);
+              PImage img = im.ScrambleImage(im.Resize(original, wData, hData), move * deformationRate, blur * deformationRate, density * deformationRate, perlin * deformationRate, deformation * deformationRate);
               
               // Récupère les pixels et les normalise
               double[] imgPixels = ImgPP(img);
@@ -76,21 +77,25 @@ public class LetterDataset {
               answerArray[c] = 1;
               
               Matrix[] r = new Matrix[2];
-              r[0] = new Matrix(sampleSize, 1).ColumnFromArray(0, imgPixels);
+              r[0] = new Matrix(imgPixels.length, 1).ColumnFromArray(0, imgPixels);
               r[1] = new Matrix(nbChar, 1).ColumnFromArray(0, answerArray);
-
-              results.add(r);
+              
+              cl.pln(idx);
+              
+              AddToRes(results, r, sampleSize, startTime);
             }
           }
           
           tasks.add(Executors.callable(new ScramblingTask()));
           
         }
-        System.gc();
+        // System.gc();
       }
       //cl.pln(characters[c], "\t(" + repList[c] + ")", "\t Remaining Time :", RemainingTime(startTime, c+1, nbChar));
     }
     //cl.pln();
+    
+    cl.pln(tasks.size());
     
     // Actualise les matrices entrées / sorties en regroupant les données
     try {
@@ -106,6 +111,8 @@ public class LetterDataset {
     }
     //inputs.ColumnFromArray(numColonne, imgPixels);
     //outputs.Set(c, numColonne, 1);
+    
+    cl.pln("Created");
     
     return new Matrix[]{ inputs, outputs };
   }
@@ -164,5 +171,12 @@ public class LetterDataset {
 
     return new Matrix[]{ sampleInput, sampleOutput };
   }
+}
 
+public void AddToRes(ArrayList<Matrix[]> res, Matrix[] toAdd, int sampleSize, int startTime) {
+  res.add(toAdd);
+  
+  if(res.size() % (sampleSize / 10) == 0) {
+    cl.pln(String.format("%5.3f", (float)res.size() / sampleSize), "Time Remaining :", RemainingTime(startTime, res.size(), sampleSize));
+  }
 }

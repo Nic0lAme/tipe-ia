@@ -62,14 +62,11 @@ class ImageManager {
     return img;
   }
 
-  PImage ScrambleImage(PImage img, float move, float blur, float density, float perlin, float deformation, PGraphics pg) {
-    return ScrambleImage(img, false, move, blur, density, perlin, deformation, pg);
+  PImage ScrambleImage(PImage img, float move, float blur, float density, float perlin, float deformation) {
+    return ScrambleImage(img, false, move, blur, density, perlin, deformation);
   }
 
-  PImage ScrambleImage(PImage img, boolean save, float move, float blur, float density, float perlin, float deformation, PGraphics pg) {
-    pg.beginDraw();
-    pg.background(this.AverageColor(img));
-
+  PImage ScrambleImage(PImage img, boolean save, float move, float blur, float density, float perlin, float deformation) {
     float zRot = 2;
     float d = 0.9;
     float delta = 0.02;
@@ -84,8 +81,62 @@ class ImageManager {
     scrambledImage = this.Contrast(scrambledImage, 0);
     scrambledImage = this.ElasticDeformation(scrambledImage, floor(deformation * size), 0.1);
     scrambledImage.filter(BLUR, 0.3 * random(blur * size));
-
-    noiseSeed((long)random(0,100));
+    
+    
+    color average = this.AverageColor(img);
+    
+    // SCALE
+    PImage draftImage = scrambledImage.copy();
+    draftImage.loadPixels();
+    scrambledImage.loadPixels();
+    float scale = random(1, 1 + scaleScale * move);
+    for(int i = 0; i < x; i++) {
+      for(int j = 0; j < y; j++) {
+        int nx = floor((i - (float)x/2) * scale + (float)x/2);
+        int ny = floor((j - (float)y/2) * scale + (float)y/2);
+        
+        draftImage.pixels[i + j * x] = (nx < 0 || ny < 0 || nx >= x || ny >= y) ? average : scrambledImage.pixels[nx + ny * x];
+      }
+    }
+    draftImage.updatePixels();
+    scrambledImage = draftImage;
+    
+    // ROTATE
+    draftImage = scrambledImage.copy();
+    draftImage.loadPixels();
+    scrambledImage.loadPixels();
+    float rot = zRot *(random(PI * move) - PI * move/2);
+    for(int i = 0; i < x; i++) {
+      for(int j = 0; j < y; j++) {
+        float dx = (i - (float)x/2);
+        float dy = (j - (float)y/2);
+        
+        int nx = floor(dx * cos(rot) - dy * sin(rot) + (float)x/2);
+        int ny = floor(dx * sin(rot) + dy * cos(rot) + (float)y/2);
+        
+        draftImage.pixels[i + j * x] = (nx < 0 || ny < 0 || nx >= x || ny >= y) ? average : scrambledImage.pixels[nx + ny * x];
+      }
+    }
+    draftImage.updatePixels();
+    scrambledImage = draftImage;
+    
+    // TRANSLATE
+    draftImage = scrambledImage.copy();
+    draftImage.loadPixels();
+    scrambledImage.loadPixels();
+    int dx = floor(d * random(-size * move, size * move));
+    int dy = floor(d * random(-size * move, size * move));
+    for(int i = 0; i < x; i++) {
+      for(int j = 0; j < y; j++) {
+        int nx = i + dx; int ny = j + dy;
+        draftImage.pixels[i + j * x] = (nx < 0 || ny < 0 || nx >= x || ny >= y) ? average : scrambledImage.pixels[nx + ny * x];
+      }
+    }
+    draftImage.updatePixels();
+    scrambledImage = draftImage;
+    
+    
+    noiseSeed((long)random(0,1000000));
     for (int i = 0; i < x; i++) {
       for (int j = 0; j < y; j++) {
         float pI = perlin * noise((float)i / x * perlinScale, (float)j / y * perlinScale) - perlin / 2;
@@ -97,25 +148,9 @@ class ImageManager {
         scrambledImage.set(i, j, color(floor(random(1 - delta, 1 + delta) * brightness(scrambledImage.get(i,j)))));
       }
     }
+
+    if(save) scrambledImage.save("./outputedFrame/" + str(millis()) + str(this.index) + str(second()) + str(minute()) + str(hour()) + str(day()) + str(month()) + str(year()) + ".jpg" );
     
-    pg.translate(floor(x/2) + d * random(-size * move, size * move), floor(y/2) + d * random(-size * move, size * move));
-
-    pg.rotate(zRot *(random(PI * move) - PI * move/2));
-
-    pg.scale(random(1, 1 + scaleScale * move));
-
-    pg.translate(-floor(x/2) + d * random(-size * move, size * move), -floor(y/2) + d * random(-size * move, size * move));
-
-
-    pg.image(scrambledImage, 0, 0);
-
-    if(save) pg.save("./outputedFrame/" + str(millis()) + str(this.index) + str(second()) + str(minute()) + str(hour()) + str(day()) + str(month()) + str(year()) + ".jpg" );
-
-    pg.loadPixels();
-    scrambledImage = pg.get(0, 0, scrambledImage.width, scrambledImage.height);
-    pg.background(0);
-    pg.endDraw();
-
     this.index += 1;
     return scrambledImage;
   }
