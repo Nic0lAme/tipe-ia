@@ -137,7 +137,7 @@ class NeuralNetwork {
     Matrix[] weightGrad = new Matrix[this.numLayers - 1];
     Matrix[] biasGrad = new Matrix[this.numLayers - 1];
 
-    float lambda = 0.0003;
+    double lambda = 0.0001;
     boolean hasNaN = false;
     for(int l = this.numLayers - 2; l >= 0; l--) {
       if(gradient.Contains(Double.NaN)) hasNaN = true;
@@ -146,18 +146,17 @@ class NeuralNetwork {
       weightGrad[l] = gradient.Mult(activations[l].T()).Scale(1/ (double)max(1, expectedOutput.p)).Add(weights[l], lambda / max(1, weights[l].n * weights[l].p));
       //weightGrad[l].DebugShape();
 
-      if(weightGrad[l].Contains(Double.NaN)) hasNaN = true;
-
       //dJ/dbl = dJ/dZl * dZl/dbl
       biasGrad[l] = gradient.AvgLine().Add(bias[l], lambda / max(1, bias[l].n));
       //biasGrad[l].DebugShape();
-
-      if(biasGrad[l].Contains(Double.NaN)) hasNaN = true;
-
+      
+      if(weightGrad[l].HasNAN() || biasGrad[l].HasNAN()) hasNaN = true;
+      
       a = activations[l].C();
       gradient = (weights[l].T().Mult(gradient)).HProduct(a.C().Add(a.C().HProduct(a), -1));
     }
-
+    
+    /*
     if(hasNaN) {
       for(int l = 0; l < this.numLayers; l++) {
         cl.pln("Layer", l);
@@ -168,29 +167,50 @@ class NeuralNetwork {
         weightGrad[l].Debug();
         biasGrad[l].Debug();
       }
+      
+      System.exit(-1);
     }
+    */
 
     return new Matrix[][]{weightGrad, biasGrad};
   }
 
-  public double Learn(Matrix X, Matrix Y, float learning_rate) {
+  public double Learn(Matrix X, Matrix Y, double learning_rate) {
     Matrix[] activations = ForwardPropagation(X);
     Matrix S = activations[this.numLayers - 1].C();
 
     Matrix[][] gradients = BackPropagation(activations, Y);
 
-
+    boolean hasNaN = false;
     for(int l = 0; l < this.numLayers - 1; l++) {
       this.weights[l].Add(gradients[0][l], -learning_rate);
       this.bias[l].Add(gradients[1][l], -learning_rate);
+      
+      if(weights[l].HasNAN() || bias[l].HasNAN()) hasNaN = true;
     }
 
     double J = 0;
     for(int c = 0; c < Y.p; c++) { //colonne de la sortie
       for(int i = 0; i < Y.n; i++) { //ligne de la sortie
-        J -= Y.Get(i, c) * log(abs((float)S.Get(i, c))) / Y.p;
+        if((float)S.Get(i, c) != 0) J -= Y.Get(i, c) * log(abs((float)S.Get(i, c))) / Y.p;
       }
     }
+    
+    /*
+    if(hasNaN || J != J) {
+      for(int l = 0; l < this.numLayers; l++) {
+        cl.pln("Layer", l);
+
+        activations[l].Debug();
+
+        if(l == this.numLayers - 1) continue;
+        weights[l].Debug();
+        bias[l].Debug();
+      }
+      
+      System.exit(-1);
+    }
+    */
 
     return J;
   }
@@ -295,10 +315,11 @@ class NeuralNetwork {
               Matrix batchAns = data[1].GetCol(i*batchSize, i*batchSize + batchSize - 1);
               double l = Learn(batch, batchAns, CyclicalLearningRate(epochNumber, minLR, maxLR, period));
               graphApplet.AddValue(l);
-              cl.pln("\t Epoch " + String.format("%05d",epochNumber+1) +
-                " Batch " + String.format("%05d",i+1) + " : " + String.format("%9.3E",l) +
-                "\t Time remaining " + RemainingTime(startTime, epochNumber * numOfBatches + i + 1, numOfBatches * epochNumber)
-              );
+              if(i == endIndex - 1)
+                cl.pln("\t Epoch " + String.format("%05d",epochNumber+1) +
+                  " Batch " + String.format("%05d",i+1) + " : " + String.format("%9.3E",l) +
+                  "\t Time remaining " + RemainingTime(startTime, epochNumber * numOfBatches + i + 1, numOfBatches * epochNumber)
+                );
             }
           }
         };
@@ -314,6 +335,7 @@ class NeuralNetwork {
         }
       }
       
+      if(k != numOfEpoch - 1) continue;
       for(int s = 0; s < testSets.length; s++) {
         float[] score = CompilScore(AccuracyScore(this, testSets[s], false));
         cl.p("\t Score", s, ":", String.format("%7.5f", Average(score)));

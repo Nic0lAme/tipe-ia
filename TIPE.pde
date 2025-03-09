@@ -7,13 +7,15 @@ Matrix[] sample;
 LetterDataset dataset;
 ConsoleLog cl;
 ImageManager im;
+ExecutorService executor;
 GraphApplet graphApplet = new GraphApplet(nameOfProcess);
 
 
-int w = 31;
-int h = 35;
-float rScale = 0.6; // Scale for the representations (draw)
-int numThreads = 4;
+int w = 19;
+int h = 21;
+float rScale = 1; // Scale for the representations (draw)
+int numThreads = 8;
+float testDerformation = 0.5;
 
 //String[] characters = new String[]{"0","1","2","3","4","5","6","7","8","9"};
 //String[] characters = new String[]{"uA","uB","uC","uD","uE","uF","uG","uH","uI","uJ","uK","uL","uM","uN","uO","uP","uQ","uR","uS","uT","uU","uV","uW","uX","uY","uZ"};
@@ -26,7 +28,7 @@ String[] characters = new String[]{
 int numOfTestSample = 40; //This is just for the tests, not the training
 
 
-String[] handTrainingDatas = new String[]{"NicolasMA", "LenaME", "ElioKE", "AkramBE", "MaximeMB", "TheoLA", "MatteoPR", "ValerieAR", "NathanLU", "MatheoLB", "SachaAD", "MatisBR", "RomaneFI", "ThelioLA", "YanisIH"};
+String[] handTrainingDatas = new String[]{"AntoineME", "NicolasMA", "LenaME", "AkramBE", "MaximeMB", "NathanLU", "LubinDE", "MatheoLB", "SachaAD", "MatisBR", "RomaneFI", "ThelioLA", "YanisIH"};
 String[] fontTrainingDatas = new String[]{"Arial", "DejaVu Serif", "Fira Code Retina Moyen", "Consolas", "Lucida Handwriting Italique", "Playwrite IT Moderna", "Just Another Hand"};
 
 String[] handTestingDatas = new String[]{"MrMollier", "MrChauvet", "SachaBE", "IrinaRU", "NoematheoBLB"};
@@ -42,20 +44,21 @@ void setup() {
   dataset = new LetterDataset(5*w, 5*h);
   cl = new ConsoleLog("./Log/log1.txt");
   im = new ImageManager();
+  executor = Executors.newFixedThreadPool(numThreads);
 
   //nn = new NeuralNetwork().Import("./NeuralNetworkSave/GlobalTest7.nn");
-  nn = new NeuralNetwork(w*h, 512, 256, characters.length);
+  nn = new NeuralNetwork(w*h, 384, 256, 64, 64, 64, characters.length);
   nn.UseSoftMax();
 
-  /*
+  
   TrainForImages(
-    4, 8,     // # of phase - # of epoch per phase
-    0.8, 0.8, // Learning Rate
-    0, 0.5,     // Deformation Rate
-    8, 1);    // Repetition - Min prop
-  */
+    12, 16,     // # of phase - # of epoch per phase
+    1.5, 0.5, // Learning Rate
+    0.5, 0.5,     // Deformation Rate
+    10, 0.8);    // Repetition - Min prop
+  
 
-  //nn.Export("./NeuralNetworkSave/GlobalTest7.nn");
+  nn.Export("./NeuralNetworkSave/GlobalTest7.nn");
 }
 
 int index = 0;
@@ -113,7 +116,7 @@ void TrainForImages(int phaseNumber, int epochPerSet, float startLR, float endLR
         repList, deformationRate);
 
       float lr = startLR * pow(endLR / startLR, (float)(k-1)/max(1, (phaseNumber-1)));
-      nn.MiniBatchLearn(sample, epochPerSet, 64, lr/20, lr, 2, new Matrix[][]{testSampleHand, testSampleFont}, k + "/" + phaseNumber);
+      nn.MiniBatchLearn(sample, epochPerSet, 64, lr/32, lr, 2, new Matrix[][]{testSampleHand, testSampleFont}, k + "/" + phaseNumber);
     }
 
     if(k == phaseNumber) break; //Pas besoin de retester
@@ -136,7 +139,7 @@ void TestImages() {
     handTestingDatas,
     // new String[]{},
     fontTestingDatas,
-    4, 1);
+    4, testDerformation);
 
 
   float[] score = CompilScore(AccuracyScore(nn, testSample, true));
@@ -245,8 +248,8 @@ float[][] AccuracyScore(NeuralNetwork nn, Matrix[][] data, boolean doDraw) {
   
   
       if(doDraw) {
-        x = floor((rScale*h*ret) / height * rScale * w);
-        y = floor((rScale*h*ret) % height);
+        x = floor(floor(rScale*h*ret) / height * rScale * w);
+        y = floor(floor(rScale*h*ret) % height);
         image(dataset.GetImageFromInputs(d[0], j), x, y, rScale*w, rScale*h);
   
         noStroke();

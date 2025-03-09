@@ -136,10 +136,10 @@ class ImageManager {
     scrambledImage = draftImage;
     
     
-    noiseSeed((long)random(0,1000000));
+    NoiseGenerator ng = new NoiseGenerator();
     for (int i = 0; i < x; i++) {
       for (int j = 0; j < y; j++) {
-        float pI = perlin * noise((float)i / x * perlinScale, (float)j / y * perlinScale) - perlin / 2;
+        float pI = perlin * (float)ng.noise((double)i / x * perlinScale, (double)j / y * perlinScale) - perlin / 2;
         color init = scrambledImage.get(i,j);
         scrambledImage.set(i, j, color(100 * pI + red(init),pI + green(init), pI+blue(init)));
 
@@ -402,10 +402,11 @@ class ImageManager {
 
     img.loadPixels();
     deformedImg.loadPixels();
+    NoiseGenerator ng = new NoiseGenerator();
     for(int x = 0; x < img.width; x++) {
       for(int y = 0; y < img.height; y++) {        
-        int offsetX = (int)((noise(x * noiseScale, y * noiseScale) * 2 - 1) * intensity);
-        int offsetY = (int)((noise(x * noiseScale + 1000, y * noiseScale + 1000) * 2 - 1) * intensity);
+        int offsetX = (int)((ng.noise(x * noiseScale, y * noiseScale, 0) * 2 - 1) * intensity);
+        int offsetY = (int)((ng.noise(x * noiseScale, y * noiseScale, 10) * 2 - 1) * intensity);
         
         int newX = constrain(x + offsetX, 0, img.width - 1);
         int newY = constrain(y + offsetY, 0, img.height - 1);

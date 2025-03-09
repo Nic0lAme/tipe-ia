@@ -150,6 +150,13 @@ class Matrix {
         if (val == this.Get(i,j)) return true;
     return false;
   }
+  
+  boolean HasNAN() {
+    for (int i = 0; i < this.n; i++)
+      for (int j = 0; j < this.p; j++)
+        if (this.Get(i,j) != this.Get(i,j)) return true;
+    return false;
+  }
 
   // Map funciton func (using (x) -> notation) to this
   Matrix Map(FunctionMap func) {

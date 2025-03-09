@@ -3,14 +3,16 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ExecutionException;
 
 public class LetterDataset {
   final int wData, hData;
-  float move = 0.1;
-  float blur = 0.05;
-  float density = 0.01;
-  float perlin = 1;
-  float deformation = 0.03;
+  final float move = 0.1;
+  final float blur = 0.05;
+  final float density = 0.01;
+  final float perlin = 1;
+  final float deformation = 0.03;
 
   LetterDataset(int wData, int hData) {
     this.wData = wData;
@@ -51,9 +53,10 @@ public class LetterDataset {
     
     int index = 0;
     
-    ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
-    ArrayList<Callable<Object>> tasks = new ArrayList<Callable<Object>>();
-    ArrayList<Matrix[]> results = new ArrayList<Matrix[]>();
+    //ExecutorService executor = Executors.newFixedThreadPool(numThreads);
+    ArrayList<Callable<Matrix[]>> tasks = new ArrayList<Callable<Matrix[]>>();
+    ArrayList<Matrix[]> results = new ArrayList();
+    
     for (int c1 = 0; c1 < nbChar; c1++) {
       for (int k1 = 0; k1 < repList[c1]; k1++) {
         for (int s1 = 0; s1 < nbSources; s1++) {
@@ -62,14 +65,16 @@ public class LetterDataset {
           final int idx = index;
           index++;
           
-          class ScramblingTask implements Runnable {
-            public void run() {
+          class ScramblingTask implements Callable<Matrix[]> {
+            public Matrix[] call() {
               // Récupère l'image source et la modifie
               String path = s < hwSources.length
                 ? "./TextFileGetter/output/" + characters[c] + "/" + characters[c] + " - " + hwSources[s] + ".jpg"
                 : "./FromFontGetter/output/" + characters[c] + "/" + characters[c] + " - " + fSources[s - hwSources.length] + ".jpg";
               PImage original = loadImage(path);
               PImage img = im.ScrambleImage(im.Resize(original, wData, hData), move * deformationRate, blur * deformationRate, density * deformationRate, perlin * deformationRate, deformation * deformationRate);
+              
+              //cl.pln(idx);
               
               // Récupère les pixels et les normalise
               double[] imgPixels = ImgPP(img);
@@ -80,13 +85,13 @@ public class LetterDataset {
               r[0] = new Matrix(imgPixels.length, 1).ColumnFromArray(0, imgPixels);
               r[1] = new Matrix(nbChar, 1).ColumnFromArray(0, answerArray);
               
-              cl.pln(idx);
-              
               AddToRes(results, r, sampleSize, startTime);
+              
+              return r;
             }
           }
           
-          tasks.add(Executors.callable(new ScramblingTask()));
+          tasks.add(new ScramblingTask());
           
         }
         // System.gc();
@@ -95,24 +100,30 @@ public class LetterDataset {
     }
     //cl.pln();
     
-    cl.pln(tasks.size());
-    
     // Actualise les matrices entrées / sorties en regroupant les données
     try {
-      List<Future<Object>> answers = executor.invokeAll(tasks);
+      List<Future<Matrix[]>> answers = executor.invokeAll(tasks);
       int numColonne = 0;
-      for (Matrix[] ms : results) {
-        inputs.ColumnFromArray(numColonne, ms[0].ColToArray(0));
-        outputs.ColumnFromArray(numColonne, ms[1].ColToArray(0));
+      for (Future<Matrix[]> ms : answers) {
+        try {
+          inputs.ColumnFromArray(numColonne, ms.get()[0].ColToArray(0));
+          outputs.ColumnFromArray(numColonne, ms.get()[1].ColToArray(0));
+        } catch (ExecutionException e) {
+          println(e);
+          e.printStackTrace();
+          cl.pln("LetterDataset, CreateSample : Erreur critique 3, bonne chance pour la suite");
+        } catch (InterruptedException e) {
+          cl.pln("LetterDataset, CreateSample : Erreur critique 2, bonne chance pour la suite");
+        } 
         numColonne += 1;
       }
     } catch (InterruptedException e) {
-      cl.pln("LetterDataset, CreateSample : Erreur critique, bonne chance pour la suite");
+      cl.pln("LetterDataset, CreateSample : Erreur critique 1, bonne chance pour la suite");
     }
     //inputs.ColumnFromArray(numColonne, imgPixels);
     //outputs.Set(c, numColonne, 1);
     
-    cl.pln("Created");
+    cl.pln("Created - Total time", String.format("%9.3f",(float)(millis() - startTime) / 1000));
     
     return new Matrix[]{ inputs, outputs };
   }
