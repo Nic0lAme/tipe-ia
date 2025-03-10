@@ -23,7 +23,7 @@ surcharges = []
 
 is_fun = False
 is_surch = False
-desc = ""
+desc = [""]
 for fname in files_name:
     f = open(fname[0])
     c = CLASS(fname[1])
@@ -31,6 +31,9 @@ for fname in files_name:
     for l in f:
         enlarge = l.strip().split()
         if is_fun:
+            if l.strip().split()[0] == "//":
+                desc.append(l.strip()[3:])
+                continue
             is_fun = False
             name = l[:l.index("(")]
             name = name[name.rfind(" ")+1:]
@@ -43,7 +46,7 @@ for fname in files_name:
             surcharges.append((name, l.strip()[:-2], desc))
         if len(enlarge) > 0 and enlarge[0] == "//f":
             is_fun = True
-            desc = l.strip()[4:]
+            desc = [l.strip()[4:]]
         if len(enlarge) > 0 and enlarge[0] == "//s":
             is_surch = True
             desc = l.strip()[4:]
@@ -67,7 +70,9 @@ for c in classes:
 
     c.functions = sorted(c.functions, key=functools.cmp_to_key(alphabeticalName))
     for f in c.functions:
-        mark += f'- ***\n\n\t<details>\n\t<summary>{f.name}</summary>\n\n\t- >{f.desc}\n'
+        mark += f'- ***\n\n\t<details>\n\t<summary>{f.name}</summary>\n\n\t- >{f.desc[0]}  \n'
+        for d in f.desc[1:]:
+            mark += f'\t{d}  \n'
         for s in f.full:
             mark += f'\t- _{s[0]}_\n'
             if s[1] != "": mark += f'\t\t- {s[1]}\n'

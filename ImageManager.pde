@@ -72,7 +72,13 @@ class ImageManager {
     return ScrambleImage(img, false, move, blur, density, perlin, deformation);
   }
 
-  //f Modifie de manière l'iamge _img_, en la bougeant (rotation, translation, scale) d'un facteur _move_, flouté d'un facteur _blur_, ayant une proportion de pixel corrompu _density_, ayant une ombre d'intensité _perlin_, et ayant une déformation de facteur _deformation_. L'image est enregistré dans ./ScrambledImage enregistré si _save_
+  //f Modifie de manière l'iamge _img_, en :
+  // -> la bougeant (rotation, translation, scale) d'un facteur _move_
+  // -> floutant d'un facteur _blur_
+  // -> ayant une proportion de pixel corrompu _density_
+  // -> ayant une ombre d'intensité _perlin_
+  // -> ayant une déformation de facteur _deformation_.
+  // L'image est enregistré dans ./ScrambledImage enregistré si _save_
   PImage ScrambleImage(PImage img, boolean save, float move, float blur, float density, float perlin, float deformation) {
     float zRot = 2;
     float d = 0.9;
@@ -435,13 +441,14 @@ class ImageManager {
     return deformedImg;
   }
   
-  // Radial Sweep Algorithm
-  // https://www.imageprocessingplace.com/downloads_V3/root_downloads/tutorials/contour_tracing_Abeer_George_Ghuneim/ray.html
+  //s
   ArrayList<ArrayList<PVector>> ContourDetection(PImage img) {
     return ContourDetection(img, 50);
   }
   
   //f Renvoie une ArrayList des contours des objets de _img_, ayant un contour de taille au minimum _minSize_
+  // Radial Sweep Algorithm
+  // https://www.imageprocessingplace.com/downloads_V3/root_downloads/tutorials/contour_tracing_Abeer_George_Ghuneim/ray.html
   ArrayList<ArrayList<PVector>> ContourDetection(PImage img, int minSize) {
     ArrayList<ArrayList<PVector>> contours = new ArrayList<ArrayList<PVector>>(); // Oui, je sais ce que tu penses...
     ArrayList<PVector> visited = new ArrayList<PVector>();
@@ -514,10 +521,13 @@ class ImageManager {
     return new int[]{minX, minY, maxX - minX, maxY - minY};
   }
   
+  //s Idem avec une _ArrayList<PVector>_
   boolean IsClockwise(ArrayList<PVector> contour) {
     return this.IsClockwise(contour.toArray(new PVector[0]));
   }
   
+  //f Détecte si un contour PVector[] est clockwise
+  // Un contour clockwise est un contour extérieur
   // Il s'agit évidemment de magie noire, toujours pas regardé d'où ça vient ce truc
   // https://stackoverflow.com/questions/1165647/how-to-determine-if-a-list-of-polygon-points-are-in-clockwise-order
   boolean IsClockwise(PVector[] contour) {  // Si un contour est clockwise, alors il s'agit d'un contour extérieur
