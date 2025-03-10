@@ -1,12 +1,18 @@
 import java.util.Arrays;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ExecutionException;
 
 public class LetterDataset {
   final int wData, hData;
-  float move = 0.1;
-  float blur = 0.05;
-  float density = 0.01;
-  float perlin = 1;
-  float deformation = 0.03;
+  final float move = 0.1;
+  final float blur = 0.05;
+  final float density = 0.01;
+  final float perlin = 1;
+  final float deformation = 0.03;
 
   LetterDataset(int wData, int hData) {
     this.wData = wData;
@@ -38,38 +44,86 @@ public class LetterDataset {
     int sampleSize = nbSources * repSum;
     
     cl.pln("Creating Dataset of size " + sampleSize + "...");
-    
-    PGraphics pg = createGraphics(this.wData, this.hData, P2D);
 
     Matrix inputs = new Matrix(w*h, sampleSize);
     Matrix outputs = new Matrix(nbChar, sampleSize);
     outputs.Fill(0);
     
-    int startTime = millis();
-
-    int numColonne = 0;
-    for (int c = 0; c < nbChar; c++) {
-      for (int k = 0; k < repList[c]; k++) {
-        for (int s = 0; s < nbSources; s++) {
-          // Récupère l'image source et la modifie
-          String path = s < hwSources.length
-            ? "./TextFileGetter/output/" + characters[c] + "/" + characters[c] + " - " + hwSources[s] + ".jpg"
-            : "./FromFontGetter/output/" + characters[c] + "/" + characters[c] + " - " + fSources[s - hwSources.length] + ".jpg";
-          PImage original = loadImage(path);
-          PImage img = im.ScrambleImage(im.Resize(original, this.wData, this.hData), move * deformationRate, blur * deformationRate, density * deformationRate, perlin * deformationRate, deformation * deformationRate, pg);
-          // Récupère les pixels et les normalise
-          double[] imgPixels = ImgPP(img);
-
-          // Actualise les matrices entrées / sorties
-          inputs.ColumnFromArray(numColonne, imgPixels);
-          outputs.Set(c, numColonne, 1);
-          numColonne += 1;
+    final int startTime = millis();
+    
+    int index = 0;
+    
+    //ExecutorService executor = Executors.newFixedThreadPool(numThreads);
+    ArrayList<Callable<Matrix[]>> tasks = new ArrayList<Callable<Matrix[]>>();
+    ArrayList<Matrix[]> results = new ArrayList();
+    
+    for (int c1 = 0; c1 < nbChar; c1++) {
+      for (int k1 = 0; k1 < repList[c1]; k1++) {
+        for (int s1 = 0; s1 < nbSources; s1++) {
+          final int c = c1;
+          final int s = s1;
+          final int idx = index;
+          index++;
+          
+          class ScramblingTask implements Callable<Matrix[]> {
+            public Matrix[] call() {
+              // Récupère l'image source et la modifie
+              String path = s < hwSources.length
+                ? "./TextFileGetter/output/" + characters[c] + "/" + characters[c] + " - " + hwSources[s] + ".jpg"
+                : "./FromFontGetter/output/" + characters[c] + "/" + characters[c] + " - " + fSources[s - hwSources.length] + ".jpg";
+              PImage original = loadImage(path);
+              PImage img = im.ScrambleImage(im.Resize(original, wData, hData), move * deformationRate, blur * deformationRate, density * deformationRate, perlin * deformationRate, deformation * deformationRate);
+              
+              //cl.pln(idx);
+              
+              // Récupère les pixels et les normalise
+              double[] imgPixels = ImgPP(img);
+              double[] answerArray = new double[nbChar];
+              answerArray[c] = 1;
+              
+              Matrix[] r = new Matrix[2];
+              r[0] = new Matrix(imgPixels.length, 1).ColumnFromArray(0, imgPixels);
+              r[1] = new Matrix(nbChar, 1).ColumnFromArray(0, answerArray);
+              
+              AddToRes(results, r, sampleSize, startTime);
+              
+              return r;
+            }
+          }
+          
+          tasks.add(new ScramblingTask());
+          
         }
-        System.gc();
+        // System.gc();
       }
-      cl.pln(characters[c], "\t(" + repList[c] + ")", "\t Remaining Time :", RemainingTime(startTime, c+1, nbChar));
+      //cl.pln(characters[c], "\t(" + repList[c] + ")", "\t Remaining Time :", RemainingTime(startTime, c+1, nbChar));
     }
-    cl.pln();
+    //cl.pln();
+    
+    // Actualise les matrices entrées / sorties en regroupant les données
+    try {
+      List<Future<Matrix[]>> answers = executor.invokeAll(tasks);
+      int numColonne = 0;
+      for (Future<Matrix[]> ms : answers) {
+        try {
+          inputs.ColumnFromArray(numColonne, ms.get()[0].ColToArray(0));
+          outputs.ColumnFromArray(numColonne, ms.get()[1].ColToArray(0));
+        } catch (ExecutionException e) {
+          println(e);
+          e.printStackTrace();
+          cl.pln("LetterDataset, CreateSample : Erreur critique 3, bonne chance pour la suite");
+        } catch (InterruptedException e) {
+          cl.pln("LetterDataset, CreateSample : Erreur critique 2, bonne chance pour la suite");
+        } 
+        numColonne += 1;
+      }
+    } catch (InterruptedException e) {
+      cl.pln("LetterDataset, CreateSample : Erreur critique 1, bonne chance pour la suite");
+    }
+    //inputs.ColumnFromArray(numColonne, imgPixels);
+    //outputs.Set(c, numColonne, 1);
+    
+    cl.pln("Created - Total time", String.format("%9.3f",(float)(millis() - startTime) / 1000));
     
     return new Matrix[]{ inputs, outputs };
   }
@@ -128,5 +182,12 @@ public class LetterDataset {
 
     return new Matrix[]{ sampleInput, sampleOutput };
   }
+}
 
+public void AddToRes(ArrayList<Matrix[]> res, Matrix[] toAdd, int sampleSize, int startTime) {
+  res.add(toAdd);
+  
+  if(res.size() % (sampleSize / 10) == 0) {
+    cl.pln(String.format("%5.3f", (float)res.size() / sampleSize), "Time Remaining :", RemainingTime(startTime, res.size(), sampleSize));
+  }
 }
