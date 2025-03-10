@@ -3,6 +3,7 @@ import java.util.HashSet;
 class ImageManager {
   int index = 0;
   
+  //f Retourne la couleur moyenne de l'image _img_
   color AverageColor(PImage img) {
     float sz = 2 * (img.width + img.height) - 4;
 
@@ -40,6 +41,7 @@ class ImageManager {
     return color(r,g,b);
   }
 
+  //s Garde le même ratio, multiplié d'un facteur _s_
   PImage Resize(PImage img, float s) {
     int x = floor(s * img.width);
     int y = floor(s * img.height);
@@ -47,25 +49,30 @@ class ImageManager {
     return Resize(img, x,y);
   }
 
+  //f Redimenssionne l'image _img_ à la taille _x_ * _y_
   PImage Resize(PImage img, int x, int y) {
     img.resize(x, y);
     return img;
   }
 
+  //f Modifie l'image _img_ en niveau de gris
   PImage Gray(PImage img) {
     img.filter(GRAY);
     return img;
   }
 
+  //f Modifie l'image _img_ en noir et blanc - noir si niveau < 255 * _threshold_
   PImage BlackAndWhite(PImage img, float threshold) {
     img.filter(THRESHOLD, threshold);
     return img;
   }
 
+  //s N'est pas sauvegardé
   PImage ScrambleImage(PImage img, float move, float blur, float density, float perlin, float deformation) {
     return ScrambleImage(img, false, move, blur, density, perlin, deformation);
   }
 
+  //f Modifie de manière l'iamge _img_, en la bougeant (rotation, translation, scale) d'un facteur _move_, flouté d'un facteur _blur_, ayant une proportion de pixel corrompu _density_, ayant une ombre d'intensité _perlin_, et ayant une déformation de facteur _deformation_. L'image est enregistré dans ./ScrambledImage enregistré si _save_
   PImage ScrambleImage(PImage img, boolean save, float move, float blur, float density, float perlin, float deformation) {
     float zRot = 2;
     float d = 0.9;
@@ -155,6 +162,7 @@ class ImageManager {
     return scrambledImage;
   }
   
+  //s Effectue la convolution sur l'ensemble des images correspondant à la matrice _images_, en considérant des images de taille _w_ * _h_
   Matrix FullConvolution(Matrix images, Matrix filter, int w, int h) {
     if(images.n != w*h) { cl.pln("Convolution", "Wrong size Matrix"); Exception e = new Exception(); e.printStackTrace(); return images; }
     
@@ -174,6 +182,7 @@ class ImageManager {
     return filtered;
   }
   
+  //f Retourne une nouvelle image _img_ sur laqeulle on a effectué la convolution _filter_
   PImage FullConvolution(PImage img, Matrix filter) {
     PImage nImg = img.copy();
     nImg.loadPixels();
@@ -186,6 +195,7 @@ class ImageManager {
     return nImg;
   }
   
+  //f Retourne le pixel (_x_, _y_) de l'image _img_ auquelle on applique la convolution de filtre _filter_
   color Filter(PImage img, Matrix filter, int x, int y) {
     int r = 0, g = 0, b = 0;
     for(int i = 0; i < filter.n; i++) {
@@ -203,10 +213,12 @@ class ImageManager {
     return color(r,g,b);
   }
   
+  //s Contraste linéaire
   PImage Contrast(PImage img, float intensity) {
     return Contrast(img, intensity, (x) -> x);
   }
   
+  //f Retourne une nouvelle image de _img_ auquelle on a effectué un filtre d'intensité _intensity_, utilisant la correction _contrastF_
   PImage Contrast(PImage img, float intensity, FunctionMap contrastF) {
     if(intensity < 0) intensity = 0;
     if(intensity > 0.5) intensity = 0.5;
@@ -245,6 +257,7 @@ class ImageManager {
     return nImg;
   }
   
+  //f Rogne l'image (nouvelle image) en détectant les contours de l'objet le plus grand dans _img_, ayant un _cap_ et une marge de _marge_ * size pixels 
   PImage AutoCrop(PImage img, float cap, float marge) {
     PImage cImg = img.copy();
     cImg.filter(THRESHOLD, cap / 255);
@@ -271,6 +284,7 @@ class ImageManager {
     return ImageFromContour(img, contours.get(objectIndex), marge, (float)img.width / img.height);
   }
   
+  //f Retourne une nouvelle image de _img_, découpant le contour _contour_, avec une marge de _marge_ * size pixels, ayant un ratio w/h cible _ratio_
   PImage ImageFromContour(PImage img, ArrayList<PVector> contour, float marge, float ratio) {
    int[] rect = this.RectFromContour(contour);
     int left = rect[0];         int top = rect[1];
@@ -303,6 +317,7 @@ class ImageManager {
     return img.get(left, top, right - left, bottom - top); 
   }
   
+  //f Ancien autocrop, se basant uniquement sur la recherche de pixel non blanc - utilisé en secours par **AutoCrop**
   PImage OLD_AutoCrop(PImage img, float cap, float tolerance) { // Consider the object as black (or darker part)
     int left = img.width / 2, right = img.width / 2, top = img.height / 2, bottom = img.height / 2;
     img.loadPixels();
@@ -397,6 +412,7 @@ class ImageManager {
     return img.get(left, top, right - left, bottom - top);
   }
   
+  //f Retourne une nouvelle image de _img_, auquel on effectue une déformation élastique d'intensité _intensity_, et d'échelle de bruit _noiseScale_
   PImage ElasticDeformation(PImage img, float intensity, float noiseScale) {
     PImage deformedImg = createImage(img.width, img.height, RGB);
 
@@ -425,6 +441,7 @@ class ImageManager {
     return ContourDetection(img, 50);
   }
   
+  //f Renvoie une ArrayList des contours des objets de _img_, ayant un contour de taille au minimum _minSize_
   ArrayList<ArrayList<PVector>> ContourDetection(PImage img, int minSize) {
     ArrayList<ArrayList<PVector>> contours = new ArrayList<ArrayList<PVector>>(); // Oui, je sais ce que tu penses...
     ArrayList<PVector> visited = new ArrayList<PVector>();
@@ -475,10 +492,12 @@ class ImageManager {
     return contours;
   }
   
+  //s Idem avec une _ArrayList<PVector> contour_
   int[] RectFromContour(ArrayList<PVector> contour) {
     return this.RectFromContour(contour.toArray(new PVector[0]));
   }
   
+  //f Renvoie de contour du _PVector[] contour_
   int[] RectFromContour(PVector[] contour) {
     int minX = (int)contour[0].x;
     int minY = (int)contour[0].y;
@@ -509,10 +528,12 @@ class ImageManager {
     return sum >= 0;
   }
   
+  //s Idem avec une ArrayList<int[]>
   ArrayList<ArrayList<int[]>> RectGroups(ArrayList<int[]> rect, float hMarge, float vMarge) {
     return this.RectGroups(rect.toArray(new int[0][]), hMarge, vMarge);
   }
   
+  //f Renvoie une liste des groupes de rectangle proche parmi les _rect_, ayant une marge horizontale _hMarge_ et verticale _vMarge_
   ArrayList<ArrayList<int[]>> RectGroups(int[][] rect, float hMarge, float vMarge) {
     PVector[] centers = new PVector[rect.length];
     for(int k = 0; k < rect.length; k++) {
@@ -565,10 +586,12 @@ class ImageManager {
     return groups;
   }
   
+  //s Idem avec ArrayList<int[]>
   int[] CompilRect(ArrayList<int[]> rects) {
     return this.CompilRect(rects.toArray(new int[0][]));
   }
   
+  //f Renvoie un rect englobant tous les _rects_
   int[] CompilRect(int[][] rects) {
     int left = rects[0][0]; int right = rects[0][2] + rects[0][0];
     int top = rects[0][1]; int bottom = rects[0][3] + rects[0][1];
