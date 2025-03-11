@@ -7,7 +7,7 @@ Matrix[] sample;
 LetterDataset dataset;
 ConsoleLog cl;
 ImageManager im;
-GraphApplet graphApplet;// = new GraphApplet(nameOfProcess);
+GraphApplet graphApplet = new GraphApplet(nameOfProcess);
 
 // Nombre de threads pour les différentes tâches
 final int numThreadsDataset = 8; // Création des datasets
@@ -50,14 +50,14 @@ void setup() {
   nn = new NeuralNetwork(w*h, 512, 64, 64, 64, characters.length);
   nn.UseSoftMax();
 
-  // TrainForImages(
-  //   12, 16,     // # of phase - # of epoch per phase
-  //   1.5, 0.5, // Learning Rate
-  //   0.5, 0.5,     // Deformation Rate
-  //   10, 0.8);    // Repetition - Min prop
+  TrainForImages(
+    12, 16,     // # of phase - # of epoch per phase
+    1.5, 0.5, // Learning Rate
+    0.5, 0.5,     // Deformation Rate
+    12, 0.8);    // Repetition - Min prop
 
 
-  // nn.Export("./NeuralNetworkSave/GlobalTest7.nn");
+  nn.Export("./NeuralNetworkSave/GlobalTestParallel.nn");
 }
 
 int index = 0;

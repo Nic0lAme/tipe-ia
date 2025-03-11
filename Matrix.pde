@@ -338,6 +338,51 @@ class Matrix {
     return matrixOfAverage;
   }
 
+  //s Chaque matrice a le même poids
+  public Matrix AvgMatrix(Matrix[] mats) {
+    double[] coeffs = new double[mats.length];
+    for(int i = 0; i < mats.length; i++) coeffs[i] = 1;
+    return AvgMatrix(mats, coeffs);
+  }
+
+  //f Retourne la matrice résultant de la moyenne des matrices de _mats_
+  // On utilise comme poids les _coeffs_
+  public Matrix AvgMatrix(Matrix[] mats, double[] coeffs) {
+    if(mats.length != coeffs.length) { cl.pln(this, "AvgMatrix", "Matrixes and Coefficients of different sizes"); Exception e = new Exception(); e.printStackTrace(); return mats[0]; }
+    for(int i = 1; i < mats.length; i++) {
+      if(mats[i].n != mats[0].n || mats[i].p != mats[0].p) { cl.pln(this, "AvgMatrix", "Uncompatible matrix sizes"); Exception e = new Exception(); e.printStackTrace(); return mats[0]; }
+    }
+
+    double sumCoeffs = 0;
+    for(double c : coeffs) sumCoeffs += c;
+    if(sumCoeffs == 0) { cl.pln(this, "AvgMatrix", "Coefficients sum to 0"); Exception e = new Exception(); e.printStackTrace(); return mats[0]; }
+
+    Matrix avgMat = new Matrix(mats[0].n, mats[0].p);
+    for(int i = 0; i < mats.length; i++) {
+      avgMat.Add(mats[i], coeffs[i]/sumCoeffs);
+    }
+    return avgMat;
+  }
+
+  public Matrix Concat(Matrix[] mats) {
+    for(int i = 1; i < mats.length; i++) {
+      if(mats[i].n != mats[0].n) { cl.pln(mats[0], mats[i], "Concat"); Exception e = new Exception(); e.printStackTrace(); return mats[0]; }
+    }
+    int sum = 0;
+    for(int i = 0; i < mats.length; i++) sum += mats[i].p;
+
+    Matrix concatedMat = new Matrix(mats[0].n, sum);
+    int index = 0;
+    for(int i = 0; i < mats.length; i++) {
+      for(int j = 0; j < mats[i].p ; j++) {
+        concatedMat.ColumnFromArray(index + j, mats[i].ColToArray(j));
+      }
+      index += mats[i].p;
+    }
+
+    return concatedMat;
+  }
+
   //f Create a new matrix, which is this * m
   Matrix Mult(Matrix m) {
     if (p != m.n) { cl.pln(this, m, "Mult", "Wrong sized matrixes"); Exception e = new Exception(); e.printStackTrace(); return this; }

@@ -10,6 +10,8 @@ class NeuralNetwork {
 
   boolean useSoftMax = false; // Détermine l'utilisation de la fonction softmax sur la dernière couche du réseau
 
+  ExecutorService executor;
+
   NeuralNetwork() {
     this(1);
   }
@@ -18,7 +20,7 @@ class NeuralNetwork {
     numLayers = sizes.length;
     layers = new int[numLayers];
     for (int i = 0; i < numLayers; i++) layers[i] = sizes[i];
-    ExecutorService executor = Executors.newFixedThreadPool(numThreadsLearning);
+    executor = Executors.newFixedThreadPool(numThreadsLearning);
 
     Init();
   }
@@ -177,41 +179,78 @@ class NeuralNetwork {
   }
 
   public double Learn(Matrix X, Matrix Y, double learning_rate) {
-    Matrix[][] gradients = new Matrix[2][];
-    Matrix S;
-    ArrayList<Matrix> weightsGradients = new ArrayList<Matrix>(numThreadsLearning);
-    ArrayList<Matrix> biasGradients = new ArrayList<Matrix>(numThreadsLearning);
+    // Gradients des poids ([0]) et des biais([1]) pour chaque couche l ([][l])
+    Matrix[][] gradients = new Matrix[2][this.numLayers-1];
 
+    // Activations de la dernière couche pendant la forward propagation
+    Matrix S;
+
+    // Sans multithreading, back propagation classique
     if (numThreadsLearning <= 1) {
       Matrix[] activations = ForwardPropagation(X);
       S = activations[this.numLayers - 1].C();
       gradients = BackPropagation(activations, Y);
     }
+
+    // Avec multithreading : le batch est divisé en numThreadsLearning sous-batchs, la
+    // back propagation est effectuée sur chaque sous-batchs, et les résultats sont moyennés
     else {
+      ArrayList<Callable<Object>> tasks = new ArrayList<Callable<Object>>();
       final Matrix[] trainingData = X.Split(numThreadsLearning);
       final Matrix[] answers = Y.Split(numThreadsLearning);
-      final Matrix[] quasiS = new Matrix[1];
+
+      // Gradients calculés, par sous-batch et par couche
+      // TODO: remplacer les arraylist par des arrays pour éviter erreurs et conversions
+      ArrayList<Matrix[]> weightsGradients = new ArrayList<Matrix[]>(numThreadsLearning);
+      ArrayList<Matrix[]> biasGradients = new ArrayList<Matrix[]>(numThreadsLearning);
+      final Matrix[] partialS = new Matrix[numThreadsLearning];
+      Object syncObject = new Object();
+
       for (int i = 0; i < numThreadsLearning; i++) {
         final int index = i;
+
+        // Tâche d'apprentissage : backpropagation sur un sous-batch, et les données
+        // sont stockées dans les tableaux weightsGradients, biasGradients et partialS
+        // Le thread i remplit les cases i des tableaux (quand ce sera des tableaux)
         class LearningTask implements Callable<Object> {
           public Object call() {
             Matrix[] activations = ForwardPropagation(trainingData[index]);
             Matrix output = activations[numLayers - 1].C();
-            Matrix[][] gradientPart = BackPropagation(activations, Y);
+            Matrix[][] gradientPart = BackPropagation(activations, answers[index]);
 
-            synchronized(this) {
+            synchronized(syncObject) {
               weightsGradients.add(gradientPart[0]);
               biasGradients.add(gradientPart[1]);
-              if (index == numThreadsLearning - 1) quasiS[0] = output;
+              partialS[index] = output;
             }
 
             return this;
           }
         }
+        tasks.add(new LearningTask());
       }
-      gradients[0] = new Matrix().AvgMatrix(weightsGradients.toArray(new Matrix[]{}));
-      gradients[1] = new Matrix().AvgMatrix(biasGradients.toArray(new Matrix[]{}));
-      S = quasiS[0];
+
+      // Déclenche l'apprentissage des sous-batchs en parallèle
+      try {
+        List<Future<Object>> executorsAns = executor.invokeAll(tasks);
+      } catch (InterruptedException e) {
+        cl.pln("NeuralNetwork, Learn : Erreur critique, bonne chance pour la suite");
+      }
+
+      // Recombine les données pour former les gradients et l'activation de la dernière couche
+      for (int l = 0; l < this.numLayers-1; l++) {
+        double[] coeffs = new double[numThreadsLearning];
+        Matrix[] wlGradients = new Matrix[numThreadsLearning]; // Gradients pour les poids de la couche l
+        Matrix[] blGradients = new Matrix[numThreadsLearning]; // Gradients pour les biais de la couche l
+        for (int k = 0; k < coeffs.length; k++) {
+          coeffs[k] = trainingData[k].p;
+          wlGradients[k] = weightsGradients.get(k)[l];
+          blGradients[k] = biasGradients.get(k)[l];
+        }
+        gradients[0][l] = new Matrix(0).AvgMatrix(wlGradients, coeffs);
+        gradients[1][l] = new Matrix(0).AvgMatrix(blGradients, coeffs);
+      }
+      S = new Matrix(0).Concat(partialS);
     }
 
     boolean hasNaN = false;
