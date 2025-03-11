@@ -9,11 +9,13 @@ class NeuralNetwork {
   Matrix[] bias; // Biais (pour un indice i, biais entre couche i et i+1)
 
   boolean useSoftMax = false; // Détermine l'utilisation de la fonction softmax sur la dernière couche du réseau
-
+  
+  //b Pour *Import*
   NeuralNetwork() {
     this(1);
   }
-
+  
+  //c _sizes_ correspond aux tailles des niveaux
   NeuralNetwork(int... sizes) {
     numLayers = sizes.length;
     layers = new int[numLayers];
@@ -36,7 +38,7 @@ class NeuralNetwork {
     }
   }
 
-  // Importe un réseau de neurones depuis un fichier
+  //f Importe un réseau de neurones depuis le fichier _name_
   public NeuralNetwork Import(String name) {
    String[] input = loadStrings(name);
    String[] sizes = split(input[0], ',');
@@ -69,7 +71,7 @@ class NeuralNetwork {
    return this;
   }
 
-  // Sauvegarde les paramètres du réseau de neurones
+  //f Sauvegarde les paramètres du réseau de neurones dans _name_
   public void Export(String name) {
    ArrayList<String> output = new ArrayList<String>();
 
@@ -92,13 +94,14 @@ class NeuralNetwork {
    String[] writedOutput = new String[output.size()];
    saveStrings(name, output.toArray(writedOutput));
   }
-
+  
+  //f Donne la sortie du réseau de neurones _this_ pour l'entrée _entry_
   public Matrix Predict(Matrix entry) {
     return ForwardPropagation(entry)[this.numLayers - 1];
   }
 
-  // Prend une matrice en entrée, et renvoie un tableau des valeurs de chaque couche
-  // entry.p correspond au nombre d'entrées données simultanément
+  //f Prend la matrice _entry_ en entrée, et renvoie un tableau des valeurs de chaque couche
+  // _entry.p_ correspond au nombre d'entrées données simultanément
   public Matrix[] ForwardPropagation(Matrix entry) {
     if (entry.n != entrySize) {
       println(entry.n, entrySize);
@@ -115,7 +118,7 @@ class NeuralNetwork {
     return layerVal;
   }
 
-  // Calcule la sortie correspondant à l'entrée in, de la couche from à la couche from+1
+  //f Calcule la sortie correspondant à l'entrée _in_, de la couche _from_ à la couche _from+1_
   private Matrix CalcLayer(int from, Matrix in) {
     Matrix result = weights[from].Mult(in);
     result.Add(bias[from], 1, true);
@@ -127,7 +130,10 @@ class NeuralNetwork {
 
     return result.Map((x) -> sigmoid(x));
   }
-
+  
+  //f Effectue la rétropropagation du réseau de neurones
+  // On prend en entrée les valeurs d'_activations_ des layers
+  // On donne les valeurs attendues dans _expectedOutput_
   public Matrix[][] BackPropagation(Matrix[] activations, Matrix expectedOutput) {
 
     //dJ/dZl
@@ -174,7 +180,9 @@ class NeuralNetwork {
 
     return new Matrix[][]{weightGrad, biasGrad};
   }
-
+  
+  //f Effectue une étape d'apprentissage, ayant pour entrée _X_ et pour sortie _Y_
+  // Le taux d'apprentissage est _learning\_rate_
   public double Learn(Matrix X, Matrix Y, double learning_rate) {
     Matrix[] activations = ForwardPropagation(X);
     Matrix S = activations[this.numLayers - 1].C();

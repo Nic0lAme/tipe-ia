@@ -13,16 +13,20 @@ public class LetterDataset {
   final float density = 0.01;
   final float perlin = 1;
   final float deformation = 0.03;
-
+  
+  //c Créateur de dataset
+  // Zone de travail définie par _wData_ * _hData_
   LetterDataset(int wData, int hData) {
     this.wData = wData;
     this.hData = hData;
   }
   
+  //s On fixe le nombre de répétitions des caractères identiquement à _rep_. On fixe la _deformationRate_ à 1
   public Matrix[] CreateSample(String[] characters, String[] hwSources, String[] fSources, int rep) {
     return this.CreateSample(characters, hwSources, fSources, rep, 1);
   }
   
+  //s On fixe le nombre de répétitions des caractères identiquement à _rep_
   public Matrix[] CreateSample(String[] characters, String[] hwSources, String[] fSources, int rep, float deformationRate) {
     int[] repList = new int[characters.length];
     Arrays.fill(repList, rep);
@@ -30,11 +34,16 @@ public class LetterDataset {
     return this.CreateSample(characters, hwSources, fSources, repList, deformationRate);
   }
   
+  //s _deformationrate_ à 1
   public Matrix[] CreateSample(String[] characters, String[] hwSources, String[] fSources, int[] repList) {
     return this.CreateSample(characters, hwSources, fSources, repList, 1);
   }
 
-  // Renvoie un couple entrée / sortie d'images pour le réseau
+  //f Renvoie un couple entrée / sortie d'images pour le réseau
+  // _characters_ correspond à la liste des caractères dont on créera un dataset
+  // _hwSources_ et _fSources_ correspondent aux noms respectivement des écritures à la main et des polices utilisées
+  // _repList_ correspond au nombre de répétition de chaque caractère respectivement, par échantillon initial
+  // _deformationRate_ correspond au taux de déformation utilisé
   public Matrix[] CreateSample(String[] characters, String[] hwSources, String[] fSources, int[] repList, float deformationRate) {
     int repSum = 0;
     for(int k = 0; k < repList.length; k++) repSum += repList[k];
@@ -130,7 +139,7 @@ public class LetterDataset {
   
   
 
-  // Renvoie une image affichable de l'image stockée en colonne j de l'entrée
+  //f Renvoie une image affichable de l'image stockée en colonne _j_ de l'entrée _inputs_
   public PImage GetImageFromInputs(Matrix inputs, int j) {
     PImage img = createImage(w, h, RGB);
     img.loadPixels();
@@ -142,6 +151,7 @@ public class LetterDataset {
     return img;
   }
   
+  //f Exporte le dataset _data_ dans le fichier _name_
   public void Export(Matrix[] data, String name) {
     ArrayList<String> output = new ArrayList<String>();
 
@@ -159,6 +169,7 @@ public class LetterDataset {
     saveStrings(name, output.toArray(writedOutput));
   }
   
+  //f Importe un dataset à partir du fichier _name_
   public Matrix[] Import(String name) {
     String[] input = loadStrings(name);
     String[] sizes = split(input[0], ',');

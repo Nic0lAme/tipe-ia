@@ -1,29 +1,30 @@
 class Matrix {
   final int n, p;            //n : # lines | p : # columns
   double [][] values;      //values stored in the matrix
-
-  Matrix(int _n, int _p) {
-    n=_n; p=_p;
+  
+  //c Crée une matrice de taille _n_ \* _p_ (# de lignes \* # de colonnes)
+  Matrix(int n, int p) {
+    this.n=n; this.p=p;
     Init();
   }
 
-  //f Made to create fast square matrixes
-  Matrix(int _n) {
-    n=_n; p=_n;
+  //b Crée des matrices carrées de taille _n_
+  Matrix(int n) {
+    this.n=n; this.p=n;
     Init();
   }
   
-  //f
+  //f Supprime la matrice _this_
   void Delete() {
     values = null;
   }
   
-  //f
+  //f Initialise la matrice (remet ses valeurs à 0)
   void Init() {
     values = new double[n][p];
   }
 
-  //f Print the matrix in the console
+  //f Afficher la matrice _this_ dans la console
   void Debug() {
     //if(true) return; //if you want to disable all debug
     for(int i = 0; i < n; i++) {
@@ -35,12 +36,12 @@ class Matrix {
     cl.pln();
   }
   
-  //f Debug the shape of this matrix
+  //f Affiche les dimensions de _this_ matrice dans la console
   void DebugShape() {
     cl.pln(this.n, this.p);
   }
   
-  //f Debug column j of this matrix
+  //f Affiche la colonne _j_ de _this_ matrice dans la console
   void DebugCol(int j) {
     cl.p("Colonne " + str(j) + " [");
     for (int i = 0; i < this.n; i++) {
@@ -55,7 +56,8 @@ class Matrix {
     return SaveToString(false); 
   }
   
-  //f Save this matrix into a string array
+  //f Sauvegarde les valeurs de _this_ matrice dans une _String[]_
+  // Si _doLog_, affiche le temps restant dans la console
   String[] SaveToString(boolean doLog) {
     String[] output = new String[this.n];
     int startTime = millis();
@@ -68,7 +70,7 @@ class Matrix {
     return output;
   }
   
-  //f Load this matrix from a string array
+  //f Charge dans la matrice _this_ les _lignes_
   void LoadString(String[] lignes) {
     if (lignes.length != n || split(lignes[0], ',').length != p) {
       cl.pln(this, "LoadString", "Wrong size string load");
@@ -93,14 +95,14 @@ class Matrix {
     return new_mat;
   }
 
-  //f Fill the matrix with some value val
+  //f Remplie la matrice _this_ du double _val_
   void Fill(double val) {
     for(int i = 0; i < n; i++)
       for(int j = 0; j < p; j++)
         this.values[i][j] = val;
   }
 
-  //f Copy the value of an array in the matrix
+  //f Copie les valeurs du tableau 2D _val_ dans la matice _this_
   Matrix FromArray(double[][] val) {
     if (val.length != n || val[0].length != p) { cl.pln(this, "FromArray", "Wrong size array"); Exception e = new Exception(); e.printStackTrace(); return this; }
     for (int i = 0; i < n; i++)
@@ -110,7 +112,7 @@ class Matrix {
     return this;
   }
 
-  //f Every value of the matrix random from min to max
+  //f Chaque valeur de la matrice est tiré aléatoirement et uniformément entre _min_ et _max_
   Matrix Random(double min, double max) {
     for (int i = 0; i < n; i++)
       for (int j = 0; j < p; j++)
@@ -123,7 +125,7 @@ class Matrix {
     return Random(0, 1);
   }
 
-  //f Create identity matrix if the matrix is a square one
+  //f Si la matrice _this_ est carré, fait d'elle la matrice identité
   Matrix Identity() {
     if (this.n != this.p) { cl.pln(this, "Identity", "Not square matrix"); Exception e = new Exception(); e.printStackTrace(); return this; }
     for (int i = 0; i < this.n; i++)
@@ -133,7 +135,7 @@ class Matrix {
     return this;
   }
 
-  //f Change the i, j value to value val
+  //f Change la valeur de _this_ à la ligne _i_, la colonne _j_, en lui donnant la valeur _val_
   void Set(int i, int j, double val) {
     if (i < 0 || i >= n || j < 0 || j >= p) { cl.pln(this, i, j, val, "Set", "Wrong indices"); Exception e = new Exception(); e.printStackTrace(); return; }
     if(val != val) { // Val is a NaN
@@ -146,13 +148,13 @@ class Matrix {
     this.values[i][j] = val;
   }
 
-  //f Get value of i, j
+  //f Réccupère la valeur de _this_ à la ligne _i_ et la colonne _j_
   double Get(int i, int j) {
     if (i < 0 || i >= n || j < 0 || j >= p) { cl.pln(this, i, j, "Get", "Wrong indices"); Exception e = new Exception(); e.printStackTrace(); return 0; }
     return this.values[i][j];
   }
   
-  //f Check if this matrix contain _val_
+  //f Vérifié si _val_ est dans la matrice _this_
   boolean Contains(double val) {
     for (int i = 0; i < this.n; i++)
       for (int j = 0; j < this.p; j++)
@@ -160,7 +162,7 @@ class Matrix {
     return false;
   }
   
-  //f Check if this matrix contain a _NaN_
+  //f Vérifie sur la matrice _this_ contient _NaN_
   boolean HasNAN() {
     for (int i = 0; i < this.n; i++)
       for (int j = 0; j < this.p; j++)
@@ -168,7 +170,8 @@ class Matrix {
     return false;
   }
 
-  //f Map funciton func (using (x) -> notation) to this
+  //f Map la fonction _func_ à la matrice _this_
+  // La fonction doit être définie en utilisant la notation lambda : (x) -> notation
   Matrix Map(FunctionMap func) {
     for (int i = 0; i < this.n; i++)
       for (int j = 0; j < this.p; j++)
@@ -176,7 +179,7 @@ class Matrix {
     return this;
   }
 
-  //f Create a new matrix, equal to the transposed matrix of this
+  //f Crée une nouvelle matrice, transposée de _this_
   Matrix T() {
     double [][] n_matcoeff = new double[p][n];
     for (int i = 0; i < n; i++)
@@ -186,17 +189,20 @@ class Matrix {
     return new Matrix(this.p,this.n).FromArray(n_matcoeff);
   }
   
-  //s broadcast to false et scal = 1
+  //s broadcast à false & scal = 1
   Matrix Add(Matrix m) {
     return this.Add(m, 1, false);
   }
   
-  //s broadcast to false
+  //s broadcast à false
   Matrix Add(Matrix m, double scal) {
     return this.Add(m, scal, false);
   }
 
-  //f Add some matrix m to this ; does this + scal * m
+  //f Ajoute _m_ à la matrice _this_
+  // Modifie la matrice _this_
+  // Fait l'opération this + m \* scal
+  // Si _broadcast_, la matrice _m_ peut être une matrice colonne, et sera étalé sur l'ensemble de _this_
   Matrix Add(Matrix m, double scal, boolean broadcast) {
     if ((this.n != m.n) || (!broadcast && p != m.p) || (broadcast && m.p != 1 && this.p != m.p) ) {
       cl.pln(this, m, "Add", "Wrong sized matrixes");
@@ -212,7 +218,7 @@ class Matrix {
     return this;
   }
 
-  //f Scale matrix by some factor
+  //f Multiplie l'ensemble de la matrice _this_ par le facteur _scal_
   Matrix Scale(double scal) {
     for (int i = 0; i < n; i++)
       for (int j = 0; j < p; j++)
@@ -221,7 +227,7 @@ class Matrix {
     return this;
   }
 
-  //f Dilat j-th column by -scal-
+  //f Multiplie la _j_-ième colonne de _this_ par _scal_
   Matrix Dilat(int j, double scal) {
     if (j < 0 || j >= this.p) { cl.pln(this, j, "Dilat", "Wrong Column Index"); Exception e = new Exception(); e.printStackTrace(); return this; }
 
@@ -231,7 +237,7 @@ class Matrix {
     return this;
   }
 
-  //f Comut col j1 and j2
+  //f Comuter les colonnes _j1_ et _j2_
   Matrix ComutCol(int j1, int j2) {
     if (j1 < 0 || j1 >= this.p || j2 < 0 || j2 >= this.p) { cl.pln(this, j1, j2, this.p, "ComutCol", "Wrong Column Index"); Exception e = new Exception(); e.printStackTrace(); return this; }
 
@@ -268,7 +274,7 @@ class Matrix {
     return GetCol(new int[]{j});
   }
 
-  //s Range is inclusive
+  //s Prend les colonnes de [_a_;_b_]
   Matrix GetCol(int a, int b) {
     if (a > b) { cl.pln(this, a, b, this.p, "GetCol", "Indices are in wrong order"); Exception e = new Exception(); e.printStackTrace(); return this; }
     int[] range = new int[b-a+1];
@@ -286,7 +292,7 @@ class Matrix {
     return GetCol(jList, 0, numCol);
   }
 
-  //f Create a new matrix with the column with indices in jList, restreint entre _startCol_ et _endCol_
+  //f Crée une nouvelle matrice à partir de _this_, prenant les colonnes d'indice dans _jList_, restreint entre _startCol_ et _endCol_
   Matrix GetCol(int[] jList, int startCol, int endCol) {
     if (jList.length < 1) { cl.pln(this, jList, this.p, "GetCol", "List must be of length >= 1"); Exception e = new Exception(); e.printStackTrace(); return this; }
     if (jList.length < endCol || startCol > endCol) { cl.pln(this, jList, this.p, startCol, endCol, "GetCol", "Conflict with startCol & endCol"); Exception e = new Exception(); e.printStackTrace(); return this; }
@@ -302,7 +308,7 @@ class Matrix {
     return new_mat;
   }
   
-  //f Set _j-th_ column from a double array
+  //f Met les valeurs du tableau _col_ dans la _j-ième_ colonne de _this_
   Matrix ColumnFromArray(int j, double[] col) {
     if (j < 0 || j >= this.p) { cl.pln(this, j, "ColumnFromArray", "Wrong Column Index"); Exception e = new Exception(); e.printStackTrace(); return this; }
     if (col.length != this.n) { cl.pln(this, col.length, "ColumnFromArray", "Wrong Sized Column"); Exception e = new Exception(); e.printStackTrace(); return this; }
@@ -312,7 +318,7 @@ class Matrix {
     return this;
   }
   
-  //f Create an array from a _j-th_ column
+  //f Crée un tableau à partir de la _j_-ième colonne de _this_
   double[] ColToArray(int j) {
     double[] col = new double[this.n];
     if (j < 0 || j >= this.p) { cl.pln(this, j, "ColToArray", "Wrong Column Index"); Exception e = new Exception(); e.printStackTrace(); return col; }
@@ -322,7 +328,7 @@ class Matrix {
     return col;
   }
 
-  //f Sum coeff from j-th column
+  //f Somme les coefficients de la colonne _j_ de _this_
   double SumCol(int j) {
     if (j < 0 || j >= this.p) { cl.pln(this, j, "SumCol", "Wrong Column Index"); Exception e = new Exception(); e.printStackTrace(); return 0; }
 
@@ -333,7 +339,7 @@ class Matrix {
     return sum;
   }
 
-  //f Compute the column matrix of the average of each row from this
+  //f Renvoie la matrice colonne ayant pour valeur les valeurs moyennes des lignes de _this_
   Matrix AvgLine() {
     Matrix matrixOfAverage = new Matrix(this.n, 1);
     for(int i = 0; i < this.n; i++) {
@@ -346,7 +352,7 @@ class Matrix {
     return matrixOfAverage;
   }
 
-  //f Create a new matrix, which is this * m
+  //f Crée une nouvelle matrice, correspondant au produit de _this_ par _m_
   Matrix Mult(Matrix m) {
     if (p != m.n) { cl.pln(this, m, "Mult", "Wrong sized matrixes"); Exception e = new Exception(); e.printStackTrace(); return this; }
 
@@ -364,7 +370,7 @@ class Matrix {
     return new_mat;
   }
 
-  //f Hadamard Product : Multiply the coefficient of this matrix by the ones of another one
+  //f Renvoie une nouvelle matrice, correspondant au produit de Hadamard entre _this_ et _m_
   Matrix HProduct(Matrix m) {
     if(p != m.p || n != m.n) { cl.pln(this, m, "HPrduct", "Wrong sized matrixes"); Exception e = new Exception(); e.printStackTrace(); return this; }
 
@@ -375,7 +381,8 @@ class Matrix {
     return this;
   }
 
-  //f Sum of each column is scaled to be 1
+  //f Normalise la matrice _this_
+  // La somme de chaque colonne est ramené à 1
   Matrix NormColumn() {
     double s = 0;
     for(int j = 0; j < this.p; j++) {
@@ -386,7 +393,7 @@ class Matrix {
     return this;
   }
 
-  //f Return the associated matrix from minor i, j
+  //f Retourne une nouvelle matrice, correspondant à la matrice _this_ dont on a enlevé la ligne _i_ et la colonne _j_
   Matrix MinMatrix(int i, int j) {
     if (i < 0 || i >= this.n || j < 0 || j >= this.p) { cl.pln(this, i, j, "MinMatrices", "Wrong indices"); Exception e = new Exception(); e.printStackTrace(); return this; }
     if (this.n == 0 || this.p == 0) { cl.pln(this, "MinMatrices", "Matrix is too small"); Exception e = new Exception(); e.printStackTrace(); return this; }
@@ -399,7 +406,8 @@ class Matrix {
     return min;
   }
 
-  //f Return matrix determinant
+  //f Retourne le déterminant de la matrice _this_
+  // Calcul récursif de complexité _n_²
   double Det() {
     if (this.n != this.p) { cl.pln(this, "Det", "Not square matrix"); Exception e = new Exception(); e.printStackTrace(); return 0; }
     if (this.n == 1) {
@@ -413,7 +421,7 @@ class Matrix {
     return det;
   }
 
-  //f Return the comatrix
+  //f Retourne la comatrice de _this_
   Matrix Comatrix() {
     if (this.n != this.p) { cl.pln(this, "Comatrix", "Not square matrix"); Exception e = new Exception(); e.printStackTrace(); return new Matrix(this.n, this.p); }
     Matrix comat = new Matrix(this.n);
@@ -425,9 +433,12 @@ class Matrix {
     return comat;
   }
 
-  //f Return the inversed matrix
+  //f Retourne la matrice inverse de _this_ (si elle existe)
   Matrix Inversed() {
     if (this.n != this.p) { cl.pln(this, "Inversed", "Not square matrix"); Exception e = new Exception(); e.printStackTrace(); return new Matrix(this.n, this.p); }
+    double det = this.Det();
+    if(det == 0) { cl.pln(this, "Inversed", "The matrix determinant is 0"); Exception e = new Exception(); e.printStackTrace(); return new Matrix(this.n, this.p); }
+    
     return this.Comatrix().T().Scale(1/this.Det());
   }
 

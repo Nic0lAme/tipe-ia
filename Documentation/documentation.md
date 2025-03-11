@@ -7,17 +7,26 @@
 
 </summary>
 
+- Crée une matrice de taille _n_ \* _p_ (# de lignes \* # de colonnes)
+>
+- _Matrix(int n, int p)_
+
+- _Matrix(int n)_ _(Crée des matrices carrées de taille _n_)_
+
 - ***
 
 	<details>
 	<summary>Add</summary>
 
-	- >Add some matrix m to this ; does this + scal * m  
+	- >Ajoute _m_ à la matrice _this_  
+	Modifie la matrice _this_  
+	Fait l'opération this + m \* scal  
+	Si _broadcast_, la matrice _m_ peut être une matrice colonne, et sera étalé sur l'ensemble de _this_  
 	- _Matrix Add(Matrix m, double scal, boolean broadcast)_
 	- _Matrix Add(Matrix m)_
-		- broadcast to false et scal = 1
+		- broadcast à false & scal = 1
 	- _Matrix Add(Matrix m, double scal)_
-		- broadcast to false
+		- broadcast à false
 
 	</details>
 
@@ -26,7 +35,7 @@
 	<details>
 	<summary>AvgLine</summary>
 
-	- >Compute the column matrix of the average of each row from this  
+	- >Renvoie la matrice colonne ayant pour valeur les valeurs moyennes des lignes de _this_  
 	- _Matrix AvgLine()_
 
 	</details>
@@ -46,7 +55,7 @@
 	<details>
 	<summary>ColToArray</summary>
 
-	- >Create an array from a _j-th_ column  
+	- >Crée un tableau à partir de la _j_-ième colonne de _this_  
 	- _double[] ColToArray(int j)_
 
 	</details>
@@ -56,7 +65,7 @@
 	<details>
 	<summary>ColumnFromArray</summary>
 
-	- >Set _j-th_ column from a double array  
+	- >Met les valeurs du tableau _col_ dans la _j-ième_ colonne de _this_  
 	- _Matrix ColumnFromArray(int j, double[] col)_
 
 	</details>
@@ -66,7 +75,7 @@
 	<details>
 	<summary>Comatrix</summary>
 
-	- >Return the comatrix  
+	- >Retourne la comatrice de _this_  
 	- _Matrix Comatrix()_
 
 	</details>
@@ -76,7 +85,7 @@
 	<details>
 	<summary>ComutCol</summary>
 
-	- >Comut col j1 and j2  
+	- >Comuter les colonnes _j1_ et _j2_  
 	- _Matrix ComutCol(int j1, int j2)_
 
 	</details>
@@ -86,7 +95,7 @@
 	<details>
 	<summary>Contains</summary>
 
-	- >Check if this matrix contain _val_  
+	- >Vérifié si _val_ est dans la matrice _this_  
 	- _boolean Contains(double val)_
 
 	</details>
@@ -96,7 +105,7 @@
 	<details>
 	<summary>Debug</summary>
 
-	- >Print the matrix in the console  
+	- >Afficher la matrice _this_ dans la console  
 	- _void Debug()_
 
 	</details>
@@ -106,7 +115,7 @@
 	<details>
 	<summary>DebugCol</summary>
 
-	- >Debug column j of this matrix  
+	- >Affiche la colonne _j_ de _this_ matrice dans la console  
 	- _void DebugCol(int j)_
 
 	</details>
@@ -116,7 +125,7 @@
 	<details>
 	<summary>DebugShape</summary>
 
-	- >Debug the shape of this matrix  
+	- >Affiche les dimensions de _this_ matrice dans la console  
 	- _void DebugShape()_
 
 	</details>
@@ -126,7 +135,7 @@
 	<details>
 	<summary>Delete</summary>
 
-	- >  
+	- >Supprime la matrice _this_  
 	- _void Delete()_
 
 	</details>
@@ -136,7 +145,8 @@
 	<details>
 	<summary>Det</summary>
 
-	- >Return matrix determinant  
+	- >Retourne le déterminant de la matrice _this_  
+	Calcul récursif de complexité _n_²  
 	- _double Det()_
 
 	</details>
@@ -146,7 +156,7 @@
 	<details>
 	<summary>Dilat</summary>
 
-	- >Dilat j-th column by -scal-  
+	- >Multiplie la _j_-ième colonne de _this_ par _scal_  
 	- _Matrix Dilat(int j, double scal)_
 
 	</details>
@@ -156,7 +166,7 @@
 	<details>
 	<summary>Fill</summary>
 
-	- >Fill the matrix with some value val  
+	- >Remplie la matrice _this_ du double _val_  
 	- _void Fill(double val)_
 
 	</details>
@@ -166,7 +176,7 @@
 	<details>
 	<summary>FromArray</summary>
 
-	- >Copy the value of an array in the matrix  
+	- >Copie les valeurs du tableau 2D _val_ dans la matice _this_  
 	- _Matrix FromArray(double[][] val)_
 
 	</details>
@@ -176,7 +186,7 @@
 	<details>
 	<summary>Get</summary>
 
-	- >Get value of i, j  
+	- >Réccupère la valeur de _this_ à la ligne _i_ et la colonne _j_  
 	- _double Get(int i, int j)_
 
 	</details>
@@ -186,12 +196,12 @@
 	<details>
 	<summary>GetCol</summary>
 
-	- >Create a new matrix with the column with indices in jList, restreint entre _startCol_ et _endCol_  
+	- >Crée une nouvelle matrice à partir de _this_, prenant les colonnes d'indice dans _jList_, restreint entre _startCol_ et _endCol_  
 	- _Matrix GetCol(int[] jList, int startCol, int endCol)_
 	- _Matrix GetCol(int j)_
 		- Ne prend que la colonne j
 	- _Matrix GetCol(int a, int b)_
-		- Range is inclusive
+		- Prend les colonnes de [_a_;_b_]
 	- _Matrix GetCol(int[] jList)_
 		- Pas de limite de colonnes
 	- _Matrix GetCol(int[] jList, int numCol)_
@@ -204,7 +214,7 @@
 	<details>
 	<summary>HProduct</summary>
 
-	- >Hadamard Product : Multiply the coefficient of this matrix by the ones of another one  
+	- >Renvoie une nouvelle matrice, correspondant au produit de Hadamard entre _this_ et _m_  
 	- _Matrix HProduct(Matrix m)_
 
 	</details>
@@ -214,7 +224,7 @@
 	<details>
 	<summary>HasNAN</summary>
 
-	- >Check if this matrix contain a _NaN_  
+	- >Vérifie sur la matrice _this_ contient _NaN_  
 	- _boolean HasNAN()_
 
 	</details>
@@ -224,7 +234,7 @@
 	<details>
 	<summary>Identity</summary>
 
-	- >Create identity matrix if the matrix is a square one  
+	- >Si la matrice _this_ est carré, fait d'elle la matrice identité  
 	- _Matrix Identity()_
 
 	</details>
@@ -234,7 +244,7 @@
 	<details>
 	<summary>Init</summary>
 
-	- >  
+	- >Initialise la matrice (remet ses valeurs à 0)  
 	- _void Init()_
 
 	</details>
@@ -244,7 +254,7 @@
 	<details>
 	<summary>Inversed</summary>
 
-	- >Return the inversed matrix  
+	- >Retourne la matrice inverse de _this_ (si elle existe)  
 	- _Matrix Inversed()_
 
 	</details>
@@ -254,7 +264,7 @@
 	<details>
 	<summary>LoadString</summary>
 
-	- >Load this matrix from a string array  
+	- >Charge dans la matrice _this_ les _lignes_  
 	- _void LoadString(String[] lignes)_
 
 	</details>
@@ -264,18 +274,9 @@
 	<details>
 	<summary>Map</summary>
 
-	- >Map funciton func (using (x) -> notation) to this  
+	- >Map la fonction _func_ à la matrice _this_  
+	La fonction doit être définie en utilisant la notation lambda : (x) -> notation  
 	- _Matrix Map(FunctionMap func)_
-
-	</details>
-
-- ***
-
-	<details>
-	<summary>Matrix</summary>
-
-	- >Made to create fast square matrixes  
-	- _Matrix(int _n)_
 
 	</details>
 
@@ -284,7 +285,7 @@
 	<details>
 	<summary>MinMatrix</summary>
 
-	- >Return the associated matrix from minor i, j  
+	- >Retourne une nouvelle matrice, correspondant à la matrice _this_ dont on a enlevé la ligne _i_ et la colonne _j_  
 	- _Matrix MinMatrix(int i, int j)_
 
 	</details>
@@ -294,7 +295,7 @@
 	<details>
 	<summary>Mult</summary>
 
-	- >Create a new matrix, which is this * m  
+	- >Crée une nouvelle matrice, correspondant au produit de _this_ par _m_  
 	- _Matrix Mult(Matrix m)_
 
 	</details>
@@ -304,7 +305,8 @@
 	<details>
 	<summary>NormColumn</summary>
 
-	- >Sum of each column is scaled to be 1  
+	- >Normalise la matrice _this_  
+	La somme de chaque colonne est ramené à 1  
 	- _Matrix NormColumn()_
 
 	</details>
@@ -314,7 +316,7 @@
 	<details>
 	<summary>Random</summary>
 
-	- >Every value of the matrix random from min to max  
+	- >Chaque valeur de la matrice est tiré aléatoirement et uniformément entre _min_ et _max_  
 	- _Matrix Random(double min, double max)_
 	- _Matrix Random()_
 		- Retourne une matrice aléatoire à valeurs dans [0;1]
@@ -326,7 +328,8 @@
 	<details>
 	<summary>SaveToString</summary>
 
-	- >Save this matrix into a string array  
+	- >Sauvegarde les valeurs de _this_ matrice dans une _String[]_  
+	Si _doLog_, affiche le temps restant dans la console  
 	- _String[] SaveToString(boolean doLog)_
 	- _String[] SaveToString()_
 		- Ne retourne pas de log
@@ -338,7 +341,7 @@
 	<details>
 	<summary>Scale</summary>
 
-	- >Scale matrix by some factor  
+	- >Multiplie l'ensemble de la matrice _this_ par le facteur _scal_  
 	- _Matrix Scale(double scal)_
 
 	</details>
@@ -348,8 +351,19 @@
 	<details>
 	<summary>Set</summary>
 
-	- >Change the i, j value to value val  
+	- >Change la valeur de _this_ à la ligne _i_, la colonne _j_, en lui donnant la valeur _val_  
 	- _void Set(int i, int j, double val)_
+
+	</details>
+
+- ***
+
+	<details>
+	<summary>ShuffleCol</summary>
+
+	- >Mélange de la même manière les matrices _mats_ (Fisher–Yates shuffle)  
+	- _Matrix[] ShuffleCol(Matrix[] mats)_
+	- _Matrix ShuffleCol(Matrix mat)_
 
 	</details>
 
@@ -358,7 +372,7 @@
 	<details>
 	<summary>SumCol</summary>
 
-	- >Sum coeff from j-th column  
+	- >Somme les coefficients de la colonne _j_ de _this_  
 	- _double SumCol(int j)_
 
 	</details>
@@ -368,7 +382,7 @@
 	<details>
 	<summary>T</summary>
 
-	- >Create a new matrix, equal to the transposed matrix of this  
+	- >Crée une nouvelle matrice, transposée de _this_  
 	- _Matrix T()_
 
 	</details>
@@ -379,6 +393,8 @@
 **ImageManager**
 
 </summary>
+
+
 
 - ***
 
@@ -585,6 +601,86 @@
 
 </summary>
 
+- _sizes_ correspond aux tailles des niveaux
+>
+- _NeuralNetwork(int... sizes)_
+
+- _NeuralNetwork()_ _(Pour *Import*)_
+
+- ***
+
+	<details>
+	<summary>BackPropagation</summary>
+
+	- >Effectue la rétropropagation du réseau de neurones  
+	On prend en entrée les valeurs d'_activations_ des layers  
+	On donne les valeurs attendues dans _expectedOutput_  
+	- _public Matrix[][] BackPropagation(Matrix[] activations, Matrix expectedOutput)_
+
+	</details>
+
+- ***
+
+	<details>
+	<summary>CalcLayer</summary>
+
+	- >Calcule la sortie correspondant à l'entrée _in_, de la couche _from_ à la couche _from+1_  
+	- _private Matrix CalcLayer(int from, Matrix in)_
+
+	</details>
+
+- ***
+
+	<details>
+	<summary>Export</summary>
+
+	- >Sauvegarde les paramètres du réseau de neurones dans _name_  
+	- _public void Export(String name)_
+
+	</details>
+
+- ***
+
+	<details>
+	<summary>ForwardPropagation</summary>
+
+	- >Prend la matrice _entry_ en entrée, et renvoie un tableau des valeurs de chaque couche  
+	_entry.p_ correspond au nombre d'entrées données simultanément  
+	- _public Matrix[] ForwardPropagation(Matrix entry)_
+
+	</details>
+
+- ***
+
+	<details>
+	<summary>Import</summary>
+
+	- >Importe un réseau de neurones depuis le fichier _name_  
+	- _public NeuralNetwork Import(String name)_
+
+	</details>
+
+- ***
+
+	<details>
+	<summary>Learn</summary>
+
+	- >Effectue une étape d'apprentissage, ayant pour entrée _X_ et pour sortie _Y_  
+	Le taux d'apprentissage est _learning\_rate_  
+	- _public double Learn(Matrix X, Matrix Y, double learning_rate)_
+
+	</details>
+
+- ***
+
+	<details>
+	<summary>Predict</summary>
+
+	- >Donne la sortie du réseau de neurones _this_ pour l'entrée _entry_  
+	- _public Matrix Predict(Matrix entry)_
+
+	</details>
+
 </details><details>
 <summary>
 
@@ -592,11 +688,126 @@
 
 </summary>
 
+- Créateur de dataset
+>- Zone de travail définie par _wData_ * _hData_
+
+- _LetterDataset(int wData, int hData)_
+
+
+- ***
+
+	<details>
+	<summary>CreateSample</summary>
+
+	- >Renvoie un couple entrée / sortie d'images pour le réseau  
+	_characters_ correspond à la liste des caractères dont on créera un dataset  
+	_hwSources_ et _fSources_ correspondent aux noms respectivement des écritures à la main et des polices utilisées  
+	_repList_ correspond au nombre de répétition de chaque caractère respectivement, par échantillon initial  
+	_deformationRate_ correspond au taux de déformation utilisé  
+	- _public Matrix[] CreateSample(String[] characters, String[] hwSources, String[] fSources, int[] repList, float deformationRate)_
+	- _public Matrix[] CreateSample(String[] characters, String[] hwSources, String[] fSources, int rep)_
+		- On fixe le nombre de répétitions des caractères identiquement à _rep_. On fixe la _deformationRate_ à 1
+	- _public Matrix[] CreateSample(String[] characters, String[] hwSources, String[] fSources, int rep, float deformationRate)_
+		- On fixe le nombre de répétitions des caractères identiquement à _rep_
+	- _public Matrix[] CreateSample(String[] characters, String[] hwSources, String[] fSources, int[] repList)_
+		- _deformationrate_ à 1
+
+	</details>
+
+- ***
+
+	<details>
+	<summary>Export</summary>
+
+	- >Exporte le dataset _data_ dans le fichier _name_  
+	- _public void Export(Matrix[] data, String name)_
+
+	</details>
+
+- ***
+
+	<details>
+	<summary>GetImageFromInputs</summary>
+
+	- >Renvoie une image affichable de l'image stockée en colonne _j_ de l'entrée _inputs_  
+	- _public PImage GetImageFromInputs(Matrix inputs, int j)_
+
+	</details>
+
+- ***
+
+	<details>
+	<summary>Import</summary>
+
+	- >Importe un dataset à partir du fichier _name_  
+	- _public Matrix[] Import(String name)_
+
+	</details>
+
 </details><details>
 <summary>
 
 **ConsoleLog**
 
 </summary>
+
+- Créer une instance de ConsoleLog ayant pour nom _name_
+>- Les logs sont enregistrés dans le fichier renseigné dans _name_
+
+- _ConsoleLog(String name)_
+
+
+- ***
+
+	<details>
+	<summary>End</summary>
+
+	- >Termine l'enregistrement du fichier  
+	- _void End()_
+
+	</details>
+
+- ***
+
+	<details>
+	<summary>Update</summary>
+
+	- >S'assure que le fichier correspondant est mis à jour  
+	- _void Update()_
+
+	</details>
+
+- ***
+
+	<details>
+	<summary>p</summary>
+
+	- >Energistre une nouvelle donnée (sans saut de ligne)  
+	Equivalent au *print()*  
+	- _void p(Object... o)_
+
+	</details>
+
+- ***
+
+	<details>
+	<summary>pFloatList</summary>
+
+	- >Energistre une nouvelle ligne, correspondant à la liste de flottants _list_  
+	Est labelisé à l'aide de _label_  
+	- _void pFloatList(float[] list, String label)_
+
+	</details>
+
+- ***
+
+	<details>
+	<summary>pln</summary>
+
+	- >Energistre une nouvelle ligne (saut de ligne)  
+	Equivalent au *println()*  
+	- _void pln(Object... o)_
+
+	</details>
 
 </details>
