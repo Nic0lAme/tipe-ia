@@ -149,13 +149,13 @@ class NeuralNetwork {
       //dJ/dbl = dJ/dZl * dZl/dbl
       biasGrad[l] = gradient.AvgLine().Add(bias[l], lambda / max(1, bias[l].n));
       //biasGrad[l].DebugShape();
-      
+
       if(weightGrad[l].HasNAN() || biasGrad[l].HasNAN()) hasNaN = true;
-      
+
       a = activations[l].C();
       gradient = (weights[l].T().Mult(gradient)).HProduct(a.C().Add(a.C().HProduct(a), -1));
     }
-    
+
     /*
     if(hasNaN) {
       for(int l = 0; l < this.numLayers; l++) {
@@ -167,7 +167,7 @@ class NeuralNetwork {
         weightGrad[l].Debug();
         biasGrad[l].Debug();
       }
-      
+
       System.exit(-1);
     }
     */
@@ -185,7 +185,7 @@ class NeuralNetwork {
     for(int l = 0; l < this.numLayers - 1; l++) {
       this.weights[l].Add(gradients[0][l], -learning_rate);
       this.bias[l].Add(gradients[1][l], -learning_rate);
-      
+
       if(weights[l].HasNAN() || bias[l].HasNAN()) hasNaN = true;
     }
 
@@ -195,7 +195,7 @@ class NeuralNetwork {
         if((float)S.Get(i, c) != 0) J -= Y.Get(i, c) * log(abs((float)S.Get(i, c))) / Y.p;
       }
     }
-    
+
     /*
     if(hasNaN || J != J) {
       for(int l = 0; l < this.numLayers; l++) {
@@ -207,74 +207,13 @@ class NeuralNetwork {
         weights[l].Debug();
         bias[l].Debug();
       }
-      
+
       System.exit(-1);
     }
     */
 
     return J;
   }
-
-  // OLD LEARNING PHASE
-  /*
-  public void LearningPhase(Matrix X, Matrix Y, int numOfEpoch, float minLearningRate, float maxLearningRate, int period, int numPerIter, String label) {
-    float learningRate; double loss;
-    IntList range = new IntList();
-    for(int j = 0; j < X.p; j++) range.append(j);
-
-    int startTime = millis();
-
-    IntList selectedIndex = range.copy();
-    Matrix selectedX;
-    Matrix selectedY;
-    int startIndex = X.p;
-    for(int k = 0; k < numOfEpoch; k++) {
-      startIndex += numPerIter / 16; // Décalage de 1/16 dans l'array ie on change 1/16 de l'entrée
-      if(numPerIter != 0) {
-        if(startIndex + numPerIter >= X.p) {
-          selectedIndex = range.copy();
-          selectedIndex.shuffle();
-
-          startIndex = 0;
-        }
-
-        selectedX = X.GetCol(selectedIndex.array(), startIndex, min(numPerIter + startIndex, X.p - 1));
-        selectedY = Y.GetCol(selectedIndex.array(), startIndex, min(numPerIter + startIndex, Y.p - 1));
-      } else {
-        selectedX = X;
-        selectedY = Y;
-      }
-
-      learningRate = CyclicalLearningRate(k, minLearningRate, maxLearningRate, period);
-
-
-      loss = nn.Learn(selectedX, selectedY, learningRate);
-
-      if(loss != loss) { // Le loss est NaN
-        for(int l = 0; l < this.numLayers - 1; l++) {
-          this.weights[l].Debug();
-          this.bias[l].Debug();
-        }
-        System.exit(-1);
-      }
-
-      if(k%16 != 0 && k != numOfEpoch - 1) continue;
-
-      float[] score = AccuracyScore(this, selectedX, selectedY, false);
-
-      cl.p(label, "\t-\t", k+1, "/", numOfEpoch,
-        "\t-\tTime Remaining", RemainingTime(startTime, k+1, numOfEpoch),
-        "\t-\tLearning Rate", String.format("%.5f", learningRate),
-        "\t-\tLoss", String.format("%.5f", loss),
-        "\t-\tAccuracy", String.format("%.3f", Average(score))
-      );
-
-      cl.pFloatList(score, "\t");
-
-
-    }
-  }
-  */
 
   public void MiniBatchLearn(Matrix[] data, int numOfEpoch, int batchSize, float lr) {
     MiniBatchLearn(data, numOfEpoch, batchSize, lr, lr, 1);
@@ -298,43 +237,19 @@ class NeuralNetwork {
         data[0].ComutCol(i, j);
         data[1].ComutCol(i, j);
       }
-      
-      // Pour chaque thread, on lui envoie 1/N des batchs
-      ArrayList<Thread> threads = new ArrayList<Thread>();
-      for (int num = 0; num < numThreads; num++) {
-        final int n = new Integer(num);
-        final int epochNumber = new Integer(k);
-        Runnable runnable = new Runnable() {
-          @Override
-          public void run() {
-            int startIndex = n * numOfBatches / numThreads;
-            int endIndex = (n+1)*numOfBatches / numThreads;
-            if (endIndex >= numOfBatches*batchSize) return;
-            for (int i = startIndex; i < endIndex; i++) {
-              Matrix batch = data[0].GetCol(i*batchSize, i*batchSize + batchSize - 1);
-              Matrix batchAns = data[1].GetCol(i*batchSize, i*batchSize + batchSize - 1);
-              double l = Learn(batch, batchAns, CyclicalLearningRate(epochNumber, minLR, maxLR, period));
-              graphApplet.AddValue(l);
-              if(i == endIndex - 1)
-                cl.pln("\t Epoch " + String.format("%05d",epochNumber+1) +
-                  " Batch " + String.format("%05d",i+1) + " : " + String.format("%9.3E",l) +
-                  "\t Time remaining " + RemainingTime(startTime, epochNumber * numOfBatches + i + 1, numOfBatches * epochNumber)
-                );
-            }
-          }
-        };
-        Thread thread = new Thread(runnable);
-        threads.add(thread);
-        thread.start();
+
+      for (int i = 0; i < numOfBatches; i++) {
+        Matrix batch = data[0].GetCol(i*batchSize, i*batchSize + batchSize - 1);
+        Matrix batchAns = data[1].GetCol(i*batchSize, i*batchSize + batchSize - 1);
+        double l = this.Learn(batch, batchAns, CyclicalLearningRate(k, minLR, maxLR, period));
+        graphApplet.AddValue(l);
+        if (i % (numOfBatches / 4) == 0)
+          cl.pln("\t Epoch " + String.format("%05d",k+1) +
+            " Batch " + String.format("%05d",i+1) + " : " + String.format("%9.3E",l) +
+            "\t Time remaining " + RemainingTime(startTime, k * numOfBatches + i + 1, numOfBatches * numOfEpoch)
+          );
       }
-      
-      for (Thread thread : threads) {
-        try {
-          thread.join();
-        } catch (InterruptedException e) {
-        }
-      }
-      
+
       if(k != numOfEpoch - 1) continue;
       for(int s = 0; s < testSets.length; s++) {
         float[] score = CompilScore(AccuracyScore(this, testSets[s], false));
