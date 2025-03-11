@@ -16,7 +16,7 @@ final int numThreadsLearning = 8; // Apprentissage (si 1, pas de parallélisatio
 int w = 19;
 int h = 21;
 float rScale = 1; // Scale for the representations (draw)
-float testDerformation = 0.5;
+float testDerformation = 1;
 
 //String[] characters = new String[]{"0","1","2","3","4","5","6","7","8","9"};
 //String[] characters = new String[]{"uA","uB","uC","uD","uE","uF","uG","uH","uI","uJ","uK","uL","uM","uN","uO","uP","uQ","uR","uS","uT","uU","uV","uW","uX","uY","uZ"};
@@ -29,8 +29,10 @@ String[] characters = new String[]{
 int numOfTestSample = 40; //This is just for the tests, not the training
 
 
-String[] handTrainingDatas = new String[]{"AntoineME", "NicolasMA", "LenaME", "AkramBE", "MaximeMB", "NathanLU", "LubinDE", "MatheoLB", "SachaAD", "MatisBR", "RomaneFI", "ThelioLA", "YanisIH"};
-String[] fontTrainingDatas = new String[]{"Arial", "DejaVu Serif", "Fira Code Retina Moyen", "Consolas", "Lucida Handwriting Italique", "Playwrite IT Moderna", "Just Another Hand"};
+String[] handTrainingDatas = new String[]{"AntoineME", "NicolasMA", "LenaME", "TheoLA", "ElioKE", "AkramBE", "MaximeMB", "NathanLU", "LubinDE", "MatheoLB", "SachaAD", "MatisBR", "ValerieAR", "ArthurLO", "RomaneFI", "ThelioLA", "YanisIH"};
+//String[] handTrainingDatas = new String[]{};
+String[] fontTrainingDatas = new String[]{"Arial", "Bahnschrift", "Eras Demi ITC", "Lucida Handwriting Italique", "DejaVu Serif", "Fira Code Retina Moyen", "Consolas", "Lucida Handwriting Italique", "Playwrite IT Moderna", "Just Another Hand"};
+//String[] fontTrainingDatas = new String[]{};
 
 String[] handTestingDatas = new String[]{"MrMollier", "MrChauvet", "SachaBE", "IrinaRU", "NoematheoBLB"};
 String[] fontTestingDatas = new String[]{"Liberation Serif", "Calibri", "Book Antiqua", "Gabriola", "Noto Serif"};
@@ -46,18 +48,18 @@ void setup() {
   cl = new ConsoleLog("./Log/log1.txt");
   im = new ImageManager();
 
-  // nn = new NeuralNetwork().Import("./NeuralNetworkSave/GlobalTest7.nn");
-  nn = new NeuralNetwork(w*h, 512, 64, 64, 64, characters.length);
+  nn = new NeuralNetwork().Import("./NeuralNetworkSave/GlobalTestParallel2.nn");
+  // nn = new NeuralNetwork(w*h, 512, 64, 64, 64, characters.length);
   nn.UseSoftMax();
 
   TrainForImages(
-    12, 16,     // # of phase - # of epoch per phase
-    1.5, 0.5, // Learning Rate
-    0.5, 0.5,     // Deformation Rate
-    12, 0.8);    // Repetition - Min prop
+    8, 24,     // # of phase - # of epoch per phase
+    1, 0.8, // Learning Rate
+    0.8, 1,     // Deformation Rate
+    16, 0.6);    // Repetition - Min prop
 
 
-  nn.Export("./NeuralNetworkSave/GlobalTestParallel.nn");
+  nn.Export("./NeuralNetworkSave/GlobalTestParallel3.nn");
 }
 
 int index = 0;
@@ -115,7 +117,7 @@ void TrainForImages(int phaseNumber, int epochPerSet, float startLR, float endLR
         repList, deformationRate);
 
       float lr = startLR * pow(endLR / startLR, (float)(k-1)/max(1, (phaseNumber-1)));
-      nn.MiniBatchLearn(sample, epochPerSet, 64, lr/32, lr, 2, new Matrix[][]{testSampleHand, testSampleFont}, k + "/" + phaseNumber);
+      nn.MiniBatchLearn(sample, epochPerSet, 16, lr/8, lr, 2, new Matrix[][]{testSampleHand, testSampleFont}, k + "/" + phaseNumber);
     }
 
     if(k == phaseNumber) break; //Pas besoin de retester

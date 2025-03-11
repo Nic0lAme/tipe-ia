@@ -248,9 +248,9 @@ class Matrix {
   Matrix[] Split(int numberOfSplit) {
     if (numberOfSplit > this.p) return new Matrix[] {this.C()};
     Matrix[] output = new Matrix[numberOfSplit];
-    int size = this.p / numberOfSplit + 1;
+    int size = this.p / numberOfSplit;
     for (int i = 0; i < output.length; i++) {
-      output[i] = this.GetCol(i*size, constrain(i*size + size-1, 0, this.p-1));
+      output[i] = this.GetCol(i*size, i < output.length - 1 ? constrain(i*size + size-1, 0, this.p-1) : this.p - 1);
     }
     return output;
   }
