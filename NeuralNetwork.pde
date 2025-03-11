@@ -18,6 +18,7 @@ class NeuralNetwork {
     numLayers = sizes.length;
     layers = new int[numLayers];
     for (int i = 0; i < numLayers; i++) layers[i] = sizes[i];
+    ExecutorService executor = Executors.newFixedThreadPool(numThreadsLearning);
 
     Init();
   }
@@ -176,10 +177,42 @@ class NeuralNetwork {
   }
 
   public double Learn(Matrix X, Matrix Y, double learning_rate) {
-    Matrix[] activations = ForwardPropagation(X);
-    Matrix S = activations[this.numLayers - 1].C();
+    Matrix[][] gradients = new Matrix[2][];
+    Matrix S;
+    ArrayList<Matrix> weightsGradients = new ArrayList<Matrix>(numThreadsLearning);
+    ArrayList<Matrix> biasGradients = new ArrayList<Matrix>(numThreadsLearning);
 
-    Matrix[][] gradients = BackPropagation(activations, Y);
+    if (numThreadsLearning <= 1) {
+      Matrix[] activations = ForwardPropagation(X);
+      S = activations[this.numLayers - 1].C();
+      gradients = BackPropagation(activations, Y);
+    }
+    else {
+      final Matrix[] trainingData = X.Split(numThreadsLearning);
+      final Matrix[] answers = Y.Split(numThreadsLearning);
+      final Matrix[] quasiS = new Matrix[1];
+      for (int i = 0; i < numThreadsLearning; i++) {
+        final int index = i;
+        class LearningTask implements Callable<Object> {
+          public Object call() {
+            Matrix[] activations = ForwardPropagation(trainingData[index]);
+            Matrix output = activations[numLayers - 1].C();
+            Matrix[][] gradientPart = BackPropagation(activations, Y);
+
+            synchronized(this) {
+              weightsGradients.add(gradientPart[0]);
+              biasGradients.add(gradientPart[1]);
+              if (index == numThreadsLearning - 1) quasiS[0] = output;
+            }
+
+            return this;
+          }
+        }
+      }
+      gradients[0] = new Matrix().AvgMatrix(weightsGradients.toArray(new Matrix[]{}));
+      gradients[1] = new Matrix().AvgMatrix(biasGradients.toArray(new Matrix[]{}));
+      S = quasiS[0];
+    }
 
     boolean hasNaN = false;
     for(int l = 0; l < this.numLayers - 1; l++) {

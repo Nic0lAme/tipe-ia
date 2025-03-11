@@ -12,12 +12,12 @@ class Matrix {
     n=_n; p=_n;
     Init();
   }
-  
+
   //f
   void Delete() {
     values = null;
   }
-  
+
   //f
   void Init() {
     values = new double[n][p];
@@ -34,12 +34,12 @@ class Matrix {
     }
     cl.pln();
   }
-  
+
   //f Debug the shape of this matrix
   void DebugShape() {
     cl.pln(this.n, this.p);
   }
-  
+
   //f Debug column j of this matrix
   void DebugCol(int j) {
     cl.p("Colonne " + str(j) + " [");
@@ -49,12 +49,12 @@ class Matrix {
     cl.p("]");
     cl.pln();
   }
-  
+
   //s Ne retourne pas de log
   String[] SaveToString() {
-    return SaveToString(false); 
+    return SaveToString(false);
   }
-  
+
   //f Save this matrix into a string array
   String[] SaveToString(boolean doLog) {
     String[] output = new String[this.n];
@@ -67,7 +67,7 @@ class Matrix {
     }
     return output;
   }
-  
+
   //f Load this matrix from a string array
   void LoadString(String[] lignes) {
     if (lignes.length != n || split(lignes[0], ',').length != p) {
@@ -117,7 +117,7 @@ class Matrix {
         this.values[i][j] = min + (max - min)*random(1);
     return this;
   }
-  
+
   //s Retourne une matrice aléatoire à valeurs dans [0;1]
   Matrix Random() {
     return Random(0, 1);
@@ -151,7 +151,7 @@ class Matrix {
     if (i < 0 || i >= n || j < 0 || j >= p) { cl.pln(this, i, j, "Get", "Wrong indices"); Exception e = new Exception(); e.printStackTrace(); return 0; }
     return this.values[i][j];
   }
-  
+
   //f Check if this matrix contain _val_
   boolean Contains(double val) {
     for (int i = 0; i < this.n; i++)
@@ -159,7 +159,7 @@ class Matrix {
         if (val == this.Get(i,j)) return true;
     return false;
   }
-  
+
   //f Check if this matrix contain a _NaN_
   boolean HasNAN() {
     for (int i = 0; i < this.n; i++)
@@ -185,12 +185,12 @@ class Matrix {
 
     return new Matrix(this.p,this.n).FromArray(n_matcoeff);
   }
-  
+
   //s broadcast to false et scal = 1
   Matrix Add(Matrix m) {
     return this.Add(m, 1, false);
   }
-  
+
   //s broadcast to false
   Matrix Add(Matrix m, double scal) {
     return this.Add(m, scal, false);
@@ -244,7 +244,17 @@ class Matrix {
 
     return this;
   }
-  
+
+  Matrix[] Split(int numberOfSplit) {
+    if (numberOfSplit > this.p) return new Matrix[] {this.C()};
+    Matrix[] output = new Matrix[numberOfSplit];
+    int size = this.p / numberOfSplit + 1;
+    for (int i = 0; i < output.length; i++) {
+      output[i] = this.GetCol(i*size, constrain(i*size + size-1, 0, this.p-1));
+    }
+    return output;
+  }
+
   //s Ne prend que la colonne j
   Matrix GetCol(int j) {
     return GetCol(new int[]{j});
@@ -257,12 +267,12 @@ class Matrix {
     for(int i = a; i < b+1; i++) range[i-a] = i;
     return GetCol(range);
   }
-  
+
   //s Pas de limite de colonnes
   Matrix GetCol(int[] jList) {
     return GetCol(jList, 0, jList.length);
   }
-  
+
   //s startCol = 0
   Matrix GetCol(int[] jList, int numCol) {
     return GetCol(jList, 0, numCol);
@@ -283,7 +293,7 @@ class Matrix {
 
     return new_mat;
   }
-  
+
   //f Set _j-th_ column from a double array
   Matrix ColumnFromArray(int j, double[] col) {
     if (j < 0 || j >= this.p) { cl.pln(this, j, "ColumnFromArray", "Wrong Column Index"); Exception e = new Exception(); e.printStackTrace(); return this; }
@@ -293,7 +303,7 @@ class Matrix {
 
     return this;
   }
-  
+
   //f Create an array from a _j-th_ column
   double[] ColToArray(int j) {
     double[] col = new double[this.n];
@@ -413,6 +423,10 @@ class Matrix {
     return this.Comatrix().T().Scale(1/this.Det());
   }
 
+  @Override
+  public String toString() {
+    return "Matrix[" + this.n + "," + this.p + "]";
+  }
 }
 
 @FunctionalInterface
