@@ -28,7 +28,7 @@ class Matrix {
     //if(true) return; //if you want to disable all debug
     for(int i = 0; i < n; i++) {
       for(int j = 0; j < p; j++) {
-        cl.p(this.Get(i, j), "\t");
+        cl.p(this.values[i][j], "\t");
       }
       cl.pln();
     }
@@ -44,7 +44,7 @@ class Matrix {
   void DebugCol(int j) {
     cl.p("Colonne " + str(j) + " [");
     for (int i = 0; i < this.n; i++) {
-      cl.p(this.Get(i, j) + " ");
+      cl.p(this.values[i][j] + " ");
     }
     cl.p("]");
     cl.pln();
@@ -62,7 +62,7 @@ class Matrix {
     for (int i = 0; i < this.n; i++) {
       output[i] = "";
       for (int j = 0; j < this.p; j++)
-        output[i] += this.Get(i,j) + (j != this.p - 1 ? "," : "");
+        output[i] += this.values[i][j] + (j != this.p - 1 ? "," : "");
       if(doLog) cl.pln("\t" + (i + 1) + "/" + this.n + "\t Time remaining " + RemainingTime(startTime, i+1, this.n));
     }
     return output;
@@ -88,7 +88,7 @@ class Matrix {
     Matrix new_mat = new Matrix(n, p);
     for (int i = 0; i < n; i++)
       for (int j = 0; j < p; j++)
-        new_mat.Set(i, j, this.Get(i,j));
+        new_mat.Set(i, j, this.values[i][j]);
 
     return new_mat;
   }
@@ -128,7 +128,7 @@ class Matrix {
     if (this.n != this.p) { cl.pln(this, "Identity", "Not square matrix"); Exception e = new Exception(); e.printStackTrace(); return this; }
     for (int i = 0; i < this.n; i++)
       for (int j = 0; j < this.n; j++)
-        this.Set(i, j, i == j ? 1 : 0);
+        this.values[i][j] = (i == j ? 1 : 0);
 
     return this;
   }
@@ -156,7 +156,7 @@ class Matrix {
   boolean Contains(double val) {
     for (int i = 0; i < this.n; i++)
       for (int j = 0; j < this.p; j++)
-        if (val == this.Get(i,j)) return true;
+        if (val == this.values[i][j]) return true;
     return false;
   }
 
@@ -164,7 +164,7 @@ class Matrix {
   boolean HasNAN() {
     for (int i = 0; i < this.n; i++)
       for (int j = 0; j < this.p; j++)
-        if (this.Get(i,j) != this.Get(i,j)) return true;
+        if (this.values[i][j] != this.values[i][j]) return true;
     return false;
   }
 
@@ -172,7 +172,7 @@ class Matrix {
   Matrix Map(FunctionMap func) {
     for (int i = 0; i < this.n; i++)
       for (int j = 0; j < this.p; j++)
-        this.Set(i,j,func.calc(this.Get(i, j)));
+        this.values[i][j] = func.calc(this.values[i][j]);
     return this;
   }
 
@@ -181,7 +181,7 @@ class Matrix {
     double [][] n_matcoeff = new double[p][n];
     for (int i = 0; i < n; i++)
       for (int j = 0; j < p; j++)
-        n_matcoeff[j][i] = this.Get(i, j);
+        n_matcoeff[j][i] = this.values[i][j];
 
     return new Matrix(this.p,this.n).FromArray(n_matcoeff);
   }
@@ -207,7 +207,7 @@ class Matrix {
     for (int i = 0; i < n; i++)
       for (int j = 0; j < p; j++)
         // Le broadcasting permet d'additionner à une matrice un vecteur, qui s'étend sur toutes les colonnes (oui j'ai expliqué en fr celui-là)
-        this.Set(i, j, this.Get(i, j) + scal * m.Get(i, broadcast ? 0 : j));
+        this.values[i][j] = (this.values[i][j] + scal * m.values[i][broadcast ? 0 : j]);
 
     return this;
   }
@@ -216,7 +216,7 @@ class Matrix {
   Matrix Scale(double scal) {
     for (int i = 0; i < n; i++)
       for (int j = 0; j < p; j++)
-        this.Set(i, j, scal * this.Get(i, j));
+        this.values[i][j] = scal * this.values[i][j];
 
     return this;
   }
@@ -226,7 +226,7 @@ class Matrix {
     if (j < 0 || j >= this.p) { cl.pln(this, j, "Dilat", "Wrong Column Index"); Exception e = new Exception(); e.printStackTrace(); return this; }
 
     for(int i = 0; i < this.n; i++)
-      this.Set(i,j, this.Get(i,j) * scal);
+      this.values[i][j] = this.values[i][j] * scal;
 
     return this;
   }
@@ -237,9 +237,9 @@ class Matrix {
 
     double temp;
     for(int i = 0; i < this.n; i++) {
-      temp = this.Get(i, j1);
-      this.Set(i, j1, this.Get(i, j2));
-      this.Set(i, j2, temp);
+      temp = this.values[i][j1];
+      this.values[i][j1] = this.values[i][j2];
+      this.values[i][j2] = temp;
     }
 
     return this;
@@ -288,7 +288,7 @@ class Matrix {
     Matrix new_mat = new Matrix(this.n, endCol - startCol);
     for(int k = 0; k < endCol - startCol; k++) {
       for(int i = 0; i < this.n; i++)
-        new_mat.Set(i, k, this.Get(i, jList[k + startCol]));
+        new_mat.values[i][k] = this.values[i][jList[k + startCol]];
     }
 
     return new_mat;
@@ -299,7 +299,7 @@ class Matrix {
     if (j < 0 || j >= this.p) { cl.pln(this, j, "ColumnFromArray", "Wrong Column Index"); Exception e = new Exception(); e.printStackTrace(); return this; }
     if (col.length != this.n) { cl.pln(this, col.length, "ColumnFromArray", "Wrong Sized Column"); Exception e = new Exception(); e.printStackTrace(); return this; }
 
-    for(int i = 0; i < this.n; i++) this.Set(i, j, col[i]);
+    for(int i = 0; i < this.n; i++) this.values[i][j] = col[i];
 
     return this;
   }
@@ -309,7 +309,7 @@ class Matrix {
     double[] col = new double[this.n];
     if (j < 0 || j >= this.p) { cl.pln(this, j, "ColToArray", "Wrong Column Index"); Exception e = new Exception(); e.printStackTrace(); return col; }
     for (int i = 0; i < this.n ;i++) {
-      col[i] = this.Get(i,j);
+      col[i] = this.values[i][j];
     }
     return col;
   }
@@ -320,7 +320,7 @@ class Matrix {
 
     double sum = 0;
     for(int i = 0; i < this.n; i++)
-      sum += this.Get(i,j);
+      sum += this.values[i][j];
 
     return sum;
   }
@@ -333,7 +333,7 @@ class Matrix {
       for(int j = 0; j < this.p; j++)
         avg += this.Get(i,j) / this.p;
 
-      matrixOfAverage.Set(i, 0, avg);
+      matrixOfAverage.values[i][0] = avg;
     }
     return matrixOfAverage;
   }
@@ -393,9 +393,9 @@ class Matrix {
       for (int j = 0; j < m.p; j++) {
         s = 0;
         for (int k = 0; k < p; k++)
-          s += this.Get(i, k) * m.Get(k, j);
+          s += this.values[i][k] * m.values[k][j];
 
-        new_mat.Set(i, j, s);
+        new_mat.values[i][j] = s;
       }
     }
     return new_mat;
@@ -407,7 +407,7 @@ class Matrix {
 
     for (int i = 0; i < n; i++)
       for (int j = 0; j < p; j++)
-        this.Set(i,j,this.Get(i,j) * m.Get(i,j));
+        this.values[i][j] = this.values[i][j] * m.values[i][j];
 
     return this;
   }
@@ -431,7 +431,7 @@ class Matrix {
     Matrix min = new Matrix(this.n - 1, this.p - 1);
     for (int e = 0; e < this.n - 1; e++)
       for (int f = 0; f < this.p - 1; f++)
-        min.Set(e, f, this.Get(e >= i ? e+1 : e, f >= j ? f+1 : f));
+        min.values[e][f] = this.values[e >= i ? e+1 : e][f >= j ? f+1 : f];
 
     return min;
   }
@@ -440,12 +440,12 @@ class Matrix {
   double Det() {
     if (this.n != this.p) { cl.pln(this, "Det", "Not square matrix"); Exception e = new Exception(); e.printStackTrace(); return 0; }
     if (this.n == 1) {
-      return this.Get(0,0);
+      return this.values[0][0];
     }
 
     double det = 0;
     for (int k = 0; k < this.n; k++)
-      det += pow(-1, k) * this.Get(k, 0) * this.MinMatrix(k, 0).Det();
+      det += pow(-1, k) * this.values[k][0] * this.MinMatrix(k, 0).Det();
 
     return det;
   }

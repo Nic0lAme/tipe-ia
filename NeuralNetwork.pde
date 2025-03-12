@@ -140,7 +140,7 @@ class NeuralNetwork {
     Matrix[] weightGrad = new Matrix[this.numLayers - 1];
     Matrix[] biasGrad = new Matrix[this.numLayers - 1];
 
-    double lambda = 0.0001;
+    double lambda = 0.05;
     boolean hasNaN = false;
     for(int l = this.numLayers - 2; l >= 0; l--) {
       if(gradient.Contains(Double.NaN)) hasNaN = true;
@@ -322,7 +322,7 @@ class NeuralNetwork {
           );
       }
 
-      if(k != numOfEpoch - 1) continue;
+      if(k % (numOfEpoch/2) != numOfEpoch/2 - 1 && (k+1)%4 != 0) continue;
       for(int s = 0; s < testSets.length; s++) {
         float[] score = CompilScore(AccuracyScore(this, testSets[s], false));
         cl.p("\t Score", s, ":", String.format("%7.5f", Average(score)));
@@ -348,7 +348,6 @@ double sigmoid(double x) {
 
 // En gros ça fait un blinker de period min suivi de period max
 float CyclicalLearningRate(int iter, float min, float max, int period) {
-  float cycle = floor(1 + iter / (2 * period));
-  float x = abs(iter / period - 2 * cycle + 1);
-  return min + (max - min) * max(0, x);
+  if((iter + period/2)%period + 1 <= period/2) return max;
+  return min;
 }

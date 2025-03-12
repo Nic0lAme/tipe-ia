@@ -11,7 +11,7 @@ GraphApplet graphApplet = new GraphApplet(nameOfProcess);
 
 // Nombre de threads pour les différentes tâches
 final int numThreadsDataset = 8; // Création des datasets
-final int numThreadsLearning = 8; // Apprentissage (si 1, pas de parallélisation)
+final int numThreadsLearning = 16; // Apprentissage (si 1, pas de parallélisation)
 
 int w = 19;
 int h = 21;
@@ -48,18 +48,22 @@ void setup() {
   cl = new ConsoleLog("./Log/log1.txt");
   im = new ImageManager();
 
-  nn = new NeuralNetwork().Import("./NeuralNetworkSave/GlobalTestParallel2.nn");
-  // nn = new NeuralNetwork(w*h, 512, 64, 64, 64, characters.length);
+  //nn = new NeuralNetwork().Import("./NeuralNetworkSave/GlobalTestParallel4.nn");
+  nn = new NeuralNetwork(w*h, 512, 256, 256, characters.length);
   nn.UseSoftMax();
-
+  
+  
   TrainForImages(
-    8, 24,     // # of phase - # of epoch per phase
-    1, 0.8, // Learning Rate
-    0.8, 1,     // Deformation Rate
-    16, 0.6);    // Repetition - Min prop
+    4, 32,     // # of phase - # of epoch per phase
+    1.5, 0.8, // Min Learning Rate
+    2, 1.6,     // Max Learning Rate
+    4, 128,      // Period - Batch Size
+    1, 1,     // Deformation Rate
+    10, 1);    // Repetition - Min prop
 
 
-  nn.Export("./NeuralNetworkSave/GlobalTestParallel3.nn");
+  nn.Export("./NeuralNetworkSave/GlobalTestParallel5.nn");
+  
 }
 
 int index = 0;
@@ -69,7 +73,7 @@ void draw() {
   //DirectTest();
 }
 
-void TrainForImages(int phaseNumber, int epochPerSet, float startLR, float endLR, float startDef, float endDef, int rep, float minProp) {
+void TrainForImages(int phaseNumber, int epochPerSet, float startMinLR, float endMinLR, float startMaxLR, float endMaxLR, int period, int batchSize, float startDef, float endDef, int rep, float minProp) {
   float[] accuracy = new float[nn.outputSize];
   int[] repList;
   Arrays.fill(accuracy, 0.5);
@@ -116,8 +120,9 @@ void TrainForImages(int phaseNumber, int epochPerSet, float startLR, float endLR
         fontTrainingDatas,
         repList, deformationRate);
 
-      float lr = startLR * pow(endLR / startLR, (float)(k-1)/max(1, (phaseNumber-1)));
-      nn.MiniBatchLearn(sample, epochPerSet, 16, lr/8, lr, 2, new Matrix[][]{testSampleHand, testSampleFont}, k + "/" + phaseNumber);
+      float maxLR = startMaxLR * pow(endMaxLR / startMaxLR, (float)(k-1)/max(1, (phaseNumber-1)));
+      float minLR = startMinLR * pow(endMinLR / startMinLR, (float)(k-1)/max(1, (phaseNumber-1)));
+      nn.MiniBatchLearn(sample, epochPerSet, batchSize, minLR, maxLR, period, new Matrix[][]{testSampleHand, testSampleFont}, k + "/" + phaseNumber);
     }
 
     if(k == phaseNumber) break; //Pas besoin de retester
