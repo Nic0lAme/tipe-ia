@@ -13,6 +13,9 @@ GraphApplet graphApplet = new GraphApplet(nameOfProcess);
 final int numThreadsDataset = 8; // Création des datasets
 final int numThreadsLearning = 8; // Apprentissage (si 1, pas de parallélisation)
 
+// Attention, à ne pas modifier n'importe comment sous peine de conséquences
+final AtomicBoolean stopLearning = new AtomicBoolean(false);
+
 int w = 19;
 int h = 21;
 float rScale = 1; // Scale for the representations (draw)
@@ -59,7 +62,7 @@ void setup() {
     16, 0.6);    // Repetition - Min prop
 
 
-  nn.Export("./NeuralNetworkSave/GlobalTestParallel3.nn");
+  //nn.Export("./NeuralNetworkSave/GlobalTestParallel3.nn");
 }
 
 int index = 0;

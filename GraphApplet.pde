@@ -9,6 +9,7 @@ import java.text.DecimalFormat;
 import javax.swing.JPanel;
 import javax.swing.JFrame;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import java.awt.BorderLayout;
 import java.awt.Insets;
 import java.awt.Font;
@@ -18,12 +19,13 @@ import java.awt.BorderLayout;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.util.LinkedList;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 class GraphApplet extends JFrame {
   private LearnGraph graph;
 
-  private JButton pinButton, dataButton, avgButton;
-  private boolean pin = true;
+  private JButton pinButton, pauseButton, dataButton, avgButton;
+  private boolean pin = false;
 
   public GraphApplet(String gTitle) {
     graph = new LearnGraph(gTitle, "Itérations", "Coût");
@@ -55,6 +57,32 @@ class GraphApplet extends JFrame {
     if (pin) pinButton.setText("Désépingler");
     else pinButton.setText("Épingler");
   }
+  
+  private void ExportNN() {
+    if (!stopLearning.get()) TogglePause();
+    pauseButton.setEnabled(false);
+    JFileChooser fileChooser = new JFileChooser();
+    fileChooser.setAcceptAllFileFilterUsed(false);
+    int response = fileChooser.showOpenDialog(null);
+    if (response == JFileChooser.APPROVE_OPTION) {
+      nn.Export(fileChooser.getSelectedFile().getAbsolutePath());
+    }
+    pauseButton.setEnabled(true);
+    if (stopLearning.get()) TogglePause();
+  }
+  
+  
+  private void TogglePause() {
+    synchronized(stopLearning) {
+      stopLearning.set(!stopLearning.get());
+      if (!stopLearning.get()) stopLearning.notifyAll();
+      
+      try { Thread.sleep(500); }
+      catch (Exception e) {}
+      if (stopLearning.get()) pauseButton.setText("Reprendre");
+      else pauseButton.setText("Pause");
+    }
+  }
 
   private void ToggleAvg() {
     graph.ToggleAvg();
@@ -63,7 +91,6 @@ class GraphApplet extends JFrame {
 
   private void ToggleData() {
     graph.ToggleData();
-    println("hey" + graph.IsDataShowed());
     dataButton.setText((graph.IsDataShowed() ? "Masquer" : "Afficher") + " les données brutes");
   }
 
@@ -88,7 +115,7 @@ class GraphApplet extends JFrame {
     gbc.weightx = 1;
     gbc.weighty = 1;
 
-    pinButton = new JButton("Désépingler");
+    pinButton = new JButton("Épingler");
     pinButton.setFocusable(false);
     pinButton.addActionListener(e -> TogglePin());
     pinButton.setMargin(new Insets(5, 5, 5, 5));
@@ -97,15 +124,35 @@ class GraphApplet extends JFrame {
     gbc.gridy = 0;
     gbc.anchor = GridBagConstraints.WEST;
     top.add(pinButton, gbc);
+    
+    pauseButton = new JButton("Pause");
+    pauseButton.setFocusable(false);
+    pauseButton.addActionListener(e -> TogglePause());
+    pauseButton.setMargin(new Insets(5, 5, 5, 5));
+    pauseButton.setFont(new Font("", Font.PLAIN, 16));
+    gbc.gridx = 1;
+    gbc.gridy = 0;
+    gbc.anchor = GridBagConstraints.CENTER;
+    top.add(pauseButton, gbc);
+    
+    JButton exportButton = new JButton("Exporter");
+    exportButton.setFocusable(false);
+    exportButton.addActionListener(e -> ExportNN());
+    exportButton.setMargin(new Insets(5, 5, 5, 5));
+    exportButton.setFont(new Font("", Font.PLAIN, 16));
+    gbc.gridx = 2;
+    gbc.gridy = 0;
+    gbc.anchor = GridBagConstraints.CENTER;
+    top.add(exportButton, gbc);
 
     dataButton = new JButton("Masquer les données brutes");
     dataButton.setFocusable(false);
     dataButton.addActionListener(e -> ToggleData());
     dataButton.setMargin(new Insets(5, 5, 5, 5));
     dataButton.setFont(new Font("", Font.PLAIN, 16));
-    gbc.gridx = 1;
+    gbc.gridx = 3;
     gbc.gridy = 0;
-    gbc.anchor = GridBagConstraints.CENTER;
+    gbc.anchor = GridBagConstraints.EAST;
     top.add(dataButton, gbc);
 
     avgButton = new JButton("Masquer la moyenne glissante");
@@ -113,8 +160,8 @@ class GraphApplet extends JFrame {
     avgButton.addActionListener(e -> ToggleAvg());
     avgButton.setMargin(new Insets(5, 5, 5, 5));
     avgButton.setFont(new Font("", Font.PLAIN, 16));
-    gbc.gridx = 2;
-    gbc.gridy = 0;
+    gbc.gridx = 3;
+    gbc.gridy = 1;
     gbc.anchor = GridBagConstraints.EAST;
     top.add(avgButton, gbc);
 

@@ -252,7 +252,13 @@ class NeuralNetwork {
       }
       S = new Matrix(0).Concat(partialS);
     }
-
+    
+    synchronized (stopLearning) {
+      if (stopLearning.get()) {
+        try { println("Learning stopped"); stopLearning.wait(); println("Le retour");} 
+        catch (Exception e) { e.printStackTrace(); }
+      }
+    }
     boolean hasNaN = false;
     for(int l = 0; l < this.numLayers - 1; l++) {
       this.weights[l].Add(gradients[0][l], -learning_rate);
@@ -322,7 +328,7 @@ class NeuralNetwork {
           );
       }
 
-      if(k != numOfEpoch - 1) continue;
+      if(k%6 == 5 || k != numOfEpoch - 1) continue;
       for(int s = 0; s < testSets.length; s++) {
         float[] score = CompilScore(AccuracyScore(this, testSets[s], false));
         cl.p("\t Score", s, ":", String.format("%7.5f", Average(score)));
@@ -348,7 +354,6 @@ double sigmoid(double x) {
 
 // En gros ça fait un blinker de period min suivi de period max
 float CyclicalLearningRate(int iter, float min, float max, int period) {
-  float cycle = floor(1 + iter / (2 * period));
-  float x = abs(iter / period - 2 * cycle + 1);
-  return min + (max - min) * max(0, x);
+  if((iter % period) + 2 >= period - 2) return max;
+  return min;
 }

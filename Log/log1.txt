@@ -1,1061 +1,67 @@
 Creating Dataset of size 1170... 
-0,100 Time Remaining :    10,440 
-0,200 Time Remaining :     6,804 
-0,300 Time Remaining :     4,942 
-0,400 Time Remaining :     3,812 
-0,500 Time Remaining :     2,936 
-0,600 Time Remaining :     2,209 
-0,700 Time Remaining :     1,611 
-0,800 Time Remaining :     1,072 
-0,900 Time Remaining :     0,539 
+0,100 Time Remaining :    12,474 
+0,200 Time Remaining :     7,916 
+0,300 Time Remaining :     6,004 
+0,400 Time Remaining :     4,788 
+0,500 Time Remaining :     3,785 
+0,600 Time Remaining :     2,917 
+0,700 Time Remaining :     2,127 
+0,800 Time Remaining :     1,392 
+0,900 Time Remaining :     0,688 
 1,000 Time Remaining :     0,000 
-Created - Total time     5,374 
+Created - Total time     6,836 
 Creating Dataset of size 1170... 
-0,100 Time Remaining :     3,753 
-0,200 Time Remaining :     3,232 
-0,300 Time Remaining :     2,730 
-0,400 Time Remaining :     2,332 
-0,500 Time Remaining :     1,949 
-0,600 Time Remaining :     1,575 
-0,700 Time Remaining :     1,221 
-0,800 Time Remaining :     0,850 
-0,900 Time Remaining :     0,427 
+0,100 Time Remaining :     5,922 
+0,200 Time Remaining :     4,948 
+0,300 Time Remaining :     4,151 
+0,400 Time Remaining :     3,484 
+0,500 Time Remaining :     2,886 
+0,600 Time Remaining :     2,310 
+0,700 Time Remaining :     1,738 
+0,800 Time Remaining :     1,149 
+0,900 Time Remaining :     0,571 
 1,000 Time Remaining :     0,000 
-Created - Total time     4,234 
+Created - Total time     5,690 
 
 Phase 0 / 8 
-Accuracy for test set : 0.6243593 
+Accuracy for test set : 0.67820525 
 
 
 Phase 1 / 8 
-Creating Dataset of size 17900... 
-0,100 Time Remaining :    51,246 
-0,200 Time Remaining :    47,428 
-0,300 Time Remaining :    40,413 
-0,400 Time Remaining :    34,366 
-0,500 Time Remaining :    28,310 
-0,600 Time Remaining :    22,654 
-0,700 Time Remaining :    16,749 
-0,800 Time Remaining :    10,970 
-0,900 Time Remaining :     5,474 
-1,000 Time Remaining :     0,000 
-Created - Total time    54,698 
-Mini Batch Gradient Descent 1/8 - 16 Epochs - 32 Batch Size - 1,000E+00 LR 
-(1/8) 	Epoch 1/16	 
-	 Epoch 00001 Batch 00001 : 2,225E+00	 Time remaining  2629,242 
-	 Epoch 00001 Batch 00140 : 3,512E+00	 Time remaining   332,854 
-	 Epoch 00001 Batch 00279 : 2,785E+00	 Time remaining   291,970 
-	 Epoch 00001 Batch 00418 : 2,863E+00	 Time remaining   269,956 
-	 Epoch 00001 Batch 00557 : 3,664E+00	 Time remaining   263,520 
-(1/8) 	Epoch 2/16	 
-	 Epoch 00002 Batch 00001 : 2,855E+00	 Time remaining   265,893 
-	 Epoch 00002 Batch 00140 : 2,083E+00	 Time remaining   254,121 
-	 Epoch 00002 Batch 00279 : 2,944E+00	 Time remaining   247,233 
-	 Epoch 00002 Batch 00418 : 2,110E+00	 Time remaining   242,843 
-	 Epoch 00002 Batch 00557 : 2,798E+00	 Time remaining   238,438 
-(1/8) 	Epoch 3/16	 
-	 Epoch 00003 Batch 00001 : 2,026E+00	 Time remaining   239,652 
-	 Epoch 00003 Batch 00140 : 1,943E+00	 Time remaining   233,714 
-	 Epoch 00003 Batch 00279 : 1,567E+00	 Time remaining   228,982 
-	 Epoch 00003 Batch 00418 : 2,300E+00	 Time remaining   224,647 
-	 Epoch 00003 Batch 00557 : 1,794E+00	 Time remaining   220,010 
-(1/8) 	Epoch 4/16	 
-	 Epoch 00004 Batch 00001 : 2,718E+00	 Time remaining   220,647 
-	 Epoch 00004 Batch 00140 : 1,913E+00	 Time remaining   215,795 
-	 Epoch 00004 Batch 00279 : 1,069E+00	 Time remaining   211,137 
-	 Epoch 00004 Batch 00418 : 1,456E+00	 Time remaining   206,340 
-	 Epoch 00004 Batch 00557 : 1,152E+00	 Time remaining   201,724 
-(1/8) 	Epoch 5/16	 
-	 Epoch 00005 Batch 00001 : 2,653E+00	 Time remaining   202,259 
-	 Epoch 00005 Batch 00140 : 2,418E+00	 Time remaining   199,022 
-	 Epoch 00005 Batch 00279 : 2,189E+00	 Time remaining   194,777 
-	 Epoch 00005 Batch 00418 : 1,849E+00	 Time remaining   190,326 
-	 Epoch 00005 Batch 00557 : 3,902E+00	 Time remaining   186,296 
-(1/8) 	Epoch 6/16	 
-	 Epoch 00006 Batch 00001 : 2,344E+00	 Time remaining   186,654 
-	 Epoch 00006 Batch 00140 : 2,714E+00	 Time remaining   182,479 
-	 Epoch 00006 Batch 00279 : 2,374E+00	 Time remaining   178,052 
-	 Epoch 00006 Batch 00418 : 2,626E+00	 Time remaining   173,849 
-	 Epoch 00006 Batch 00557 : 2,044E+00	 Time remaining   170,102 
-(1/8) 	Epoch 7/16	 
-	 Epoch 00007 Batch 00001 : 2,564E+00	 Time remaining   170,410 
-	 Epoch 00007 Batch 00140 : 1,399E+00	 Time remaining   166,715 
-	 Epoch 00007 Batch 00279 : 1,622E+00	 Time remaining   163,330 
-	 Epoch 00007 Batch 00418 : 1,487E+00	 Time remaining   159,232 
-	 Epoch 00007 Batch 00557 : 2,114E+00	 Time remaining   155,404 
-(1/8) 	Epoch 8/16	 
-	 Epoch 00008 Batch 00001 : 9,149E-01	 Time remaining   155,538 
-	 Epoch 00008 Batch 00140 : 1,892E+00	 Time remaining   151,287 
-	 Epoch 00008 Batch 00279 : 1,990E+00	 Time remaining   146,851 
-	 Epoch 00008 Batch 00418 : 1,885E+00	 Time remaining   142,457 
-	 Epoch 00008 Batch 00557 : 1,482E+00	 Time remaining   138,137 
-(1/8) 	Epoch 9/16	 
-	 Epoch 00009 Batch 00001 : 2,039E+00	 Time remaining   138,219 
-	 Epoch 00009 Batch 00140 : 2,655E+00	 Time remaining   134,019 
-	 Epoch 00009 Batch 00279 : 2,350E+00	 Time remaining   129,798 
-	 Epoch 00009 Batch 00418 : 1,767E+00	 Time remaining   125,425 
-	 Epoch 00009 Batch 00557 : 1,982E+00	 Time remaining   121,074 
-(1/8) 	Epoch 10/16	 
-	 Epoch 00010 Batch 00001 : 2,521E+00	 Time remaining   121,127 
-	 Epoch 00010 Batch 00140 : 2,907E+00	 Time remaining   116,980 
-	 Epoch 00010 Batch 00279 : 2,141E+00	 Time remaining   113,147 
-	 Epoch 00010 Batch 00418 : 1,735E+00	 Time remaining   108,846 
-	 Epoch 00010 Batch 00557 : 2,252E+00	 Time remaining   104,592 
-(1/8) 	Epoch 11/16	 
-	 Epoch 00011 Batch 00001 : 1,575E+00	 Time remaining   104,609 
-	 Epoch 00011 Batch 00140 : 1,817E+00	 Time remaining   100,244 
-	 Epoch 00011 Batch 00279 : 1,553E+00	 Time remaining    96,055 
-	 Epoch 00011 Batch 00418 : 1,824E+00	 Time remaining    91,886 
-	 Epoch 00011 Batch 00557 : 2,249E+00	 Time remaining    87,659 
-(1/8) 	Epoch 12/16	 
-	 Epoch 00012 Batch 00001 : 1,548E+00	 Time remaining    87,677 
-	 Epoch 00012 Batch 00140 : 1,366E+00	 Time remaining    83,410 
-	 Epoch 00012 Batch 00279 : 2,038E+00	 Time remaining    78,969 
-	 Epoch 00012 Batch 00418 : 1,454E+00	 Time remaining    74,619 
-	 Epoch 00012 Batch 00557 : 1,619E+00	 Time remaining    70,287 
-(1/8) 	Epoch 13/16	 
-	 Epoch 00013 Batch 00001 : 2,386E+00	 Time remaining    70,262 
-	 Epoch 00013 Batch 00140 : 2,006E+00	 Time remaining    65,820 
-	 Epoch 00013 Batch 00279 : 1,806E+00	 Time remaining    61,373 
-	 Epoch 00013 Batch 00418 : 2,781E+00	 Time remaining    56,984 
-	 Epoch 00013 Batch 00557 : 2,291E+00	 Time remaining    52,574 
-(1/8) 	Epoch 14/16	 
-	 Epoch 00014 Batch 00001 : 1,955E+00	 Time remaining    52,525 
-	 Epoch 00014 Batch 00140 : 1,903E+00	 Time remaining    48,139 
-	 Epoch 00014 Batch 00279 : 2,414E+00	 Time remaining    43,807 
-	 Epoch 00014 Batch 00418 : 2,309E+00	 Time remaining    39,419 
-	 Epoch 00014 Batch 00557 : 2,122E+00	 Time remaining    35,057 
-(1/8) 	Epoch 15/16	 
-	 Epoch 00015 Batch 00001 : 2,532E+00	 Time remaining    34,996 
-	 Epoch 00015 Batch 00140 : 1,126E+00	 Time remaining    30,651 
-	 Epoch 00015 Batch 00279 : 1,257E+00	 Time remaining    26,328 
-	 Epoch 00015 Batch 00418 : 2,082E+00	 Time remaining    22,027 
-	 Epoch 00015 Batch 00557 : 1,260E+00	 Time remaining    17,648 
-(1/8) 	Epoch 16/16	 
-	 Epoch 00016 Batch 00001 : 9,149E-01	 Time remaining    17,569 
-	 Epoch 00016 Batch 00140 : 6,865E-01	 Time remaining    13,185 
-	 Epoch 00016 Batch 00279 : 1,885E+00	 Time remaining     8,805 
-	 Epoch 00016 Batch 00418 : 3,354E+00	 Time remaining     4,429 
-	 Epoch 00016 Batch 00557 : 2,564E+00	 Time remaining     0,063 
-	 Score 0 : 0,47692 	 Score 1 : 0,76154 
-Accuracy for test set : 0.61923105 
-
-
-Phase 2 / 8 
-Creating Dataset of size 1170... 
-0,100 Time Remaining :     3,330 
-0,200 Time Remaining :     2,940 
-0,300 Time Remaining :     2,413 
-0,400 Time Remaining :     2,015 
-0,500 Time Remaining :     1,643 
-0,600 Time Remaining :     1,299 
-0,700 Time Remaining :     0,968 
-0,800 Time Remaining :     0,643 
-0,900 Time Remaining :     0,319 
-1,000 Time Remaining :     0,000 
-Created - Total time     3,215 
-Creating Dataset of size 1170... 
-0,100 Time Remaining :     3,600 
-0,200 Time Remaining :     3,072 
-0,300 Time Remaining :     2,693 
-0,400 Time Remaining :     2,280 
-0,500 Time Remaining :     1,863 
-0,600 Time Remaining :     1,474 
-0,700 Time Remaining :     1,092 
-0,800 Time Remaining :     0,719 
-0,900 Time Remaining :     0,360 
-1,000 Time Remaining :     0,000 
-Created - Total time     3,570 
-Creating Dataset of size 17900... 
-0,100 Time Remaining :    50,724 
-0,200 Time Remaining :    44,584 
-0,300 Time Remaining :    37,807 
-0,400 Time Remaining :    32,035 
-0,500 Time Remaining :    27,693 
-0,600 Time Remaining :    22,503 
-0,700 Time Remaining :    17,865 
-0,800 Time Remaining :    11,876 
-0,900 Time Remaining :     5,906 
-1,000 Time Remaining :     0,000 
-Created - Total time    59,332 
-Mini Batch Gradient Descent 2/8 - 16 Epochs - 32 Batch Size - 9,686E-01 LR 
-(2/8) 	Epoch 1/16	 
-	 Epoch 00001 Batch 00001 : 1,303E+00	 Time remaining  2056,890 
-	 Epoch 00001 Batch 00140 : 2,607E+00	 Time remaining   329,458 
-	 Epoch 00001 Batch 00279 : 1,301E+00	 Time remaining   306,225 
-	 Epoch 00001 Batch 00418 : 1,953E+00	 Time remaining   297,349 
-	 Epoch 00001 Batch 00557 : 1,988E+00	 Time remaining   284,240 
-(2/8) 	Epoch 2/16	 
-	 Epoch 00002 Batch 00001 : 2,021E+00	 Time remaining   287,287 
-	 Epoch 00002 Batch 00140 : 1,800E+00	 Time remaining   278,124 
-	 Epoch 00002 Batch 00279 : 3,185E+00	 Time remaining   270,700 
-	 Epoch 00002 Batch 00418 : 1,841E+00	 Time remaining   262,373 
-	 Epoch 00002 Batch 00557 : 1,839E+00	 Time remaining   255,189 
-(2/8) 	Epoch 3/16	 
-	 Epoch 00003 Batch 00001 : 2,275E+00	 Time remaining   256,407 
-	 Epoch 00003 Batch 00140 : 1,369E+00	 Time remaining   250,327 
-	 Epoch 00003 Batch 00279 : 2,875E+00	 Time remaining   243,935 
-	 Epoch 00003 Batch 00418 : 1,559E+00	 Time remaining   237,186 
-	 Epoch 00003 Batch 00557 : 1,360E+00	 Time remaining   231,345 
-(2/8) 	Epoch 4/16	 
-	 Epoch 00004 Batch 00001 : 1,573E+00	 Time remaining   232,300 
-	 Epoch 00004 Batch 00140 : 1,917E+00	 Time remaining   227,978 
-	 Epoch 00004 Batch 00279 : 1,810E+00	 Time remaining   223,830 
-	 Epoch 00004 Batch 00418 : 1,939E+00	 Time remaining   221,470 
-	 Epoch 00004 Batch 00557 : 1,897E+00	 Time remaining   217,679 
-(2/8) 	Epoch 5/16	 
-	 Epoch 00005 Batch 00001 : 1,496E+00	 Time remaining   218,102 
-	 Epoch 00005 Batch 00140 : 1,394E+00	 Time remaining   213,629 
-	 Epoch 00005 Batch 00279 : 1,697E+00	 Time remaining   209,534 
-	 Epoch 00005 Batch 00418 : 2,051E+00	 Time remaining   205,055 
-	 Epoch 00005 Batch 00557 : 2,333E+00	 Time remaining   200,089 
-(2/8) 	Epoch 6/16	 
-	 Epoch 00006 Batch 00001 : 1,625E+00	 Time remaining   200,514 
-	 Epoch 00006 Batch 00140 : 1,083E+00	 Time remaining   195,807 
-	 Epoch 00006 Batch 00279 : 1,957E+00	 Time remaining   191,896 
-	 Epoch 00006 Batch 00418 : 1,957E+00	 Time remaining   186,727 
-	 Epoch 00006 Batch 00557 : 1,352E+00	 Time remaining   182,134 
-(2/8) 	Epoch 7/16	 
-	 Epoch 00007 Batch 00001 : 2,401E+00	 Time remaining   182,303 
-	 Epoch 00007 Batch 00140 : 8,382E-01	 Time remaining   178,078 
-	 Epoch 00007 Batch 00279 : 1,470E+00	 Time remaining   173,594 
-	 Epoch 00007 Batch 00418 : 1,357E+00	 Time remaining   168,846 
-	 Epoch 00007 Batch 00557 : 1,851E+00	 Time remaining   164,138 
-(2/8) 	Epoch 8/16	 
-	 Epoch 00008 Batch 00001 : 1,807E+00	 Time remaining   164,261 
-	 Epoch 00008 Batch 00140 : 6,354E-01	 Time remaining   159,370 
-	 Epoch 00008 Batch 00279 : 2,270E+00	 Time remaining   154,567 
-	 Epoch 00008 Batch 00418 : 1,694E+00	 Time remaining   149,893 
-	 Epoch 00008 Batch 00557 : 2,091E+00	 Time remaining   145,159 
-(2/8) 	Epoch 9/16	 
-	 Epoch 00009 Batch 00001 : 1,164E+00	 Time remaining   145,329 
-	 Epoch 00009 Batch 00140 : 3,087E+00	 Time remaining   140,727 
-	 Epoch 00009 Batch 00279 : 1,291E+00	 Time remaining   135,984 
-	 Epoch 00009 Batch 00418 : 1,679E+00	 Time remaining   131,337 
-	 Epoch 00009 Batch 00557 : 1,959E+00	 Time remaining   126,667 
-(2/8) 	Epoch 10/16	 
-	 Epoch 00010 Batch 00001 : 2,485E+00	 Time remaining   126,711 
-	 Epoch 00010 Batch 00140 : 2,631E+00	 Time remaining   122,049 
-	 Epoch 00010 Batch 00279 : 1,538E+00	 Time remaining   117,332 
-	 Epoch 00010 Batch 00418 : 2,216E+00	 Time remaining   112,590 
-	 Epoch 00010 Batch 00557 : 2,094E+00	 Time remaining   108,032 
-(2/8) 	Epoch 11/16	 
-	 Epoch 00011 Batch 00001 : 1,112E+00	 Time remaining   108,070 
-	 Epoch 00011 Batch 00140 : 8,404E-01	 Time remaining   103,411 
-	 Epoch 00011 Batch 00279 : 1,279E+00	 Time remaining    99,231 
-	 Epoch 00011 Batch 00418 : 2,077E+00	 Time remaining    94,772 
-	 Epoch 00011 Batch 00557 : 1,610E+00	 Time remaining    90,358 
-(2/8) 	Epoch 12/16	 
-	 Epoch 00012 Batch 00001 : 1,321E+00	 Time remaining    90,342 
-	 Epoch 00012 Batch 00140 : 1,059E+00	 Time remaining    85,633 
-	 Epoch 00012 Batch 00279 : 1,576E+00	 Time remaining    80,989 
-	 Epoch 00012 Batch 00418 : 2,070E+00	 Time remaining    76,361 
-	 Epoch 00012 Batch 00557 : 1,546E+00	 Time remaining    71,833 
-(2/8) 	Epoch 13/16	 
-	 Epoch 00013 Batch 00001 : 1,363E+00	 Time remaining    71,794 
-	 Epoch 00013 Batch 00140 : 1,889E+00	 Time remaining    67,254 
-	 Epoch 00013 Batch 00279 : 1,512E+00	 Time remaining    62,885 
-	 Epoch 00013 Batch 00418 : 1,918E+00	 Time remaining    58,538 
-	 Epoch 00013 Batch 00557 : 1,735E+00	 Time remaining    54,143 
-(2/8) 	Epoch 14/16	 
-	 Epoch 00014 Batch 00001 : 2,632E+00	 Time remaining    54,106 
-	 Epoch 00014 Batch 00140 : 1,995E+00	 Time remaining    49,722 
-	 Epoch 00014 Batch 00279 : 2,021E+00	 Time remaining    45,183 
-	 Epoch 00014 Batch 00418 : 1,326E+00	 Time remaining    40,666 
-	 Epoch 00014 Batch 00557 : 1,533E+00	 Time remaining    36,182 
-(2/8) 	Epoch 15/16	 
-	 Epoch 00015 Batch 00001 : 2,680E+00	 Time remaining    36,114 
-	 Epoch 00015 Batch 00140 : 9,896E-01	 Time remaining    31,629 
-	 Epoch 00015 Batch 00279 : 1,871E+00	 Time remaining    27,100 
-	 Epoch 00015 Batch 00418 : 1,120E+00	 Time remaining    22,606 
-	 Epoch 00015 Batch 00557 : 1,666E+00	 Time remaining    18,154 
-(2/8) 	Epoch 16/16	 
-	 Epoch 00016 Batch 00001 : 1,511E+00	 Time remaining    18,075 
-	 Epoch 00016 Batch 00140 : 1,956E+00	 Time remaining    13,555 
-	 Epoch 00016 Batch 00279 : 1,304E+00	 Time remaining     9,072 
-	 Epoch 00016 Batch 00418 : 2,141E+00	 Time remaining     4,567 
-	 Epoch 00016 Batch 00557 : 1,664E+00	 Time remaining     0,065 
-	 Score 0 : 0,50171 	 Score 1 : 0,75470 
-Accuracy for test set : 0.6282055 
-
-
-Phase 3 / 8 
-Creating Dataset of size 1170... 
-0,100 Time Remaining :     3,258 
-0,200 Time Remaining :     2,720 
-0,300 Time Remaining :     2,497 
-0,400 Time Remaining :     2,139 
-0,500 Time Remaining :     1,752 
-0,600 Time Remaining :     1,413 
-0,700 Time Remaining :     1,064 
-0,800 Time Remaining :     0,711 
-0,900 Time Remaining :     0,356 
-1,000 Time Remaining :     0,000 
-Created - Total time     3,549 
-Creating Dataset of size 1170... 
-0,100 Time Remaining :     3,132 
-0,200 Time Remaining :     2,860 
-0,300 Time Remaining :     2,520 
-0,400 Time Remaining :     2,213 
-0,500 Time Remaining :     1,887 
-0,600 Time Remaining :     1,473 
-0,700 Time Remaining :     1,133 
-0,800 Time Remaining :     0,767 
-0,900 Time Remaining :     0,387 
-1,000 Time Remaining :     0,000 
-Created - Total time     3,839 
-Creating Dataset of size 17840... 
-0,100 Time Remaining :    50,895 
-0,200 Time Remaining :    44,388 
-0,300 Time Remaining :    37,826 
-0,400 Time Remaining :    31,368 
-0,500 Time Remaining :    25,962 
-0,600 Time Remaining :    20,699 
-0,700 Time Remaining :    15,705 
-0,800 Time Remaining :    10,506 
-0,900 Time Remaining :     5,273 
-1,000 Time Remaining :     0,000 
-Created - Total time    52,837 
-Mini Batch Gradient Descent 3/8 - 16 Epochs - 32 Batch Size - 9,382E-01 LR 
-(3/8) 	Epoch 1/16	 
-	 Epoch 00001 Batch 00001 : 9,910E-01	 Time remaining  2067,352 
-	 Epoch 00001 Batch 00140 : 2,610E+00	 Time remaining   283,712 
-	 Epoch 00001 Batch 00279 : 2,029E+00	 Time remaining   273,657 
-	 Epoch 00001 Batch 00418 : 2,185E+00	 Time remaining   266,890 
-	 Epoch 00001 Batch 00557 : 1,952E+00	 Time remaining   261,210 
-(3/8) 	Epoch 2/16	 
-	 Epoch 00002 Batch 00001 : 2,808E+00	 Time remaining   264,334 
-	 Epoch 00002 Batch 00140 : 2,302E+00	 Time remaining   261,678 
-	 Epoch 00002 Batch 00279 : 1,919E+00	 Time remaining   255,234 
-	 Epoch 00002 Batch 00418 : 1,590E+00	 Time remaining   249,376 
-	 Epoch 00002 Batch 00557 : 1,744E+00	 Time remaining   244,545 
-(3/8) 	Epoch 3/16	 
-	 Epoch 00003 Batch 00001 : 2,237E+00	 Time remaining   245,756 
-	 Epoch 00003 Batch 00140 : 1,269E+00	 Time remaining   241,227 
-	 Epoch 00003 Batch 00279 : 1,007E+00	 Time remaining   236,592 
-	 Epoch 00003 Batch 00418 : 1,620E+00	 Time remaining   231,930 
-	 Epoch 00003 Batch 00557 : 2,136E+00	 Time remaining   226,876 
-(3/8) 	Epoch 4/16	 
-	 Epoch 00004 Batch 00001 : 2,138E+00	 Time remaining   227,579 
-	 Epoch 00004 Batch 00140 : 1,524E+00	 Time remaining   223,617 
-	 Epoch 00004 Batch 00279 : 2,080E+00	 Time remaining   221,299 
-	 Epoch 00004 Batch 00418 : 1,123E+00	 Time remaining   216,912 
-	 Epoch 00004 Batch 00557 : 2,015E+00	 Time remaining   212,559 
-(3/8) 	Epoch 5/16	 
-	 Epoch 00005 Batch 00001 : 1,739E+00	 Time remaining   213,094 
-	 Epoch 00005 Batch 00140 : 1,209E+00	 Time remaining   208,532 
-	 Epoch 00005 Batch 00279 : 1,765E+00	 Time remaining   203,744 
-	 Epoch 00005 Batch 00418 : 1,902E+00	 Time remaining   199,231 
-	 Epoch 00005 Batch 00557 : 2,494E+00	 Time remaining   194,711 
-(3/8) 	Epoch 6/16	 
-	 Epoch 00006 Batch 00001 : 1,360E+00	 Time remaining   195,295 
-	 Epoch 00006 Batch 00140 : 1,816E+00	 Time remaining   191,252 
-	 Epoch 00006 Batch 00279 : 1,294E+00	 Time remaining   186,363 
-	 Epoch 00006 Batch 00418 : 1,394E+00	 Time remaining   181,512 
-	 Epoch 00006 Batch 00557 : 1,795E+00	 Time remaining   176,493 
-(3/8) 	Epoch 7/16	 
-	 Epoch 00007 Batch 00001 : 2,161E+00	 Time remaining   176,739 
-	 Epoch 00007 Batch 00140 : 2,182E+00	 Time remaining   171,790 
-	 Epoch 00007 Batch 00279 : 1,883E+00	 Time remaining   166,797 
-	 Epoch 00007 Batch 00418 : 1,316E+00	 Time remaining   162,236 
-	 Epoch 00007 Batch 00557 : 2,973E+00	 Time remaining   157,778 
-(3/8) 	Epoch 8/16	 
-	 Epoch 00008 Batch 00001 : 1,314E+00	 Time remaining   158,007 
-	 Epoch 00008 Batch 00140 : 1,620E+00	 Time remaining   153,472 
-	 Epoch 00008 Batch 00279 : 1,620E+00	 Time remaining   148,936 
-	 Epoch 00008 Batch 00418 : 1,791E+00	 Time remaining   144,417 
-	 Epoch 00008 Batch 00557 : 1,164E+00	 Time remaining   139,898 
-(3/8) 	Epoch 9/16	 
-	 Epoch 00009 Batch 00001 : 1,350E+00	 Time remaining   140,116 
-	 Epoch 00009 Batch 00140 : 1,612E+00	 Time remaining   135,651 
-	 Epoch 00009 Batch 00279 : 2,223E+00	 Time remaining   131,145 
-	 Epoch 00009 Batch 00418 : 1,662E+00	 Time remaining   126,750 
-	 Epoch 00009 Batch 00557 : 1,848E+00	 Time remaining   122,324 
-(3/8) 	Epoch 10/16	 
-	 Epoch 00010 Batch 00001 : 1,664E+00	 Time remaining   122,437 
-	 Epoch 00010 Batch 00140 : 2,342E+00	 Time remaining   118,123 
-	 Epoch 00010 Batch 00279 : 1,399E+00	 Time remaining   113,754 
-	 Epoch 00010 Batch 00418 : 1,221E+00	 Time remaining   109,356 
-	 Epoch 00010 Batch 00557 : 1,469E+00	 Time remaining   104,980 
-(3/8) 	Epoch 11/16	 
-	 Epoch 00011 Batch 00001 : 1,290E+00	 Time remaining   105,072 
-	 Epoch 00011 Batch 00140 : 1,381E+00	 Time remaining   100,639 
-	 Epoch 00011 Batch 00279 : 1,486E+00	 Time remaining    96,213 
-	 Epoch 00011 Batch 00418 : 9,118E-01	 Time remaining    91,883 
-	 Epoch 00011 Batch 00557 : 9,314E-01	 Time remaining    87,467 
-(3/8) 	Epoch 12/16	 
-	 Epoch 00012 Batch 00001 : 1,719E+00	 Time remaining    87,539 
-	 Epoch 00012 Batch 00140 : 7,045E-01	 Time remaining    83,129 
-	 Epoch 00012 Batch 00279 : 1,479E+00	 Time remaining    78,722 
-	 Epoch 00012 Batch 00418 : 1,049E+00	 Time remaining    74,363 
-	 Epoch 00012 Batch 00557 : 6,593E-01	 Time remaining    69,955 
-(3/8) 	Epoch 13/16	 
-	 Epoch 00013 Batch 00001 : 1,123E+00	 Time remaining    69,995 
-	 Epoch 00013 Batch 00140 : 2,533E+00	 Time remaining    65,654 
-	 Epoch 00013 Batch 00279 : 1,708E+00	 Time remaining    61,257 
-	 Epoch 00013 Batch 00418 : 1,969E+00	 Time remaining    56,843 
-	 Epoch 00013 Batch 00557 : 2,145E+00	 Time remaining    52,496 
-(3/8) 	Epoch 14/16	 
-	 Epoch 00014 Batch 00001 : 1,632E+00	 Time remaining    52,511 
-	 Epoch 00014 Batch 00140 : 1,568E+00	 Time remaining    48,145 
-	 Epoch 00014 Batch 00279 : 8,152E-01	 Time remaining    43,770 
-	 Epoch 00014 Batch 00418 : 2,144E+00	 Time remaining    39,411 
-	 Epoch 00014 Batch 00557 : 1,390E+00	 Time remaining    35,060 
-(3/8) 	Epoch 15/16	 
-	 Epoch 00015 Batch 00001 : 1,461E+00	 Time remaining    35,056 
-	 Epoch 00015 Batch 00140 : 1,883E+00	 Time remaining    30,672 
-	 Epoch 00015 Batch 00279 : 1,233E+00	 Time remaining    26,269 
-	 Epoch 00015 Batch 00418 : 1,016E+00	 Time remaining    21,890 
-	 Epoch 00015 Batch 00557 : 1,001E+00	 Time remaining    17,519 
-(3/8) 	Epoch 16/16	 
-	 Epoch 00016 Batch 00001 : 1,892E+00	 Time remaining    17,501 
-	 Epoch 00016 Batch 00140 : 1,128E+00	 Time remaining    13,118 
-	 Epoch 00016 Batch 00279 : 1,344E+00	 Time remaining     8,745 
-	 Epoch 00016 Batch 00418 : 1,712E+00	 Time remaining     4,371 
-	 Epoch 00016 Batch 00557 : 5,931E-01	 Time remaining     0,000 
-	 Score 0 : 0,52564 	 Score 1 : 0,76154 
-Accuracy for test set : 0.6435899 
-
-
-Phase 4 / 8 
-Creating Dataset of size 1170... 
-0,100 Time Remaining :     3,969 
-0,200 Time Remaining :     3,272 
-0,300 Time Remaining :     2,830 
-0,400 Time Remaining :     2,455 
-0,500 Time Remaining :     2,007 
-0,600 Time Remaining :     1,560 
-0,700 Time Remaining :     1,166 
-0,800 Time Remaining :     0,780 
-0,900 Time Remaining :     0,382 
-1,000 Time Remaining :     0,000 
-Created - Total time     3,758 
-Creating Dataset of size 1170... 
-0,100 Time Remaining :     3,069 
-0,200 Time Remaining :     2,628 
-0,300 Time Remaining :     2,324 
-0,400 Time Remaining :     2,078 
-0,500 Time Remaining :     1,708 
-0,600 Time Remaining :     1,352 
-0,700 Time Remaining :     1,006 
-0,800 Time Remaining :     0,662 
-0,900 Time Remaining :     0,328 
-1,000 Time Remaining :     0,000 
-Created - Total time     3,323 
-Creating Dataset of size 18060... 
-0,100 Time Remaining :    47,394 
-0,200 Time Remaining :    42,796 
-0,300 Time Remaining :    37,658 
-0,400 Time Remaining :    32,320 
-0,500 Time Remaining :    26,688 
-0,600 Time Remaining :    21,099 
-0,700 Time Remaining :    15,865 
-0,800 Time Remaining :    10,539 
-0,900 Time Remaining :     5,319 
-1,000 Time Remaining :     0,000 
-Created - Total time    53,082 
-Mini Batch Gradient Descent 4/8 - 16 Epochs - 32 Batch Size - 9,088E-01 LR 
-(4/8) 	Epoch 1/16	 
-	 Epoch 00001 Batch 00001 : 7,388E-01	 Time remaining  1777,531 
-	 Epoch 00001 Batch 00142 : 1,749E+00	 Time remaining   282,848 
-	 Epoch 00001 Batch 00283 : 1,606E+00	 Time remaining   266,894 
-	 Epoch 00001 Batch 00424 : 2,125E+00	 Time remaining   259,460 
-(4/8) 	Epoch 2/16	 
-	 Epoch 00002 Batch 00001 : 1,516E+00	 Time remaining   256,240 
-	 Epoch 00002 Batch 00142 : 1,818E+00	 Time remaining   251,284 
-	 Epoch 00002 Batch 00283 : 1,578E+00	 Time remaining   246,285 
-	 Epoch 00002 Batch 00424 : 1,421E+00	 Time remaining   241,348 
-(4/8) 	Epoch 3/16	 
-	 Epoch 00003 Batch 00001 : 1,494E+00	 Time remaining   237,542 
-	 Epoch 00003 Batch 00142 : 1,617E+00	 Time remaining   232,480 
-	 Epoch 00003 Batch 00283 : 1,665E+00	 Time remaining   228,212 
-	 Epoch 00003 Batch 00424 : 1,140E+00	 Time remaining   223,732 
-(4/8) 	Epoch 4/16	 
-	 Epoch 00004 Batch 00001 : 1,203E+00	 Time remaining   220,493 
-	 Epoch 00004 Batch 00142 : 1,380E+00	 Time remaining   215,916 
-	 Epoch 00004 Batch 00283 : 6,123E-01	 Time remaining   211,274 
-	 Epoch 00004 Batch 00424 : 7,677E-01	 Time remaining   207,018 
-(4/8) 	Epoch 5/16	 
-	 Epoch 00005 Batch 00001 : 7,406E-01	 Time remaining   203,277 
-	 Epoch 00005 Batch 00142 : 1,257E+00	 Time remaining   199,040 
-	 Epoch 00005 Batch 00283 : 1,458E+00	 Time remaining   195,459 
-	 Epoch 00005 Batch 00424 : 1,004E+00	 Time remaining   190,893 
-(4/8) 	Epoch 6/16	 
-	 Epoch 00006 Batch 00001 : 1,274E+00	 Time remaining   187,922 
-	 Epoch 00006 Batch 00142 : 1,733E+00	 Time remaining   184,455 
-	 Epoch 00006 Batch 00283 : 1,669E+00	 Time remaining   180,133 
-	 Epoch 00006 Batch 00424 : 1,920E+00	 Time remaining   175,832 
-(4/8) 	Epoch 7/16	 
-	 Epoch 00007 Batch 00001 : 1,162E+00	 Time remaining   172,162 
-	 Epoch 00007 Batch 00142 : 2,348E+00	 Time remaining   168,043 
-	 Epoch 00007 Batch 00283 : 1,099E+00	 Time remaining   163,662 
-	 Epoch 00007 Batch 00424 : 9,474E-01	 Time remaining   159,641 
-(4/8) 	Epoch 8/16	 
-	 Epoch 00008 Batch 00001 : 1,024E+00	 Time remaining   155,904 
-	 Epoch 00008 Batch 00142 : 1,483E+00	 Time remaining   151,854 
-	 Epoch 00008 Batch 00283 : 1,357E+00	 Time remaining   147,819 
-	 Epoch 00008 Batch 00424 : 1,030E+00	 Time remaining   143,713 
-(4/8) 	Epoch 9/16	 
-	 Epoch 00009 Batch 00001 : 1,145E+00	 Time remaining   139,593 
-	 Epoch 00009 Batch 00142 : 1,490E+00	 Time remaining   135,112 
-	 Epoch 00009 Batch 00283 : 9,627E-01	 Time remaining   130,639 
-	 Epoch 00009 Batch 00424 : 1,755E+00	 Time remaining   126,302 
-(4/8) 	Epoch 10/16	 
-	 Epoch 00010 Batch 00001 : 1,326E+00	 Time remaining   122,749 
-	 Epoch 00010 Batch 00142 : 1,503E+00	 Time remaining   118,240 
-	 Epoch 00010 Batch 00283 : 1,157E+00	 Time remaining   113,731 
-	 Epoch 00010 Batch 00424 : 1,267E+00	 Time remaining   109,257 
-(4/8) 	Epoch 11/16	 
-	 Epoch 00011 Batch 00001 : 1,665E+00	 Time remaining   104,932 
-	 Epoch 00011 Batch 00142 : 1,507E+00	 Time remaining   100,462 
-	 Epoch 00011 Batch 00283 : 2,178E+00	 Time remaining    96,011 
-	 Epoch 00011 Batch 00424 : 9,232E-01	 Time remaining    91,738 
-(4/8) 	Epoch 12/16	 
-	 Epoch 00012 Batch 00001 : 1,191E+00	 Time remaining    87,429 
-	 Epoch 00012 Batch 00142 : 8,073E-01	 Time remaining    83,077 
-	 Epoch 00012 Batch 00283 : 6,218E-01	 Time remaining    78,698 
-	 Epoch 00012 Batch 00424 : 1,170E+00	 Time remaining    74,521 
-(4/8) 	Epoch 13/16	 
-	 Epoch 00013 Batch 00001 : 1,555E+00	 Time remaining    70,205 
-	 Epoch 00013 Batch 00142 : 1,730E+00	 Time remaining    65,860 
-	 Epoch 00013 Batch 00283 : 1,533E+00	 Time remaining    61,493 
-	 Epoch 00013 Batch 00424 : 9,569E-01	 Time remaining    57,109 
-(4/8) 	Epoch 14/16	 
-	 Epoch 00014 Batch 00001 : 8,125E-01	 Time remaining    52,816 
-	 Epoch 00014 Batch 00142 : 9,260E-01	 Time remaining    48,396 
-	 Epoch 00014 Batch 00283 : 1,185E+00	 Time remaining    44,010 
-	 Epoch 00014 Batch 00424 : 1,273E+00	 Time remaining    39,570 
-(4/8) 	Epoch 15/16	 
-	 Epoch 00015 Batch 00001 : 1,335E+00	 Time remaining    35,186 
-	 Epoch 00015 Batch 00142 : 1,055E+00	 Time remaining    30,776 
-	 Epoch 00015 Batch 00283 : 1,010E+00	 Time remaining    26,355 
-	 Epoch 00015 Batch 00424 : 7,634E-01	 Time remaining    21,979 
-(4/8) 	Epoch 16/16	 
-	 Epoch 00016 Batch 00001 : 1,431E+00	 Time remaining    17,645 
-	 Epoch 00016 Batch 00142 : 8,886E-01	 Time remaining    13,238 
-	 Epoch 00016 Batch 00283 : 8,649E-01	 Time remaining     8,820 
-	 Epoch 00016 Batch 00424 : 1,142E+00	 Time remaining     4,395 
-	 Score 0 : 0,53162 	 Score 1 : 0,77949 
-Accuracy for test set : 0.6555557 
-
-
-Phase 5 / 8 
-Creating Dataset of size 1170... 
-0,100 Time Remaining :     3,186 
-0,200 Time Remaining :     2,760 
-0,300 Time Remaining :     2,352 
-0,400 Time Remaining :     1,995 
-0,500 Time Remaining :     1,644 
-0,600 Time Remaining :     1,308 
-0,700 Time Remaining :     0,980 
-0,800 Time Remaining :     0,650 
-0,900 Time Remaining :     0,326 
-1,000 Time Remaining :     0,000 
-Created - Total time     3,248 
-Creating Dataset of size 1170... 
-0,100 Time Remaining :     3,393 
-0,200 Time Remaining :     2,756 
-0,300 Time Remaining :     2,380 
-0,400 Time Remaining :     1,983 
-0,500 Time Remaining :     1,646 
-0,600 Time Remaining :     1,307 
-0,700 Time Remaining :     0,974 
-0,800 Time Remaining :     0,650 
-0,900 Time Remaining :     0,323 
-1,000 Time Remaining :     0,000 
-Created - Total time     3,239 
-Creating Dataset of size 17940... 
-0,100 Time Remaining :    44,307 
-0,200 Time Remaining :    38,136 
-0,300 Time Remaining :    33,052 
-0,400 Time Remaining :    28,535 
-0,500 Time Remaining :    24,590 
-0,600 Time Remaining :    20,583 
-0,700 Time Remaining :    15,485 
-0,800 Time Remaining :    10,463 
-0,900 Time Remaining :     5,236 
-1,000 Time Remaining :     0,000 
-Created - Total time    51,927 
-Mini Batch Gradient Descent 5/8 - 16 Epochs - 32 Batch Size - 8,803E-01 LR 
-(5/8) 	Epoch 1/16	 
-	 Epoch 00001 Batch 00001 : 9,224E-01	 Time remaining  1773,882 
-	 Epoch 00001 Batch 00141 : 1,309E+00	 Time remaining   293,154 
-	 Epoch 00001 Batch 00281 : 1,217E+00	 Time remaining   281,681 
-	 Epoch 00001 Batch 00421 : 9,899E-01	 Time remaining   270,490 
-(5/8) 	Epoch 2/16	 
-	 Epoch 00002 Batch 00001 : 1,523E+00	 Time remaining   263,812 
-	 Epoch 00002 Batch 00141 : 1,546E+00	 Time remaining   255,628 
-	 Epoch 00002 Batch 00281 : 1,705E+00	 Time remaining   249,835 
-	 Epoch 00002 Batch 00421 : 1,309E+00	 Time remaining   242,721 
-(5/8) 	Epoch 3/16	 
-	 Epoch 00003 Batch 00001 : 1,358E+00	 Time remaining   237,680 
-	 Epoch 00003 Batch 00141 : 1,206E+00	 Time remaining   231,501 
-	 Epoch 00003 Batch 00281 : 1,588E+00	 Time remaining   225,950 
-	 Epoch 00003 Batch 00421 : 1,093E+00	 Time remaining   220,890 
-(5/8) 	Epoch 4/16	 
-	 Epoch 00004 Batch 00001 : 9,524E-01	 Time remaining   216,729 
-	 Epoch 00004 Batch 00141 : 9,037E-01	 Time remaining   211,990 
-	 Epoch 00004 Batch 00281 : 5,213E-01	 Time remaining   207,422 
-	 Epoch 00004 Batch 00421 : 8,663E-01	 Time remaining   202,783 
-(5/8) 	Epoch 5/16	 
-	 Epoch 00005 Batch 00001 : 1,262E+00	 Time remaining   198,842 
-	 Epoch 00005 Batch 00141 : 1,345E+00	 Time remaining   194,477 
-	 Epoch 00005 Batch 00281 : 1,938E+00	 Time remaining   190,721 
-	 Epoch 00005 Batch 00421 : 1,093E+00	 Time remaining   186,368 
-(5/8) 	Epoch 6/16	 
-	 Epoch 00006 Batch 00001 : 8,800E-01	 Time remaining   182,740 
-	 Epoch 00006 Batch 00141 : 7,085E-01	 Time remaining   179,078 
-	 Epoch 00006 Batch 00281 : 1,326E+00	 Time remaining   175,185 
-	 Epoch 00006 Batch 00421 : 1,205E+00	 Time remaining   171,308 
-(5/8) 	Epoch 7/16	 
-	 Epoch 00007 Batch 00001 : 1,104E+00	 Time remaining   167,480 
-	 Epoch 00007 Batch 00141 : 1,628E+00	 Time remaining   163,173 
-	 Epoch 00007 Batch 00281 : 1,364E+00	 Time remaining   159,076 
-	 Epoch 00007 Batch 00421 : 9,629E-01	 Time remaining   155,089 
-(5/8) 	Epoch 8/16	 
-	 Epoch 00008 Batch 00001 : 9,111E-01	 Time remaining   151,278 
-	 Epoch 00008 Batch 00141 : 8,226E-01	 Time remaining   147,179 
-	 Epoch 00008 Batch 00281 : 1,525E+00	 Time remaining   143,511 
-	 Epoch 00008 Batch 00421 : 1,381E+00	 Time remaining   140,192 
-(5/8) 	Epoch 9/16	 
-	 Epoch 00009 Batch 00001 : 6,274E-01	 Time remaining   136,497 
-	 Epoch 00009 Batch 00141 : 1,904E+00	 Time remaining   132,534 
-	 Epoch 00009 Batch 00281 : 1,706E+00	 Time remaining   128,587 
-	 Epoch 00009 Batch 00421 : 1,471E+00	 Time remaining   124,604 
-(5/8) 	Epoch 10/16	 
-	 Epoch 00010 Batch 00001 : 1,976E+00	 Time remaining   120,603 
-	 Epoch 00010 Batch 00141 : 1,318E+00	 Time remaining   116,237 
-	 Epoch 00010 Batch 00281 : 1,013E+00	 Time remaining   112,000 
-	 Epoch 00010 Batch 00421 : 7,893E-01	 Time remaining   107,787 
-(5/8) 	Epoch 11/16	 
-	 Epoch 00011 Batch 00001 : 8,776E-01	 Time remaining   103,537 
-	 Epoch 00011 Batch 00141 : 1,169E+00	 Time remaining    99,315 
-	 Epoch 00011 Batch 00281 : 1,163E+00	 Time remaining    94,973 
-	 Epoch 00011 Batch 00421 : 5,879E-01	 Time remaining    90,690 
-(5/8) 	Epoch 12/16	 
-	 Epoch 00012 Batch 00001 : 7,471E-01	 Time remaining    86,505 
-	 Epoch 00012 Batch 00141 : 6,204E-01	 Time remaining    82,180 
-	 Epoch 00012 Batch 00281 : 1,890E+00	 Time remaining    77,884 
-	 Epoch 00012 Batch 00421 : 1,057E+00	 Time remaining    73,615 
-(5/8) 	Epoch 13/16	 
-	 Epoch 00013 Batch 00001 : 6,893E-01	 Time remaining    69,600 
-	 Epoch 00013 Batch 00141 : 1,327E+00	 Time remaining    65,450 
-	 Epoch 00013 Batch 00281 : 1,386E+00	 Time remaining    61,112 
-	 Epoch 00013 Batch 00421 : 9,783E-01	 Time remaining    56,892 
-(5/8) 	Epoch 14/16	 
-	 Epoch 00014 Batch 00001 : 1,005E+00	 Time remaining    52,657 
-	 Epoch 00014 Batch 00141 : 8,380E-01	 Time remaining    48,352 
-	 Epoch 00014 Batch 00281 : 1,721E+00	 Time remaining    44,043 
-	 Epoch 00014 Batch 00421 : 1,015E+00	 Time remaining    39,685 
-(5/8) 	Epoch 15/16	 
-	 Epoch 00015 Batch 00001 : 1,358E+00	 Time remaining    35,345 
-	 Epoch 00015 Batch 00141 : 9,117E-01	 Time remaining    30,978 
-	 Epoch 00015 Batch 00281 : 1,490E+00	 Time remaining    26,655 
-	 Epoch 00015 Batch 00421 : 7,479E-01	 Time remaining    22,235 
-(5/8) 	Epoch 16/16	 
-	 Epoch 00016 Batch 00001 : 9,965E-01	 Time remaining    17,816 
-	 Epoch 00016 Batch 00141 : 4,309E-01	 Time remaining    13,356 
-	 Epoch 00016 Batch 00281 : 8,226E-01	 Time remaining     8,897 
-	 Epoch 00016 Batch 00421 : 7,754E-01	 Time remaining     4,431 
-	 Score 0 : 0,54530 	 Score 1 : 0,79145 
-Accuracy for test set : 0.66837627 
-
-
-Phase 6 / 8 
-Creating Dataset of size 1170... 
-0,100 Time Remaining :     4,230 
-0,200 Time Remaining :     3,784 
-0,300 Time Remaining :     3,050 
-0,400 Time Remaining :     2,502 
-0,500 Time Remaining :     2,001 
-0,600 Time Remaining :     1,595 
-0,700 Time Remaining :     1,188 
-0,800 Time Remaining :     0,788 
-0,900 Time Remaining :     0,394 
-1,000 Time Remaining :     0,000 
-Created - Total time     4,063 
-Creating Dataset of size 1170... 
-0,100 Time Remaining :     4,158 
-0,200 Time Remaining :     3,820 
-0,300 Time Remaining :     3,124 
-0,400 Time Remaining :     2,589 
-0,500 Time Remaining :     2,113 
-0,600 Time Remaining :     1,763 
-0,700 Time Remaining :     1,436 
-0,800 Time Remaining :     0,973 
-0,900 Time Remaining :     0,480 
-1,000 Time Remaining :     0,000 
-Created - Total time     4,669 
-Creating Dataset of size 17940... 
-0,100 Time Remaining :    46,818 
-0,200 Time Remaining :    42,108 
-0,300 Time Remaining :    37,021 
-0,400 Time Remaining :    31,207 
-0,500 Time Remaining :    25,538 
-0,600 Time Remaining :    20,179 
-0,700 Time Remaining :    15,108 
-0,800 Time Remaining :    10,062 
-0,900 Time Remaining :     5,070 
-1,000 Time Remaining :     0,000 
-Created - Total time    51,108 
-Mini Batch Gradient Descent 6/8 - 16 Epochs - 32 Batch Size - 8,527E-01 LR 
-(6/8) 	Epoch 1/16	 
-	 Epoch 00001 Batch 00001 : 9,863E-01	 Time remaining  1720,128 
-	 Epoch 00001 Batch 00141 : 2,095E+00	 Time remaining   275,140 
-	 Epoch 00001 Batch 00281 : 1,255E+00	 Time remaining   265,343 
-	 Epoch 00001 Batch 00421 : 1,813E+00	 Time remaining   258,888 
-(6/8) 	Epoch 2/16	 
-	 Epoch 00002 Batch 00001 : 1,441E+00	 Time remaining   256,596 
-	 Epoch 00002 Batch 00141 : 1,482E+00	 Time remaining   250,173 
-	 Epoch 00002 Batch 00281 : 1,559E+00	 Time remaining   244,545 
-	 Epoch 00002 Batch 00421 : 1,366E+00	 Time remaining   240,338 
-(6/8) 	Epoch 3/16	 
-	 Epoch 00003 Batch 00001 : 1,241E+00	 Time remaining   237,128 
-	 Epoch 00003 Batch 00141 : 1,620E+00	 Time remaining   232,698 
-	 Epoch 00003 Batch 00281 : 9,174E-01	 Time remaining   230,477 
-	 Epoch 00003 Batch 00421 : 8,491E-01	 Time remaining   230,677 
-(6/8) 	Epoch 4/16	 
-	 Epoch 00004 Batch 00001 : 1,095E+00	 Time remaining   231,391 
-	 Epoch 00004 Batch 00141 : 7,383E-01	 Time remaining   229,608 
-	 Epoch 00004 Batch 00281 : 1,197E+00	 Time remaining   226,684 
-	 Epoch 00004 Batch 00421 : 6,502E-01	 Time remaining   223,151 
-(6/8) 	Epoch 5/16	 
-	 Epoch 00005 Batch 00001 : 9,327E-01	 Time remaining   221,757 
-	 Epoch 00005 Batch 00141 : 1,251E+00	 Time remaining   219,682 
-	 Epoch 00005 Batch 00281 : 1,164E+00	 Time remaining   216,650 
-	 Epoch 00005 Batch 00421 : 1,506E+00	 Time remaining   212,170 
-(6/8) 	Epoch 6/16	 
-	 Epoch 00006 Batch 00001 : 1,493E+00	 Time remaining   208,744 
-	 Epoch 00006 Batch 00141 : 9,820E-01	 Time remaining   205,493 
-	 Epoch 00006 Batch 00281 : 1,289E+00	 Time remaining   202,243 
-	 Epoch 00006 Batch 00421 : 9,415E-01	 Time remaining   199,415 
-(6/8) 	Epoch 7/16	 
-	 Epoch 00007 Batch 00001 : 1,060E+00	 Time remaining   196,601 
-	 Epoch 00007 Batch 00141 : 1,131E+00	 Time remaining   192,125 
-	 Epoch 00007 Batch 00281 : 8,475E-01	 Time remaining   188,388 
-	 Epoch 00007 Batch 00421 : 7,018E-01	 Time remaining   184,436 
-(6/8) 	Epoch 8/16	 
-	 Epoch 00008 Batch 00001 : 5,561E-01	 Time remaining   180,763 
-	 Epoch 00008 Batch 00141 : 1,477E+00	 Time remaining   176,258 
-	 Epoch 00008 Batch 00281 : 7,813E-01	 Time remaining   171,220 
-	 Epoch 00008 Batch 00421 : 1,050E+00	 Time remaining   166,264 
-(6/8) 	Epoch 9/16	 
-	 Epoch 00009 Batch 00001 : 9,622E-01	 Time remaining   161,367 
-	 Epoch 00009 Batch 00141 : 1,079E+00	 Time remaining   156,711 
-	 Epoch 00009 Batch 00281 : 1,096E+00	 Time remaining   152,272 
-	 Epoch 00009 Batch 00421 : 6,397E-01	 Time remaining   147,556 
-(6/8) 	Epoch 10/16	 
-	 Epoch 00010 Batch 00001 : 1,521E+00	 Time remaining   142,640 
-	 Epoch 00010 Batch 00141 : 1,218E+00	 Time remaining   137,853 
-	 Epoch 00010 Batch 00281 : 1,626E+00	 Time remaining   133,160 
-	 Epoch 00010 Batch 00421 : 1,064E+00	 Time remaining   128,330 
-(6/8) 	Epoch 11/16	 
-	 Epoch 00011 Batch 00001 : 1,037E+00	 Time remaining   123,511 
-	 Epoch 00011 Batch 00141 : 1,444E+00	 Time remaining   118,208 
-	 Epoch 00011 Batch 00281 : 1,054E+00	 Time remaining   112,851 
-	 Epoch 00011 Batch 00421 : 6,430E-01	 Time remaining   107,449 
-(6/8) 	Epoch 12/16	 
-	 Epoch 00012 Batch 00001 : 8,252E-01	 Time remaining   102,191 
-	 Epoch 00012 Batch 00141 : 9,138E-01	 Time remaining    96,836 
-	 Epoch 00012 Batch 00281 : 7,826E-01	 Time remaining    91,469 
-	 Epoch 00012 Batch 00421 : 1,168E+00	 Time remaining    86,263 
-(6/8) 	Epoch 13/16	 
-	 Epoch 00013 Batch 00001 : 7,175E-01	 Time remaining    81,226 
-	 Epoch 00013 Batch 00141 : 1,433E+00	 Time remaining    76,083 
-	 Epoch 00013 Batch 00281 : 1,774E+00	 Time remaining    70,970 
-	 Epoch 00013 Batch 00421 : 9,276E-01	 Time remaining    66,124 
-(6/8) 	Epoch 14/16	 
-	 Epoch 00014 Batch 00001 : 1,059E+00	 Time remaining    61,224 
-	 Epoch 00014 Batch 00141 : 1,385E+00	 Time remaining    56,214 
-	 Epoch 00014 Batch 00281 : 1,176E+00	 Time remaining    51,158 
-	 Epoch 00014 Batch 00421 : 7,163E-01	 Time remaining    46,026 
-(6/8) 	Epoch 15/16	 
-	 Epoch 00015 Batch 00001 : 1,239E+00	 Time remaining    40,880 
-	 Epoch 00015 Batch 00141 : 7,765E-01	 Time remaining    35,705 
-	 Epoch 00015 Batch 00281 : 9,790E-01	 Time remaining    30,551 
-	 Epoch 00015 Batch 00421 : 8,825E-01	 Time remaining    25,408 
-(6/8) 	Epoch 16/16	 
-	 Epoch 00016 Batch 00001 : 1,873E+00	 Time remaining    20,295 
-	 Epoch 00016 Batch 00141 : 1,132E+00	 Time remaining    15,183 
-	 Epoch 00016 Batch 00281 : 6,394E-01	 Time remaining    10,103 
-	 Epoch 00016 Batch 00421 : 1,117E+00	 Time remaining     5,033 
-	 Score 0 : 0,55128 	 Score 1 : 0,79231 
-Accuracy for test set : 0.67179507 
-
-
-Phase 7 / 8 
-Creating Dataset of size 1170... 
-0,100 Time Remaining :     4,689 
-0,200 Time Remaining :     4,112 
-0,300 Time Remaining :     3,556 
-0,400 Time Remaining :     2,907 
-0,500 Time Remaining :     2,309 
-0,600 Time Remaining :     1,777 
-0,700 Time Remaining :     1,296 
-0,800 Time Remaining :     0,841 
-0,900 Time Remaining :     0,412 
-1,000 Time Remaining :     0,000 
-Created - Total time     4,058 
-Creating Dataset of size 1170... 
-0,100 Time Remaining :     3,429 
-0,200 Time Remaining :     2,920 
-0,300 Time Remaining :     2,660 
-0,400 Time Remaining :     2,312 
-0,500 Time Remaining :     1,928 
-0,600 Time Remaining :     1,535 
-0,700 Time Remaining :     1,137 
-0,800 Time Remaining :     0,747 
-0,900 Time Remaining :     0,371 
-1,000 Time Remaining :     0,000 
-Created - Total time     3,685 
-Creating Dataset of size 17960... 
-0,100 Time Remaining :    49,104 
-0,200 Time Remaining :    43,276 
-0,300 Time Remaining :    40,164 
-0,400 Time Remaining :    34,411 
-0,500 Time Remaining :    29,557 
-0,600 Time Remaining :    24,080 
-0,700 Time Remaining :    17,843 
-0,800 Time Remaining :    11,602 
-0,900 Time Remaining :     5,693 
-1,000 Time Remaining :     0,000 
-Created - Total time    56,003 
-Mini Batch Gradient Descent 7/8 - 16 Epochs - 32 Batch Size - 8,259E-01 LR 
-(7/8) 	Epoch 1/16	 
-	 Epoch 00001 Batch 00001 : 7,984E-01	 Time remaining  1669,350 
-	 Epoch 00001 Batch 00141 : 1,500E+00	 Time remaining   371,258 
-	 Epoch 00001 Batch 00281 : 7,799E-01	 Time remaining   374,875 
-	 Epoch 00001 Batch 00421 : 1,777E+00	 Time remaining   363,842 
-	 Epoch 00001 Batch 00561 : 7,906E-01	 Time remaining   355,890 
-(7/8) 	Epoch 2/16	 
-	 Epoch 00002 Batch 00001 : 1,313E+00	 Time remaining   360,559 
-	 Epoch 00002 Batch 00141 : 1,078E+00	 Time remaining   345,610 
-	 Epoch 00002 Batch 00281 : 7,681E-01	 Time remaining   328,828 
-	 Epoch 00002 Batch 00421 : 1,214E+00	 Time remaining   316,137 
-	 Epoch 00002 Batch 00561 : 6,712E-01	 Time remaining   305,179 
-(7/8) 	Epoch 3/16	 
-	 Epoch 00003 Batch 00001 : 1,313E+00	 Time remaining   306,812 
-	 Epoch 00003 Batch 00141 : 1,041E+00	 Time remaining   296,331 
-	 Epoch 00003 Batch 00281 : 9,798E-01	 Time remaining   287,261 
-	 Epoch 00003 Batch 00421 : 1,082E+00	 Time remaining   280,166 
-	 Epoch 00003 Batch 00561 : 1,050E+00	 Time remaining   273,858 
-(7/8) 	Epoch 4/16	 
-	 Epoch 00004 Batch 00001 : 8,617E-01	 Time remaining   274,987 
-	 Epoch 00004 Batch 00141 : 6,549E-01	 Time remaining   267,392 
-	 Epoch 00004 Batch 00281 : 8,663E-01	 Time remaining   259,612 
-	 Epoch 00004 Batch 00421 : 1,463E+00	 Time remaining   252,664 
-	 Epoch 00004 Batch 00561 : 9,944E-01	 Time remaining   247,944 
-(7/8) 	Epoch 5/16	 
-	 Epoch 00005 Batch 00001 : 8,384E-01	 Time remaining   248,852 
-	 Epoch 00005 Batch 00141 : 1,538E+00	 Time remaining   244,751 
-	 Epoch 00005 Batch 00281 : 1,528E+00	 Time remaining   238,769 
-	 Epoch 00005 Batch 00421 : 1,065E+00	 Time remaining   233,003 
-	 Epoch 00005 Batch 00561 : 1,104E+00	 Time remaining   227,091 
-(7/8) 	Epoch 6/16	 
-	 Epoch 00006 Batch 00001 : 1,243E+00	 Time remaining   227,611 
-	 Epoch 00006 Batch 00141 : 9,127E-01	 Time remaining   222,011 
-	 Epoch 00006 Batch 00281 : 1,602E+00	 Time remaining   216,119 
-	 Epoch 00006 Batch 00421 : 8,978E-01	 Time remaining   210,486 
-	 Epoch 00006 Batch 00561 : 8,918E-01	 Time remaining   204,813 
-(7/8) 	Epoch 7/16	 
-	 Epoch 00007 Batch 00001 : 1,648E+00	 Time remaining   205,117 
-	 Epoch 00007 Batch 00141 : 5,958E-01	 Time remaining   199,477 
-	 Epoch 00007 Batch 00281 : 1,121E+00	 Time remaining   194,046 
-	 Epoch 00007 Batch 00421 : 7,224E-01	 Time remaining   188,520 
-	 Epoch 00007 Batch 00561 : 1,695E+00	 Time remaining   183,408 
-(7/8) 	Epoch 8/16	 
-	 Epoch 00008 Batch 00001 : 1,072E+00	 Time remaining   183,627 
-	 Epoch 00008 Batch 00141 : 8,169E-01	 Time remaining   178,941 
-	 Epoch 00008 Batch 00281 : 6,961E-01	 Time remaining   173,923 
-	 Epoch 00008 Batch 00421 : 6,373E-01	 Time remaining   168,454 
-	 Epoch 00008 Batch 00561 : 4,885E-01	 Time remaining   162,886 
-(7/8) 	Epoch 9/16	 
-	 Epoch 00009 Batch 00001 : 1,051E+00	 Time remaining   163,036 
-	 Epoch 00009 Batch 00141 : 1,105E+00	 Time remaining   157,489 
-	 Epoch 00009 Batch 00281 : 1,006E+00	 Time remaining   151,933 
-	 Epoch 00009 Batch 00421 : 5,568E-01	 Time remaining   146,524 
-	 Epoch 00009 Batch 00561 : 1,349E+00	 Time remaining   141,098 
-(7/8) 	Epoch 10/16	 
-	 Epoch 00010 Batch 00001 : 7,556E-01	 Time remaining   141,226 
-	 Epoch 00010 Batch 00141 : 1,169E+00	 Time remaining   135,739 
-	 Epoch 00010 Batch 00281 : 1,376E+00	 Time remaining   130,413 
-	 Epoch 00010 Batch 00421 : 1,272E+00	 Time remaining   125,094 
-	 Epoch 00010 Batch 00561 : 1,032E+00	 Time remaining   119,807 
-(7/8) 	Epoch 11/16	 
-	 Epoch 00011 Batch 00001 : 6,337E-01	 Time remaining   119,906 
-	 Epoch 00011 Batch 00141 : 9,281E-01	 Time remaining   114,649 
-	 Epoch 00011 Batch 00281 : 8,639E-01	 Time remaining   109,437 
-	 Epoch 00011 Batch 00421 : 7,752E-01	 Time remaining   104,343 
-	 Epoch 00011 Batch 00561 : 1,035E+00	 Time remaining    99,248 
-(7/8) 	Epoch 12/16	 
-	 Epoch 00012 Batch 00001 : 6,290E-01	 Time remaining    99,343 
-	 Epoch 00012 Batch 00141 : 1,649E+00	 Time remaining    94,442 
-	 Epoch 00012 Batch 00281 : 9,148E-01	 Time remaining    89,623 
-	 Epoch 00012 Batch 00421 : 6,261E-01	 Time remaining    84,876 
-	 Epoch 00012 Batch 00561 : 1,246E+00	 Time remaining    79,936 
-(7/8) 	Epoch 13/16	 
-	 Epoch 00013 Batch 00001 : 4,599E-01	 Time remaining    80,007 
-	 Epoch 00013 Batch 00141 : 9,989E-01	 Time remaining    75,040 
-	 Epoch 00013 Batch 00281 : 7,320E-01	 Time remaining    70,046 
-	 Epoch 00013 Batch 00421 : 9,621E-01	 Time remaining    65,004 
-	 Epoch 00013 Batch 00561 : 1,376E+00	 Time remaining    59,947 
-(7/8) 	Epoch 14/16	 
-	 Epoch 00014 Batch 00001 : 7,743E-01	 Time remaining    59,963 
-	 Epoch 00014 Batch 00141 : 9,233E-01	 Time remaining    54,899 
-	 Epoch 00014 Batch 00281 : 1,190E+00	 Time remaining    49,846 
-	 Epoch 00014 Batch 00421 : 1,470E+00	 Time remaining    44,825 
-	 Epoch 00014 Batch 00561 : 7,694E-01	 Time remaining    39,912 
-(7/8) 	Epoch 15/16	 
-	 Epoch 00015 Batch 00001 : 1,454E+00	 Time remaining    39,920 
-	 Epoch 00015 Batch 00141 : 1,553E+00	 Time remaining    34,961 
-	 Epoch 00015 Batch 00281 : 1,086E+00	 Time remaining    29,959 
-	 Epoch 00015 Batch 00421 : 9,415E-01	 Time remaining    24,947 
-	 Epoch 00015 Batch 00561 : 1,002E+00	 Time remaining    19,955 
-(7/8) 	Epoch 16/16	 
-	 Epoch 00016 Batch 00001 : 8,394E-01	 Time remaining    19,935 
-	 Epoch 00016 Batch 00141 : 9,540E-01	 Time remaining    14,948 
-	 Epoch 00016 Batch 00281 : 1,333E+00	 Time remaining     9,956 
-	 Epoch 00016 Batch 00421 : 5,538E-01	 Time remaining     4,974 
-	 Epoch 00016 Batch 00561 : 5,843E-01	 Time remaining     0,000 
-	 Score 0 : 0,56154 	 Score 1 : 0,80855 
-Accuracy for test set : 0.6850431 
-
-
-Phase 8 / 8 
-Creating Dataset of size 1170... 
-0,100 Time Remaining :     3,978 
-0,200 Time Remaining :     3,584 
-0,300 Time Remaining :     2,989 
-0,400 Time Remaining :     2,428 
-0,500 Time Remaining :     1,937 
-0,600 Time Remaining :     1,497 
-0,700 Time Remaining :     1,105 
-0,800 Time Remaining :     0,733 
-0,900 Time Remaining :     0,362 
-1,000 Time Remaining :     0,000 
-Created - Total time     3,582 
-Creating Dataset of size 1170... 
-0,100 Time Remaining :     3,114 
-0,200 Time Remaining :     2,936 
-0,300 Time Remaining :     2,408 
-0,400 Time Remaining :     1,991 
-0,500 Time Remaining :     1,609 
-0,600 Time Remaining :     1,276 
-0,700 Time Remaining :     0,946 
-0,800 Time Remaining :     0,630 
-0,900 Time Remaining :     0,316 
-1,000 Time Remaining :     0,000 
-Created - Total time     3,159 
-Creating Dataset of size 18020... 
-0,100 Time Remaining :    52,704 
-0,200 Time Remaining :    48,556 
-0,300 Time Remaining :    41,167 
-0,400 Time Remaining :    35,187 
-0,500 Time Remaining :    29,418 
-0,600 Time Remaining :    23,543 
-0,700 Time Remaining :    17,705 
-0,800 Time Remaining :    11,764 
-0,900 Time Remaining :     5,833 
-1,000 Time Remaining :     0,000 
-Created - Total time    57,898 
-Mini Batch Gradient Descent 8/8 - 16 Epochs - 32 Batch Size - 8,000E-01 LR 
-(8/8) 	Epoch 1/16	 
-	 Epoch 00001 Batch 00001 : 6,463E-01	 Time remaining  1810,407 
-	 Epoch 00001 Batch 00141 : 1,909E+00	 Time remaining   302,924 
-	 Epoch 00001 Batch 00281 : 1,388E+00	 Time remaining   297,743 
-	 Epoch 00001 Batch 00421 : 9,244E-01	 Time remaining   303,951 
-	 Epoch 00001 Batch 00561 : 6,943E-01	 Time remaining   307,118 
-(8/8) 	Epoch 2/16	 
-	 Epoch 00002 Batch 00001 : 1,007E+00	 Time remaining   311,590 
-	 Epoch 00002 Batch 00141 : 1,560E+00	 Time remaining   299,097 
-	 Epoch 00002 Batch 00281 : 1,146E+00	 Time remaining   298,944 
-	 Epoch 00002 Batch 00421 : 5,063E-01	 Time remaining   296,823 
-	 Epoch 00002 Batch 00561 : 1,332E+00	 Time remaining   290,368 
-(8/8) 	Epoch 3/16	 
-	 Epoch 00003 Batch 00001 : 7,806E-01	 Time remaining   291,597 
-	 Epoch 00003 Batch 00141 : 1,489E+00	 Time remaining   285,403 
-	 Epoch 00003 Batch 00281 : 1,103E+00	 Time remaining   280,248 
-	 Epoch 00003 Batch 00421 : 9,253E-01	 Time remaining   275,835 
-	 Epoch 00003 Batch 00561 : 9,736E-01	 Time remaining   271,610 
-(8/8) 	Epoch 4/16	 
-	 Epoch 00004 Batch 00001 : 6,332E-01	 Time remaining   272,931 
-	 Epoch 00004 Batch 00141 : 1,266E+00	 Time remaining   267,182 
-	 Epoch 00004 Batch 00281 : 1,152E+00	 Time remaining   260,924 
-	 Epoch 00004 Batch 00421 : 1,039E+00	 Time remaining   255,017 
-	 Epoch 00004 Batch 00561 : 6,743E-01	 Time remaining   249,076 
-(8/8) 	Epoch 5/16	 
-	 Epoch 00005 Batch 00001 : 8,703E-01	 Time remaining   249,737 
-	 Epoch 00005 Batch 00141 : 1,487E+00	 Time remaining   244,031 
-	 Epoch 00005 Batch 00281 : 5,958E-01	 Time remaining   238,785 
-	 Epoch 00005 Batch 00421 : 1,171E+00	 Time remaining   233,179 
-	 Epoch 00005 Batch 00561 : 1,266E+00	 Time remaining   227,506 
-(8/8) 	Epoch 6/16	 
-	 Epoch 00006 Batch 00001 : 7,873E-01	 Time remaining   227,967 
-	 Epoch 00006 Batch 00141 : 5,357E-01	 Time remaining   222,542 
-	 Epoch 00006 Batch 00281 : 1,209E+00	 Time remaining   217,623 
-	 Epoch 00006 Batch 00421 : 1,227E+00	 Time remaining   213,544 
-	 Epoch 00006 Batch 00561 : 8,783E-01	 Time remaining   208,402 
-(8/8) 	Epoch 7/16	 
-	 Epoch 00007 Batch 00001 : 1,742E+00	 Time remaining   208,659 
-	 Epoch 00007 Batch 00141 : 8,840E-01	 Time remaining   203,140 
-	 Epoch 00007 Batch 00281 : 8,930E-01	 Time remaining   198,259 
-	 Epoch 00007 Batch 00421 : 8,025E-01	 Time remaining   194,324 
-	 Epoch 00007 Batch 00561 : 1,215E+00	 Time remaining   189,140 
-(8/8) 	Epoch 8/16	 
-	 Epoch 00008 Batch 00001 : 1,277E+00	 Time remaining   189,338 
-	 Epoch 00008 Batch 00141 : 1,159E+00	 Time remaining   183,825 
-	 Epoch 00008 Batch 00281 : 7,059E-01	 Time remaining   178,267 
-	 Epoch 00008 Batch 00421 : 5,942E-01	 Time remaining   172,643 
-	 Epoch 00008 Batch 00561 : 1,394E+00	 Time remaining   167,008 
-(8/8) 	Epoch 9/16	 
-	 Epoch 00009 Batch 00001 : 8,851E-01	 Time remaining   167,098 
-	 Epoch 00009 Batch 00141 : 1,069E+00	 Time remaining   161,551 
-	 Epoch 00009 Batch 00281 : 7,258E-01	 Time remaining   156,472 
-	 Epoch 00009 Batch 00421 : 6,190E-01	 Time remaining   151,175 
-	 Epoch 00009 Batch 00561 : 8,216E-01	 Time remaining   146,005 
-(8/8) 	Epoch 10/16	 
-	 Epoch 00010 Batch 00001 : 4,852E-01	 Time remaining   146,114 
-	 Epoch 00010 Batch 00141 : 1,140E+00	 Time remaining   140,815 
-	 Epoch 00010 Batch 00281 : 1,072E+00	 Time remaining   135,326 
-	 Epoch 00010 Batch 00421 : 1,518E+00	 Time remaining   129,853 
-	 Epoch 00010 Batch 00561 : 1,432E+00	 Time remaining   124,339 
-(8/8) 	Epoch 11/16	 
-	 Epoch 00011 Batch 00001 : 8,457E-01	 Time remaining   124,410 
-	 Epoch 00011 Batch 00141 : 8,615E-01	 Time remaining   118,967 
-	 Epoch 00011 Batch 00281 : 6,110E-01	 Time remaining   113,606 
-	 Epoch 00011 Batch 00421 : 1,300E+00	 Time remaining   108,189 
-	 Epoch 00011 Batch 00561 : 1,212E+00	 Time remaining   102,793 
-(8/8) 	Epoch 12/16	 
-	 Epoch 00012 Batch 00001 : 6,943E-01	 Time remaining   102,782 
-	 Epoch 00012 Batch 00141 : 1,539E+00	 Time remaining    97,447 
-	 Epoch 00012 Batch 00281 : 7,337E-01	 Time remaining    92,144 
-	 Epoch 00012 Batch 00421 : 7,305E-01	 Time remaining    86,846 
-	 Epoch 00012 Batch 00561 : 6,883E-01	 Time remaining    81,611 
-(8/8) 	Epoch 13/16	 
-	 Epoch 00013 Batch 00001 : 1,312E+00	 Time remaining    81,576 
-	 Epoch 00013 Batch 00141 : 1,093E+00	 Time remaining    76,338 
-	 Epoch 00013 Batch 00281 : 9,097E-01	 Time remaining    71,188 
-	 Epoch 00013 Batch 00421 : 1,280E+00	 Time remaining    66,017 
-	 Epoch 00013 Batch 00561 : 1,438E+00	 Time remaining    60,896 
-(8/8) 	Epoch 14/16	 
-	 Epoch 00014 Batch 00001 : 1,425E+00	 Time remaining    60,836 
-	 Epoch 00014 Batch 00141 : 1,187E+00	 Time remaining    55,690 
-	 Epoch 00014 Batch 00281 : 2,555E-01	 Time remaining    50,689 
-	 Epoch 00014 Batch 00421 : 1,537E+00	 Time remaining    45,660 
-	 Epoch 00014 Batch 00561 : 5,305E-01	 Time remaining    40,587 
-(8/8) 	Epoch 15/16	 
-	 Epoch 00015 Batch 00001 : 1,877E+00	 Time remaining    40,520 
-	 Epoch 00015 Batch 00141 : 9,386E-01	 Time remaining    35,395 
-	 Epoch 00015 Batch 00281 : 8,817E-01	 Time remaining    30,338 
-	 Epoch 00015 Batch 00421 : 1,034E+00	 Time remaining    25,259 
-	 Epoch 00015 Batch 00561 : 9,808E-01	 Time remaining    20,224 
-(8/8) 	Epoch 16/16	 
-	 Epoch 00016 Batch 00001 : 1,037E+00	 Time remaining    20,132 
-	 Epoch 00016 Batch 00141 : 4,628E-01	 Time remaining    15,087 
-	 Epoch 00016 Batch 00281 : 4,189E-01	 Time remaining    10,058 
-	 Epoch 00016 Batch 00421 : 7,272E-01	 Time remaining     5,057 
-	 Epoch 00016 Batch 00561 : 5,281E-01	 Time remaining     0,071 
-	 Score 0 : 0,55214 	 Score 1 : 0,82479 
+Creating Dataset of size 2106... 
+0,100 Time Remaining :     9,236 
+0,199 Time Remaining :     8,165 
+0,299 Time Remaining :     7,040 
+0,399 Time Remaining :     5,989 
+0,499 Time Remaining :     4,988 
+0,598 Time Remaining :     3,986 
+0,698 Time Remaining :     2,992 
+0,798 Time Remaining :     1,995 
+0,897 Time Remaining :     1,011 
+0,997 Time Remaining :     0,028 
+Created - Total time     9,850 
+Mini Batch Gradient Descent 1/8 - 24 Epochs - 16 Batch Size - 1,000E+00 LR 
+(1/8) 	Epoch 1/24	 
+	 Epoch 00001 Batch 00001 : 9,425E-01	 Time remaining   446,306 
+	 Epoch 00001 Batch 00033 : 2,602E+00	 Time remaining   115,861 
+	 Epoch 00001 Batch 00065 : 1,993E+00	 Time remaining   109,612 
+	 Epoch 00001 Batch 00097 : 2,079E+00	 Time remaining   110,163 
+	 Epoch 00001 Batch 00129 : 2,375E+00	 Time remaining   105,011 
+(1/8) 	Epoch 2/24	 
+	 Epoch 00002 Batch 00001 : 1,686E+00	 Time remaining   104,507 
+	 Epoch 00002 Batch 00033 : 2,581E+00	 Time remaining    97,958 
+	 Epoch 00002 Batch 00065 : 2,686E+00	 Time remaining    93,539 
+	 Epoch 00002 Batch 00097 : 2,589E+00	 Time remaining    89,731 
+	 Epoch 00002 Batch 00129 : 2,047E+00	 Time remaining    87,341 
+(1/8) 	Epoch 3/24	 
+	 Epoch 00003 Batch 00001 : 2,161E+00	 Time remaining    87,186 
+	 Epoch 00003 Batch 00033 : 1,998E+00	 Time remaining    84,997 
+	 Epoch 00003 Batch 00065 : 1,843E+00	 Time remaining    83,166 
+	 Epoch 00003 Batch 00097 : 1,786E+00	 Time remaining    81,308 
+	 Epoch 00003 Batch 00129 : 2,201E+00	 Time remaining    79,809 
+(1/8) 	Epoch 4/24	 
+	 Epoch 00004 Batch 00001 : 1,749E+00	 Time remaining    79,883 
+	 Epoch 00004 Batch 00033 : 1,184E+00	 Time remaining    78,356 
 Exported weight	 1 / 5 
 Exported weight	 2 / 5 
 Exported weight	 3 / 5 
@@ -1066,17 +72,313 @@ Exported bias	 2 / 5
 Exported bias	 3 / 5 
 Exported bias	 4 / 5 
 Exported bias	 5 / 5 
-Creating Dataset of size 3120... 
-0,100 Time Remaining :     7,668 
-0,200 Time Remaining :     6,836 
-0,300 Time Remaining :     6,095 
-0,400 Time Remaining :     5,313 
-0,500 Time Remaining :     4,511 
-0,600 Time Remaining :     3,625 
-0,700 Time Remaining :     2,725 
-0,800 Time Remaining :     1,824 
-0,900 Time Remaining :     0,930 
+	 Epoch 00004 Batch 00065 : 1,900E+00	 Time remaining   242,098 
+	 Epoch 00004 Batch 00097 : 1,924E+00	 Time remaining   228,742 
+	 Epoch 00004 Batch 00129 : 1,553E+00	 Time remaining   216,938 
+(1/8) 	Epoch 5/24	 
+	 Epoch 00005 Batch 00001 : 2,020E+00	 Time remaining   215,915 
+	 Epoch 00005 Batch 00033 : 2,469E+00	 Time remaining   205,325 
+	 Epoch 00005 Batch 00065 : 2,160E+00	 Time remaining   195,334 
+	 Epoch 00005 Batch 00097 : 1,562E+00	 Time remaining   186,405 
+	 Epoch 00005 Batch 00129 : 1,350E+00	 Time remaining   178,200 
+(1/8) 	Epoch 6/24	 
+	 Epoch 00006 Batch 00001 : 1,706E+00	 Time remaining   177,524 
+	 Epoch 00006 Batch 00033 : 1,439E+00	 Time remaining   170,135 
+	 Epoch 00006 Batch 00065 : 1,239E+00	 Time remaining   163,290 
+	 Epoch 00006 Batch 00097 : 1,943E+00	 Time remaining   157,042 
+	 Epoch 00006 Batch 00129 : 1,643E+00	 Time remaining   151,016 
+(1/8) 	Epoch 7/24	 
+	 Epoch 00007 Batch 00001 : 1,821E+00	 Time remaining   150,531 
+	 Epoch 00007 Batch 00033 : 3,145E+00	 Time remaining   145,078 
+	 Epoch 00007 Batch 00065 : 1,453E+00	 Time remaining   139,849 
+	 Epoch 00007 Batch 00097 : 1,855E+00	 Time remaining   135,140 
+	 Epoch 00007 Batch 00129 : 2,212E+00	 Time remaining   130,700 
+(1/8) 	Epoch 8/24	 
+	 Epoch 00008 Batch 00001 : 1,745E+00	 Time remaining   130,323 
+	 Epoch 00008 Batch 00033 : 2,289E+00	 Time remaining   126,109 
+	 Epoch 00008 Batch 00065 : 2,011E+00	 Time remaining   122,146 
+	 Epoch 00008 Batch 00097 : 3,130E+00	 Time remaining   118,673 
+	 Epoch 00008 Batch 00129 : 1,948E+00	 Time remaining   115,695 
+(1/8) 	Epoch 9/24	 
+	 Epoch 00009 Batch 00001 : 1,865E+00	 Time remaining   115,481 
+	 Epoch 00009 Batch 00033 : 2,109E+00	 Time remaining   111,961 
+	 Epoch 00009 Batch 00065 : 2,677E+00	 Time remaining   108,738 
+	 Epoch 00009 Batch 00097 : 1,677E+00	 Time remaining   105,479 
+	 Epoch 00009 Batch 00129 : 2,096E+00	 Time remaining   102,404 
+(1/8) 	Epoch 10/24	 
+	 Epoch 00010 Batch 00001 : 1,640E+00	 Time remaining   102,171 
+	 Epoch 00010 Batch 00033 : 1,813E+00	 Time remaining    99,222 
+	 Epoch 00010 Batch 00065 : 1,550E+00	 Time remaining    96,428 
+	 Epoch 00010 Batch 00097 : 2,547E+00	 Time remaining    93,684 
+	 Epoch 00010 Batch 00129 : 1,770E+00	 Time remaining    91,011 
+(1/8) 	Epoch 11/24	 
+	 Epoch 00011 Batch 00001 : 1,906E+00	 Time remaining    90,808 
+	 Epoch 00011 Batch 00033 : 1,985E+00	 Time remaining    88,228 
+	 Epoch 00011 Batch 00065 : 1,481E+00	 Time remaining    85,729 
+	 Epoch 00011 Batch 00097 : 2,652E+00	 Time remaining    83,367 
+	 Epoch 00011 Batch 00129 : 2,916E+00	 Time remaining    81,141 
+(1/8) 	Epoch 12/24	 
+	 Epoch 00012 Batch 00001 : 2,050E+00	 Time remaining    80,958 
+	 Epoch 00012 Batch 00033 : 2,104E+00	 Time remaining    79,181 
+	 Epoch 00012 Batch 00065 : 1,584E+00	 Time remaining    77,016 
+	 Epoch 00012 Batch 00097 : 1,117E+00	 Time remaining    75,180 
+	 Epoch 00012 Batch 00129 : 1,169E+00	 Time remaining    73,323 
+(1/8) 	Epoch 13/24	 
+	 Epoch 00013 Batch 00001 : 1,674E+00	 Time remaining    73,154 
+	 Epoch 00013 Batch 00033 : 1,925E+00	 Time remaining    70,969 
+	 Epoch 00013 Batch 00065 : 2,193E+00	 Time remaining    68,925 
+	 Epoch 00013 Batch 00097 : 2,730E+00	 Time remaining    66,956 
+	 Epoch 00013 Batch 00129 : 2,578E+00	 Time remaining    65,052 
+(1/8) 	Epoch 14/24	 
+	 Epoch 00014 Batch 00001 : 1,060E+00	 Time remaining    64,895 
+	 Epoch 00014 Batch 00033 : 1,820E+00	 Time remaining    62,967 
+	 Epoch 00014 Batch 00065 : 2,195E+00	 Time remaining    61,104 
+	 Epoch 00014 Batch 00097 : 1,612E+00	 Time remaining    59,318 
+	 Epoch 00014 Batch 00129 : 1,815E+00	 Time remaining    57,510 
+(1/8) 	Epoch 15/24	 
+	 Epoch 00015 Batch 00001 : 3,356E+00	 Time remaining    57,362 
+	 Epoch 00015 Batch 00033 : 2,277E+00	 Time remaining    55,663 
+	 Epoch 00015 Batch 00065 : 1,936E+00	 Time remaining    53,897 
+	 Epoch 00015 Batch 00097 : 1,702E+00	 Time remaining    52,201 
+	 Epoch 00015 Batch 00129 : 1,593E+00	 Time remaining    50,531 
+(1/8) 	Epoch 16/24	 
+	 Epoch 00016 Batch 00001 : 2,308E+00	 Time remaining    50,391 
+	 Epoch 00016 Batch 00033 : 1,863E+00	 Time remaining    48,721 
+	 Epoch 00016 Batch 00065 : 1,923E+00	 Time remaining    47,060 
+	 Epoch 00016 Batch 00097 : 9,112E-01	 Time remaining    45,417 
+	 Epoch 00016 Batch 00129 : 1,596E+00	 Time remaining    43,792 
+(1/8) 	Epoch 17/24	 
+	 Epoch 00017 Batch 00001 : 1,849E+00	 Time remaining    43,651 
+	 Epoch 00017 Batch 00033 : 1,798E+00	 Time remaining    42,060 
+	 Epoch 00017 Batch 00065 : 2,391E+00	 Time remaining    40,486 
+	 Epoch 00017 Batch 00097 : 2,245E+00	 Time remaining    38,942 
+	 Epoch 00017 Batch 00129 : 2,226E+00	 Time remaining    37,446 
+(1/8) 	Epoch 18/24	 
+	 Epoch 00018 Batch 00001 : 1,060E+00	 Time remaining    37,312 
+	 Epoch 00018 Batch 00033 : 1,576E+00	 Time remaining    35,810 
+	 Epoch 00018 Batch 00065 : 1,910E+00	 Time remaining    34,386 
+	 Epoch 00018 Batch 00097 : 7,691E-01	 Time remaining    32,959 
+	 Epoch 00018 Batch 00129 : 4,349E-01	 Time remaining    31,524 
+(1/8) 	Epoch 19/24	 
+	 Epoch 00019 Batch 00001 : 1,987E+00	 Time remaining    31,401 
+	 Epoch 00019 Batch 00033 : 1,436E+00	 Time remaining    29,988 
+	 Epoch 00019 Batch 00065 : 2,189E+00	 Time remaining    28,576 
+	 Epoch 00019 Batch 00097 : 2,573E+00	 Time remaining    27,184 
+	 Epoch 00019 Batch 00129 : 2,150E+00	 Time remaining    25,820 
+(1/8) 	Epoch 20/24	 
+	 Epoch 00020 Batch 00001 : 2,211E+00	 Time remaining    25,695 
+	 Epoch 00020 Batch 00033 : 1,391E+00	 Time remaining    24,327 
+	 Epoch 00020 Batch 00065 : 1,955E+00	 Time remaining    22,981 
+	 Epoch 00020 Batch 00097 : 2,004E+00	 Time remaining    21,645 
+	 Epoch 00020 Batch 00129 : 1,814E+00	 Time remaining    20,316 
+(1/8) 	Epoch 21/24	 
+	 Epoch 00021 Batch 00001 : 1,353E+00	 Time remaining    20,195 
+	 Epoch 00021 Batch 00033 : 1,588E+00	 Time remaining    18,878 
+	 Epoch 00021 Batch 00065 : 9,198E-01	 Time remaining    17,602 
+	 Epoch 00021 Batch 00097 : 1,175E+00	 Time remaining    16,320 
+	 Epoch 00021 Batch 00129 : 1,805E+00	 Time remaining    15,036 
+(1/8) 	Epoch 22/24	 
+	 Epoch 00022 Batch 00001 : 1,416E+00	 Time remaining    14,919 
+	 Epoch 00022 Batch 00033 : 1,436E+00	 Time remaining    13,646 
+	 Epoch 00022 Batch 00065 : 1,016E+00	 Time remaining    12,392 
+	 Epoch 00022 Batch 00097 : 2,256E+00	 Time remaining    11,139 
+	 Epoch 00022 Batch 00129 : 1,603E+00	 Time remaining     9,897 
+(1/8) 	Epoch 23/24	 
+	 Epoch 00023 Batch 00001 : 2,172E+00	 Time remaining     9,783 
+	 Epoch 00023 Batch 00033 : 2,213E+00	 Time remaining     8,553 
+	 Epoch 00023 Batch 00065 : 1,068E+00	 Time remaining     7,333 
+	 Epoch 00023 Batch 00097 : 2,315E+00	 Time remaining     6,122 
+	 Epoch 00023 Batch 00129 : 1,282E+00	 Time remaining     4,919 
+(1/8) 	Epoch 24/24	 
+	 Epoch 00024 Batch 00001 : 1,127E+00	 Time remaining     4,808 
+	 Epoch 00024 Batch 00033 : 1,695E+00	 Time remaining     3,615 
+	 Epoch 00024 Batch 00065 : 1,598E+00	 Time remaining     2,427 
+	 Epoch 00024 Batch 00097 : 1,631E+00	 Time remaining     1,247 
+	 Epoch 00024 Batch 00129 : 2,462E+00	 Time remaining     0,073 
+Accuracy for test set : 0.448718 
+
+
+Phase 2 / 8 
+Creating Dataset of size 1170... 
+0,100 Time Remaining :     6,228 
+0,200 Time Remaining :     5,016 
+0,300 Time Remaining :     4,237 
+0,400 Time Remaining :     3,540 
+0,500 Time Remaining :     3,049 
+0,600 Time Remaining :     2,385 
+0,700 Time Remaining :     1,768 
+0,800 Time Remaining :     1,183 
+0,900 Time Remaining :     0,591 
 1,000 Time Remaining :     0,000 
-Created - Total time     9,551 
-Training Set Score : 0.6794871 
-Accuracy  - [ 0,650 ,  0,800 ,  0,825 ,  0,725 ,  0,900 ,  0,875 ,  0,775 ,  0,775 ,  0,450 ,  0,500 ,  0,775 ,  0,775 ,  0,675 ,  0,725 ,  0,775 ,  0,650 ,  0,625 ,  0,825 ,  0,675 ,  0,825 ,  0,825 ,  0,625 ,  0,650 ,  0,625 ,  0,700 ,  0,650 ,  0,850 ,  0,625 ,  0,825 ,  0,775 ,  0,625 ,  0,650 ,  0,400 ,  0,475 ,  0,400 ,  0,600 ,  0,775 ,  0,475 ,  0,825 ,  0,700 ,  0,475 ,  0,775 ,  0,825 ,  0,625 ,  0,550 ,  0,600 ,  0,700 ,  0,650 ,  0,750 ,  0,425 ,  0,550 ,  0,500 ,  0,650 ,  0,675 ,  0,675 ,  0,750 ,  0,675 ,  0,625 ,  0,675 ,  0,875 ,  0,750 ,  0,600 ,  0,800 ,  0,425 ,  0,600 ,  0,800 ,  0,700 ,  0,500 ,  0,650 ,  0,900 ,  0,675 ,  0,300 ,  0,650 ,  0,675 ,  0,700 ,  0,975 ,  0,950 ,  0,650  ] 
+Created - Total time     6,074 
+Creating Dataset of size 1170... 
+0,100 Time Remaining :     5,328 
+0,200 Time Remaining :     4,516 
+0,300 Time Remaining :     3,939 
+0,400 Time Remaining :     3,348 
+0,500 Time Remaining :     2,781 
+0,600 Time Remaining :     2,211 
+0,700 Time Remaining :     1,679 
+0,800 Time Remaining :     1,144 
+0,900 Time Remaining :     0,576 
+1,000 Time Remaining :     0,000 
+Created - Total time     5,763 
+Creating Dataset of size 2106... 
+0,100 Time Remaining :     9,372 
+0,199 Time Remaining :     8,013 
+0,299 Time Remaining :     6,947 
+0,399 Time Remaining :     5,934 
+0,499 Time Remaining :     4,902 
+0,598 Time Remaining :     3,921 
+0,698 Time Remaining :     2,973 
+0,798 Time Remaining :     1,988 
+0,897 Time Remaining :     1,016 
+0,997 Time Remaining :     0,028 
+Created - Total time     9,902 
+Mini Batch Gradient Descent 2/8 - 24 Epochs - 16 Batch Size - 9,686E-01 LR 
+(2/8) 	Epoch 1/24	 
+	 Epoch 00001 Batch 00001 : 1,973E+00	 Time remaining   147,721 
+	 Epoch 00001 Batch 00033 : 2,949E+00	 Time remaining    83,997 
+	 Epoch 00001 Batch 00065 : 1,726E+00	 Time remaining    79,959 
+	 Epoch 00001 Batch 00097 : 1,490E+00	 Time remaining    80,478 
+	 Epoch 00001 Batch 00129 : 2,455E+00	 Time remaining    78,507 
+(2/8) 	Epoch 2/24	 
+	 Epoch 00002 Batch 00001 : 2,462E+00	 Time remaining    78,791 
+	 Epoch 00002 Batch 00033 : 1,283E+00	 Time remaining    77,498 
+	 Epoch 00002 Batch 00065 : 2,723E+00	 Time remaining    76,362 
+	 Epoch 00002 Batch 00097 : 2,009E+00	 Time remaining    75,125 
+	 Epoch 00002 Batch 00129 : 2,001E+00	 Time remaining    73,997 
+(2/8) 	Epoch 3/24	 
+	 Epoch 00003 Batch 00001 : 1,885E+00	 Time remaining    73,931 
+	 Epoch 00003 Batch 00033 : 2,943E+00	 Time remaining    72,876 
+	 Epoch 00003 Batch 00065 : 1,471E+00	 Time remaining    71,872 
+	 Epoch 00003 Batch 00097 : 1,812E+00	 Time remaining    71,991 
+	 Epoch 00003 Batch 00129 : 1,807E+00	 Time remaining    71,064 
+(2/8) 	Epoch 4/24	 
+	 Epoch 00004 Batch 00001 : 2,494E+00	 Time remaining    71,207 
+	 Epoch 00004 Batch 00033 : 2,073E+00	 Time remaining    70,375 
+	 Epoch 00004 Batch 00065 : 9,873E-01	 Time remaining    70,364 
+	 Epoch 00004 Batch 00097 : 1,097E+00	 Time remaining    69,556 
+	 Epoch 00004 Batch 00129 : 1,784E+00	 Time remaining    68,584 
+(2/8) 	Epoch 5/24	 
+	 Epoch 00005 Batch 00001 : 2,290E+00	 Time remaining    68,663 
+	 Epoch 00005 Batch 00033 : 1,342E+00	 Time remaining    67,624 
+	 Epoch 00005 Batch 00065 : 1,601E+00	 Time remaining    66,547 
+	 Epoch 00005 Batch 00097 : 2,671E+00	 Time remaining    65,500 
+	 Epoch 00005 Batch 00129 : 1,931E+00	 Time remaining    64,484 
+(2/8) 	Epoch 6/24	 
+	 Epoch 00006 Batch 00001 : 1,977E+00	 Time remaining    64,468 
+	 Epoch 00006 Batch 00033 : 1,613E+00	 Time remaining    63,595 
+	 Epoch 00006 Batch 00065 : 2,041E+00	 Time remaining    62,660 
+	 Epoch 00006 Batch 00097 : 1,882E+00	 Time remaining    61,836 
+	 Epoch 00006 Batch 00129 : 1,406E+00	 Time remaining    60,966 
+(2/8) 	Epoch 7/24	 
+	 Epoch 00007 Batch 00001 : 2,109E+00	 Time remaining    60,935 
+	 Epoch 00007 Batch 00033 : 1,797E+00	 Time remaining    60,467 
+	 Epoch 00007 Batch 00065 : 1,135E+00	 Time remaining    59,580 
+	 Epoch 00007 Batch 00097 : 1,478E+00	 Time remaining    58,661 
+	 Epoch 00007 Batch 00129 : 1,064E+00	 Time remaining    57,864 
+(2/8) 	Epoch 8/24	 
+	 Epoch 00008 Batch 00001 : 1,778E+00	 Time remaining    57,823 
+	 Epoch 00008 Batch 00033 : 1,918E+00	 Time remaining    63,656 
+	 Epoch 00008 Batch 00065 : 2,380E+00	 Time remaining    62,451 
+	 Epoch 00008 Batch 00097 : 9,612E-01	 Time remaining    61,257 
+	 Epoch 00008 Batch 00129 : 1,540E+00	 Time remaining    60,086 
+(2/8) 	Epoch 9/24	 
+	 Epoch 00009 Batch 00001 : 1,014E+00	 Time remaining    60,000 
+	 Epoch 00009 Batch 00033 : 1,813E+00	 Time remaining    58,863 
+	 Epoch 00009 Batch 00065 : 1,675E+00	 Time remaining    57,715 
+	 Epoch 00009 Batch 00097 : 1,370E+00	 Time remaining    56,602 
+	 Epoch 00009 Batch 00129 : 1,881E+00	 Time remaining    55,536 
+(2/8) 	Epoch 10/24	 
+	 Epoch 00010 Batch 00001 : 1,159E+00	 Time remaining    55,451 
+	 Epoch 00010 Batch 00033 : 1,230E+00	 Time remaining    54,375 
+	 Epoch 00010 Batch 00065 : 1,596E+00	 Time remaining    53,308 
+	 Epoch 00010 Batch 00097 : 1,996E+00	 Time remaining    52,313 
+	 Epoch 00010 Batch 00129 : 3,037E+00	 Time remaining    51,290 
+(2/8) 	Epoch 11/24	 
+	 Epoch 00011 Batch 00001 : 2,047E+00	 Time remaining    51,209 
+	 Epoch 00011 Batch 00033 : 1,316E+00	 Time remaining    50,185 
+	 Epoch 00011 Batch 00065 : 2,148E+00	 Time remaining    49,160 
+	 Epoch 00011 Batch 00097 : 1,764E+00	 Time remaining    48,143 
+	 Epoch 00011 Batch 00129 : 1,564E+00	 Time remaining    47,140 
+(2/8) 	Epoch 12/24	 
+	 Epoch 00012 Batch 00001 : 9,651E-01	 Time remaining    47,073 
+	 Epoch 00012 Batch 00033 : 1,473E+00	 Time remaining    46,086 
+	 Epoch 00012 Batch 00065 : 1,509E+00	 Time remaining    45,104 
+	 Epoch 00012 Batch 00097 : 2,319E+00	 Time remaining    44,131 
+	 Epoch 00012 Batch 00129 : 1,021E+00	 Time remaining    43,164 
+(2/8) 	Epoch 13/24	 
+	 Epoch 00013 Batch 00001 : 9,854E-01	 Time remaining    43,086 
+	 Epoch 00013 Batch 00033 : 1,203E+00	 Time remaining    42,148 
+	 Epoch 00013 Batch 00065 : 1,917E+00	 Time remaining    41,212 
+	 Epoch 00013 Batch 00097 : 8,734E-01	 Time remaining    40,280 
+	 Epoch 00013 Batch 00129 : 1,439E+00	 Time remaining    39,337 
+(2/8) 	Epoch 14/24	 
+	 Epoch 00014 Batch 00001 : 1,672E+00	 Time remaining    39,262 
+	 Epoch 00014 Batch 00033 : 1,075E+00	 Time remaining    38,366 
+	 Epoch 00014 Batch 00065 : 1,413E+00	 Time remaining    37,478 
+	 Epoch 00014 Batch 00097 : 2,234E+00	 Time remaining    36,555 
+	 Epoch 00014 Batch 00129 : 2,837E+00	 Time remaining    35,658 
+(2/8) 	Epoch 15/24	 
+	 Epoch 00015 Batch 00001 : 1,756E+00	 Time remaining    35,583 
+	 Epoch 00015 Batch 00033 : 1,923E+00	 Time remaining    34,647 
+	 Epoch 00015 Batch 00065 : 7,486E-01	 Time remaining    33,737 
+	 Epoch 00015 Batch 00097 : 1,437E+00	 Time remaining    32,828 
+	 Epoch 00015 Batch 00129 : 1,898E+00	 Time remaining    31,919 
+(2/8) 	Epoch 16/24	 
+	 Epoch 00016 Batch 00001 : 5,517E-01	 Time remaining    31,846 
+	 Epoch 00016 Batch 00033 : 1,121E+00	 Time remaining    30,939 
+	 Epoch 00016 Batch 00065 : 1,502E+00	 Time remaining    30,036 
+	 Epoch 00016 Batch 00097 : 1,290E+00	 Time remaining    29,133 
+	 Epoch 00016 Batch 00129 : 2,882E+00	 Time remaining    28,237 
+(2/8) 	Epoch 17/24	 
+	 Epoch 00017 Batch 00001 : 1,180E+00	 Time remaining    28,163 
+	 Epoch 00017 Batch 00033 : 1,639E+00	 Time remaining    27,267 
+	 Epoch 00017 Batch 00065 : 1,694E+00	 Time remaining    26,377 
+	 Epoch 00017 Batch 00097 : 1,093E+00	 Time remaining    25,494 
+	 Epoch 00017 Batch 00129 : 1,463E+00	 Time remaining    24,612 
+(2/8) 	Epoch 18/24	 
+	 Epoch 00018 Batch 00001 : 1,604E+00	 Time remaining    24,542 
+	 Epoch 00018 Batch 00033 : 1,830E+00	 Time remaining    23,663 
+	 Epoch 00018 Batch 00065 : 1,446E+00	 Time remaining    22,788 
+	 Epoch 00018 Batch 00097 : 9,653E-01	 Time remaining    21,903 
+	 Epoch 00018 Batch 00129 : 2,259E+00	 Time remaining    21,035 
+(2/8) 	Epoch 19/24	 
+	 Epoch 00019 Batch 00001 : 2,062E+00	 Time remaining    20,961 
+	 Epoch 00019 Batch 00033 : 2,370E+00	 Time remaining    20,088 
+	 Epoch 00019 Batch 00065 : 8,239E-01	 Time remaining    19,222 
+	 Epoch 00019 Batch 00097 : 1,818E+00	 Time remaining    18,354 
+	 Epoch 00019 Batch 00129 : 1,218E+00	 Time remaining    17,511 
+(2/8) 	Epoch 20/24	 
+	 Epoch 00020 Batch 00001 : 1,175E+00	 Time remaining    17,437 
+	 Epoch 00020 Batch 00033 : 1,482E+00	 Time remaining    16,575 
+	 Epoch 00020 Batch 00065 : 2,023E+00	 Time remaining    15,710 
+	 Epoch 00020 Batch 00097 : 1,257E+00	 Time remaining    14,851 
+	 Epoch 00020 Batch 00129 : 2,101E+00	 Time remaining    13,993 
+(2/8) 	Epoch 21/24	 
+	 Epoch 00021 Batch 00001 : 2,355E+00	 Time remaining    13,914 
+	 Epoch 00021 Batch 00033 : 1,966E+00	 Time remaining    13,058 
+	 Epoch 00021 Batch 00065 : 9,411E-01	 Time remaining    12,214 
+	 Epoch 00021 Batch 00097 : 1,749E+00	 Time remaining    11,356 
+	 Epoch 00021 Batch 00129 : 1,106E+00	 Time remaining    10,499 
+(2/8) 	Epoch 22/24	 
+	 Epoch 00022 Batch 00001 : 1,155E+00	 Time remaining    10,421 
+	 Epoch 00022 Batch 00033 : 1,393E+00	 Time remaining     9,583 
+	 Epoch 00022 Batch 00065 : 6,780E-01	 Time remaining     8,734 
+	 Epoch 00022 Batch 00097 : 2,007E+00	 Time remaining     7,876 
+	 Epoch 00022 Batch 00129 : 1,582E+00	 Time remaining     7,018 
+(2/8) 	Epoch 23/24	 
+	 Epoch 00023 Batch 00001 : 1,132E+00	 Time remaining     6,940 
+	 Epoch 00023 Batch 00033 : 1,462E+00	 Time remaining     6,087 
+	 Epoch 00023 Batch 00065 : 1,604E+00	 Time remaining     5,234 
+	 Epoch 00023 Batch 00097 : 1,391E+00	 Time remaining     4,381 
+	 Epoch 00023 Batch 00129 : 2,014E+00	 Time remaining     3,530 
+(2/8) 	Epoch 24/24	 
+	 Epoch 00024 Batch 00001 : 8,286E-01	 Time remaining     3,451 
+	 Epoch 00024 Batch 00033 : 1,562E+00	 Time remaining     2,603 
+	 Epoch 00024 Batch 00065 : 1,576E+00	 Time remaining     1,753 
+	 Epoch 00024 Batch 00097 : 2,212E+00	 Time remaining     0,903 
+	 Epoch 00024 Batch 00129 : 1,019E+00	 Time remaining     0,053 
+Accuracy for test set : 0.5294875 
+
