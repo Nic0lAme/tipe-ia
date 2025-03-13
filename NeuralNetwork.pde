@@ -34,7 +34,8 @@ class NeuralNetwork {
     bias = new Matrix[numLayers-1];
 
     for (int i = 0; i < numLayers-1; i++) {
-      bias[i] = new Matrix(layers[i+1], 1).Random(-1, 1);
+      // Normal Xavier Weight Initialization
+      bias[i] = new Matrix(layers[i+1], 1).Random(-sqrt(6) / sqrt(layers[i] + layers[i+1]), sqrt(6) / sqrt(layers[i] + layers[i+1]));
       weights[i] = new Matrix(layers[i+1], layers[i]).Random(-1, 1);
     }
   }
@@ -307,7 +308,8 @@ class NeuralNetwork {
     int startTime = millis();
     int numOfBatches = floor(data[0].p / batchSize);
     for (int k = 0; k < numOfEpoch; k++) {
-      cl.pln("(" + label + ") \tEpoch " + (k+1) + "/" + numOfEpoch + "\t");
+      double learningRate = CyclicalLearningRate(k, minLR, maxLR, period);
+      cl.pln("(" + label + ") \tEpoch " + (k+1) + "/" + numOfEpoch + "\t Learining Rate : " + String.format("%6.4f", learningRate));
 
       // Mélange les données (Fisher–Yates shuffle)
       for (int i = 0; i < data[0].p-1; i++) {
@@ -319,7 +321,7 @@ class NeuralNetwork {
       for (int i = 0; i < numOfBatches; i++) {
         Matrix batch = data[0].GetCol(i*batchSize, i*batchSize + batchSize - 1);
         Matrix batchAns = data[1].GetCol(i*batchSize, i*batchSize + batchSize - 1);
-        double l = this.Learn(batch, batchAns, CyclicalLearningRate(k, minLR, maxLR, period));
+        double l = this.Learn(batch, batchAns, learningRate);
         graphApplet.AddValue(l);
         if (i % (numOfBatches / 4) == 0)
           cl.pln("\t Epoch " + String.format("%05d",k+1) +
@@ -328,7 +330,8 @@ class NeuralNetwork {
           );
       }
 
-      if(k%6 == 5 || k != numOfEpoch - 1) continue;
+      if(k%6 != 5 || k != numOfEpoch - 1) continue;
+
       for(int s = 0; s < testSets.length; s++) {
         float[] score = CompilScore(AccuracyScore(this, testSets[s], false));
         cl.p("\t Score", s, ":", String.format("%7.5f", Average(score)));
@@ -354,6 +357,6 @@ double sigmoid(double x) {
 
 // En gros ça fait un blinker de period min suivi de period max
 float CyclicalLearningRate(int iter, float min, float max, int period) {
-  if((iter % period) + 2 >= period - 2) return max;
+  if((iter + period / 2) % period <= period - 2) return max;
   return min;
 }
