@@ -34,7 +34,8 @@ class NeuralNetwork {
     bias = new Matrix[numLayers-1];
 
     for (int i = 0; i < numLayers-1; i++) {
-      bias[i] = new Matrix(layers[i+1], 1).Random(-1, 1);
+      // Normal Xavier Weight Initialization
+      bias[i] = new Matrix(layers[i+1], 1).Random(-sqrt(6) / sqrt(layers[i] + layers[i+1]), sqrt(6) / sqrt(layers[i] + layers[i+1]));
       weights[i] = new Matrix(layers[i+1], layers[i]).Random(-1, 1);
     }
   }
@@ -140,18 +141,23 @@ class NeuralNetwork {
     Matrix[] weightGrad = new Matrix[this.numLayers - 1];
     Matrix[] biasGrad = new Matrix[this.numLayers - 1];
 
-    double lambda = 0.05;
+    double lambda = 0;
     boolean hasNaN = false;
     for(int l = this.numLayers - 2; l >= 0; l--) {
       if(gradient.Contains(Double.NaN)) hasNaN = true;
 
       //dJ/dWl = dJ/dZl * dZl/dWl
-      weightGrad[l] = gradient.Mult(activations[l].T()).Scale(1/ (double)max(1, expectedOutput.p)).Add(weights[l], lambda / max(1, weights[l].n * weights[l].p));
+      weightGrad[l] = gradient.Mult(activations[l].T()).Scale(1/ (double)max(1, expectedOutput.p));
       //weightGrad[l].DebugShape();
 
       //dJ/dbl = dJ/dZl * dZl/dbl
-      biasGrad[l] = gradient.AvgLine().Add(bias[l], lambda / max(1, bias[l].n));
+      biasGrad[l] = gradient.AvgLine();
       //biasGrad[l].DebugShape();
+      
+      if(lambda != 0) {
+        weightGrad[l].Add(weights[l], lambda / max(1, weights[l].n * weights[l].p));
+        biasGrad[l].Add(bias[l], lambda / max(1, bias[l].n));
+      }
 
       if(weightGrad[l].HasNAN() || biasGrad[l].HasNAN()) hasNaN = true;
 
@@ -252,7 +258,13 @@ class NeuralNetwork {
       }
       S = new Matrix(0).Concat(partialS);
     }
-
+    
+    synchronized (stopLearning) {
+      if (stopLearning.get()) {
+        try { println("Learning stopped"); stopLearning.wait(); println("Le retour");} 
+        catch (Exception e) { e.printStackTrace(); }
+      }
+    }
     boolean hasNaN = false;
     for(int l = 0; l < this.numLayers - 1; l++) {
       this.weights[l].Add(gradients[0][l], -learning_rate);
@@ -301,7 +313,8 @@ class NeuralNetwork {
     int startTime = millis();
     int numOfBatches = floor(data[0].p / batchSize);
     for (int k = 0; k < numOfEpoch; k++) {
-      cl.pln("(" + label + ") \tEpoch " + (k+1) + "/" + numOfEpoch + "\t");
+      double learningRate = CyclicalLearningRate(k, minLR, maxLR, period);
+      cl.pln("(" + label + ") \tEpoch " + (k+1) + "/" + numOfEpoch + "\t Learining Rate : " + String.format("%6.4f", learningRate));
 
       // Mélange les données (Fisher–Yates shuffle)
       for (int i = 0; i < data[0].p-1; i++) {
@@ -313,7 +326,7 @@ class NeuralNetwork {
       for (int i = 0; i < numOfBatches; i++) {
         Matrix batch = data[0].GetCol(i*batchSize, i*batchSize + batchSize - 1);
         Matrix batchAns = data[1].GetCol(i*batchSize, i*batchSize + batchSize - 1);
-        double l = this.Learn(batch, batchAns, CyclicalLearningRate(k, minLR, maxLR, period));
+        double l = this.Learn(batch, batchAns, learningRate);
         graphApplet.AddValue(l);
         if (i % (numOfBatches / 4) == 0)
           cl.pln("\t Epoch " + String.format("%05d",k+1) +
@@ -322,7 +335,9 @@ class NeuralNetwork {
           );
       }
 
-      if(k % (numOfEpoch/2) != numOfEpoch/2 - 1 && (k+1)%4 != 0) continue;
+
+      if((k+1)%6 != 0 && k != numOfEpoch - 1) continue;
+      
       for(int s = 0; s < testSets.length; s++) {
         float[] score = CompilScore(AccuracyScore(this, testSets[s], false));
         cl.p("\t Score", s, ":", String.format("%7.5f", Average(score)));

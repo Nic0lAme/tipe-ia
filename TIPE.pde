@@ -1,4 +1,5 @@
 import java.util.List;
+import java.awt.Frame;
 
 String nameOfProcess = "GlobalTest5" + str(minute()) + str(hour()) + str(day()) + str(month()) + str(year());
 
@@ -7,11 +8,15 @@ Matrix[] sample;
 LetterDataset dataset;
 ConsoleLog cl;
 ImageManager im;
-GraphApplet graphApplet = new GraphApplet(nameOfProcess);
+GraphApplet graphApplet;
+Frame frame;
 
 // Nombre de threads pour les différentes tâches
 final int numThreadsDataset = 8; // Création des datasets
 final int numThreadsLearning = 16; // Apprentissage (si 1, pas de parallélisation)
+
+// Attention, à ne pas modifier n'importe comment sous peine de conséquences
+final AtomicBoolean stopLearning = new AtomicBoolean(false);
 
 int w = 19;
 int h = 21;
@@ -24,7 +29,7 @@ String[] characters = new String[]{
   "uA","uB","uC","uD","uE","uF","uG","uH","uI","uJ","uK","uL","uM","uN","uO","uP","uQ","uR","uS","uT","uU","uV","uW","uX","uY","uZ",
   "la","lb","lc","ld","le","lf","lg","lh","li","lj","lk","ll","lm","ln","lo","lp","lq","lr","ls","lt","lu","lv","lw","lx","ly","lz",
   "0","1","2","3","4","5","6","7","8","9", "+", "-", "cr",
-  "@","#","'","pt","im","!","tp","€","$","%","(",")","="
+  "@","#","im","!","€","$","%","(",")","="
 };
 int numOfTestSample = 40; //This is just for the tests, not the training
 
@@ -38,21 +43,26 @@ String[] handTestingDatas = new String[]{"MrMollier", "MrChauvet", "SachaBE", "I
 String[] fontTestingDatas = new String[]{"Liberation Serif", "Calibri", "Book Antiqua", "Gabriola", "Noto Serif"};
 
 void settings() {
-  size(floor(w * rScale * characters.length), floor(h * rScale * numOfTestSample), P2D); // For Global Test
+  size(floor(w * rScale * characters.length), floor(h * rScale * numOfTestSample), JAVA2D); // For Global Test
   //size(119, 180, P2D); // For Direct Test
 }
 
 void setup() {
   background(255);
+  graphApplet = new GraphApplet(nameOfProcess);
   dataset = new LetterDataset(5*w, 5*h);
   cl = new ConsoleLog("./Log/log1.txt");
   im = new ImageManager();
+  
+  frame = (Frame) ((processing.awt.PSurfaceAWT.SmoothCanvas) surface.getNative()).getFrame();
+  frame.setVisible(false); // Cache la fenêtre d'activation java
+  frame.setResizable(true);
 
   //nn = new NeuralNetwork().Import("./NeuralNetworkSave/GlobalTestParallel4.nn");
   nn = new NeuralNetwork(w*h, 512, 256, 256, characters.length);
   nn.UseSoftMax();
   
-  
+  /*
   TrainForImages(
     4, 32,     // # of phase - # of epoch per phase
     1.5, 0.8, // Min Learning Rate
@@ -63,14 +73,16 @@ void setup() {
 
 
   nn.Export("./NeuralNetworkSave/GlobalTestParallel5.nn");
-  
+  */
 }
 
 int index = 0;
+boolean testImages = false;
+boolean directTest = false;
 
-void draw() {
-  TestImages();
-  //DirectTest();
+void draw() { 
+  if(testImages) TestImages();
+  if(directTest) DirectTest();
 }
 
 void TrainForImages(int phaseNumber, int epochPerSet, float startMinLR, float endMinLR, float startMaxLR, float endMaxLR, int period, int batchSize, float startDef, float endDef, int rep, float minProp) {
@@ -127,7 +139,7 @@ void TrainForImages(int phaseNumber, int epochPerSet, float startMinLR, float en
 
     if(k == phaseNumber) break; //Pas besoin de retester
 
-    accuracy = CompilScore(AccuracyScore(nn, new Matrix[][]{testSampleHand, testSampleFont}, true));
+    accuracy = CompilScore(AccuracyScore(nn, new Matrix[][]{testSampleHand, testSampleFont}, false));
 
     cl.pln("Accuracy for test set :", Average(accuracy));
     cl.pln();
@@ -137,20 +149,22 @@ void TrainForImages(int phaseNumber, int epochPerSet, float startMinLR, float en
 }
 
 void TestImages() {
-  if(frameCount != 0) delay(10000);
-  background(255);
-
+  frame.setSize(floor(w * rScale * characters.length), floor(h * rScale * numOfTestSample));
   Matrix[] testSample = dataset.CreateSample(
     characters,
     handTestingDatas,
     // new String[]{},
     fontTestingDatas,
     4, testDerformation);
-
+  
+  frame.setVisible(true);
+  background(255);
 
   float[] score = CompilScore(AccuracyScore(nn, testSample, true));
   cl.pln("Training Set Score :", Average(score));
   cl.pFloatList(score, "Accuracy");
+  
+  
   save("./Representation/" + str(frameCount) + " " + str(Average(score)) + " " + nameOfProcess + ".jpg");
 
   testSample[0].Delete();
