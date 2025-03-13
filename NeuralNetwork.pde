@@ -141,7 +141,7 @@ class NeuralNetwork {
     Matrix[] weightGrad = new Matrix[this.numLayers - 1];
     Matrix[] biasGrad = new Matrix[this.numLayers - 1];
 
-    double lambda = 0;
+    double lambda = 0.01;
     boolean hasNaN = false;
     for(int l = this.numLayers - 2; l >= 0; l--) {
       if(gradient.Contains(Double.NaN)) hasNaN = true;
@@ -314,7 +314,7 @@ class NeuralNetwork {
     int numOfBatches = floor(data[0].p / batchSize);
     for (int k = 0; k < numOfEpoch; k++) {
       double learningRate = CyclicalLearningRate(k, minLR, maxLR, period);
-      cl.pln("(" + label + ") \tEpoch " + (k+1) + "/" + numOfEpoch + "\t Learining Rate : " + String.format("%6.4f", learningRate));
+      cl.pln("(" + label + ") \tEpoch " + (k+1) + "/" + numOfEpoch + "\t Learning Rate : " + String.format("%6.4f", learningRate));
 
       // Mélange les données (Fisher–Yates shuffle)
       for (int i = 0; i < data[0].p-1; i++) {

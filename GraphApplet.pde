@@ -23,9 +23,9 @@ import java.text.NumberFormat;
 class GraphApplet extends JFrame {
   private LearnGraph graph;
 
-  private JButton pinButton, pauseButton, testButton;
+  private JButton pinButton, pauseButton;
   JMenu files, edit, display;
-  private JMenuItem importItem, newNNItem, exportItem, dataItem, avgItem;
+  private JMenuItem importItem, newNNItem, exportItem, dataItem, avgItem, testItem, trainItem;
   JMenuBar menuBar;
   private boolean pin = false;
 
@@ -240,7 +240,7 @@ class GraphApplet extends JFrame {
     hField.setValue(h);
 
     JLabel textLabel = new JLabel("Hidden Layers (, or ;)");
-    JTextField textField = new JTextField();
+    JTextField textField = new JTextField("256;128;128");
 
     JLabel checkboxLabel = new JLabel("Soft Max");
     JCheckBox checkBox = new JCheckBox();
@@ -320,6 +320,130 @@ class GraphApplet extends JFrame {
       catch (Exception e) {}
     testImages = false;
   }
+  
+  private void ToggleTrain() {    
+    JFrame frame = new JFrame("Importer un réseau");
+    frame.setSize(900, 200);
+    CenterFrame(frame);
+    
+    JPanel panel = new JPanel();
+    panel.setLayout(new GridLayout(4, 8));
+    
+    
+    JLabel iterLabel = new JLabel("# d'itération");
+    JFormattedTextField iterField = new JFormattedTextField(NumberFormat.getIntegerInstance());
+    iterField.setValue(4);
+    
+    JLabel epochLabel = new JLabel("# d'epoch");
+    JFormattedTextField epochField = new JFormattedTextField(NumberFormat.getIntegerInstance());
+    epochField.setValue(8);
+    
+    JLabel batchLabel = new JLabel("Taille des batches");
+    JFormattedTextField batchField = new JFormattedTextField(NumberFormat.getIntegerInstance());
+    batchField.setValue(64);
+    
+    JLabel periodLabel = new JLabel("Période de LR");
+    JFormattedTextField periodField = new JFormattedTextField(NumberFormat.getIntegerInstance());
+    periodField.setValue(4);
+    
+    JLabel startMinLRLabel = new JLabel("LR min intial");
+    JFormattedTextField startMinLRField = new JFormattedTextField();
+    startMinLRField.setValue(1.0);
+    
+    JLabel startMaxLRLabel = new JLabel("LR max intial");
+    JFormattedTextField startMaxLRField = new JFormattedTextField();
+    startMaxLRField.setValue(2.0);
+    
+    JLabel endMinLRLabel = new JLabel("LR min final");
+    JFormattedTextField endMinLRField = new JFormattedTextField();
+    endMinLRField.setValue(0.1);
+    
+    JLabel endMaxLRLabel = new JLabel("LR max final");
+    JFormattedTextField endMaxLRField = new JFormattedTextField();
+    endMaxLRField.setValue(1.0);
+    
+    JLabel startDefLabel = new JLabel("Déformation initiale");
+    JFormattedTextField startDefField = new JFormattedTextField();
+    startDefField.setValue(1.0);
+    
+    JLabel endDefLabel = new JLabel("Déformation finale");
+    JFormattedTextField endDefField = new JFormattedTextField();
+    endDefField.setValue(1.0);
+    
+    JLabel repLabel = new JLabel("Répétition d'échantillon");
+    JFormattedTextField repField = new JFormattedTextField(NumberFormat.getIntegerInstance());
+    repField.setValue(8);
+    
+    JLabel propLabel = new JLabel("Proportion min");
+    JFormattedTextField propField = new JFormattedTextField();
+    propField.setValue(1.0);
+
+    JButton validateButton = new JButton("Valider");
+    
+    validateButton.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+          frame.setVisible(false);
+          
+          class Train implements Runnable {
+            public void run() {
+              TrainForImages (
+                int(iterField.getText()), int(epochField.getText()),
+                float(startMinLRField.getText().replace(',', '.')), float(endMinLRField.getText().replace(',', '.')),
+                float(startMaxLRField.getText().replace(',', '.')), float(endMaxLRField.getText().replace(',', '.')),
+                int(periodField.getText()), int(batchField.getText()),
+                float(startDefField.getText().replace(',', '.')), float(endDefField.getText().replace(',', '.')),
+                int(repField.getText()), float(propField.getText().replace(',', '.'))
+              );
+            }
+          }
+          
+          new Thread(new Train()).start();
+          
+          /*
+          TrainForImages (
+            int(iterField.getText()), int(epochField.getText()),
+            float(startMinLRField.getText()), float(endMinLRField.getText()),
+            float(startMaxLRField.getText()), float(endMaxLRField.getText()),
+            int(periodField.getText()), int(batchField.getText()),
+            float(startDefField.getText()), float(endDefField.getText()),
+            int(repField.getText()), float(propField.getText())
+          );
+          */
+        }
+    });
+    
+    panel.add(iterLabel);
+    panel.add(iterField);
+    panel.add(epochLabel);
+    panel.add(epochField);
+    panel.add(batchLabel);
+    panel.add(batchField);
+    panel.add(periodLabel);
+    panel.add(periodField);
+    panel.add(startMinLRLabel);
+    panel.add(startMinLRField);
+    panel.add(startMaxLRLabel);
+    panel.add(startMaxLRField);
+    panel.add(endMinLRLabel);
+    panel.add(endMinLRField);
+    panel.add(endMaxLRLabel);
+    panel.add(endMaxLRField);
+    panel.add(startDefLabel);
+    panel.add(startDefField);
+    panel.add(endDefLabel);
+    panel.add(endDefField);
+    panel.add(repLabel);
+    panel.add(repField);
+    panel.add(propLabel);
+    panel.add(propField);
+    
+    for(int i = 0; i < 7; i++) panel.add(new JLabel());
+    panel.add(validateButton);
+    
+    frame.add(panel);
+    frame.setVisible(true);
+  }
 
   private void Init(LearnGraph graph) {
     setLayout(new BorderLayout());
@@ -343,7 +467,7 @@ class GraphApplet extends JFrame {
     importItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, KeyEvent.CTRL_DOWN_MASK));
     files.add(importItem);
     
-    exportItem = new JMenuItem("Exporter");
+    exportItem = new JMenuItem("Éxporter");
     exportItem.setFocusable(false);
     exportItem.addActionListener(e -> ExportNN());
     exportItem.setMargin(new Insets(5, 5, 5, 5));
@@ -352,6 +476,24 @@ class GraphApplet extends JFrame {
     files.add(exportItem);
     
     menuBar.add(files);
+    
+    edit = new JMenu("Éditer");
+    
+    testItem = new JMenuItem("Tester");
+    testItem.setFocusable(false);
+    testItem.addActionListener(e -> ToggleTest());
+    testItem.setMargin(new Insets(5, 5, 5, 5));
+    testItem.setFont(new Font("", Font.PLAIN, 16));
+    edit.add(testItem);
+    
+    trainItem = new JMenuItem("Entrainer");
+    trainItem.setFocusable(false);
+    trainItem.addActionListener(e -> ToggleTrain());
+    trainItem.setMargin(new Insets(5, 5, 5, 5));
+    trainItem.setFont(new Font("", Font.PLAIN, 16));
+    edit.add(trainItem);
+    
+    menuBar.add(edit);
     
     
     display = new JMenu("Affichage");
@@ -371,6 +513,7 @@ class GraphApplet extends JFrame {
     display.add(avgItem);
     
     menuBar.add(display);
+    
     
 
     JPanel top = new JPanel();
@@ -396,6 +539,10 @@ class GraphApplet extends JFrame {
     pinButton.addActionListener(e -> TogglePin());
     pinButton.setMargin(new Insets(5, 5, 5, 5));
     pinButton.setFont(new Font("", Font.PLAIN, 16));
+    
+    try { pinButton.setIcon(new ImageIcon(ImageIO.read(new File(sketchPath() + "/AuxiliarFiles/pin.png")).getScaledInstance(24, 24, Image.SCALE_DEFAULT))); }
+    catch(Exception e) {}
+    
     gbc.gridx = 0;
     gbc.gridy = 0;
     gbc.anchor = GridBagConstraints.WEST;
@@ -406,21 +553,14 @@ class GraphApplet extends JFrame {
     pauseButton.addActionListener(e -> TogglePause());
     pauseButton.setMargin(new Insets(5, 5, 5, 5));
     pauseButton.setFont(new Font("", Font.PLAIN, 16));
+    
+    try { pauseButton.setIcon(new ImageIcon(ImageIO.read(new File(sketchPath() + "/AuxiliarFiles/pause.png")).getScaledInstance(24, 24, Image.SCALE_DEFAULT))); }
+    catch(Exception e) {}
+    
     gbc.gridx = 1;
     gbc.gridy = 0;
-    gbc.anchor = GridBagConstraints.WEST;
+    gbc.anchor = GridBagConstraints.EAST;
     top.add(pauseButton, gbc);
-    
-    
-    testButton = new JButton("Tester");
-    testButton.setFocusable(false);
-    testButton.addActionListener(e -> ToggleTest());
-    testButton.setMargin(new Insets(5, 5, 5, 5));
-    testButton.setFont(new Font("", Font.PLAIN, 16));
-    gbc.gridx = 2;
-    gbc.gridy = 0;
-    gbc.anchor = GridBagConstraints.CENTER;
-    top.add(testButton, gbc);
     
     this.setJMenuBar(menuBar);
 
