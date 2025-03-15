@@ -9,17 +9,20 @@ class NeuralNetwork {
   Matrix[] bias; // Biais (pour un indice i, biais entre couche i et i+1)
 
   boolean useSoftMax = false; // Détermine l'utilisation de la fonction softmax sur la dernière couche du réseau
-  
+
+  ExecutorService executor;
+
   //b Pour *Import*
   NeuralNetwork() {
     this(1);
   }
-  
+
   //c _sizes_ correspond aux tailles des niveaux
   NeuralNetwork(int... sizes) {
     numLayers = sizes.length;
     layers = new int[numLayers];
     for (int i = 0; i < numLayers; i++) layers[i] = sizes[i];
+    executor = Executors.newFixedThreadPool(numThreadsLearning);
 
     Init();
   }
@@ -33,7 +36,8 @@ class NeuralNetwork {
     bias = new Matrix[numLayers-1];
 
     for (int i = 0; i < numLayers-1; i++) {
-      bias[i] = new Matrix(layers[i+1], 1).Random(-1, 1);
+      // Normal Xavier Weight Initialization
+      bias[i] = new Matrix(layers[i+1], 1).Random(-sqrt(6) / sqrt(layers[i] + layers[i+1]), sqrt(6) / sqrt(layers[i] + layers[i+1]));
       weights[i] = new Matrix(layers[i+1], layers[i]).Random(-1, 1);
     }
   }
@@ -94,7 +98,7 @@ class NeuralNetwork {
    String[] writedOutput = new String[output.size()];
    saveStrings(name, output.toArray(writedOutput));
   }
-  
+
   //f Donne la sortie du réseau de neurones _this_ pour l'entrée _entry_
   public Matrix Predict(Matrix entry) {
     return ForwardPropagation(entry)[this.numLayers - 1];
@@ -130,7 +134,7 @@ class NeuralNetwork {
 
     return result.Map((x) -> sigmoid(x));
   }
-  
+
   //f Effectue la rétropropagation du réseau de neurones
   // On prend en entrée les valeurs d'_activations_ des layers
   // On donne les valeurs attendues dans _expectedOutput_
@@ -143,25 +147,30 @@ class NeuralNetwork {
     Matrix[] weightGrad = new Matrix[this.numLayers - 1];
     Matrix[] biasGrad = new Matrix[this.numLayers - 1];
 
-    double lambda = 0.0001;
+    double lambda = 0.01;
     boolean hasNaN = false;
     for(int l = this.numLayers - 2; l >= 0; l--) {
       if(gradient.Contains(Double.NaN)) hasNaN = true;
 
       //dJ/dWl = dJ/dZl * dZl/dWl
-      weightGrad[l] = gradient.Mult(activations[l].T()).Scale(1/ (double)max(1, expectedOutput.p)).Add(weights[l], lambda / max(1, weights[l].n * weights[l].p));
+      weightGrad[l] = gradient.Mult(activations[l].T()).Scale(1/ (double)max(1, expectedOutput.p));
       //weightGrad[l].DebugShape();
 
       //dJ/dbl = dJ/dZl * dZl/dbl
-      biasGrad[l] = gradient.AvgLine().Add(bias[l], lambda / max(1, bias[l].n));
+      biasGrad[l] = gradient.AvgLine();
       //biasGrad[l].DebugShape();
-      
+
+      if(lambda != 0) {
+        weightGrad[l].Add(weights[l], lambda / max(1, weights[l].n * weights[l].p));
+        biasGrad[l].Add(bias[l], lambda / max(1, bias[l].n));
+      }
+
       if(weightGrad[l].HasNAN() || biasGrad[l].HasNAN()) hasNaN = true;
-      
+
       a = activations[l].C();
       gradient = (weights[l].T().Mult(gradient)).HProduct(a.C().Add(a.C().HProduct(a), -1));
     }
-    
+
     /*
     if(hasNaN) {
       for(int l = 0; l < this.numLayers; l++) {
@@ -173,27 +182,102 @@ class NeuralNetwork {
         weightGrad[l].Debug();
         biasGrad[l].Debug();
       }
-      
+
       System.exit(-1);
     }
     */
 
     return new Matrix[][]{weightGrad, biasGrad};
   }
-  
+
   //f Effectue une étape d'apprentissage, ayant pour entrée _X_ et pour sortie _Y_
   // Le taux d'apprentissage est _learning\_rate_
   public double Learn(Matrix X, Matrix Y, double learning_rate) {
-    Matrix[] activations = ForwardPropagation(X);
-    Matrix S = activations[this.numLayers - 1].C();
+    // Gradients des poids ([0]) et des biais([1]) pour chaque couche l ([][l])
+    Matrix[][] gradients = new Matrix[2][this.numLayers-1];
 
-    Matrix[][] gradients = BackPropagation(activations, Y);
+    // Activations de la dernière couche pendant la forward propagation
+    Matrix S;
 
+    // Sans multithreading, back propagation classique
+    if (numThreadsLearning <= 1) {
+      Matrix[] activations = ForwardPropagation(X);
+      S = activations[this.numLayers - 1].C();
+      gradients = BackPropagation(activations, Y);
+    }
+
+    // Avec multithreading : le batch est divisé en numThreadsLearning sous-batchs, la
+    // back propagation est effectuée sur chaque sous-batchs, et les résultats sont moyennés
+    else {
+      ArrayList<Callable<Object>> tasks = new ArrayList<Callable<Object>>();
+      final Matrix[] trainingData = X.Split(numThreadsLearning);
+      final Matrix[] answers = Y.Split(numThreadsLearning);
+
+      // Gradients calculés, par sous-batch et par couche
+      // TODO: remplacer les arraylist par des arrays pour éviter erreurs et conversions
+      ArrayList<Matrix[]> weightsGradients = new ArrayList<Matrix[]>(numThreadsLearning);
+      ArrayList<Matrix[]> biasGradients = new ArrayList<Matrix[]>(numThreadsLearning);
+      final Matrix[] partialS = new Matrix[numThreadsLearning];
+      Object syncObject = new Object();
+
+      for (int i = 0; i < numThreadsLearning; i++) {
+        final int index = i;
+
+        // Tâche d'apprentissage : backpropagation sur un sous-batch, et les données
+        // sont stockées dans les tableaux weightsGradients, biasGradients et partialS
+        // Le thread i remplit les cases i des tableaux (quand ce sera des tableaux)
+        class LearningTask implements Callable<Object> {
+          public Object call() {
+            Matrix[] activations = ForwardPropagation(trainingData[index]);
+            Matrix output = activations[numLayers - 1].C();
+            Matrix[][] gradientPart = BackPropagation(activations, answers[index]);
+
+            synchronized(syncObject) {
+              weightsGradients.add(gradientPart[0]);
+              biasGradients.add(gradientPart[1]);
+              partialS[index] = output;
+            }
+
+            return this;
+          }
+        }
+        tasks.add(new LearningTask());
+      }
+
+      // Déclenche l'apprentissage des sous-batchs en parallèle
+      try {
+        List<Future<Object>> executorsAns = executor.invokeAll(tasks);
+      } catch (InterruptedException e) {
+        cl.pln("NeuralNetwork, Learn : Erreur critique, bonne chance pour la suite");
+      }
+
+      // Recombine les données pour former les gradients et l'activation de la dernière couche
+      for (int l = 0; l < this.numLayers-1; l++) {
+        double[] coeffs = new double[numThreadsLearning];
+        Matrix[] wlGradients = new Matrix[numThreadsLearning]; // Gradients pour les poids de la couche l
+        Matrix[] blGradients = new Matrix[numThreadsLearning]; // Gradients pour les biais de la couche l
+        for (int k = 0; k < coeffs.length; k++) {
+          coeffs[k] = trainingData[k].p;
+          wlGradients[k] = weightsGradients.get(k)[l];
+          blGradients[k] = biasGradients.get(k)[l];
+        }
+        gradients[0][l] = new Matrix(0).AvgMatrix(wlGradients, coeffs);
+        gradients[1][l] = new Matrix(0).AvgMatrix(blGradients, coeffs);
+      }
+      S = new Matrix(0).Concat(partialS);
+    }
+
+    synchronized (stopLearning) {
+      if (stopLearning.get()) {
+        try { println("Learning stopped"); stopLearning.wait(); println("Le retour");}
+        catch (Exception e) { e.printStackTrace(); }
+      }
+    }
     boolean hasNaN = false;
     for(int l = 0; l < this.numLayers - 1; l++) {
       this.weights[l].Add(gradients[0][l], -learning_rate);
       this.bias[l].Add(gradients[1][l], -learning_rate);
-      
+
       if(weights[l].HasNAN() || bias[l].HasNAN()) hasNaN = true;
     }
 
@@ -203,7 +287,7 @@ class NeuralNetwork {
         if((float)S.Get(i, c) != 0) J -= Y.Get(i, c) * log(abs((float)S.Get(i, c))) / Y.p;
       }
     }
-    
+
     /*
     if(hasNaN || J != J) {
       for(int l = 0; l < this.numLayers; l++) {
@@ -215,74 +299,13 @@ class NeuralNetwork {
         weights[l].Debug();
         bias[l].Debug();
       }
-      
+
       System.exit(-1);
     }
     */
 
     return J;
   }
-
-  // OLD LEARNING PHASE
-  /*
-  public void LearningPhase(Matrix X, Matrix Y, int numOfEpoch, float minLearningRate, float maxLearningRate, int period, int numPerIter, String label) {
-    float learningRate; double loss;
-    IntList range = new IntList();
-    for(int j = 0; j < X.p; j++) range.append(j);
-
-    int startTime = millis();
-
-    IntList selectedIndex = range.copy();
-    Matrix selectedX;
-    Matrix selectedY;
-    int startIndex = X.p;
-    for(int k = 0; k < numOfEpoch; k++) {
-      startIndex += numPerIter / 16; // Décalage de 1/16 dans l'array ie on change 1/16 de l'entrée
-      if(numPerIter != 0) {
-        if(startIndex + numPerIter >= X.p) {
-          selectedIndex = range.copy();
-          selectedIndex.shuffle();
-
-          startIndex = 0;
-        }
-
-        selectedX = X.GetCol(selectedIndex.array(), startIndex, min(numPerIter + startIndex, X.p - 1));
-        selectedY = Y.GetCol(selectedIndex.array(), startIndex, min(numPerIter + startIndex, Y.p - 1));
-      } else {
-        selectedX = X;
-        selectedY = Y;
-      }
-
-      learningRate = CyclicalLearningRate(k, minLearningRate, maxLearningRate, period);
-
-
-      loss = nn.Learn(selectedX, selectedY, learningRate);
-
-      if(loss != loss) { // Le loss est NaN
-        for(int l = 0; l < this.numLayers - 1; l++) {
-          this.weights[l].Debug();
-          this.bias[l].Debug();
-        }
-        System.exit(-1);
-      }
-
-      if(k%16 != 0 && k != numOfEpoch - 1) continue;
-
-      float[] score = AccuracyScore(this, selectedX, selectedY, false);
-
-      cl.p(label, "\t-\t", k+1, "/", numOfEpoch,
-        "\t-\tTime Remaining", RemainingTime(startTime, k+1, numOfEpoch),
-        "\t-\tLearning Rate", String.format("%.5f", learningRate),
-        "\t-\tLoss", String.format("%.5f", loss),
-        "\t-\tAccuracy", String.format("%.3f", Average(score))
-      );
-
-      cl.pFloatList(score, "\t");
-
-
-    }
-  }
-  */
 
   public void MiniBatchLearn(Matrix[] data, int numOfEpoch, int batchSize, float lr) {
     MiniBatchLearn(data, numOfEpoch, batchSize, lr, lr, 1);
@@ -298,51 +321,30 @@ class NeuralNetwork {
     int startTime = millis();
     int numOfBatches = floor(data[0].p / batchSize);
     for (int k = 0; k < numOfEpoch; k++) {
-      cl.pln("(" + label + ") \tEpoch " + (k+1) + "/" + numOfEpoch + "\t");
+      double learningRate = CyclicalLearningRate(k, minLR, maxLR, period);
+      cl.pln("(" + label + ") \tEpoch " + (k+1) + "/" + numOfEpoch + "\t Learning Rate : " + String.format("%6.4f", learningRate));
 
       for (int i = 0; i < data[0].p-1; i++) {
         int j = floor(random(i, data[0].p));
         data[0].ComutCol(i, j);
         data[1].ComutCol(i, j);
       }
-      
-      // Pour chaque thread, on lui envoie 1/N des batchs
-      ArrayList<Thread> threads = new ArrayList<Thread>();
-      for (int num = 0; num < numThreads; num++) {
-        final int n = new Integer(num);
-        final int epochNumber = new Integer(k);
-        Runnable runnable = new Runnable() {
-          @Override
-          public void run() {
-            int startIndex = n * numOfBatches / numThreads;
-            int endIndex = (n+1)*numOfBatches / numThreads;
-            if (endIndex >= numOfBatches*batchSize) return;
-            for (int i = startIndex; i < endIndex; i++) {
-              Matrix batch = data[0].GetCol(i*batchSize, i*batchSize + batchSize - 1);
-              Matrix batchAns = data[1].GetCol(i*batchSize, i*batchSize + batchSize - 1);
-              double l = Learn(batch, batchAns, CyclicalLearningRate(epochNumber, minLR, maxLR, period));
-              graphApplet.AddValue(l);
-              if(i == endIndex - 1)
-                cl.pln("\t Epoch " + String.format("%05d",epochNumber+1) +
-                  " Batch " + String.format("%05d",i+1) + " : " + String.format("%9.3E",l) +
-                  "\t Time remaining " + RemainingTime(startTime, epochNumber * numOfBatches + i + 1, numOfBatches * epochNumber)
-                );
-            }
-          }
-        };
-        Thread thread = new Thread(runnable);
-        threads.add(thread);
-        thread.start();
+
+      for (int i = 0; i < numOfBatches; i++) {
+        Matrix batch = data[0].GetCol(i*batchSize, i*batchSize + batchSize - 1);
+        Matrix batchAns = data[1].GetCol(i*batchSize, i*batchSize + batchSize - 1);
+        double l = this.Learn(batch, batchAns, learningRate);
+        graphApplet.AddValue(l);
+        if (i % (numOfBatches / 4) == 0)
+          cl.pln("\t Epoch " + String.format("%05d",k+1) +
+            " Batch " + String.format("%05d",i+1) + " : " + String.format("%9.3E",l) +
+            "\t Time remaining " + RemainingTime(startTime, k * numOfBatches + i + 1, numOfBatches * numOfEpoch)
+          );
       }
-      
-      for (Thread thread : threads) {
-        try {
-          thread.join();
-        } catch (InterruptedException e) {
-        }
-      }
-      
-      if(k != numOfEpoch - 1) continue;
+
+
+      if((k+1)%6 != 0 && k != numOfEpoch - 1) continue;
+
       for(int s = 0; s < testSets.length; s++) {
         float[] score = CompilScore(AccuracyScore(this, testSets[s], false));
         cl.p("\t Score", s, ":", String.format("%7.5f", Average(score)));
@@ -368,7 +370,6 @@ double sigmoid(double x) {
 
 // En gros ça fait un blinker de period min suivi de period max
 float CyclicalLearningRate(int iter, float min, float max, int period) {
-  float cycle = floor(1 + iter / (2 * period));
-  float x = abs(iter / period - 2 * cycle + 1);
-  return min + (max - min) * max(0, x);
+  if((iter + period/2)%period + 1 <= period/2) return max;
+  return min;
 }

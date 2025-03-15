@@ -1,4 +1,5 @@
 import java.util.List;
+import java.awt.Frame;
 
 String nameOfProcess = "GlobalTest5" + str(minute()) + str(hour()) + str(day()) + str(month()) + str(year());
 
@@ -7,14 +8,20 @@ Matrix[] sample;
 LetterDataset dataset;
 ConsoleLog cl;
 ImageManager im;
-ExecutorService executor;
-GraphApplet graphApplet = new GraphApplet(nameOfProcess);
+GraphApplet graphApplet;
+Frame frame;
+
+// Nombre de threads pour les différentes tâches
+final int numThreadsDataset = 8; // Création des datasets
+final int numThreadsLearning = 16; // Apprentissage (si 1, pas de parallélisation)
+
+// Attention, à ne pas modifier n'importe comment sous peine de conséquences
+final AtomicBoolean stopLearning = new AtomicBoolean(false);
 
 int w = 19;
 int h = 21;
 float rScale = 1; // Scale for the representations (draw)
-int numThreads = 8;
-float testDerformation = 0.5;
+float testDerformation = 1;
 
 //String[] characters = new String[]{"0","1","2","3","4","5","6","7","8","9"};
 //String[] characters = new String[]{"uA","uB","uC","uD","uE","uF","uG","uH","uI","uJ","uK","uL","uM","uN","uO","uP","uQ","uR","uS","uT","uU","uV","uW","uX","uY","uZ"};
@@ -22,61 +29,73 @@ String[] characters = new String[]{
   "uA","uB","uC","uD","uE","uF","uG","uH","uI","uJ","uK","uL","uM","uN","uO","uP","uQ","uR","uS","uT","uU","uV","uW","uX","uY","uZ",
   "la","lb","lc","ld","le","lf","lg","lh","li","lj","lk","ll","lm","ln","lo","lp","lq","lr","ls","lt","lu","lv","lw","lx","ly","lz",
   "0","1","2","3","4","5","6","7","8","9", "+", "-", "cr",
-  "@","#","'","pt","im","!","tp","€","$","%","(",")","="
+  "@","#","im","!","€","$","%","(",")","="
 };
 int numOfTestSample = 40; //This is just for the tests, not the training
 
 
-String[] handTrainingDatas = new String[]{"AntoineME", "NicolasMA", "LenaME", "AkramBE", "MaximeMB", "NathanLU", "LubinDE", "MatheoLB", "SachaAD", "MatisBR", "RomaneFI", "ThelioLA", "YanisIH"};
-String[] fontTrainingDatas = new String[]{"Arial", "DejaVu Serif", "Fira Code Retina Moyen", "Consolas", "Lucida Handwriting Italique", "Playwrite IT Moderna", "Just Another Hand"};
+String[] handTrainingDatas = new String[]{"AntoineME", "NicolasMA", "LenaME", "TheoLA", "ElioKE", "AkramBE", "MaximeMB", "NathanLU", "LubinDE", "MatheoLB", "SachaAD", "MatisBR", "ValerieAR", "ArthurLO", "RomaneFI", "ThelioLA", "YanisIH"};
+//String[] handTrainingDatas = new String[]{};
+String[] fontTrainingDatas = new String[]{"Arial", "Bahnschrift", "Eras Demi ITC", "Lucida Handwriting Italique", "DejaVu Serif", "Fira Code Retina Moyen", "Consolas", "Lucida Handwriting Italique", "Playwrite IT Moderna", "Just Another Hand"};
+//String[] fontTrainingDatas = new String[]{};
 
 String[] handTestingDatas = new String[]{"MrMollier", "MrChauvet", "SachaBE", "IrinaRU", "NoematheoBLB"};
 String[] fontTestingDatas = new String[]{"Liberation Serif", "Calibri", "Book Antiqua", "Gabriola", "Noto Serif"};
 
 void settings() {
-  size(floor(w * rScale * characters.length), floor(h * rScale * numOfTestSample), P2D); // For Global Test
+  size(floor(w * rScale * characters.length), floor(h * rScale * numOfTestSample), JAVA2D); // For Global Test
   //size(119, 180, P2D); // For Direct Test
 }
 
 void setup() {
   background(255);
+  graphApplet = new GraphApplet(nameOfProcess);
   dataset = new LetterDataset(5*w, 5*h);
   cl = new ConsoleLog("./Log/log1.txt");
   im = new ImageManager();
-  executor = Executors.newFixedThreadPool(numThreads);
 
-  //nn = new NeuralNetwork().Import("./NeuralNetworkSave/GlobalTest7.nn");
-  nn = new NeuralNetwork(w*h, 384, 256, 64, 64, 64, characters.length);
+  frame = (Frame) ((processing.awt.PSurfaceAWT.SmoothCanvas) surface.getNative()).getFrame();
+  frame.setVisible(false); // Cache la fenêtre d'activation java
+  frame.setResizable(true);
+
+  //nn = new NeuralNetwork().Import("./NeuralNetworkSave/GlobalTestParallel4.nn");
+  nn = new NeuralNetwork(w*h, 512, 256, 256, characters.length);
   nn.UseSoftMax();
 
-  
+  /*
   TrainForImages(
-    12, 16,     // # of phase - # of epoch per phase
-    1.5, 0.5, // Learning Rate
-    0.5, 0.5,     // Deformation Rate
-    10, 0.8);    // Repetition - Min prop
+    4, 32,     // # of phase - # of epoch per phase
+    1.5, 0.8, // Min Learning Rate
+    2, 1.6,     // Max Learning Rate
+    4, 128,      // Period - Batch Size
+    1, 1,     // Deformation Rate
+    10, 1);    // Repetition - Min prop
 
-  nn.Export("./NeuralNetworkSave/GlobalTest7.nn");
+
+  nn.Export("./NeuralNetworkSave/GlobalTestParallel5.nn");
+  */
 }
 
 int index = 0;
+boolean testImages = false;
+boolean directTest = false;
 
 void draw() {
-  TestImages();
-  //DirectTest();
+  if(testImages) TestImages();
+  if(directTest) DirectTest();
 }
 
-void TrainForImages(int phaseNumber, int epochPerSet, float startLR, float endLR, float startDef, float endDef, int rep, float minProp) {
+void TrainForImages(int phaseNumber, int epochPerSet, float startMinLR, float endMinLR, float startMaxLR, float endMaxLR, int period, int batchSize, float startDef, float endDef, int rep, float minProp) {
   float[] accuracy = new float[nn.outputSize];
   int[] repList;
   Arrays.fill(accuracy, 0.5);
-  
+
   Matrix[] testSampleHand = dataset.CreateSample(
     characters,
     handTestingDatas,
     new String[]{},
   3, startDef);
-    
+
   Matrix[] testSampleFont = dataset.CreateSample(
     characters,
     new String[]{},
@@ -85,17 +104,17 @@ void TrainForImages(int phaseNumber, int epochPerSet, float startLR, float endLR
 
   for(int k = 0; k <= phaseNumber; k++) {
     cl.pln("\nPhase", k, "/", phaseNumber);
-    
+
     float deformationRate = map(k, 1, phaseNumber, startDef, endDef);
-    
+
     if(k > 1) {
-      
+
       testSampleHand = dataset.CreateSample(
         characters,
         handTestingDatas,
         new String[]{},
       3, deformationRate);
-      
+
       testSampleFont = dataset.CreateSample(
         characters,
         new String[]{},
@@ -113,17 +132,18 @@ void TrainForImages(int phaseNumber, int epochPerSet, float startLR, float endLR
         fontTrainingDatas,
         repList, deformationRate);
 
-      float lr = startLR * pow(endLR / startLR, (float)(k-1)/max(1, (phaseNumber-1)));
-      nn.MiniBatchLearn(sample, epochPerSet, 64, lr/32, lr, 2, new Matrix[][]{testSampleHand, testSampleFont}, k + "/" + phaseNumber);
+      float maxLR = startMaxLR * pow(endMaxLR / startMaxLR, (float)(k-1)/max(1, (phaseNumber-1)));
+      float minLR = startMinLR * pow(endMinLR / startMinLR, (float)(k-1)/max(1, (phaseNumber-1)));
+      nn.MiniBatchLearn(sample, epochPerSet, batchSize, minLR, maxLR, period, new Matrix[][]{testSampleHand, testSampleFont}, k + "/" + phaseNumber);
     }
-    
+
     if(k >= 1) {
       Matrix[] shuffledSample = new Matrix(0).ShuffleCol(sample);
       cl.pln("Accuracy on training set :", Average(CompilScore(AccuracyScore(nn, shuffledSample, false))));
     }
 
     if(k == phaseNumber) break; //Pas besoin de retester
-    
+
     accuracy = CompilScore(AccuracyScore(nn, new Matrix[][]{testSampleHand, testSampleFont}, false));
 
     cl.pln("Accuracy for test set :", Average(accuracy));
@@ -134,9 +154,7 @@ void TrainForImages(int phaseNumber, int epochPerSet, float startLR, float endLR
 }
 
 void TestImages() {
-  if(frameCount != 0) delay(10000);
-  background(255);
-
+  frame.setSize(floor(w * rScale * characters.length), floor(h * rScale * numOfTestSample));
   Matrix[] testSample = dataset.CreateSample(
     characters,
     handTestingDatas,
@@ -144,10 +162,14 @@ void TestImages() {
     fontTestingDatas,
     4, testDerformation);
 
+  frame.setVisible(true);
+  background(255);
 
   float[] score = CompilScore(AccuracyScore(nn, testSample, true));
   cl.pln("Training Set Score :", Average(score));
   cl.pFloatList(score, "Accuracy");
+
+
   save("./Representation/" + str(frameCount) + " " + str(Average(score)) + " " + nameOfProcess + ".jpg");
 
   testSample[0].Delete();
@@ -215,20 +237,20 @@ float[][] AccuracyScore(NeuralNetwork nn, Matrix[] data, boolean doDraw) {
 float[][] AccuracyScore(NeuralNetwork nn, Matrix[][] data, boolean doDraw) {
   float[][] score = new float[data.length][data[0][1].n];
   int[][] countOutput = new int[data.length][data[0][1].n]; // Compte le nombre d'output ayant pour retour i
-  
+
   int ret = 0; // To draw
   for(int k = 0; k < data.length; k++) {
     Matrix[] d = data[k];
     Matrix prediction = nn.Predict(d[0]);
-  
+
     int x = 0; int y = 0;
     textAlign(LEFT, BOTTOM); textSize(w); fill(255,0,0);
-  
+
     int mIndex; double m; // Recherche de la prédiction la plus haute
     for(int j = 0; j < d[0].p; j++) {
       boolean isGood = false;
       fill(255,0,0,100);
-  
+
       mIndex = -1;
       m = -1;
       for(int i = 0; i < d[1].n; i++) {
@@ -237,7 +259,7 @@ float[][] AccuracyScore(NeuralNetwork nn, Matrix[][] data, boolean doDraw) {
           m = prediction.Get(mIndex, j);
         }
       }
-  
+
       for(int i = 0; i < d[1].n; i++) {
         if(d[1].Get(i,j) == 1) {
           countOutput[k][i] += 1;
@@ -248,30 +270,30 @@ float[][] AccuracyScore(NeuralNetwork nn, Matrix[][] data, boolean doDraw) {
           }
         }
       }
-  
-  
+
+
       if(doDraw) {
         x = floor(floor(rScale*h*ret) / height * rScale * w);
         y = floor(floor(rScale*h*ret) % height);
         image(dataset.GetImageFromInputs(d[0], j), x, y, rScale*w, rScale*h);
-  
+
         noStroke();
         rect(x, y, rScale * w, rScale * h);
-        
+
         if(!isGood) {
           fill(200);
           textSize(rScale * w);
           text(characters[mIndex], x, y, rScale*w, rScale*h);
         }
       }
-      
+
       ret++;
     }
     for(int i = 0; i < data[0][1].n; i++) {
       score[k][i] = countOutput[k][i] != 0 ? score[k][i] / (float)countOutput[k][i] : 0;
     }
   }
-  
+
   return score;
 }
 
@@ -337,7 +359,7 @@ float[] CompilScore(float[][] list) {
   for(float[] l : list) {
     for(int s = 0; s < list[0].length; s++) score[s] += (float)l[s] / list.length;
   }
-  
+
   return score;
 }
 
@@ -345,7 +367,7 @@ float Average(float[][] list) {
   int s = 0;
   for(int k = 0; k < list.length; k++) s+=list[k].length;
   float[] lst = new float[s];
-  
+
   int index = 0;
   for(int k = 0; k < list.length; k++) {
     for(int i = 0; i < list[k].length; i++) {
@@ -353,7 +375,7 @@ float Average(float[][] list) {
       index++;
     }
   }
-  
+
   return Average(lst);
 }
 
