@@ -21,6 +21,21 @@ class ConsoleLog {
     output.println();
   }
   
+  //s
+  void pln(String... o) {
+    println(o);
+    
+    for(String e : o) {
+      output.print(e);
+      output.print(" ");
+      graphApplet.WriteToConsole(e);
+      graphApplet.WriteToConsole(" ");
+    }
+    
+    output.println();
+    graphApplet.console.append("\n");
+  }
+  
   //f Energistre une nouvelle donnée (sans saut de ligne)
   // Equivalent au *print()*
   void p(Object... o) {
@@ -29,6 +44,18 @@ class ConsoleLog {
     for(Object e : o) {
       output.print(e);
       output.print(" ");
+    }
+  }
+  
+  //s
+  void p(String... o) {
+    print(o);
+    
+    for(String e : o) {
+      output.print(e);
+      output.print(" ");
+      graphApplet.WriteToConsole(e);
+      graphApplet.WriteToConsole(" ");
     }
   }
   

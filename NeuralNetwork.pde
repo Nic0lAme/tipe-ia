@@ -101,12 +101,18 @@ class NeuralNetwork {
 
   //f Donne la sortie du réseau de neurones _this_ pour l'entrée _entry_
   public Matrix Predict(Matrix entry) {
-    return ForwardPropagation(entry)[this.numLayers - 1];
+    return ForwardPropagation(entry, false)[this.numLayers - 1];
+  }
+  
+  //s
+  public Matrix[] ForwardPropagation(Matrix entry) {
+    return ForwardPropagation(entry, true);
   }
 
   //f Prend la matrice _entry_ en entrée, et renvoie un tableau des valeurs de chaque couche
   // _entry.p_ correspond au nombre d'entrées données simultanément
-  public Matrix[] ForwardPropagation(Matrix entry) {
+  // _doDropOut_ détermine si l'on est dans la learningPhase (doDropOut) ou non
+  public Matrix[] ForwardPropagation(Matrix entry, boolean doDropOut) {
     if (entry.n != entrySize) {
       println(entry.n, entrySize);
       println("Taille de l'entrée invalide");
@@ -116,23 +122,33 @@ class NeuralNetwork {
     Matrix[] layerVal = new Matrix[this.numLayers];
     layerVal[0] = entry;
     for(int i = 0; i < this.numLayers - 1; i++) {
-      layerVal[i + 1] = CalcLayer(i, layerVal[i]);
+      layerVal[i + 1] = CalcLayer(i, layerVal[i], doDropOut);
     }
 
     return layerVal;
   }
 
   //f Calcule la sortie correspondant à l'entrée _in_, de la couche _from_ à la couche _from+1_
-  private Matrix CalcLayer(int from, Matrix in) {
+  private Matrix CalcLayer(int from, Matrix in, boolean doDropOut) {
     Matrix result = weights[from].Mult(in);
+    
     result.Add(bias[from], 1, true);
 
     if(from == this.numLayers - 2 && this.useSoftMax) {
       result.Map((x) -> Math.exp(x));
       return result.NormColumn();
     }
+    
+    result.Map((x) -> sigmoid(x));
+    if(doDropOut) {
+      for(int k = 0; k < result.n; k++) {
+        for(int j = 0; j < result.p; j++)
+          if(random(0,1) > dropOutProb) result.Set(k, j, 0);
+      }
+      result.Scale((float)1 / dropOutProb);
+    }
 
-    return result.Map((x) -> sigmoid(x));
+    return result;
   }
 
   //f Effectue la rétropropagation du réseau de neurones
@@ -147,7 +163,7 @@ class NeuralNetwork {
     Matrix[] weightGrad = new Matrix[this.numLayers - 1];
     Matrix[] biasGrad = new Matrix[this.numLayers - 1];
 
-    double lambda = 0.01;
+    double lambda = 0;
     boolean hasNaN = false;
     for(int l = this.numLayers - 2; l >= 0; l--) {
       if(gradient.Contains(Double.NaN)) hasNaN = true;
@@ -346,8 +362,8 @@ class NeuralNetwork {
       if((k+1)%6 != 0 && k != numOfEpoch - 1) continue;
 
       for(int s = 0; s < testSets.length; s++) {
-        float[] score = CompilScore(AccuracyScore(this, testSets[s], false));
-        cl.p("\t Score", s, ":", String.format("%7.5f", Average(score)));
+        float[] score = CompilScore(session.AccuracyScore(this, testSets[s], false));
+        cl.p("\t Score", str(s), ":", String.format("%7.5f", Average(score)));
       }
       cl.pln();
     }

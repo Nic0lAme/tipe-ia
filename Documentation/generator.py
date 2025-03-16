@@ -19,7 +19,7 @@ class FUNCTIONS:
 
 
 
-files_name = [("../Matrix.pde", "Matrix"), ("../ImageManager.pde", "ImageManager"), ("../NeuralNetwork.pde", "NeuralNetwork"), ("../LetterDataset.pde", "LetterDataset"), ("../ConsoleLog.pde", "ConsoleLog")]
+files_name = [("../GraphApplet.pde", "GraphApplet"), ("../Matrix.pde", "Matrix"), ("../Session.pde", "Session"), ("../ImageManager.pde", "ImageManager"), ("../NeuralNetwork.pde", "NeuralNetwork"), ("../LetterDataset.pde", "LetterDataset"), ("../ConsoleLog.pde", "ConsoleLog")]
 classes = []
 
 surcharges = []

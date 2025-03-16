@@ -8,11 +8,11 @@ import java.util.concurrent.ExecutionException;
 
 public class LetterDataset {
   final int wData, hData;
-  final float move = 0.1;
+  final float move = 0.12;
   final float blur = 0.05;
-  final float density = 0.01;
+  final float density = 0.015;
   final float perlin = 1;
-  final float deformation = 0.03;
+  final float deformation = 0.07;
 
   //c Créateur de dataset
   // Zone de travail définie par _wData_ * _hData_
@@ -54,7 +54,7 @@ public class LetterDataset {
 
     cl.pln("Creating Dataset of size " + sampleSize + "...");
 
-    Matrix inputs = new Matrix(w*h, sampleSize);
+    Matrix inputs = new Matrix(session.hp.w*session.hp.h, sampleSize);
     Matrix outputs = new Matrix(nbChar, sampleSize);
     outputs.Fill(0);
 
@@ -86,13 +86,20 @@ public class LetterDataset {
               //cl.pln(idx);
 
               // Récupère les pixels et les normalise
-              double[] imgPixels = ImgPP(img);
+              double[] imgPixels = session.ImgPP(img);
               double[] answerArray = new double[nbChar];
               answerArray[c] = 1;
 
               Matrix[] r = new Matrix[2];
               r[0] = new Matrix(imgPixels.length, 1).ColumnFromArray(0, imgPixels);
               r[1] = new Matrix(nbChar, 1).ColumnFromArray(0, answerArray);
+              
+              synchronized (stopLearning) {
+                if (stopLearning.get()) {
+                  try { println("Learning stopped"); stopLearning.wait(); println("Le retour");}
+                  catch (Exception e) { e.printStackTrace(); }
+                }
+              }
 
               AddToRes(results, r, sampleSize, startTime);
               return this;
@@ -132,7 +139,7 @@ public class LetterDataset {
 
   //f Renvoie une image affichable de l'image stockée en colonne _j_ de l'entrée _inputs_
   public PImage GetImageFromInputs(Matrix inputs, int j) {
-    PImage img = createImage(w, h, RGB);
+    PImage img = createImage(session.hp.w, session.hp.h, RGB);
     img.loadPixels();
     for(int i = 0; i < img.pixels.length; i++) {
       int val = floor((float)inputs.Get(i, j) * 255);

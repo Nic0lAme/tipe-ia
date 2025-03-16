@@ -7,17 +7,23 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import java.text.DecimalFormat;
 import javax.swing.*;
+import javax.swing.border.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseListener;
 import java.util.LinkedList;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.io.File;
 import javax.imageio.ImageIO;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.text.NumberFormat;
 
 class GraphApplet extends JFrame {
@@ -27,13 +33,16 @@ class GraphApplet extends JFrame {
   JMenu files, edit, display;
   private JMenuItem importItem, newNNItem, exportItem, dataItem, avgItem, testItem, trainItem;
   JMenuBar menuBar;
+  public JScrollPane consoleScroll;
+  public JTextArea console;
   private boolean pin = false;
-
-  public GraphApplet(String gTitle) {
-    graph = new LearnGraph(gTitle, "Itérations", "Coût");
+  
+  //c
+  public GraphApplet() {
+    graph = new LearnGraph("Itérations", "Coût");
     this.setTitle("TIPE");
     
-    this.getContentPane().setPreferredSize(new Dimension(600, 400));
+    this.getContentPane().setPreferredSize(new Dimension(600, 600));
     
     
     try { this.setIconImage(ImageIO.read(new File(sketchPath() + "/AuxiliarFiles/icon.png"))); }
@@ -51,6 +60,7 @@ class GraphApplet extends JFrame {
     CenterFrame(this);
   }
   
+  //f Centre la frame _frame_ dans l'écran
   private void CenterFrame(JFrame frame) {
     Dimension windowSize = frame.getSize();
     GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -61,19 +71,23 @@ class GraphApplet extends JFrame {
     frame.setLocation(dx, dy);
   }
 
-
+  
+  //f Ajoute le point _x_,_y_ au graphique
   public void AddValue(double x, double y) {
     graph.Add(x, y);
   }
-
+  
+  //f Ajoute le point _y_ au graphique
   public void AddValue(double y) {
     graph.Add(y);
   }
-
+  
+  //f Nettoie le graphique
   public void ClearGraph()  {
     graph.Clear();
   }
-
+  
+  //f Active/désactive l'épinglage de la fenêtre
   private void TogglePin() {
     pin = !pin;
     setAlwaysOnTop(pin);
@@ -81,8 +95,13 @@ class GraphApplet extends JFrame {
     else pinButton.setText("Épingler");
   }
   
+  //f Permet d'exporter le réseau de neurone actif
+  // A FAIRE : Devra au final exporter toute la session
   private void ExportNN() {
     if (!stopLearning.get()) TogglePause();
+    boolean wasPin = this.pin;
+    if(wasPin) TogglePin();
+    
     pauseButton.setEnabled(false);
     JFileChooser fileChooser = new JFileChooser();
     fileChooser.setAcceptAllFileFilterUsed(false);
@@ -91,8 +110,9 @@ class GraphApplet extends JFrame {
     fileChooser.setCurrentDirectory(defaultDir);
     int response = fileChooser.showOpenDialog(null);
     if (response == JFileChooser.APPROVE_OPTION) {
-      nn.Export(fileChooser.getSelectedFile().getAbsolutePath());
+      session.nn.Export(fileChooser.getSelectedFile().getAbsolutePath());
     }
+    if(wasPin) TogglePin();
     pauseButton.setEnabled(true);
     if (stopLearning.get()) TogglePause();
   }
@@ -115,15 +135,18 @@ class GraphApplet extends JFrame {
   }
   */
   
+  //f Importe un réseau de neurone
+  // A FAIRE : devra au final importer une session entière
   private void ImportNN() {
-    NeuralNetwork newNN = new NeuralNetwork();
-    
     JFrame frame = new JFrame("Importer un réseau");
+    boolean wasPin = this.pin;
+    if(wasPin) TogglePin();
     frame.setSize(600, 200);
     CenterFrame(frame);
     
     frame.addWindowListener(new WindowAdapter() {
       public void windowClosing(WindowEvent e) {
+        if(wasPin) TogglePin();
         pauseButton.setEnabled(true);
         if (stopLearning.get()) TogglePause();
       }
@@ -142,11 +165,11 @@ class GraphApplet extends JFrame {
     
     JLabel wLabel = new JLabel("Largeur");
     JFormattedTextField wField = new JFormattedTextField(NumberFormat.getIntegerInstance());
-    wField.setValue(w);
+    wField.setValue(session.hp.w);
     
     JLabel hLabel = new JLabel("Hauteur");
     JFormattedTextField hField = new JFormattedTextField(NumberFormat.getIntegerInstance());
-    hField.setValue(h);
+    hField.setValue(session.hp.h);
     
     JButton openFile = new JButton("Ouvrir");
     openFile.setFocusable(false);
@@ -179,27 +202,29 @@ class GraphApplet extends JFrame {
         public void actionPerformed(ActionEvent e) {
             boolean isChecked = checkBox.isSelected();
             
-            w = int(wField.getText());
-            h = int(hField.getText());
+            HyperParameters hp = new HyperParameters();
+            hp.w = int(wField.getText());
+            hp.h = int(hField.getText());
+            
             
             NeuralNetwork newNN = new NeuralNetwork().Import(fileChooser.getSelectedFile().getAbsolutePath());
             
-            if (newNN.entrySize != w*h) {
-              cl.pln("Wrong input size");
-              return;
-            }
-            
-            if (newNN.outputSize != characters.length) {
+            if (newNN.outputSize != session.characters.length) {
               cl.pln("Wrong output size");
               return;
             }
             
-            dataset = new LetterDataset(5*w, 5*h);
-            nn = newNN;
-            nn.useSoftMax = isChecked;
+            Session s = new Session("", hp);
+            s.nn = newNN;
+            s.nn.useSoftMax = isChecked;
             
-            println(nn);
+            session = s;
             
+            graph.Clear();
+            
+            cl.pln(s.nn);
+            
+            if(wasPin) TogglePin();
             pauseButton.setEnabled(true);
             if (stopLearning.get()) TogglePause();
             frame.setVisible(false);
@@ -223,8 +248,13 @@ class GraphApplet extends JFrame {
     frame.setVisible(true);
   }
   
+  //f Permet de créer un nouveau réseau de neurones
+  // A FAIRE : devra au final permettre de créer une nouvelle session
   private void NewNN() {
     JFrame frame = new JFrame("Nouveau réseau");
+    boolean wasPin = this.pin;
+    if(wasPin) TogglePin();
+    
     frame.setSize(600, 200);
     CenterFrame(frame);
 
@@ -233,11 +263,11 @@ class GraphApplet extends JFrame {
     
     JLabel wLabel = new JLabel("Largeur");
     JFormattedTextField wField = new JFormattedTextField(NumberFormat.getIntegerInstance());
-    wField.setValue(w);
+    wField.setValue(19);
     
     JLabel hLabel = new JLabel("Hauteur");
     JFormattedTextField hField = new JFormattedTextField(NumberFormat.getIntegerInstance());
-    hField.setValue(h);
+    hField.setValue(21);
 
     JLabel textLabel = new JLabel("Hidden Layers (, or ;)");
     JTextField textField = new JTextField("256;128;128");
@@ -260,16 +290,22 @@ class GraphApplet extends JFrame {
             String text = textField.getText();
             boolean isChecked = checkBox.isSelected();
             
-            w = int(wField.getText());
-            h = int(hField.getText());
-            dataset = new LetterDataset(5*w, 5*h);
+            HyperParameters hp = new HyperParameters();
+            hp.w = int(wField.getText());
+            hp.h = int(hField.getText());
 
-            int[] layers = int((str(w*h) + "," + text + "," + str(characters.length)).split("[,\\;]"));
+            int[] layers = int((str(hp.w*hp.h) + "," + text + "," + str(session.characters.length)).split("[,\\;]"));
             
-            nn = new NeuralNetwork(layers);
-            nn.useSoftMax = isChecked;
+            Session s = new Session("", hp);
+            s.nn = new NeuralNetwork(layers);
+            s.nn.useSoftMax = isChecked;
             
-            println(nn);
+            session = s;
+            
+            graph.Clear();
+            
+            cl.pln(s.nn);
+            if(wasPin) TogglePin();
             frame.setVisible(false);
         }
     });
@@ -291,7 +327,7 @@ class GraphApplet extends JFrame {
     frame.setVisible(true);
   }
   
-  
+  //f Permet de mettre en pause les epochs
   private void TogglePause() {
     synchronized(stopLearning) {
       stopLearning.set(!stopLearning.get());
@@ -303,17 +339,20 @@ class GraphApplet extends JFrame {
       else pauseButton.setText("Pause");
     }
   }
-
+  
+  //f Permet de montrer/cacher la valeur moyenne sur le graphique
   private void ToggleAvg() {
     graph.ToggleAvg();
     avgItem.setText((graph.IsAvgShowed() ? "Masquer" : "Afficher") + " la moyenne glissante");
   }
-
+  
+  //f Permet de montrer/cacher les valeurs des loss
   private void ToggleData() {
     graph.ToggleData();
     dataItem.setText((graph.IsDataShowed() ? "Masquer" : "Afficher") + " les données brutes");
   }
   
+  //f Permet de lancer un test du réseau de neurones actif
   private void ToggleTest() {
     testImages = true;
     try { Thread.sleep(500); }
@@ -321,7 +360,11 @@ class GraphApplet extends JFrame {
     testImages = false;
   }
   
+  //f Permet de lancer un entrainement du réseau de neurones actif
   private void ToggleTrain() {    
+    boolean wasPin = this.pin;
+    if(wasPin) TogglePin();
+    
     JFrame frame = new JFrame("Importer un réseau");
     frame.setSize(900, 200);
     CenterFrame(frame);
@@ -336,7 +379,7 @@ class GraphApplet extends JFrame {
     
     JLabel epochLabel = new JLabel("# d'epoch");
     JFormattedTextField epochField = new JFormattedTextField(NumberFormat.getIntegerInstance());
-    epochField.setValue(8);
+    epochField.setValue(16);
     
     JLabel batchLabel = new JLabel("Taille des batches");
     JFormattedTextField batchField = new JFormattedTextField(NumberFormat.getIntegerInstance());
@@ -348,11 +391,11 @@ class GraphApplet extends JFrame {
     
     JLabel startMinLRLabel = new JLabel("LR min intial");
     JFormattedTextField startMinLRField = new JFormattedTextField();
-    startMinLRField.setValue(1.0);
+    startMinLRField.setValue(0.5);
     
     JLabel startMaxLRLabel = new JLabel("LR max intial");
     JFormattedTextField startMaxLRField = new JFormattedTextField();
-    startMaxLRField.setValue(2.0);
+    startMaxLRField.setValue(1.5);
     
     JLabel endMinLRLabel = new JLabel("LR min final");
     JFormattedTextField endMinLRField = new JFormattedTextField();
@@ -360,7 +403,7 @@ class GraphApplet extends JFrame {
     
     JLabel endMaxLRLabel = new JLabel("LR max final");
     JFormattedTextField endMaxLRField = new JFormattedTextField();
-    endMaxLRField.setValue(1.0);
+    endMaxLRField.setValue(0.5);
     
     JLabel startDefLabel = new JLabel("Déformation initiale");
     JFormattedTextField startDefField = new JFormattedTextField();
@@ -384,10 +427,11 @@ class GraphApplet extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
           frame.setVisible(false);
+          if(wasPin) TogglePin();
           
           class Train implements Runnable {
             public void run() {
-              TrainForImages (
+              session.TrainForImages (
                 int(iterField.getText()), int(epochField.getText()),
                 float(startMinLRField.getText().replace(',', '.')), float(endMinLRField.getText().replace(',', '.')),
                 float(startMaxLRField.getText().replace(',', '.')), float(endMaxLRField.getText().replace(',', '.')),
@@ -444,7 +488,14 @@ class GraphApplet extends JFrame {
     frame.add(panel);
     frame.setVisible(true);
   }
-
+  
+  //f Ajoute l'entrée _text_ à la console
+  public void WriteToConsole(String text) {
+    console.append(text);
+    consoleScroll.getVerticalScrollBar().setValue(consoleScroll.getVerticalScrollBar().getMaximum());
+  }
+  
+  //f Initialise la fenêtre, en utlisant le graphique _graph_
   private void Init(LearnGraph graph) {
     setLayout(new BorderLayout());
     
@@ -467,7 +518,7 @@ class GraphApplet extends JFrame {
     importItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, KeyEvent.CTRL_DOWN_MASK));
     files.add(importItem);
     
-    exportItem = new JMenuItem("Éxporter");
+    exportItem = new JMenuItem("Exporter");
     exportItem.setFocusable(false);
     exportItem.addActionListener(e -> ExportNN());
     exportItem.setMargin(new Insets(5, 5, 5, 5));
@@ -566,6 +617,19 @@ class GraphApplet extends JFrame {
 
     add(top, BorderLayout.NORTH);
     add(graph.GetPanel(), BorderLayout.CENTER);
+    
+    
+    
+    console = new JTextArea();
+    console.setBackground(Color.lightGray);
+    console.setEditable(false);
+    
+    consoleScroll = new JScrollPane(console);
+    consoleScroll.setPreferredSize(new Dimension(this.getWidth() - 20, 200));
+    consoleScroll.setBorder(new TitledBorder(new EtchedBorder(), "Console"));
+    consoleScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+    
+    add(consoleScroll, BorderLayout.SOUTH);
   }
 }
 
@@ -582,7 +646,7 @@ public class LearnGraph {
   private final int avgPeriod = 200;
   private double somme = 0;
 
-  public LearnGraph(String title, String abscisses, String ordonnees) {
+  public LearnGraph(String abscisses, String ordonnees) {
     series = new XYSeries("Coût");
     average = new XYSeries("Moyenne glissante");
     XYSeriesCollection dataset = new XYSeriesCollection();
@@ -590,7 +654,7 @@ public class LearnGraph {
     dataset.addSeries(series);
     AVG_INDEX = 0;
     DATA_INDEX = 1;
-    chart = ChartFactory.createXYLineChart(title, abscisses, ordonnees, dataset, PlotOrientation.VERTICAL, true, true, true);
+    chart = ChartFactory.createXYLineChart("", abscisses, ordonnees, dataset, PlotOrientation.VERTICAL, true, true, true);
     SetStrokeWeight(strokeWeight);
     chart.getXYPlot().getRenderer().setSeriesPaint(DATA_INDEX, Color.decode("#ff535a"));
     chart.getXYPlot().getRenderer().setSeriesPaint(AVG_INDEX, Color.decode("#786eff"));

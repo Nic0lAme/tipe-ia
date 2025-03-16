@@ -3,6 +3,171 @@
 <details>
 <summary>
 
+**GraphApplet**
+
+</summary>
+
+- 
+>
+- _public GraphApplet()_
+
+
+- ***
+
+	<details>
+	<summary>AddValue</summary>
+
+	- >Ajoute le point _y_ au graphique  
+	- _public void AddValue(double y)_
+
+	</details>
+
+- ***
+
+	<details>
+	<summary>AddValue</summary>
+
+	- >Ajoute le point _x_,_y_ au graphique  
+	- _public void AddValue(double x, double y)_
+
+	</details>
+
+- ***
+
+	<details>
+	<summary>CenterFrame</summary>
+
+	- >Centre la frame _frame_ dans l'écran  
+	- _private void CenterFrame(JFrame frame)_
+
+	</details>
+
+- ***
+
+	<details>
+	<summary>ClearGraph</summary>
+
+	- >Nettoie le graphique  
+	- _public void ClearGraph() _
+
+	</details>
+
+- ***
+
+	<details>
+	<summary>ExportNN</summary>
+
+	- >Permet d'exporter le réseau de neurone actif  
+	A FAIRE : Devra au final exporter toute la session  
+	- _private void ExportNN()_
+
+	</details>
+
+- ***
+
+	<details>
+	<summary>ImportNN</summary>
+
+	- >Importe un réseau de neurone  
+	A FAIRE : devra au final importer une session entière  
+	- _private void ImportNN()_
+
+	</details>
+
+- ***
+
+	<details>
+	<summary>Init</summary>
+
+	- >Initialise la fenêtre, en utlisant le graphique _graph_  
+	- _private void Init(LearnGraph graph)_
+
+	</details>
+
+- ***
+
+	<details>
+	<summary>NewNN</summary>
+
+	- >Permet de créer un nouveau réseau de neurones  
+	A FAIRE : devra au final permettre de créer une nouvelle session  
+	- _private void NewNN()_
+
+	</details>
+
+- ***
+
+	<details>
+	<summary>ToggleAvg</summary>
+
+	- >Permet de montrer/cacher la valeur moyenne sur le graphique  
+	- _private void ToggleAvg()_
+
+	</details>
+
+- ***
+
+	<details>
+	<summary>ToggleData</summary>
+
+	- >Permet de montrer/cacher les valeurs des loss  
+	- _private void ToggleData()_
+
+	</details>
+
+- ***
+
+	<details>
+	<summary>TogglePause</summary>
+
+	- >Permet de mettre en pause les epochs  
+	- _private void TogglePause()_
+
+	</details>
+
+- ***
+
+	<details>
+	<summary>TogglePin</summary>
+
+	- >Active/désactive l'épinglage de la fenêtre  
+	- _private void TogglePin()_
+
+	</details>
+
+- ***
+
+	<details>
+	<summary>ToggleTest</summary>
+
+	- >Permet de lancer un test du réseau de neurones actif  
+	- _private void ToggleTest()_
+
+	</details>
+
+- ***
+
+	<details>
+	<summary>ToggleTrain</summary>
+
+	- >Permet de lancer un entrainement du réseau de neurones actif  
+	- _private void ToggleTrain()_
+
+	</details>
+
+- ***
+
+	<details>
+	<summary>WriteToConsole</summary>
+
+	- >Ajoute l'entrée _text_ à la console  
+	- _public void WriteToConsole(String text)_
+
+	</details>
+
+</details><details>
+<summary>
+
 **Matrix**
 
 </summary>
@@ -37,6 +202,19 @@
 
 	- >Renvoie la matrice colonne ayant pour valeur les valeurs moyennes des lignes de _this_  
 	- _Matrix AvgLine()_
+
+	</details>
+
+- ***
+
+	<details>
+	<summary>AvgMatrix</summary>
+
+	- >Retourne la matrice résultant de la moyenne des matrices de _mats_  
+	On utilise comme poids les _coeffs_  
+	- _public Matrix AvgMatrix(Matrix[] mats, double[] coeffs)_
+	- _public Matrix AvgMatrix(Matrix[] mats)_
+		- Chaque matrice a le même poids
 
 	</details>
 
@@ -95,7 +273,7 @@
 	<details>
 	<summary>Contains</summary>
 
-	- >Vérifié si _val_ est dans la matrice _this_  
+	- >Vérifie si _val_ est dans la matrice _this_  
 	- _boolean Contains(double val)_
 
 	</details>
@@ -224,7 +402,7 @@
 	<details>
 	<summary>HasNAN</summary>
 
-	- >Vérifie sur la matrice _this_ contient _NaN_  
+	- >Vérifie si la matrice _this_ contient _NaN_  
 	- _boolean HasNAN()_
 
 	</details>
@@ -384,6 +562,56 @@
 
 	- >Crée une nouvelle matrice, transposée de _this_  
 	- _Matrix T()_
+
+	</details>
+
+</details><details>
+<summary>
+
+**Session**
+
+</summary>
+
+- Crée une session ayant pour nom _name_ et pour hyperparamètres _hp_
+>
+- _Session(String name, HyperParameters hp)_
+
+
+- ***
+
+	<details>
+	<summary>DirectTest</summary>
+
+	- >Permet de tester en direct les performances du réseau  
+	- _void DirectTest()_
+
+	</details>
+
+- ***
+
+	<details>
+	<summary>TestImages</summary>
+
+	- >Teste _this.nn_ sur les sets de tests  
+	- _void TestImages()_
+
+	</details>
+
+- ***
+
+	<details>
+	<summary>TrainForImages</summary>
+
+	- >Entraine le réseau _this.nn_  
+	_phaseNumber_ est le nombre de phase de test (création de nouveaux dataset)  
+	_epochPerSet_ est le nombre d'epoch à chaque phase  
+	_startMinLR_, _endMinLR_, _startMaxLR_ et _endMaxLR_ permettent de définir l'évolution du learning rate  
+	_period_ désigne la période de changement du learning rate entre haut et bas  
+	_batchSize_ représente la taille des batchs (taille des découpes d'échantillons à chaque epoch)  
+	_startDef_ et _endDef_ correspondent à l'évolution du taux de déformation  
+	_rep_ est le nombre de répétition de chaque échantillon  
+	_prop_ est la proportion minimale de _rep_ pour chaque échantillon, modulé par la performance du réseau sur le charactère associé  
+	- _void TrainForImages(int phaseNumber, int epochPerSet, float startMinLR, float endMinLR, float startMaxLR, float endMaxLR, int period, int batchSize, float startDef, float endDef, int rep, float minProp)_
 
 	</details>
 
@@ -625,7 +853,7 @@
 	<summary>CalcLayer</summary>
 
 	- >Calcule la sortie correspondant à l'entrée _in_, de la couche _from_ à la couche _from+1_  
-	- _private Matrix CalcLayer(int from, Matrix in)_
+	- _private Matrix CalcLayer(int from, Matrix in, boolean doDropOut)_
 
 	</details>
 
@@ -646,6 +874,8 @@
 
 	- >Prend la matrice _entry_ en entrée, et renvoie un tableau des valeurs de chaque couche  
 	_entry.p_ correspond au nombre d'entrées données simultanément  
+	_doDropOut_ détermine si l'on est dans la learningPhase (doDropOut) ou non  
+	- _public Matrix[] ForwardPropagation(Matrix entry, boolean doDropOut)_
 	- _public Matrix[] ForwardPropagation(Matrix entry)_
 
 	</details>
@@ -785,6 +1015,7 @@
 	- >Energistre une nouvelle donnée (sans saut de ligne)  
 	Equivalent au *print()*  
 	- _void p(Object... o)_
+	- _void p(String... o)_
 
 	</details>
 
@@ -807,6 +1038,7 @@
 	- >Energistre une nouvelle ligne (saut de ligne)  
 	Equivalent au *println()*  
 	- _void pln(Object... o)_
+	- _void pln(String... o)_
 
 	</details>
 
