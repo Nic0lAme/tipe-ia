@@ -96,10 +96,11 @@ class Matrix {
   }
 
   //f Remplie la matrice _this_ du double _val_
-  void Fill(double val) {
+  Matrix Fill(double val) {
     for(int i = 0; i < n; i++)
       for(int j = 0; j < p; j++)
         this.values[i][j] = val;
+    return this;
   }
 
   //f Copie les valeurs du tableau 2D _val_ dans la matice _this_
@@ -136,16 +137,18 @@ class Matrix {
   }
 
   //f Change la valeur de _this_ à la ligne _i_, la colonne _j_, en lui donnant la valeur _val_
-  void Set(int i, int j, double val) {
-    if (i < 0 || i >= n || j < 0 || j >= p) { cl.pln(this, i, j, val, "Set", "Wrong indices"); Exception e = new Exception(); e.printStackTrace(); return; }
+  Matrix Set(int i, int j, double val) {
+    if (i < 0 || i >= n || j < 0 || j >= p) { cl.pln(this, i, j, val, "Set", "Wrong indices"); Exception e = new Exception(); e.printStackTrace(); return this; }
     if(val != val) { // Val is a NaN
       Exception e = new Exception();
       e.printStackTrace();
 
       cl.pln("Want to SET a NaN");
-      return;
+      return this;
     }
     this.values[i][j] = val;
+    
+    return this;
   }
 
   //f Réccupère la valeur de _this_ à la ligne _i_ et la colonne _j_
@@ -427,11 +430,11 @@ class Matrix {
 
   //f Renvoie une nouvelle matrice, correspondant au produit de Hadamard entre _this_ et _m_
   Matrix HProduct(Matrix m) {
-    if(p != m.p || n != m.n) { cl.pln(this, m, "HPrduct", "Wrong sized matrixes"); Exception e = new Exception(); e.printStackTrace(); return this; }
+    if((p != m.p && m.p != 1)  || n != m.n) { cl.pln(this, m, "HPrduct", "Wrong sized matrixes"); Exception e = new Exception(); e.printStackTrace(); return this; }
 
     for (int i = 0; i < n; i++)
       for (int j = 0; j < p; j++)
-        this.values[i][j] = this.values[i][j] * m.values[i][j];
+        this.values[i][j] = this.values[i][j] * (m.p == 1 ? m.values[i][0] : m.values[i][j]);
 
     return this;
   }

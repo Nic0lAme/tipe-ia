@@ -101,18 +101,20 @@ class NeuralNetwork {
 
   //f Donne la sortie du réseau de neurones _this_ pour l'entrée _entry_
   public Matrix Predict(Matrix entry) {
-    return ForwardPropagation(entry, false)[this.numLayers - 1];
+    return ForwardPropagation(entry)[this.numLayers - 1];
   }
   
   //s
   public Matrix[] ForwardPropagation(Matrix entry) {
-    return ForwardPropagation(entry, true);
+    Matrix[] dropOutFilters = new Matrix[this.numLayers - 1];
+    for(int k = 0; k < this.numLayers - 1; k++) dropOutFilters[k] = new Matrix(this.layers[k], 1).Fill(1);
+    return ForwardPropagation(entry, dropOutFilters);
   }
 
   //f Prend la matrice _entry_ en entrée, et renvoie un tableau des valeurs de chaque couche
   // _entry.p_ correspond au nombre d'entrées données simultanément
   // _doDropOut_ détermine si l'on est dans la learningPhase (doDropOut) ou non
-  public Matrix[] ForwardPropagation(Matrix entry, boolean doDropOut) {
+  public Matrix[] ForwardPropagation(Matrix entry, Matrix[] dropOutFilters) {
     if (entry.n != entrySize) {
       println(entry.n, entrySize);
       println("Taille de l'entrée invalide");
@@ -122,14 +124,17 @@ class NeuralNetwork {
     Matrix[] layerVal = new Matrix[this.numLayers];
     layerVal[0] = entry;
     for(int i = 0; i < this.numLayers - 1; i++) {
-      layerVal[i + 1] = CalcLayer(i, layerVal[i], doDropOut);
+      layerVal[i + 1] = CalcLayer(i, layerVal[i], dropOutFilters[i]);
     }
 
     return layerVal;
   }
 
   //f Calcule la sortie correspondant à l'entrée _in_, de la couche _from_ à la couche _from+1_
-  private Matrix CalcLayer(int from, Matrix in, boolean doDropOut) {
+  private Matrix CalcLayer(int from, Matrix in, Matrix dropOutFilter) {
+    in.HProduct(dropOutFilter);
+    in.Scale((float)1 / dropOutProb);
+    
     Matrix result = weights[from].Mult(in);
     
     result.Add(bias[from], 1, true);
@@ -140,13 +145,6 @@ class NeuralNetwork {
     }
     
     result.Map((x) -> sigmoid(x));
-    if(doDropOut) {
-      for(int k = 0; k < result.n; k++) {
-        for(int j = 0; j < result.p; j++)
-          if(random(0,1) > dropOutProb) result.Set(k, j, 0);
-      }
-      result.Scale((float)1 / dropOutProb);
-    }
 
     return result;
   }
@@ -208,7 +206,7 @@ class NeuralNetwork {
 
   //f Effectue une étape d'apprentissage, ayant pour entrée _X_ et pour sortie _Y_
   // Le taux d'apprentissage est _learning\_rate_
-  public double Learn(Matrix X, Matrix Y, double learning_rate) {
+  public double Learn(Matrix X, Matrix Y, double learning_rate, Matrix[] dropOutFilters) {
     // Gradients des poids ([0]) et des biais([1]) pour chaque couche l ([][l])
     Matrix[][] gradients = new Matrix[2][this.numLayers-1];
 
@@ -244,7 +242,7 @@ class NeuralNetwork {
         // Le thread i remplit les cases i des tableaux (quand ce sera des tableaux)
         class LearningTask implements Callable<Object> {
           public Object call() {
-            Matrix[] activations = ForwardPropagation(trainingData[index]);
+            Matrix[] activations = ForwardPropagation(trainingData[index], dropOutFilters);
             Matrix output = activations[numLayers - 1].C();
             Matrix[][] gradientPart = BackPropagation(activations, answers[index]);
 
@@ -345,11 +343,17 @@ class NeuralNetwork {
         data[0].ComutCol(i, j);
         data[1].ComutCol(i, j);
       }
+      
+      Matrix[] dropOutFilters = new Matrix[this.numLayers - 1];
+      for(int l = 0; l < this.numLayers - 1; l++) {
+        dropOutFilters[l] = new Matrix(this.layers[l], 1).Fill(1);
+        for(int j = 0; j < this.layers[l]; j++) if(random(0,1) > dropOutProb) dropOutFilters[l].Set(j, 0, 0);
+      }
 
       for (int i = 0; i < numOfBatches; i++) {
         Matrix batch = data[0].GetCol(i*batchSize, i*batchSize + batchSize - 1);
         Matrix batchAns = data[1].GetCol(i*batchSize, i*batchSize + batchSize - 1);
-        double l = this.Learn(batch, batchAns, learningRate);
+        double l = this.Learn(batch, batchAns, learningRate, dropOutFilters);
         graphApplet.AddValue(l);
         if (i % (numOfBatches / 4) == 0)
           cl.pln("\t Epoch " + String.format("%05d",k+1) +
