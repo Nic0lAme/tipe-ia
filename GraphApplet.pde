@@ -643,7 +643,7 @@ public class LearnGraph {
   private float strokeWeight = 1.25f;
 
   private final LinkedList<Double> avgDatas = new LinkedList<Double>();
-  private final int avgPeriod = 200;
+  private final int avgPeriod = 100;
   private double somme = 0;
 
   public LearnGraph(String abscisses, String ordonnees) {

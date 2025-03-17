@@ -106,8 +106,8 @@ class NeuralNetwork {
   
   //s
   public Matrix[] ForwardPropagation(Matrix entry) {
-    Matrix[] dropOutFilters = new Matrix[this.numLayers - 1];
-    for(int k = 0; k < this.numLayers - 1; k++) dropOutFilters[k] = new Matrix(this.layers[k], 1).Fill(1);
+    Matrix[] dropOutFilters = new Matrix[this.numLayers];
+    for(int k = 0; k < this.numLayers; k++) dropOutFilters[k] = new Matrix(this.layers[k], 1).Fill(1);
     return ForwardPropagation(entry, dropOutFilters);
   }
 
@@ -124,17 +124,14 @@ class NeuralNetwork {
     Matrix[] layerVal = new Matrix[this.numLayers];
     layerVal[0] = entry;
     for(int i = 0; i < this.numLayers - 1; i++) {
-      layerVal[i + 1] = CalcLayer(i, layerVal[i], dropOutFilters[i]);
+      layerVal[i + 1] = CalcLayer(i, layerVal[i], dropOutFilters[i+1]);
     }
-
+    
     return layerVal;
   }
 
   //f Calcule la sortie correspondant à l'entrée _in_, de la couche _from_ à la couche _from+1_
   private Matrix CalcLayer(int from, Matrix in, Matrix dropOutFilter) {
-    in.HProduct(dropOutFilter);
-    in.Scale((float)1 / dropOutProb);
-    
     Matrix result = weights[from].Mult(in);
     
     result.Add(bias[from], 1, true);
@@ -145,6 +142,11 @@ class NeuralNetwork {
     }
     
     result.Map((x) -> sigmoid(x));
+    
+    if(dropOutFilter.Contains(0)) {
+      result.HProduct(dropOutFilter);
+      result.Scale((float)1 / dropOutProb);
+    }
 
     return result;
   }
@@ -152,7 +154,7 @@ class NeuralNetwork {
   //f Effectue la rétropropagation du réseau de neurones
   // On prend en entrée les valeurs d'_activations_ des layers
   // On donne les valeurs attendues dans _expectedOutput_
-  public Matrix[][] BackPropagation(Matrix[] activations, Matrix expectedOutput) {
+  public Matrix[][] BackPropagation(Matrix[] activations, Matrix expectedOutput, Matrix[] dropOutFilters) {
 
     //dJ/dZl
     Matrix a = activations[this.numLayers-1].C();
@@ -165,6 +167,8 @@ class NeuralNetwork {
     boolean hasNaN = false;
     for(int l = this.numLayers - 2; l >= 0; l--) {
       if(gradient.Contains(Double.NaN)) hasNaN = true;
+      
+      if(dropOutFilters[l+1].Contains(0)) gradient.HProduct(dropOutFilters[l+1]);
 
       //dJ/dWl = dJ/dZl * dZl/dWl
       weightGrad[l] = gradient.Mult(activations[l].T()).Scale(1/ (double)max(1, expectedOutput.p));
@@ -217,7 +221,7 @@ class NeuralNetwork {
     if (numThreadsLearning <= 1) {
       Matrix[] activations = ForwardPropagation(X);
       S = activations[this.numLayers - 1].C();
-      gradients = BackPropagation(activations, Y);
+      gradients = BackPropagation(activations, Y, dropOutFilters);
     }
 
     // Avec multithreading : le batch est divisé en numThreadsLearning sous-batchs, la
@@ -244,7 +248,7 @@ class NeuralNetwork {
           public Object call() {
             Matrix[] activations = ForwardPropagation(trainingData[index], dropOutFilters);
             Matrix output = activations[numLayers - 1].C();
-            Matrix[][] gradientPart = BackPropagation(activations, answers[index]);
+            Matrix[][] gradientPart = BackPropagation(activations, answers[index], dropOutFilters);
 
             synchronized(syncObject) {
               weightsGradients.add(gradientPart[0]);
@@ -344,15 +348,17 @@ class NeuralNetwork {
         data[1].ComutCol(i, j);
       }
       
-      Matrix[] dropOutFilters = new Matrix[this.numLayers - 1];
-      for(int l = 0; l < this.numLayers - 1; l++) {
-        dropOutFilters[l] = new Matrix(this.layers[l], 1).Fill(1);
-        for(int j = 0; j < this.layers[l]; j++) if(random(0,1) > dropOutProb) dropOutFilters[l].Set(j, 0, 0);
-      }
+      
 
       for (int i = 0; i < numOfBatches; i++) {
         Matrix batch = data[0].GetCol(i*batchSize, i*batchSize + batchSize - 1);
         Matrix batchAns = data[1].GetCol(i*batchSize, i*batchSize + batchSize - 1);
+        Matrix[] dropOutFilters = new Matrix[this.numLayers];
+        for(int l = 0; l < this.numLayers; l++) {
+          dropOutFilters[l] = new Matrix(this.layers[l], 1).Fill(1);
+          if(l == this.numLayers - 1) continue;
+          for(int j = 0; j < this.layers[l]; j++) if(random(0,1) > dropOutProb) dropOutFilters[l].Set(j, 0, 0);
+        }
         double l = this.Learn(batch, batchAns, learningRate, dropOutFilters);
         graphApplet.AddValue(l);
         if (i % (numOfBatches / 4) == 0)

@@ -60,7 +60,7 @@ String[] fontTrainingDatas = new String[]{
 String[] handTestingDatas = new String[]{"MrMollier", "MrChauvet", "SachaBE", "IrinaRU", "NoematheoBLB"};
 String[] fontTestingDatas = new String[]{"Liberation Serif", "Calibri", "Book Antiqua", "Gabriola", "Noto Serif"};
 
-float dropOutProb = 0.5;
+float dropOutProb = 0.8;
 
 void settings() {
   size(floor(19 * rScale * this.allCharacters.length), floor(21 * rScale * numOfTestSample), JAVA2D); // For Global Test
