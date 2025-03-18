@@ -103,18 +103,10 @@ class NeuralNetwork {
   public Matrix Predict(Matrix entry) {
     return ForwardPropagation(entry)[this.numLayers - 1];
   }
-  
-  //s
-  public Matrix[] ForwardPropagation(Matrix entry) {
-    Matrix[] dropOutFilters = new Matrix[this.numLayers];
-    for(int k = 0; k < this.numLayers; k++) dropOutFilters[k] = new Matrix(this.layers[k], 1).Fill(1);
-    return ForwardPropagation(entry, dropOutFilters);
-  }
 
   //f Prend la matrice _entry_ en entrée, et renvoie un tableau des valeurs de chaque couche
   // _entry.p_ correspond au nombre d'entrées données simultanément
-  // _doDropOut_ détermine si l'on est dans la learningPhase (doDropOut) ou non
-  public Matrix[] ForwardPropagation(Matrix entry, Matrix[] dropOutFilters) {
+  public Matrix[] ForwardPropagation(Matrix entry) {
     if (entry.n != entrySize) {
       println(entry.n, entrySize);
       println("Taille de l'entrée invalide");
@@ -124,14 +116,14 @@ class NeuralNetwork {
     Matrix[] layerVal = new Matrix[this.numLayers];
     layerVal[0] = entry;
     for(int i = 0; i < this.numLayers - 1; i++) {
-      layerVal[i + 1] = CalcLayer(i, layerVal[i], dropOutFilters[i+1]);
+      layerVal[i + 1] = CalcLayer(i, layerVal[i]);
     }
     
     return layerVal;
   }
 
   //f Calcule la sortie correspondant à l'entrée _in_, de la couche _from_ à la couche _from+1_
-  private Matrix CalcLayer(int from, Matrix in, Matrix dropOutFilter) {
+  private Matrix CalcLayer(int from, Matrix in) {
     Matrix result = weights[from].Mult(in);
     
     result.Add(bias[from], 1, true);
@@ -142,11 +134,6 @@ class NeuralNetwork {
     }
     
     result.Map((x) -> sigmoid(x));
-    
-    if(dropOutFilter.Contains(0)) {
-      result.HProduct(dropOutFilter);
-      result.Scale((float)1 / dropOutProb);
-    }
 
     return result;
   }
@@ -154,7 +141,7 @@ class NeuralNetwork {
   //f Effectue la rétropropagation du réseau de neurones
   // On prend en entrée les valeurs d'_activations_ des layers
   // On donne les valeurs attendues dans _expectedOutput_
-  public Matrix[][] BackPropagation(Matrix[] activations, Matrix expectedOutput, Matrix[] dropOutFilters) {
+  public Matrix[][] BackPropagation(Matrix[] activations, Matrix expectedOutput) {
 
     //dJ/dZl
     Matrix a = activations[this.numLayers-1].C();
@@ -167,8 +154,6 @@ class NeuralNetwork {
     boolean hasNaN = false;
     for(int l = this.numLayers - 2; l >= 0; l--) {
       if(gradient.Contains(Double.NaN)) hasNaN = true;
-      
-      if(dropOutFilters[l+1].Contains(0)) gradient.HProduct(dropOutFilters[l+1]);
 
       //dJ/dWl = dJ/dZl * dZl/dWl
       weightGrad[l] = gradient.Mult(activations[l].T()).Scale(1/ (double)max(1, expectedOutput.p));
@@ -210,7 +195,7 @@ class NeuralNetwork {
 
   //f Effectue une étape d'apprentissage, ayant pour entrée _X_ et pour sortie _Y_
   // Le taux d'apprentissage est _learning\_rate_
-  public double Learn(Matrix X, Matrix Y, double learning_rate, Matrix[] dropOutFilters) {
+  public double Learn(Matrix X, Matrix Y, double learning_rate) {
     // Gradients des poids ([0]) et des biais([1]) pour chaque couche l ([][l])
     Matrix[][] gradients = new Matrix[2][this.numLayers-1];
 
@@ -221,7 +206,7 @@ class NeuralNetwork {
     if (numThreadsLearning <= 1) {
       Matrix[] activations = ForwardPropagation(X);
       S = activations[this.numLayers - 1].C();
-      gradients = BackPropagation(activations, Y, dropOutFilters);
+      gradients = BackPropagation(activations, Y);
     }
 
     // Avec multithreading : le batch est divisé en numThreadsLearning sous-batchs, la
@@ -246,9 +231,9 @@ class NeuralNetwork {
         // Le thread i remplit les cases i des tableaux (quand ce sera des tableaux)
         class LearningTask implements Callable<Object> {
           public Object call() {
-            Matrix[] activations = ForwardPropagation(trainingData[index], dropOutFilters);
+            Matrix[] activations = ForwardPropagation(trainingData[index]);
             Matrix output = activations[numLayers - 1].C();
-            Matrix[][] gradientPart = BackPropagation(activations, answers[index], dropOutFilters);
+            Matrix[][] gradientPart = BackPropagation(activations, answers[index]);
 
             synchronized(syncObject) {
               weightsGradients.add(gradientPart[0]);
@@ -353,13 +338,7 @@ class NeuralNetwork {
       for (int i = 0; i < numOfBatches; i++) {
         Matrix batch = data[0].GetCol(i*batchSize, i*batchSize + batchSize - 1);
         Matrix batchAns = data[1].GetCol(i*batchSize, i*batchSize + batchSize - 1);
-        Matrix[] dropOutFilters = new Matrix[this.numLayers];
-        for(int l = 0; l < this.numLayers; l++) {
-          dropOutFilters[l] = new Matrix(this.layers[l], 1).Fill(1);
-          if(l == this.numLayers - 1) continue;
-          for(int j = 0; j < this.layers[l]; j++) if(random(0,1) > dropOutProb) dropOutFilters[l].Set(j, 0, 0);
-        }
-        double l = this.Learn(batch, batchAns, learningRate, dropOutFilters);
+        double l = this.Learn(batch, batchAns, learningRate);
         graphApplet.AddValue(l);
         if (i % (numOfBatches / 4) == 0)
           cl.pln("\t Epoch " + String.format("%05d",k+1) +
