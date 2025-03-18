@@ -4,7 +4,10 @@ class Bayes {
   ArrayList<HyperParameters> xs = new ArrayList<HyperParameters>();
   ArrayList<Double> ys = new ArrayList<Double>();
   double fBest;
+  
   double h = 2;
+  double overfittingImportance = 0.5;
+  
   
   //c
   Bayes() {
@@ -60,13 +63,13 @@ class Bayes {
   }
   
   
-  public double GaussianProcess(int iter) {
-    LetterDataset ds = new LetterDataset(5*session.hp.w, 5*session.hp.h);
+  public double GaussianProcess(int iter, int time) {
+    LetterDataset ds = new LetterDataset(5*session.w, 5*session.h);
     Matrix[] globalTrainingData = ds.CreateSample(
         allCharacters,
         handTrainingDatas,
         fontTrainingDatas,
-        20, 1);
+        30, 1);
     Matrix[] globalTestingData = ds.CreateSample(
         allCharacters,
         handTestingDatas,
@@ -75,7 +78,7 @@ class Bayes {
     
     for(int i = 0; i < iter; i++) {
       HyperParameters candidate = FindCandidate();
-      double loss = Evaluate(candidate);
+      double loss = Evaluate(candidate, globalTrainingData, globalTestingData, time);
       
       xs.add(candidate);
       ys.add(loss);
@@ -86,8 +89,31 @@ class Bayes {
     return fBest;
   }
   
+  //f Permet d'évaluer la force d'une combinaison d'hyperparamètres
+  public double Evaluate(HyperParameters hp, Matrix[] trainSet, Matrix[] testSet, int time) {
+    int startTime = millis();
+    NeuralNetwork nn = new NeuralNetwork();
+    nn.lambda = hp.lambda;
+    
+    double trainLoss = 1;
+    double testLoss = 1;
+    
+    int iterNum = 0;
+    while(millis() < startTime + 1000 * time) {
+      double lr = CyclicalLearningRate(iterNum, hp.minLR, hp.maxLR, hp.period);
+      trainLoss = nn.MiniBatchLearn(trainSet, 1, hp.batchSize, lr, lr, 1, new Matrix[0][], String.format("%05d", iterNum));
+      
+      iterNum++;
+    }
+    
+    testLoss = nn.ComputeLoss(nn.Predict(testSet[0]), testSet[1]);
+    
+    return testLoss  * Math.pow(testLoss / trainLoss, overfittingImportance);
+  }
   
   
+  //f Piqué sur un site mais on n'a pas enregistré lequel
+  // Calcul de la *fonction de répartition cumulative de la distribution normale standard*
   double CNDF(double x) {
     int neg = (x < 0d) ? 1 : 0;
     if ( neg == 1) 
@@ -101,6 +127,7 @@ class Bayes {
     return (1d - neg) * y + neg * (1d - y);
   }
   
+  //f Calcul de la *Fonction de densité de probabilité de la distribution normale standard*
   double NDF(double x) {
     return Math.exp(- x * x / 2) / Math.sqrt(2 * Math.PI);
   }

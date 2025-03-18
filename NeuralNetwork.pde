@@ -7,6 +7,8 @@ class NeuralNetwork {
   // Paramètres du réseau de neurones
   Matrix[] weights; // Poids des liaisons (pour un indice i, liaisons entre couche i et couche i+1)
   Matrix[] bias; // Biais (pour un indice i, biais entre couche i et i+1)
+  
+  double lambda;
 
   boolean useSoftMax = false; // Détermine l'utilisation de la fonction softmax sur la dernière couche du réseau
 
@@ -149,8 +151,7 @@ class NeuralNetwork {
 
     Matrix[] weightGrad = new Matrix[this.numLayers - 1];
     Matrix[] biasGrad = new Matrix[this.numLayers - 1];
-
-    double lambda = 0.0001;
+    
     boolean hasNaN = false;
     for(int l = this.numLayers - 2; l >= 0; l--) {
       if(gradient.Contains(Double.NaN)) hasNaN = true;
@@ -283,13 +284,8 @@ class NeuralNetwork {
 
       if(weights[l].HasNAN() || bias[l].HasNAN()) hasNaN = true;
     }
-
-    double J = 0;
-    for(int c = 0; c < Y.p; c++) { //colonne de la sortie
-      for(int i = 0; i < Y.n; i++) { //ligne de la sortie
-        if((float)S.Get(i, c) != 0) J -= Y.Get(i, c) * log(abs((float)S.Get(i, c))) / Y.p;
-      }
-    }
+    
+    double J = this.ComputeLoss(S, Y);
 
     /*
     if(hasNaN || J != J) {
@@ -309,18 +305,33 @@ class NeuralNetwork {
 
     return J;
   }
-
-  public void MiniBatchLearn(Matrix[] data, int numOfEpoch, int batchSize, float lr) {
-    MiniBatchLearn(data, numOfEpoch, batchSize, lr, lr, 1);
+  
+  //f Permet le calcul du loss
+  // _S_ est la sortie du système
+  // _Y_ est la sortie attendue
+  public double ComputeLoss(Matrix S, Matrix Y) {
+    double J = 0;
+    for(int c = 0; c < Y.p; c++) { //colonne de la sortie
+      for(int i = 0; i < Y.n; i++) { //ligne de la sortie
+        if((float)S.Get(i, c) != 0) J -= Y.Get(i, c) * log(abs((float)S.Get(i, c))) / Y.p;
+      }
+    }
+    return J;
   }
 
-  public void MiniBatchLearn(Matrix[] data, int numOfEpoch, int batchSize, float minLR, float maxLR, int period) {
-    MiniBatchLearn(data, numOfEpoch, batchSize, minLR, maxLR, period, new Matrix[][]{data}, "");
+  public double MiniBatchLearn(Matrix[] data, int numOfEpoch, int batchSize, float lr) {
+    return MiniBatchLearn(data, numOfEpoch, batchSize, lr, lr, 1);
   }
 
-  public void MiniBatchLearn(Matrix[] data, int numOfEpoch, int batchSize, float minLR, float maxLR, int period, Matrix[][] testSets, String label) {
+  public double MiniBatchLearn(Matrix[] data, int numOfEpoch, int batchSize, float minLR, float maxLR, int period) {
+    return MiniBatchLearn(data, numOfEpoch, batchSize, minLR, maxLR, period, new Matrix[][]{data}, "");
+  }
+
+  public double MiniBatchLearn(Matrix[] data, int numOfEpoch, int batchSize, double minLR, double maxLR, int period, Matrix[][] testSets, String label) {
     cl.pln("Mini Batch Gradient Descent " + label + " - " + numOfEpoch + " Epochs - " + batchSize + " Batch Size - " + String.format("%9.3E", maxLR) + " LR");
-
+    
+    double lossAverage = 0;
+    
     int startTime = millis();
     int numOfBatches = floor(data[0].p / batchSize);
     for (int k = 0; k < numOfEpoch; k++) {
@@ -333,12 +344,13 @@ class NeuralNetwork {
         data[1].ComutCol(i, j);
       }
       
-      
+      lossAverage = 0;
 
       for (int i = 0; i < numOfBatches; i++) {
         Matrix batch = data[0].GetCol(i*batchSize, i*batchSize + batchSize - 1);
         Matrix batchAns = data[1].GetCol(i*batchSize, i*batchSize + batchSize - 1);
         double l = this.Learn(batch, batchAns, learningRate);
+        lossAverage += l / numOfBatches;
         graphApplet.AddValue(l);
         if (i % (numOfBatches / 4) == 0)
           cl.pln("\t Epoch " + String.format("%05d",k+1) +
@@ -346,8 +358,7 @@ class NeuralNetwork {
             "\t Time remaining " + RemainingTime(startTime, k * numOfBatches + i + 1, numOfBatches * numOfEpoch)
           );
       }
-
-
+      
       if((k+1)%6 != 0 && k != numOfEpoch - 1) continue;
 
       for(int s = 0; s < testSets.length; s++) {
@@ -356,6 +367,8 @@ class NeuralNetwork {
       }
       cl.pln();
     }
+    
+    return lossAverage;
   }
 
   @Override
@@ -374,7 +387,7 @@ double sigmoid(double x) {
 }
 
 // En gros ça fait un blinker de period min suivi de period max
-float CyclicalLearningRate(int iter, float min, float max, int period) {
+double CyclicalLearningRate(int iter, double min, double max, int period) {
   if((iter + period/2)%period + 1 <= period/2) return max;
   return min;
 }

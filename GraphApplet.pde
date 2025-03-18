@@ -165,11 +165,11 @@ class GraphApplet extends JFrame {
     
     JLabel wLabel = new JLabel("Largeur");
     JFormattedTextField wField = new JFormattedTextField(NumberFormat.getIntegerInstance());
-    wField.setValue(session.hp.w);
+    wField.setValue(session.w);
     
     JLabel hLabel = new JLabel("Hauteur");
     JFormattedTextField hField = new JFormattedTextField(NumberFormat.getIntegerInstance());
-    hField.setValue(session.hp.h);
+    hField.setValue(session.h);
     
     JButton openFile = new JButton("Ouvrir");
     openFile.setFocusable(false);
@@ -203,9 +203,6 @@ class GraphApplet extends JFrame {
             boolean isChecked = checkBox.isSelected();
             
             HyperParameters hp = new HyperParameters();
-            hp.w = int(wField.getText());
-            hp.h = int(hField.getText());
-            
             
             NeuralNetwork newNN = new NeuralNetwork().Import(fileChooser.getSelectedFile().getAbsolutePath());
             
@@ -217,6 +214,8 @@ class GraphApplet extends JFrame {
             Session s = new Session("", hp);
             s.nn = newNN;
             s.nn.useSoftMax = isChecked;
+            s.w = int(wField.getText());
+            s.h = int(hField.getText());
             
             session = s;
             

@@ -2,6 +2,8 @@ public class Session {
   String name;
   HyperParameters hp;
   
+  int w, h;
+  
   NeuralNetwork nn;
   String[] characters;
   
@@ -16,6 +18,9 @@ public class Session {
   Session(String name, HyperParameters hp) {
     this.hp = hp;
     
+    this.w = 19;
+    this.h = 21;
+    
     this.name = name;
     this.characters = allCharacters;
 
@@ -27,7 +32,7 @@ public class Session {
     handTestingDatas = new String[]{"MrMollier", "MrChauvet", "SachaBE", "IrinaRU", "NoematheoBLB"};
     fontTestingDatas = new String[]{"Liberation Serif", "Calibri", "Book Antiqua", "Gabriola", "Noto Serif"};
     
-    ds = new LetterDataset(5*hp.w, 5*hp.h);
+    ds = new LetterDataset(5*this.w, 5*this.h);
   }
   
   //f Entraine le réseau _this.nn_
@@ -109,7 +114,7 @@ public class Session {
   
   //f Teste _this.nn_ sur les sets de tests
   void TestImages() {
-    frame.setSize(floor(hp.w * rScale * this.characters.length), floor(hp.h * rScale * numOfTestSample));
+    frame.setSize(floor(this.w * rScale * this.characters.length), floor(this.h * rScale * numOfTestSample));
     Matrix[] testSample = ds.CreateSample(
       this.characters,
       this.handTestingDatas,
@@ -194,7 +199,7 @@ public class Session {
       Matrix prediction = this.nn.Predict(d[0]);
   
       int x = 0; int y = 0;
-      textAlign(LEFT, BOTTOM); textSize(hp.w); fill(255,0,0);
+      textAlign(LEFT, BOTTOM); textSize(this.w); fill(255,0,0);
   
       int mIndex; double m; // Recherche de la prédiction la plus haute
       for(int j = 0; j < d[0].p; j++) {
@@ -223,17 +228,17 @@ public class Session {
   
   
         if(doDraw) {
-          x = floor(floor(rScale*hp.h*ret) / height * rScale * hp.w);
-          y = floor(floor(rScale*hp.h*ret) % height);
-          image(ds.GetImageFromInputs(d[0], j), x, y, rScale*hp.w, rScale*hp.h);
+          x = floor(floor(rScale*this.h*ret) / height * rScale * this.w);
+          y = floor(floor(rScale*this.h*ret) % height);
+          image(ds.GetImageFromInputs(d[0], j), x, y, rScale*this.w, rScale*this.h);
   
           noStroke();
-          rect(x, y, rScale * hp.w, rScale * hp.h);
+          rect(x, y, rScale * this.w, rScale * this.h);
   
           if(!isGood) {
             fill(200);
-            textSize(rScale * hp.w);
-            text(characters[mIndex], x, y, rScale*hp.w, rScale*hp.h);
+            textSize(rScale * this.w);
+            text(characters[mIndex], x, y, rScale*this.w, rScale*this.h);
           }
         }
   
@@ -248,13 +253,13 @@ public class Session {
   }
   
   double[] ImgPP(PImage img) { // Images post-processing
-    double[] nImg = new double[hp.w*hp.h];
+    double[] nImg = new double[this.w*this.h];
     PImage PPImage = im.Gray(img);
     PPImage = im.Contrast(PPImage, 0.015);
     PPImage = im.AutoCrop(PPImage, 210, 0.05);
     //PPImage = im.Contrast(PPImage, 0.02); // If there is a dark patch in the center
   
-    im.Resize(PPImage, hp.w, hp.h);
+    im.Resize(PPImage, this.w, this.h);
     PPImage.loadPixels();
     for(int k = 0; k < PPImage.pixels.length; k++) nImg[k] = 1 - (float)brightness(PPImage.pixels[k]) / 255;
   
@@ -265,7 +270,7 @@ public class Session {
     FloatDict result = new FloatDict();
   
     double[] input = ImgPP(img);
-    Matrix inputMatrix = new Matrix(hp.w*hp.h,1).ColumnFromArray(0, input);
+    Matrix inputMatrix = new Matrix(this.w*this.h,1).ColumnFromArray(0, input);
   
     Matrix outputMatrix = nn.Predict(inputMatrix);
     for(int c = 0; c < outputMatrix.n; c++) {

@@ -1,7 +1,11 @@
 class HyperParameters {
-  int w, h;
   int numLayers;
   int layerSize;
+  double minLR;
+  double maxLR;
+  double lambda;
+  int period;
+  int batchSize;
   
   HyperParameters Random() {
     return this;
@@ -9,10 +13,13 @@ class HyperParameters {
   
   double[] ToArray() {
     return new double[]{
-      this.w,
-      this.h,
       this.numLayers,
-      this.layerSize
+      this.layerSize,
+      this.minLR,
+      this.maxLR,
+      this.lambda,
+      this.period,
+      this.bacthSize
     };
   }
 }
