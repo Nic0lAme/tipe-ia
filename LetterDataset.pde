@@ -54,7 +54,7 @@ public class LetterDataset {
 
     cl.pln("Creating Dataset of size " + sampleSize + "...");
 
-    Matrix inputs = new Matrix(session.hp.w*session.hp.h, sampleSize);
+    Matrix inputs = new Matrix(session.w*session.h, sampleSize);
     Matrix outputs = new Matrix(nbChar, sampleSize);
     outputs.Fill(0);
 
@@ -139,7 +139,7 @@ public class LetterDataset {
 
   //f Renvoie une image affichable de l'image stockée en colonne _j_ de l'entrée _inputs_
   public PImage GetImageFromInputs(Matrix inputs, int j) {
-    PImage img = createImage(session.hp.w, session.hp.h, RGB);
+    PImage img = createImage(session.w, session.h, RGB);
     img.loadPixels();
     for(int i = 0; i < img.pixels.length; i++) {
       int val = floor((float)inputs.Get(i, j) * 255);

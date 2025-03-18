@@ -290,10 +290,10 @@ class GraphApplet extends JFrame {
             boolean isChecked = checkBox.isSelected();
             
             HyperParameters hp = new HyperParameters();
-            hp.w = int(wField.getText());
-            hp.h = int(hField.getText());
+            session.w = int(wField.getText());
+            session.h = int(hField.getText());
 
-            int[] layers = int((str(hp.w*hp.h) + "," + text + "," + str(session.characters.length)).split("[,\\;]"));
+            int[] layers = int((str(session.w*session.h) + "," + text + "," + str(session.characters.length)).split("[,\\;]"));
             
             Session s = new Session("", hp);
             s.nn = new NeuralNetwork(layers);

@@ -39,7 +39,7 @@ String[] allCharacters = new String[]{
 int numOfTestSample = 40; //This is just for the tests, not the training
 
 String[] handPolicies = new String[]{
-  "AntoineME", "NicolasMA", "LenaME", "TheoLA", "ElioKE", "AkramBE", "Ivalua1", "Ivalua2", "SamuelJE", "QuentinGU",
+  "AntoineME", "NicolasMA", "LenaME", "TheoLA", "ElioKE", "AkramBE", "IVALUA1", "IVALUA2", "SamuelJE", "QuentinGU",
   "TaoPO","GuillaumeLI","YacoutGA", "LoicRA", "MaximeMB", "NathanLU", "LubinDE", "MatheoLB", "SachaAD", "MatisBR",
   "ValerieAR", "ArthurLO", "RomaneFI", "ThelioLA", "YanisIH", "MrMollier", "MrChauvet", "SachaBE", "IrinaRU", "NoematheoBLB",
   "JeanneAR", "Ivalua3", "Ivalua4", "Ivalua5", "Ivalua6", "MatteoPR"
@@ -53,7 +53,7 @@ String[] fontPolicies = new String[]{
 
 
 String[] handTrainingDatas = new String[]{
-  "AntoineME", "NicolasMA", "LenaME", "TheoLA", "ElioKE", "AkramBE", "Ivalua1", "Ivalua2", "SamuelJE", "QuentinGU",
+  "AntoineME", "NicolasMA", "LenaME", "TheoLA", "ElioKE", "AkramBE", "IVALUA1", "IVALUA2", "SamuelJE", "QuentinGU",
   "TaoPO","GuillaumeLI","YacoutGA", "LoicRA", "MaximeMB", "NathanLU", "LubinDE", "MatheoLB", "SachaAD", "MatisBR",
   "ValerieAR", "ArthurLO", "RomaneFI", "ThelioLA", "YanisIH", "JeanneAR", "Ivalua3", "Ivalua4", "Ivalua5", "Ivalua6",
   "MatteoPR"
@@ -86,6 +86,9 @@ void setup() {
   
   HyperParameters hp = new HyperParameters();
   session = new Session("", hp);
+  
+  Bayes bayes = new Bayes();
+  bayes.GaussianProcess(16, 60);
 }
 
 int index = 0;

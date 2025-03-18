@@ -1,6 +1,6 @@
 class Bayes {
   
-  int numOfCandidate;
+  int numOfCandidate = 10;
   ArrayList<HyperParameters> xs = new ArrayList<HyperParameters>();
   ArrayList<Double> ys = new ArrayList<Double>();
   double fBest;
@@ -14,6 +14,8 @@ class Bayes {
     
   }
   
+  //f Kernel
+  // Calcule la "covariance" entre _hp1_ et _hp2_
   public double Kernel(HyperParameters hp1, HyperParameters hp2) {
     double k = 0;
     double[] list1 = hp1.ToArray();
@@ -37,7 +39,7 @@ class Bayes {
     double[] EIs = new double[numOfCandidate];
     
     for (int cIdx = 0; cIdx < numOfCandidate; cIdx++) {
-      params[cIdx].Random();
+      params[cIdx] = new HyperParameters().Random();
       
       Matrix Kstar = new Matrix(xs.size(), 1);
       for(int i = 0; i < xs.size(); i++) Kstar.Set(i, 0, Kernel(params[cIdx], xs.get(i)));
@@ -69,7 +71,7 @@ class Bayes {
         allCharacters,
         handTrainingDatas,
         fontTrainingDatas,
-        30, 1);
+        12, 1);
     Matrix[] globalTestingData = ds.CreateSample(
         allCharacters,
         handTestingDatas,
@@ -77,7 +79,9 @@ class Bayes {
         6, 1);
     
     for(int i = 0; i < iter; i++) {
-      HyperParameters candidate = FindCandidate();
+      HyperParameters candidate = new HyperParameters();
+      if(i == 0) candidate = new HyperParameters().Random();
+      else candidate = FindCandidate();
       double loss = Evaluate(candidate, globalTrainingData, globalTestingData, time);
       
       xs.add(candidate);
@@ -92,7 +96,15 @@ class Bayes {
   //f Permet d'évaluer la force d'une combinaison d'hyperparamètres
   public double Evaluate(HyperParameters hp, Matrix[] trainSet, Matrix[] testSet, int time) {
     int startTime = millis();
-    NeuralNetwork nn = new NeuralNetwork();
+    
+    println(hp.ToArray());
+    
+    int[] layers = new int[hp.layerSize.length + 2];
+    layers[0] = session.w * session.h;
+    for(int k = 0; k < hp.layerSize.length; k++) layers[k+1] = hp.layerSize[k];
+    layers[hp.layerSize.length + 1] = allCharacters.length;
+    
+    NeuralNetwork nn = new NeuralNetwork(layers);
     nn.lambda = hp.lambda;
     
     double trainLoss = 1;
@@ -101,12 +113,14 @@ class Bayes {
     int iterNum = 0;
     while(millis() < startTime + 1000 * time) {
       double lr = CyclicalLearningRate(iterNum, hp.minLR, hp.maxLR, hp.period);
-      trainLoss = nn.MiniBatchLearn(trainSet, 1, hp.batchSize, lr, lr, 1, new Matrix[0][], String.format("%05d", iterNum));
+      trainLoss = nn.MiniBatchLearn(trainSet, 1, hp.batchSize, lr, lr, 1, new Matrix[0][], String.format("%05d", iterNum + 1));
       
       iterNum++;
     }
     
     testLoss = nn.ComputeLoss(nn.Predict(testSet[0]), testSet[1]);
+    
+    cl.pln("Training loss", String.format("%8.6f", trainLoss), "\t|\tTesting loss", String.format("%8.6f", testLoss));
     
     return testLoss  * Math.pow(testLoss / trainLoss, overfittingImportance);
   }
