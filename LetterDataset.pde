@@ -8,11 +8,11 @@ import java.util.concurrent.ExecutionException;
 
 public class LetterDataset {
   final int wData, hData;
-  final float move = 0.12;
-  final float blur = 0.05;
-  final float density = 0.015;
-  final float perlin = 1;
-  final float deformation = 0.07;
+  final float move = 0.15;
+  final float blur = 0.07;
+  final float density = 0.02;
+  final float perlin = 2;
+  final float deformation = 0.1;
 
   //c Créateur de dataset
   // Zone de travail définie par _wData_ * _hData_

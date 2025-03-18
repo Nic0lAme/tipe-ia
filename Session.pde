@@ -19,10 +19,10 @@ public class Session {
     this.name = name;
     this.characters = allCharacters;
 
-    handTrainingDatas = new String[]{"AntoineME", "NicolasMA", "LenaME", "TheoLA", "ElioKE", "AkramBE", "MaximeMB", "NathanLU", "LubinDE", "MatheoLB", "SachaAD", "MatisBR", "ValerieAR", "ArthurLO", "RomaneFI", "ThelioLA", "YanisIH"};
-//String[] handTrainingDatas = new String[]{};
-    fontTrainingDatas = new String[]{"Arial", "Bahnschrift", "Eras Demi ITC", "Lucida Handwriting Italique", "DejaVu Serif", "Fira Code Retina Moyen", "Consolas", "Lucida Handwriting Italique", "Playwrite IT Moderna", "Just Another Hand"};
-//String[] fontTrainingDatas = new String[]{};
+    this.handTrainingDatas = new String[]{"AntoineME", "NicolasMA", "LenaME", "TheoLA", "MatteoPR", "ElioKE", "AkramBE", "MaximeMB", "NathanLU", "LubinDE", "MatheoLB", "SachaAD", "MatisBR", "ValerieAR", "ArthurLO", "RomaneFI", "ThelioLA", "YanisIH"};
+    //this.handTrainingDatas = new String[]{};
+    this.fontTrainingDatas = new String[]{"Arial", "Bahnschrift", "Eras Demi ITC", "Lucida Handwriting Italique", "DejaVu Serif", "Fira Code Retina Moyen", "Consolas", "Lucida Handwriting Italique", "Playwrite IT Moderna", "Just Another Hand"};
+    //this.fontTrainingDatas = new String[]{};
 
     handTestingDatas = new String[]{"MrMollier", "MrChauvet", "SachaBE", "IrinaRU", "NoematheoBLB"};
     fontTestingDatas = new String[]{"Liberation Serif", "Calibri", "Book Antiqua", "Gabriola", "Noto Serif"};

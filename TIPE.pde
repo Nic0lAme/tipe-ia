@@ -12,7 +12,7 @@ Frame frame;
 Session session;
 
 // Nombre de threads pour les différentes tâches
-final int numThreadsDataset = 8; // Création des datasets
+final int numThreadsDataset = 16; // Création des datasets
 final int numThreadsLearning = 16; // Apprentissage (si 1, pas de parallélisation)
 
 // Attention, à ne pas modifier n'importe comment sous peine de conséquences
@@ -23,19 +23,26 @@ float testDerformation = 1;
 
 //String[] characters = new String[]{"0","1","2","3","4","5","6","7","8","9"};
 //String[] characters = new String[]{"uA","uB","uC","uD","uE","uF","uG","uH","uI","uJ","uK","uL","uM","uN","uO","uP","uQ","uR","uS","uT","uU","uV","uW","uX","uY","uZ"};
+
+String[] allCharacters = new String[]{
+  "uA","uB","uC","uD","uE","uF","uG","uH","uI","uJ","uK","uL","uM","uN","uO","uP","uQ","uR","uS","uT","uU","uV","uW","uX","uY","uZ"
+};
+
+/*
 String[] allCharacters = new String[]{
   "uA","uB","uC","uD","uE","uF","uG","uH","uI","uJ","uK","uL","uM","uN","uO","uP","uQ","uR","uS","uT","uU","uV","uW","uX","uY","uZ",
   "la","lb","lc","ld","le","lf","lg","lh","li","lj","lk","ll","lm","ln","lo","lp","lq","lr","ls","lt","lu","lv","lw","lx","ly","lz",
   "0","1","2","3","4","5","6","7","8","9", "+", "-", "cr",
   "@","#","im","!","€","$","%","(",")","="
 };
+*/
 int numOfTestSample = 40; //This is just for the tests, not the training
 
 String[] handPolicies = new String[]{
   "AntoineME", "NicolasMA", "LenaME", "TheoLA", "ElioKE", "AkramBE", "Ivalua1", "Ivalua2", "SamuelJE", "QuentinGU",
   "TaoPO","GuillaumeLI","YacoutGA", "LoicRA", "MaximeMB", "NathanLU", "LubinDE", "MatheoLB", "SachaAD", "MatisBR",
   "ValerieAR", "ArthurLO", "RomaneFI", "ThelioLA", "YanisIH", "MrMollier", "MrChauvet", "SachaBE", "IrinaRU", "NoematheoBLB",
-  "JeanneAR", "Ivalua3", "Ivalua4", "Ivalua5", "Ivalua6"
+  "JeanneAR", "Ivalua3", "Ivalua4", "Ivalua5", "Ivalua6", "MatteoPR"
 };
 
 String[] fontPolicies = new String[]{
@@ -48,7 +55,8 @@ String[] fontPolicies = new String[]{
 String[] handTrainingDatas = new String[]{
   "AntoineME", "NicolasMA", "LenaME", "TheoLA", "ElioKE", "AkramBE", "Ivalua1", "Ivalua2", "SamuelJE", "QuentinGU",
   "TaoPO","GuillaumeLI","YacoutGA", "LoicRA", "MaximeMB", "NathanLU", "LubinDE", "MatheoLB", "SachaAD", "MatisBR",
-  "ValerieAR", "ArthurLO", "RomaneFI", "ThelioLA", "YanisIH", "JeanneAR", "Ivalua3", "Ivalua4", "Ivalua5", "Ivalua6"
+  "ValerieAR", "ArthurLO", "RomaneFI", "ThelioLA", "YanisIH", "JeanneAR", "Ivalua3", "Ivalua4", "Ivalua5", "Ivalua6",
+  "MatteoPR"
 };
 //String[] handTrainingDatas = new String[]{};
 String[] fontTrainingDatas = new String[]{
