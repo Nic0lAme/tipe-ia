@@ -2,64 +2,71 @@ class Bayes {
   ArrayList<HyperParameters> xs = new ArrayList<HyperParameters>();
   ArrayList<Double> ys = new ArrayList<Double>();
   
+  HyperParameters bestHP;
+  
   double fBest;
   
   double h = 2;
-  int numOfCandidate = 10;
-  double overfittingImportance = 0.5;
-  
+  int numOfCandidate = 512;
+  double overfittingImportance = 0.2;
   
   //c
   Bayes() {
     
   }
   
-  void Export() {
-    Matrix xMatrix = new Matrix(numOfHyperParameters, xs.size()); // Transposé à la fin ; obligé pour utiliser ColFromArray
-    Matrix yMatrix = new Matrix(ys.size(), 1);
+  //f Exporte le Bayes _this_
+  public void Export(String name) {
+    Matrix xMatrix = new Matrix(numOfHyperParameters, xs.size());
+    Matrix yMatrix = new Matrix(1, ys.size());
     
     for(int i = 0; i < xs.size(); i++) {
       xMatrix.ColumnFromArray(i, xs.get(i).ToArray());
-      yMatrix.Set(i, 0, ys.get(i));
+      yMatrix.Set(0, i, ys.get(i));
     }
     
     ArrayList<String> output = new ArrayList<String>();
     output.add(str(xs.size()));
     
-    String[] xString = xMatrix.T().SaveToString();
+    String[] xString = xMatrix.SaveToString();
     for (String s : xString) output.add(s);
     
     String[] yString = yMatrix.SaveToString();
     for (String s : yString) output.add(s);
     
     String[] writedOutput = new String[output.size()];
-    saveStrings("./Bayes/" + session.name + ".by", output.toArray(writedOutput));
+    saveStrings(name, output.toArray(writedOutput));
   }
   
+  //f Importe le Bayes à partir venant de _name_
   public Bayes Import(String name) {
-   String[] input = loadStrings(name);
-   int size = int(split(input[0], ',')[0]);
+    String[] input = loadStrings(name);
+    int size = int(split(input[0], ',')[0]);
    
-   String[] xString = new String[size];
-   for(int i = 1; i < size + 1; i++) {
-     xString[i - 1] = input[i];
-   }
+    String[] xString = new String[numOfHyperParameters];
+    for(int i = 1; i < numOfHyperParameters + 1; i++) {
+      xString[i - 1] = input[i];
+    }
    
-   Matrix xMatrix = new Matrix(size, numOfHyperParameters);
-   xMatrix.LoadString(xString);
+    Matrix xMatrix = new Matrix(numOfHyperParameters, size);
+    xMatrix.LoadString(xString);
    
    
-   String[] yString = new String[size];
-   for(int i = size + 1; i < 2 * size + 1; i++) {
-     yString[i - size - 1] = input[i];
-   }
+    String[] yString = new String[1];
+    yString[0] = input[numOfHyperParameters + 1];
    
-   Matrix yMatrix = new Matrix(size, 1);
-   yMatrix.LoadString(yString);
+    Matrix yMatrix = new Matrix(1, size);
+    yMatrix.LoadString(yString);
 
-   // Il faut convertir en array puis en arraylist
+    xs = new ArrayList<HyperParameters>();
+    ys = new ArrayList<Double>();
+   
+    for(int i = 0; i < size; i++) {
+      xs.add(new HyperParameters().FromArray(xMatrix.ColumnToArray(i)));
+      ys.add(yMatrix.Get(0, i));
+    }
 
-   return this;
+    return this;
   }
   
   //f Kernel
@@ -73,6 +80,7 @@ class Bayes {
     return k / list1.length;
   }
   
+  //f Cherche le candidat ayant potentiellement le meilleur résultat
   public HyperParameters FindCandidate() {
     Matrix K = new Matrix(xs.size());
     for(int i = 0; i < xs.size(); i++)
@@ -97,19 +105,21 @@ class Bayes {
       double sigma = Math.sqrt(Kstarstar - Kstar.T().Mult(KInv).Mult(Kstar).Get(0,0));
       
       double Z = (mu - fBest) / sigma;
-      EIs[cIdx] = (mu - fBest) * CNDF(Z) + sigma * NDF(Z); // Peut-être qu'il y a un moins
+      EIs[cIdx] = - (mu - fBest) * CNDF(Z) + sigma * NDF(Z); // Peut-être qu'il y a un moins
     }
     
-    double min = EIs[0];
-    int minIdx = 0;
+    double max = EIs[0];
+    int maxIdx = 0;
     for(int cIdx = 0; cIdx < numOfCandidate; cIdx++) {
-      if(EIs[cIdx] < min) {
-        min = EIs[cIdx];
-        minIdx = cIdx;
+      if(EIs[cIdx] > max) {
+        max = EIs[cIdx];
+        maxIdx = cIdx;
       }
     }
     
-    return params[minIdx];
+    cl.pln("Maximum EI", String.format("%7.4f", max));
+    
+    return params[maxIdx];
   }
   
   
@@ -119,23 +129,26 @@ class Bayes {
         allCharacters,
         handTrainingDatas,
         fontTrainingDatas,
-        12, 1);
+        64, 1);
     Matrix[] globalTestingData = ds.CreateSample(
         allCharacters,
         handTestingDatas,
         fontTestingDatas,
-        6, 1);
+        8, 1);
     
     for(int i = 0; i < iter; i++) {
       HyperParameters candidate = new HyperParameters();
-      if(i == 0) candidate = new HyperParameters().Random();
+      if(xs.size() == 0) candidate = new HyperParameters().Random();
       else candidate = FindCandidate();
       double loss = Evaluate(candidate, globalTrainingData, globalTestingData, time);
       
       xs.add(candidate);
       ys.add(loss);
       
-      if(loss < fBest) fBest = loss;
+      if(loss < fBest) {
+        fBest = loss;
+        bestHP = candidate;
+      }
     }
     
     return fBest;
@@ -153,7 +166,7 @@ class Bayes {
     layers[hp.layerSize.length + 1] = allCharacters.length;
     
     NeuralNetwork nn = new NeuralNetwork(layers);
-    nn.lambda = hp.lambda;
+    nn.lambda = hp.lambda * hp.batchSize;
     
     double trainLoss = 1;
     double testLoss = 1;
@@ -169,6 +182,7 @@ class Bayes {
     testLoss = nn.ComputeLoss(nn.Predict(testSet[0]), testSet[1]);
     
     cl.pln("Training loss", String.format("%8.6f", trainLoss), "\t|\tTesting loss", String.format("%8.6f", testLoss));
+    cl.pln("Accuracy", String.format("%6.4f", Average(session.AccuracyScore(nn, testSet, true))));
     
     return testLoss  * Math.pow(testLoss / trainLoss, overfittingImportance);
   }

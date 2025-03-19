@@ -9,9 +9,9 @@ class HyperParameters {
   int batchSize;
   
   HyperParameters Random() {
-    maxLR = LogRandom(0.01, 10);
-    minLR = LogRandom(0.001, 1);
-    lambda = LogRandom(0.00001, 1);
+    maxLR = LogRandom(0.01, 100);
+    minLR = LogRandom(0.0001, 1);
+    lambda = LogRandom(0.0000001, 0.001);
     period = PoissonRandom(6);
     batchSize = (int)LogRandom(8, 512);
     

@@ -196,7 +196,7 @@ public class Session {
     int ret = 0; // To draw
     for(int k = 0; k < data.length; k++) {
       Matrix[] d = data[k];
-      Matrix prediction = this.nn.Predict(d[0]);
+      Matrix prediction = nn.Predict(d[0]);
   
       int x = 0; int y = 0;
       textAlign(LEFT, BOTTOM); textSize(this.w); fill(255,0,0);

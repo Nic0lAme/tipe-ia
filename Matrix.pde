@@ -332,9 +332,9 @@ class Matrix {
   }
 
   //f Crée un tableau à partir de la _j_-ième colonne de _this_
-  double[] ColToArray(int j) {
+  double[] ColumnToArray(int j) {
     double[] col = new double[this.n];
-    if (j < 0 || j >= this.p) { cl.pln(this, j, "ColToArray", "Wrong Column Index"); Exception e = new Exception(); e.printStackTrace(); return col; }
+    if (j < 0 || j >= this.p) { cl.pln(this, j, "ColumnToArray", "Wrong Column Index"); Exception e = new Exception(); e.printStackTrace(); return col; }
     for (int i = 0; i < this.n ;i++) {
       col[i] = this.values[i][j];
     }
@@ -402,7 +402,7 @@ class Matrix {
     int index = 0;
     for(int i = 0; i < mats.length; i++) {
       for(int j = 0; j < mats[i].p ; j++) {
-        concatedMat.ColumnFromArray(index + j, mats[i].ColToArray(j));
+        concatedMat.ColumnFromArray(index + j, mats[i].ColumnToArray(j));
       }
       index += mats[i].p;
     }

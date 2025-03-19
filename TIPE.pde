@@ -12,8 +12,8 @@ Frame frame;
 Session session;
 
 // Nombre de threads pour les différentes tâches
-final int numThreadsDataset = 16; // Création des datasets
-final int numThreadsLearning = 16; // Apprentissage (si 1, pas de parallélisation)
+final int numThreadsDataset = 8; // Création des datasets
+final int numThreadsLearning = 8; // Apprentissage (si 1, pas de parallélisation)
 
 // Attention, à ne pas modifier n'importe comment sous peine de conséquences
 final AtomicBoolean stopLearning = new AtomicBoolean(false);
@@ -89,8 +89,9 @@ void setup() {
   HyperParameters hp = new HyperParameters();
   session = new Session("", hp);
   
-  Bayes bayes = new Bayes();
-  bayes.GaussianProcess(16, 180);
+  Bayes bayes = new Bayes().Import("./Bayes/Test1.by");
+  bayes.GaussianProcess(6, 300);
+  bayes.Export("./Bayes/Test1.by");
 }
 
 int index = 0;

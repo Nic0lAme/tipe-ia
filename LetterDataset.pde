@@ -120,8 +120,8 @@ public class LetterDataset {
       List<Future<Object>> answers = executor.invokeAll(tasks);
       int numColonne = 0;
       for (Matrix[] ms : results) {
-        inputs.ColumnFromArray(numColonne, ms[0].ColToArray(0));
-        outputs.ColumnFromArray(numColonne, ms[1].ColToArray(0));
+        inputs.ColumnFromArray(numColonne, ms[0].ColumnToArray(0));
+        outputs.ColumnFromArray(numColonne, ms[1].ColumnToArray(0));
         numColonne += 1;
       }
     } catch (InterruptedException e) {
