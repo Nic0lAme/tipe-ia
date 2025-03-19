@@ -9,8 +9,8 @@ class HyperParameters {
   int batchSize;
   
   HyperParameters Random() {
-    maxLR = LogRandom(0.01, 100);
-    minLR = LogRandom(0.001, maxLR);
+    maxLR = LogRandom(0.01, 10);
+    minLR = LogRandom(0.001, 1);
     lambda = LogRandom(0.00001, 1);
     period = PoissonRandom(6);
     batchSize = (int)LogRandom(8, 512);
@@ -80,7 +80,7 @@ class HyperParameters {
   }
   
   double[] ToArray() {
-    double[] ret = new double[5 + maxNumberOfLayers];
+    double[] ret = new double[numOfHyperParameters];
     ret[0] = this.minLR;
     ret[1] = this.maxLR;
     ret[2] = this.lambda;
@@ -89,5 +89,26 @@ class HyperParameters {
     for(int k = 0; k < layerSize.length; k++) ret[5+k] = this.layerSize[k];
     
     return ret;
+  }
+  
+  HyperParameters FromArray(double[] array) {
+    this.minLR = array[0];
+    this.maxLR = array[1];
+    this.lambda = array[2];
+    this.period = (int)array[3];
+    this.batchSize = (int)array[4];
+    
+    ArrayList<Integer> layerList = new ArrayList<Integer>();
+    for(int k = 0; k < maxNumberOfLayers; k++) {
+      if(array[k+5] != 0) layerList.add((int)array[k+5]);
+      else break;
+    }
+    
+    this.layerSize = new int[layerList.size()];
+    for(int k = 0; k < this.layerSize.length; k++) {
+      this.layerSize[k] = layerList.get(k);
+    }
+    
+    return this;
   }
 }

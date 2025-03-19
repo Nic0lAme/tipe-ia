@@ -1,17 +1,65 @@
 class Bayes {
-  
-  int numOfCandidate = 10;
   ArrayList<HyperParameters> xs = new ArrayList<HyperParameters>();
   ArrayList<Double> ys = new ArrayList<Double>();
+  
   double fBest;
   
   double h = 2;
+  int numOfCandidate = 10;
   double overfittingImportance = 0.5;
   
   
   //c
   Bayes() {
     
+  }
+  
+  void Export() {
+    Matrix xMatrix = new Matrix(numOfHyperParameters, xs.size()); // Transposé à la fin ; obligé pour utiliser ColFromArray
+    Matrix yMatrix = new Matrix(ys.size(), 1);
+    
+    for(int i = 0; i < xs.size(); i++) {
+      xMatrix.ColumnFromArray(i, xs.get(i).ToArray());
+      yMatrix.Set(i, 0, ys.get(i));
+    }
+    
+    ArrayList<String> output = new ArrayList<String>();
+    output.add(str(xs.size()));
+    
+    String[] xString = xMatrix.T().SaveToString();
+    for (String s : xString) output.add(s);
+    
+    String[] yString = yMatrix.SaveToString();
+    for (String s : yString) output.add(s);
+    
+    String[] writedOutput = new String[output.size()];
+    saveStrings("./Bayes/" + session.name + ".by", output.toArray(writedOutput));
+  }
+  
+  public Bayes Import(String name) {
+   String[] input = loadStrings(name);
+   int size = int(split(input[0], ',')[0]);
+   
+   String[] xString = new String[size];
+   for(int i = 1; i < size + 1; i++) {
+     xString[i - 1] = input[i];
+   }
+   
+   Matrix xMatrix = new Matrix(size, numOfHyperParameters);
+   xMatrix.LoadString(xString);
+   
+   
+   String[] yString = new String[size];
+   for(int i = size + 1; i < 2 * size + 1; i++) {
+     yString[i - size - 1] = input[i];
+   }
+   
+   Matrix yMatrix = new Matrix(size, 1);
+   yMatrix.LoadString(yString);
+
+   // Il faut convertir en array puis en arraylist
+
+   return this;
   }
   
   //f Kernel

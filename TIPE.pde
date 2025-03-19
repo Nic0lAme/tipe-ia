@@ -68,6 +68,8 @@ String[] fontTrainingDatas = new String[]{
 String[] handTestingDatas = new String[]{"MrMollier", "MrChauvet", "SachaBE", "IrinaRU", "NoematheoBLB"};
 String[] fontTestingDatas = new String[]{"Liberation Serif", "Calibri", "Book Antiqua", "Gabriola", "Noto Serif"};
 
+int numOfHyperParameters = 15;
+
 void settings() {
   size(floor(19 * rScale * this.allCharacters.length), floor(21 * rScale * numOfTestSample), JAVA2D); // For Global Test
   //size(119, 180, P2D); // For Direct Test
@@ -88,7 +90,7 @@ void setup() {
   session = new Session("", hp);
   
   Bayes bayes = new Bayes();
-  bayes.GaussianProcess(16, 60);
+  bayes.GaussianProcess(16, 180);
 }
 
 int index = 0;
