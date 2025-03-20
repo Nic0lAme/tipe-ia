@@ -11,7 +11,8 @@ class HyperParameters {
   HyperParameters Random() {
     maxLR = LogRandom(0.01, 100);
     minLR = LogRandom(0.0001, 1);
-    lambda = LogRandom(0.0000001, 0.001);
+    //lambda = LogRandom(0.0000001, 0.001);
+    lambda = 0;
     period = PoissonRandom(6);
     batchSize = (int)LogRandom(8, 512);
     

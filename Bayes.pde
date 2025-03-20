@@ -7,8 +7,8 @@ class Bayes {
   double fBest;
   
   double h = 2;
-  int numOfCandidate = 512;
-  double overfittingImportance = 0.2;
+  int numOfCandidate = 2048;
+  double overfittingImportance = 0.3;
   
   //c
   Bayes() {
@@ -65,7 +65,9 @@ class Bayes {
       xs.add(new HyperParameters().FromArray(xMatrix.ColumnToArray(i)));
       ys.add(yMatrix.Get(0, i));
     }
-
+    
+    MinLoss();
+    
     return this;
   }
   
@@ -82,11 +84,16 @@ class Bayes {
   
   //f Cherche le candidat ayant potentiellement le meilleur résultat
   public HyperParameters FindCandidate() {
+    println(fBest);
     Matrix K = new Matrix(xs.size());
     for(int i = 0; i < xs.size(); i++)
       for(int j = 0; j < xs.size(); j++)
         K.Set(i, j, Kernel(xs.get(i), xs.get(j)));
+        
+    K.Debug();
+    println("is inversing...");
     Matrix KInv = K.Inversed();
+    println("has been inversed");
         
     Matrix Y = new Matrix(this.ys.size(), 1);
     for(int i = 0; i < this.ys.size(); i++) Y.Set(i, 0, this.ys.get(i));
@@ -104,8 +111,8 @@ class Bayes {
       double mu = Kstar.T().Mult(KInv).Mult(Y).Get(0,0);
       double sigma = Math.sqrt(Kstarstar - Kstar.T().Mult(KInv).Mult(Kstar).Get(0,0));
       
-      double Z = (mu - fBest) / sigma;
-      EIs[cIdx] = - (mu - fBest) * CNDF(Z) + sigma * NDF(Z); // Peut-être qu'il y a un moins
+      double Z = (fBest - mu) / sigma;
+      EIs[cIdx] = (fBest - mu) * CNDF(Z) + sigma * NDF(Z); // Peut-être qu'il y a un moins
     }
     
     double max = EIs[0];
@@ -129,7 +136,7 @@ class Bayes {
         allCharacters,
         handTrainingDatas,
         fontTrainingDatas,
-        64, 1);
+        12, 1);
     Matrix[] globalTestingData = ds.CreateSample(
         allCharacters,
         handTestingDatas,
@@ -142,16 +149,29 @@ class Bayes {
       else candidate = FindCandidate();
       double loss = Evaluate(candidate, globalTrainingData, globalTestingData, time);
       
+      cl.pln("Score", String.format("%7.3f", loss));
+      
       xs.add(candidate);
       ys.add(loss);
       
-      if(loss < fBest) {
-        fBest = loss;
-        bestHP = candidate;
-      }
+      MinLoss();
     }
     
     return fBest;
+  }
+  
+  //f Trouve le meilleur candidat dans la liste proposée
+  public HyperParameters MinLoss() {
+    double minLoss = ys.get(0);
+    for(int i = 1; i < xs.size(); i++) {
+      if(ys.get(i) < minLoss) {
+        minLoss = ys.get(i);
+        bestHP = xs.get(i);
+      }
+    }
+    
+    fBest = minLoss;
+    return bestHP;
   }
   
   //f Permet d'évaluer la force d'une combinaison d'hyperparamètres
@@ -181,10 +201,12 @@ class Bayes {
     
     testLoss = nn.ComputeLoss(nn.Predict(testSet[0]), testSet[1]);
     
-    cl.pln("Training loss", String.format("%8.6f", trainLoss), "\t|\tTesting loss", String.format("%8.6f", testLoss));
-    cl.pln("Accuracy", String.format("%6.4f", Average(session.AccuracyScore(nn, testSet, true))));
+    double accuracy = Average(session.AccuracyScore(nn, testSet, false));
     
-    return testLoss  * Math.pow(testLoss / trainLoss, overfittingImportance);
+    cl.pln("Training loss", String.format("%8.6f", trainLoss), "\t|\tTesting loss", String.format("%8.6f", testLoss));
+    cl.pln("Accuracy", String.format("%6.4f", accuracy));
+    
+    return testLoss  * Math.pow(testLoss / trainLoss, overfittingImportance) / accuracy;
   }
   
   

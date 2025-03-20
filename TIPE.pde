@@ -24,18 +24,20 @@ float testDerformation = 1;
 //String[] characters = new String[]{"0","1","2","3","4","5","6","7","8","9"};
 //String[] characters = new String[]{"uA","uB","uC","uD","uE","uF","uG","uH","uI","uJ","uK","uL","uM","uN","uO","uP","uQ","uR","uS","uT","uU","uV","uW","uX","uY","uZ"};
 
+/*
 String[] allCharacters = new String[]{
   "uA","uB","uC","uD","uE","uF","uG","uH","uI","uJ","uK","uL","uM","uN","uO","uP","uQ","uR","uS","uT","uU","uV","uW","uX","uY","uZ"
 };
+*/
 
-/*
+
 String[] allCharacters = new String[]{
   "uA","uB","uC","uD","uE","uF","uG","uH","uI","uJ","uK","uL","uM","uN","uO","uP","uQ","uR","uS","uT","uU","uV","uW","uX","uY","uZ",
   "la","lb","lc","ld","le","lf","lg","lh","li","lj","lk","ll","lm","ln","lo","lp","lq","lr","ls","lt","lu","lv","lw","lx","ly","lz",
   "0","1","2","3","4","5","6","7","8","9", "+", "-", "cr",
   "@","#","im","!","€","$","%","(",")","="
 };
-*/
+
 int numOfTestSample = 40; //This is just for the tests, not the training
 
 String[] handPolicies = new String[]{
@@ -89,9 +91,11 @@ void setup() {
   HyperParameters hp = new HyperParameters();
   session = new Session("", hp);
   
-  Bayes bayes = new Bayes().Import("./Bayes/Test1.by");
-  bayes.GaussianProcess(6, 300);
-  bayes.Export("./Bayes/Test1.by");
+  
+  Bayes bayes = new Bayes().Import("./Bayes/Test2.by");
+  bayes.GaussianProcess(6, 120);
+  bayes.Export("./Bayes/Test3.by");
+  
 }
 
 int index = 0;

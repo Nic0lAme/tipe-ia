@@ -490,14 +490,62 @@ class Matrix {
 
     return comat;
   }
-
-  //f Retourne la matrice inverse de _this_ (si elle existe)
-  Matrix Inversed() {
-    if (this.n != this.p) { cl.pln(this, "Inversed", "Not square matrix"); Exception e = new Exception(); e.printStackTrace(); return new Matrix(this.n, this.p); }
+  
+  //f (OBSOLETE) Retourne la matrice inverse de _this_ (si elle existe)
+  Matrix OLD_Inversed() {
+    if (this.n != this.p) { cl.pln(this, "OLD_Inversed", "Not square matrix"); Exception e = new Exception(); e.printStackTrace(); return new Matrix(this.n, this.p); }
     double det = this.Det();
     if(det == 0) { cl.pln(this, "Inversed", "The matrix determinant is 0"); Exception e = new Exception(); e.printStackTrace(); return new Matrix(this.n, this.p); }
+    
+    return this.Comatrix().T().Scale(1/det);
+  }
+  
+  Matrix Inversed() {
+    if (this.n != this.p) { cl.pln(this, "Inversed", "Not square matrix"); Exception e = new Exception(); e.printStackTrace(); return new Matrix(this.n, this.p); }
+    Matrix augmentedMatrix = new Matrix(2 * this.n, this.n);
 
-    return this.Comatrix().T().Scale(1/this.Det());
+    for (int i = 0; i < this.n; i++) {
+      for (int j = 0; j < this.n; j++) {
+        augmentedMatrix.values[i][j] = this.values[i][j];
+      }
+    }
+
+    for (int i = 0; i < this.n; i++) {
+      augmentedMatrix.values[i + this.n][i] = 1;
+    }
+
+    // Élimination de Gauss-Jordan
+    for (int i = 0; i < this.n; i++) {        
+      double pivot = 0; int k = i;
+      while(k < this.n) {
+        pivot = augmentedMatrix.values[i][k];
+        if(pivot != 0) break;
+        k++;
+      }
+      if(k == this.n) { cl.pln(this, "Inversed", "Not inversible"); Exception e = new Exception(); e.printStackTrace(); return new Matrix(this.n, this.p); }
+      
+      augmentedMatrix.ComutCol(i, k);
+      augmentedMatrix.Dilat(i, 1/pivot);
+
+      for (int j = 0; j < this.n; j++) {
+        if (j == i) continue;
+        
+        double factor = augmentedMatrix.values[i][j];
+        
+        for (int l = 0; l < 2 * this.n; l++) {
+          augmentedMatrix.values[l][j] -= factor * augmentedMatrix.values[l][i];
+        }
+      }
+    }
+
+    Matrix inverse = new Matrix(this.n, this.n);
+    for (int i = 0; i < this.n; i++) {
+      for (int j = 0; j < this.n; j++) {
+          inverse.values[i][j] = augmentedMatrix.values[i + this.n][j];
+      }
+    }
+    
+    return inverse;
   }
 
   @Override
