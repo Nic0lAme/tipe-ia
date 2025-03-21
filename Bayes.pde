@@ -136,7 +136,7 @@ class Bayes {
         allCharacters,
         handTrainingDatas,
         fontTrainingDatas,
-        12, 1);
+        16, 1);
     Matrix[] globalTestingData = ds.CreateSample(
         allCharacters,
         handTestingDatas,
@@ -157,6 +157,7 @@ class Bayes {
       MinLoss();
     }
     
+    cl.pln("Bayes process is finished");
     return fBest;
   }
   
@@ -187,6 +188,7 @@ class Bayes {
     
     NeuralNetwork nn = new NeuralNetwork(layers);
     nn.lambda = hp.lambda * hp.batchSize;
+    nn.UseSoftMax();
     
     double trainLoss = 1;
     double testLoss = 1;

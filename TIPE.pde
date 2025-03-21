@@ -92,8 +92,8 @@ void setup() {
   session = new Session("", hp);
   
   
-  Bayes bayes = new Bayes().Import("./Bayes/Test2.by");
-  bayes.GaussianProcess(6, 120);
+  Bayes bayes = new Bayes().Import("./Bayes/Test3.by");
+  bayes.GaussianProcess(6, 300);
   bayes.Export("./Bayes/Test3.by");
   
 }

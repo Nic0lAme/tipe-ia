@@ -388,6 +388,6 @@ double sigmoid(double x) {
 
 // En gros ça fait un blinker de period min suivi de period max
 double CyclicalLearningRate(int iter, double min, double max, int period) {
-  if((iter + period/2)%period + 1 <= period/2) return max;
+  if(iter%period + 1 <= period/2) return max;
   return min;
 }
