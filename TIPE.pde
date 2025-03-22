@@ -91,11 +91,11 @@ void setup() {
   HyperParameters hp = new HyperParameters();
   session = new Session("", hp);
   
-  
-  Bayes bayes = new Bayes().Import("./Bayes/Test3.by");
-  bayes.GaussianProcess(6, 300);
-  bayes.Export("./Bayes/Test3.by");
-  
+  /*
+  Bayes bayes = new Bayes().Import("./Bayes/Test4.by");
+  bayes.GaussianProcess(12, 300);
+  bayes.Export("./Bayes/Test4.by");
+  */
 }
 
 int index = 0;

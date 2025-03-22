@@ -9,11 +9,11 @@ class HyperParameters {
   int batchSize;
   
   HyperParameters Random() {
-    maxLR = LogRandom(0.01, 100);
+    maxLR = LogRandom(0.1, 20);
     minLR = LogRandom(0.0001, 1);
     //lambda = LogRandom(0.0000001, 0.001);
     lambda = 0;
-    period = PoissonRandom(6);
+    period = constrain(PoissonRandom(6), 1, 100);
     batchSize = (int)LogRandom(8, 512);
     
     int numberOfLayer = constrain(PoissonRandom(3), 1, maxNumberOfLayers);
@@ -111,5 +111,23 @@ class HyperParameters {
     }
     
     return this;
+  }
+  
+  @Override
+  public String toString() {
+    String str = "HyperParameters | Layers[";
+    for (int i = 0; i < this.layerSize.length; i++) {
+      str += str(this.layerSize[i]);
+      if (i < this.layerSize.length - 1) str += ", ";
+    }
+    
+    println(this.layerSize.length);
+    
+    str += "] Learning Rate from " + String.format("%8.5f", this.minLR) + " to " + String.format("%8.5f", this.maxLR) +
+      " | Period " + str(this.period) +
+      " | Batch Size " + str(this.batchSize) +
+      " | Lambda " + String.format("%6.3f", this.lambda);
+    
+    return str;
   }
 }

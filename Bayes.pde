@@ -7,7 +7,7 @@ class Bayes {
   double fBest;
   
   double h = 2;
-  int numOfCandidate = 2048;
+  int numOfCandidate = 32768;
   double overfittingImportance = 0.3;
   
   //c
@@ -84,16 +84,12 @@ class Bayes {
   
   //f Cherche le candidat ayant potentiellement le meilleur résultat
   public HyperParameters FindCandidate() {
-    println(fBest);
     Matrix K = new Matrix(xs.size());
     for(int i = 0; i < xs.size(); i++)
       for(int j = 0; j < xs.size(); j++)
         K.Set(i, j, Kernel(xs.get(i), xs.get(j)));
         
-    K.Debug();
-    println("is inversing...");
     Matrix KInv = K.Inversed();
-    println("has been inversed");
         
     Matrix Y = new Matrix(this.ys.size(), 1);
     for(int i = 0; i < this.ys.size(); i++) Y.Set(i, 0, this.ys.get(i));
@@ -144,9 +140,14 @@ class Bayes {
         8, 1);
     
     for(int i = 0; i < iter; i++) {
+      cl.pln("\nCandidate n°", String.format("%04d", i + 1), "/", String.format("%04d", iter));
+      
       HyperParameters candidate = new HyperParameters();
       if(xs.size() == 0) candidate = new HyperParameters().Random();
       else candidate = FindCandidate();
+      
+      cl.pln(candidate.toString());
+      
       double loss = Evaluate(candidate, globalTrainingData, globalTestingData, time);
       
       cl.pln("Score", String.format("%7.3f", loss));
@@ -172,14 +173,13 @@ class Bayes {
     }
     
     fBest = minLoss;
+    cl.pln("Best Score", String.format("%7.4f", fBest));
     return bestHP;
   }
   
   //f Permet d'évaluer la force d'une combinaison d'hyperparamètres
   public double Evaluate(HyperParameters hp, Matrix[] trainSet, Matrix[] testSet, int time) {
     int startTime = millis();
-    
-    println(hp.ToArray());
     
     int[] layers = new int[hp.layerSize.length + 2];
     layers[0] = session.w * session.h;
@@ -190,6 +190,8 @@ class Bayes {
     nn.lambda = hp.lambda * hp.batchSize;
     nn.UseSoftMax();
     
+    graphApplet.ClearGraph();
+    
     double trainLoss = 1;
     double testLoss = 1;
     
@@ -197,6 +199,8 @@ class Bayes {
     while(millis() < startTime + 1000 * time) {
       double lr = CyclicalLearningRate(iterNum, hp.minLR, hp.maxLR, hp.period);
       trainLoss = nn.MiniBatchLearn(trainSet, 1, hp.batchSize, lr, lr, 1, new Matrix[0][], String.format("%05d", iterNum + 1));
+      
+      cl.pln("Candidate Remaining Time", String.format("%7.3f", time - (float)(millis() - startTime) / 1000));
       
       iterNum++;
     }
@@ -208,7 +212,8 @@ class Bayes {
     cl.pln("Training loss", String.format("%8.6f", trainLoss), "\t|\tTesting loss", String.format("%8.6f", testLoss));
     cl.pln("Accuracy", String.format("%6.4f", accuracy));
     
-    return testLoss  * Math.pow(testLoss / trainLoss, overfittingImportance) / accuracy;
+    // Puissance pour éviter d'avoir un écart en log, permettant d'augmenter l'écart type ie l'exploration
+    return Math.pow(1.5, testLoss  * Math.pow(testLoss / trainLoss, overfittingImportance) / accuracy / 100);
   }
   
   
