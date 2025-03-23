@@ -8,11 +8,11 @@ class HyperParameters {
   int period;
   int batchSize;
   
+  //f Tire des hyperparamètres aléatoirement
   HyperParameters Random() {
-    maxLR = LogRandom(0.1, 20);
+    maxLR = LogRandom(0.1, 10);
     minLR = LogRandom(0.0001, 1);
-    //lambda = LogRandom(0.0000001, 0.001);
-    lambda = 0;
+    lambda = LogRandom(0.0000001, 0.1);
     period = constrain(PoissonRandom(6), 1, 100);
     batchSize = (int)LogRandom(8, 512);
     
@@ -26,7 +26,7 @@ class HyperParameters {
   
   //f Fonction de random uniforme entre _min_ et _max_
   double UniRandom(double min, double max) {
-    return random((float)min, (float)max);
+    return (double)random((float)min, (float)max);
   }
   
   //f Fonction de Random log-normale entre _min_ et _max_
@@ -121,12 +121,10 @@ class HyperParameters {
       if (i < this.layerSize.length - 1) str += ", ";
     }
     
-    println(this.layerSize.length);
-    
     str += "] Learning Rate from " + String.format("%8.5f", this.minLR) + " to " + String.format("%8.5f", this.maxLR) +
       " | Period " + str(this.period) +
       " | Batch Size " + str(this.batchSize) +
-      " | Lambda " + String.format("%6.3f", this.lambda);
+      " | Lambda " + String.format("%9.3E", this.lambda);
     
     return str;
   }

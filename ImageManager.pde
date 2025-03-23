@@ -81,7 +81,7 @@ class ImageManager {
   // L'image est enregistré dans ./ScrambledImage enregistré si _save_
   PImage ScrambleImage(PImage img, boolean save, float move, float blur, float density, float perlin, float deformation) {
     float zRot = 2;
-    float d = 0.9;
+    float d = 0.1;
     float delta = 0.02;
     float perlinScale = 1;
     float scaleScale = 0.5;
@@ -91,16 +91,16 @@ class ImageManager {
     int y = scrambledImage.height;
     float size = sqrt(x*y);
     
-    scrambledImage = this.Contrast(scrambledImage, 0);
+    scrambledImage = this.Contrast(scrambledImage, 0.01);
     scrambledImage = this.ElasticDeformation(scrambledImage, floor(deformation * size), 0.1);
     scrambledImage.filter(BLUR, 0.3 * random(blur * size));
     
     
-    color average = this.AverageColor(img);
+    color average = color(255);
     
     // SCALE
-    PImage draftImage = scrambledImage.copy();
-    draftImage.loadPixels();
+    PImage draftImage = createImage(x, y, RGB);
+    draftImage.loadPixels();    
     scrambledImage.loadPixels();
     float scale = random(1, 1 + scaleScale * move);
     for(int i = 0; i < x; i++) {
@@ -115,8 +115,8 @@ class ImageManager {
     scrambledImage = draftImage;
     
     // ROTATE
-    draftImage = scrambledImage.copy();
-    draftImage.loadPixels();
+    draftImage = createImage(x, y, RGB);
+    draftImage.loadPixels();    
     scrambledImage.loadPixels();
     float rot = zRot *(random(PI * move) - PI * move/2);
     for(int i = 0; i < x; i++) {
@@ -134,8 +134,8 @@ class ImageManager {
     scrambledImage = draftImage;
     
     // TRANSLATE
-    draftImage = scrambledImage.copy();
-    draftImage.loadPixels();
+    draftImage = createImage(x, y, RGB);
+    draftImage.loadPixels();    
     scrambledImage.loadPixels();
     int dx = floor(d * random(-size * move, size * move));
     int dy = floor(d * random(-size * move, size * move));

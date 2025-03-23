@@ -131,11 +131,32 @@ class NeuralNetwork {
     result.Add(bias[from], 1, true);
 
     if(from == this.numLayers - 2 && this.useSoftMax) {
+      double max = result.Get(0,0);
+      for(int i = 0; i < result.n; i++)
+        for(int j = 0; j < result.p; j++)
+          if(result.Get(i,j) > max) max = result.Get(i,j);
+          
+      result.Add(new Matrix(result.n, result.p).Fill(-max));
+      
       result.Map((x) -> Math.exp(x));
-      return result.NormColumn();
+      if(result.HasNAN()) {
+        println("IN MAP EXP");
+        System.exit(-1);
+      }
+      
+      result.NormColumn();
+      if(result.HasNAN()) {
+        println("IN NORMCOLUMN");
+        System.exit(-1);
+      }
+      return result;
     }
     
     result.Map((x) -> sigmoid(x));
+    if(result.HasNAN()) {
+      println("IN MAP SIGMOID");
+      System.exit(-1);
+    }
 
     return result;
   }
@@ -154,14 +175,25 @@ class NeuralNetwork {
     
     boolean hasNaN = false;
     for(int l = this.numLayers - 2; l >= 0; l--) {
-      if(gradient.Contains(Double.NaN)) hasNaN = true;
+      if(gradient.HasNAN()) {
+        println("IN GRADIENT");
+        System.exit(-1);
+      }
 
       //dJ/dWl = dJ/dZl * dZl/dWl
       weightGrad[l] = gradient.Mult(activations[l].T()).Scale(1/ (double)max(1, expectedOutput.p));
+      if(weightGrad[l].HasNAN()) {
+        println("IN WEIGHTGRAD");
+        System.exit(-1);
+      }
       //weightGrad[l].DebugShape();
 
       //dJ/dbl = dJ/dZl * dZl/dbl
       biasGrad[l] = gradient.AvgLine();
+      if(biasGrad[l].HasNAN()) {
+        println("IN BIASGRAD");
+        System.exit(-1);
+      }
       //biasGrad[l].DebugShape();
 
       if(lambda != 0) {
@@ -313,17 +345,17 @@ class NeuralNetwork {
     double J = 0;
     for(int c = 0; c < Y.p; c++) { //colonne de la sortie
       for(int i = 0; i < Y.n; i++) { //ligne de la sortie
-        if((float)S.Get(i, c) != 0) J -= Y.Get(i, c) * log(abs((float)S.Get(i, c))) / Y.p;
+        if((double)S.Get(i, c) != 0) J -= Y.Get(i, c) * Math.log(Math.abs((double)S.Get(i, c))) / Y.p;
       }
     }
     return J;
   }
 
-  public double MiniBatchLearn(Matrix[] data, int numOfEpoch, int batchSize, float lr) {
+  public double MiniBatchLearn(Matrix[] data, int numOfEpoch, int batchSize, double lr) {
     return MiniBatchLearn(data, numOfEpoch, batchSize, lr, lr, 1);
   }
 
-  public double MiniBatchLearn(Matrix[] data, int numOfEpoch, int batchSize, float minLR, float maxLR, int period) {
+  public double MiniBatchLearn(Matrix[] data, int numOfEpoch, int batchSize, double minLR, double maxLR, int period) {
     return MiniBatchLearn(data, numOfEpoch, batchSize, minLR, maxLR, period, new Matrix[][]{data}, "");
   }
 

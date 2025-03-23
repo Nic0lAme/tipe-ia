@@ -231,20 +231,20 @@
 - ***
 
 	<details>
-	<summary>ColToArray</summary>
+	<summary>ColumnFromArray</summary>
 
-	- >Crée un tableau à partir de la _j_-ième colonne de _this_  
-	- _double[] ColToArray(int j)_
+	- >Met les valeurs du tableau _col_ dans la _j-ième_ colonne de _this_  
+	- _Matrix ColumnFromArray(int j, double[] col)_
 
 	</details>
 
 - ***
 
 	<details>
-	<summary>ColumnFromArray</summary>
+	<summary>ColumnToArray</summary>
 
-	- >Met les valeurs du tableau _col_ dans la _j-ième_ colonne de _this_  
-	- _Matrix ColumnFromArray(int j, double[] col)_
+	- >Crée un tableau à partir de la _j_-ième colonne de _this_  
+	- _double[] ColumnToArray(int j)_
 
 	</details>
 
@@ -345,7 +345,7 @@
 	<summary>Fill</summary>
 
 	- >Remplie la matrice _this_ du double _val_  
-	- _void Fill(double val)_
+	- _Matrix Fill(double val)_
 
 	</details>
 
@@ -430,16 +430,6 @@
 - ***
 
 	<details>
-	<summary>Inversed</summary>
-
-	- >Retourne la matrice inverse de _this_ (si elle existe)  
-	- _Matrix Inversed()_
-
-	</details>
-
-- ***
-
-	<details>
 	<summary>LoadString</summary>
 
 	- >Charge dans la matrice _this_ les _lignes_  
@@ -492,6 +482,16 @@
 - ***
 
 	<details>
+	<summary>OLD_Inversed</summary>
+
+	- >(OBSOLETE) Retourne la matrice inverse de _this_ (si elle existe)  
+	- _Matrix OLD_Inversed()_
+
+	</details>
+
+- ***
+
+	<details>
 	<summary>Random</summary>
 
 	- >Chaque valeur de la matrice est tiré aléatoirement et uniformément entre _min_ et _max_  
@@ -530,7 +530,7 @@
 	<summary>Set</summary>
 
 	- >Change la valeur de _this_ à la ligne _i_, la colonne _j_, en lui donnant la valeur _val_  
-	- _void Set(int i, int j, double val)_
+	- _Matrix Set(int i, int j, double val)_
 
 	</details>
 
@@ -611,7 +611,7 @@
 	_startDef_ et _endDef_ correspondent à l'évolution du taux de déformation  
 	_rep_ est le nombre de répétition de chaque échantillon  
 	_prop_ est la proportion minimale de _rep_ pour chaque échantillon, modulé par la performance du réseau sur le charactère associé  
-	- _void TrainForImages(int phaseNumber, int epochPerSet, float startMinLR, float endMinLR, float startMaxLR, float endMaxLR, int period, int batchSize, float startDef, float endDef, int rep, float minProp)_
+	- _void TrainForImages(int phaseNumber, int epochPerSet, double startMinLR, double endMinLR, double startMaxLR, double endMaxLR, int period, int batchSize, float startDef, float endDef, int rep, float minProp)_
 
 	</details>
 
@@ -853,7 +853,19 @@
 	<summary>CalcLayer</summary>
 
 	- >Calcule la sortie correspondant à l'entrée _in_, de la couche _from_ à la couche _from+1_  
-	- _private Matrix CalcLayer(int from, Matrix in, boolean doDropOut)_
+	- _private Matrix CalcLayer(int from, Matrix in)_
+
+	</details>
+
+- ***
+
+	<details>
+	<summary>ComputeLoss</summary>
+
+	- >Permet le calcul du loss  
+	_S_ est la sortie du système  
+	_Y_ est la sortie attendue  
+	- _public double ComputeLoss(Matrix S, Matrix Y)_
 
 	</details>
 
@@ -874,8 +886,6 @@
 
 	- >Prend la matrice _entry_ en entrée, et renvoie un tableau des valeurs de chaque couche  
 	_entry.p_ correspond au nombre d'entrées données simultanément  
-	_doDropOut_ détermine si l'on est dans la learningPhase (doDropOut) ou non  
-	- _public Matrix[] ForwardPropagation(Matrix entry, boolean doDropOut)_
 	- _public Matrix[] ForwardPropagation(Matrix entry)_
 
 	</details>
@@ -908,6 +918,185 @@
 
 	- >Donne la sortie du réseau de neurones _this_ pour l'entrée _entry_  
 	- _public Matrix Predict(Matrix entry)_
+
+	</details>
+
+</details><details>
+<summary>
+
+**Bayes**
+
+</summary>
+
+- 
+>
+- _Bayes(String n)_
+
+
+- ***
+
+	<details>
+	<summary>CNDF</summary>
+
+	- >Piqué sur un site mais on n'a pas enregistré lequel  
+	Calcul de la *fonction de répartition cumulative de la distribution normale standard*  
+	- _double CNDF(double x)_
+
+	</details>
+
+- ***
+
+	<details>
+	<summary>Evaluate</summary>
+
+	- >Permet d'évaluer la force d'une combinaison d'hyperparamètres  
+	- _public double Evaluate(HyperParameters hp, Matrix[] trainSet, Matrix[] testSet, int time)_
+
+	</details>
+
+- ***
+
+	<details>
+	<summary>Export</summary>
+
+	- >Exporte le Bayes _this_ dans le fichier _name_  
+	- _public void Export(String name)_
+
+	</details>
+
+- ***
+
+	<details>
+	<summary>FindCandidate</summary>
+
+	- >Cherche le candidat ayant potentiellement le meilleur résultat  
+	- _public HyperParameters FindCandidate()_
+
+	</details>
+
+- ***
+
+	<details>
+	<summary>GaussianProcess</summary>
+
+	- >Effectue le processus Gaussien de recherche de meilleur candidat  
+	Effectué _iter_ fois  
+	On limite le temps de recherche par candidat à _time_ secondes  
+	- _public double GaussianProcess(int iter, int time)_
+
+	</details>
+
+- ***
+
+	<details>
+	<summary>Import</summary>
+
+	- >Importe le Bayes à partir venant de _name_  
+	- _public Bayes Import(String name)_
+
+	</details>
+
+- ***
+
+	<details>
+	<summary>Kernel</summary>
+
+	- >Kernel  
+	Calcule la "covariance" entre _hp1_ et _hp2_  
+	- _public double Kernel(HyperParameters hp1, HyperParameters hp2)_
+
+	</details>
+
+- ***
+
+	<details>
+	<summary>MinLoss</summary>
+
+	- >Trouve le meilleur candidat dans la liste proposée  
+	- _public HyperParameters MinLoss()_
+
+	</details>
+
+- ***
+
+	<details>
+	<summary>NDF</summary>
+
+	- >Calcul de la *Fonction de densité de probabilité de la distribution normale standard*  
+	- _double NDF(double x)_
+
+	</details>
+
+</details><details>
+<summary>
+
+**HyperParameters**
+
+</summary>
+
+
+
+- ***
+
+	<details>
+	<summary>BetaRandom</summary>
+
+	- >Fonction de Random Beta de paramètre _alpha_ et _beta_  
+	- _double BetaRandom(double alpha, double beta)_
+
+	</details>
+
+- ***
+
+	<details>
+	<summary>GammaRandom</summary>
+
+	- >Fonction de Random Gamma de paramètre _shape_ et _scale_  
+	C'est majoritairement de la magie noire cette fonction  
+	https://chrispiech.github.io/probabilityForComputerScientists/en/part4/beta/  
+	- _double GammaRandom(double shape, double scale)_
+
+	</details>
+
+- ***
+
+	<details>
+	<summary>LogRandom</summary>
+
+	- >Fonction de Random log-normale entre _min_ et _max_  
+	- _double LogRandom(double min, double max)_
+
+	</details>
+
+- ***
+
+	<details>
+	<summary>PoissonRandom</summary>
+
+	- >Fonction de Random de poisson de paramètre _lambda_  
+	- _int PoissonRandom(double lambda)_
+
+	</details>
+
+- ***
+
+	<details>
+	<summary>Random</summary>
+
+	- >Tire des hyperparamètres aléatoirement  
+	- _HyperParameters Random()_
+	- _Matrix Random()_
+		- Retourne une matrice aléatoire à valeurs dans [0;1]
+
+	</details>
+
+- ***
+
+	<details>
+	<summary>UniRandom</summary>
+
+	- >Fonction de random uniforme entre _min_ et _max_  
+	- _double UniRandom(double min, double max)_
 
 	</details>
 
@@ -971,6 +1160,75 @@
 
 	- >Importe un dataset à partir du fichier _name_  
 	- _public Matrix[] Import(String name)_
+
+	</details>
+
+</details><details>
+<summary>
+
+**WordCorrector**
+
+</summary>
+
+- 
+>
+- _WordCorrector() _
+
+
+- ***
+
+	<details>
+	<summary>ImportWords</summary>
+
+	- >Importe l'ensemble des mots du fichier _scrabble.txt_ dans la variable _this.words_  
+	- _public void ImportWords()_
+
+	</details>
+
+- ***
+
+	<details>
+	<summary>WordAutoCorrection</summary>
+
+	- >Donne le mot le plus probable pour une entrée _letterProb_  
+	_letterProb_ contient pour chaque emplacement les probabilités de chaque caractère  
+	Simule toutes les manipulations possibles de manière probabiliste  
+	Algorithme assez (très) naïf, donc à voir dans la pratique  
+	- _public String WordAutoCorrection(double[][] letterProb)_
+
+	</details>
+
+</details><details>
+<summary>
+
+**CharactersStorage**
+
+</summary>
+
+- 
+>
+- _CharactersStorage(int numOfChar)_
+
+
+- ***
+
+	<details>
+	<summary>AddChar</summary>
+
+	- >Ajoute le caractère donc le fichier est _name_, associé au caractère _d_, qui sera associé pour l'alphabet par _correspondance_  
+	Dans _correpondance_, on a la liste des couple de lettre ressemblantes, avec la part de ressemble  
+	_exemple : correspondance = {{8, 0.3}, {11, 0.3}}) pour le 1, qui ressemble au i et au l_  
+	- _void AddChar(String name, char d, double[][] correspondance)_
+
+	</details>
+
+- ***
+
+	<details>
+	<summary>GetProb</summary>
+
+	- >Permet d'obtenir les probabilités pour chacune des 26 lettres à partir de la sortie du réseau _allProb_  
+	- _double[] GetProb(double[] allProb)_
 
 	</details>
 

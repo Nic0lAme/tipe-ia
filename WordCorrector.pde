@@ -5,9 +5,32 @@ class WordCorrector {
   
   int[][] words;
   
-  
+  //c
   WordCorrector() {}
   
+  //f Importe l'ensemble des mots du fichier _scrabble.txt_ dans la variable _this.words_
+  public void ImportWords() {
+    String[] wordsList = loadStrings("./AuxiliarFiles/scrabble.txt");
+    
+    this.words = new int[wordsList.length][];
+    
+    for(int k = 0; k < wordsList.length; k++) {
+      String w = wordsList[k].strip();
+      int[] wordRepresentation = new int[w.length()];
+      
+      for(int c = 0; c < w.length(); c++) {
+        char character = w.charAt(c);
+        wordRepresentation[c] = character - 'A';
+      }
+      
+      this.words[k] = wordRepresentation;
+    }
+  }
+  
+  //f Donne le mot le plus probable pour une entrée _letterProb_
+  // _letterProb_ contient pour chaque emplacement les probabilités de chaque caractère
+  // Simule toutes les manipulations possibles de manière probabiliste
+  // Algorithme assez (très) naïf, donc à voir dans la pratique
   public String WordAutoCorrection(double[][] letterProb) {
     double[][] processedProb = new double[letterProb.length + letterSpreading.length][this.charList.length];
     
