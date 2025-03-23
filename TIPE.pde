@@ -8,12 +8,13 @@ ConsoleLog cl;
 ImageManager im;
 GraphApplet graphApplet;
 Frame frame;
+WordCorrector wc;
 
 Session session;
 
 // Nombre de threads pour les différentes tâches
-final int numThreadsDataset = 8; // Création des datasets
-final int numThreadsLearning = 8; // Apprentissage (si 1, pas de parallélisation)
+final int numThreadsDataset = 16; // Création des datasets
+final int numThreadsLearning = 4; // Apprentissage (si 1, pas de parallélisation)
 
 // Attention, à ne pas modifier n'importe comment sous peine de conséquences
 final AtomicBoolean stopLearning = new AtomicBoolean(false);
@@ -29,8 +30,6 @@ float testDerformation = 1;
 String[] allCharacters = new String[]{
   "uA","uB","uC","uD","uE","uF","uG","uH","uI","uJ","uK","uL","uM","uN","uO","uP","uQ","uR","uS","uT","uU","uV","uW","uX","uY","uZ"
 };
-*/
-
 
 String[] allCharacters = new String[]{
   "uA","uB","uC","uD","uE","uF","uG","uH","uI","uJ","uK","uL","uM","uN","uO","uP","uQ","uR","uS","uT","uU","uV","uW","uX","uY","uZ",
@@ -38,6 +37,9 @@ String[] allCharacters = new String[]{
   "0","1","2","3","4","5","6","7","8","9", "+", "-", "cr",
   "@","#","im","!","€","$","%","(",")","="
 };
+*/
+
+CharactersStorage cs;
 
 int numOfTestSample = 40; //This is just for the tests, not the training
 
@@ -74,13 +76,13 @@ String[] fontTestingDatas = new String[]{"Liberation Serif", "Calibri", "Book An
 int numOfHyperParameters = 15;
 
 void settings() {
-  size(floor(19 * rScale * this.allCharacters.length), floor(21 * rScale * numOfTestSample), JAVA2D); // For Global Test
+  size(floor(25 * rScale * 75), floor(25 * rScale * numOfTestSample), JAVA2D); // For Global Test
   //size(119, 180, P2D); // For Direct Test
 }
 
 void setup() {
   background(255);
-
+  InitCStorage();
   frame = (Frame) ((processing.awt.PSurfaceAWT.SmoothCanvas) surface.getNative()).getFrame();
   frame.setVisible(false); // Cache la fenêtre d'activation java
   frame.setResizable(true);
@@ -88,15 +90,17 @@ void setup() {
   im = new ImageManager();
   graphApplet = new GraphApplet();
   cl = new ConsoleLog("./Log/log1.txt");
+  wc = new WordCorrector();
+  wc.ImportWords();
 
   HyperParameters hp = new HyperParameters();
   session = new Session("", hp);
-
+  
   /*
-  Bayes bayes = new Bayes().Import("./Bayes/Test4.by");
-  bayes.GaussianProcess(12, 300);
-  bayes.Export("./Bayes/Test4.by");
+  Bayes bayes = new Bayes("Test6");
+  bayes.GaussianProcess(6, 300);
   */
+  
 }
 
 int index = 0;
@@ -111,6 +115,89 @@ void draw() {
 void SetMainSession(Session newSession) {
   session = newSession;
   graphApplet.SetNetworkName(session.nn.toString());
+}
+
+
+void InitCStorage() {
+  cs = new CharactersStorage(62);
+  cs.AddChar("uA",'A', new double[][]{{0, 1}});
+  cs.AddChar("uB",'B', new double[][]{{1, 1}});
+  cs.AddChar("uC",'C', new double[][]{{2, 1}});
+  cs.AddChar("uD",'D', new double[][]{{3, 1}});
+  cs.AddChar("uE",'E', new double[][]{{4, 1}});
+  cs.AddChar("uF",'F', new double[][]{{5, 1}});
+  cs.AddChar("uG",'G', new double[][]{{6, 1}});
+  cs.AddChar("uH",'H', new double[][]{{7, 1}});
+  cs.AddChar("uI",'I', new double[][]{{8, 1}});
+  cs.AddChar("uJ",'J', new double[][]{{9, 1}});
+  cs.AddChar("uK",'K', new double[][]{{10, 1}});
+  cs.AddChar("uL",'L', new double[][]{{11, 1}});
+  cs.AddChar("uM",'M', new double[][]{{12, 1}});
+  cs.AddChar("uN",'N', new double[][]{{13, 1}});
+  cs.AddChar("uO",'O', new double[][]{{14, 1}});
+  cs.AddChar("uP",'P', new double[][]{{15, 1}});
+  cs.AddChar("uQ",'Q', new double[][]{{16, 1}});
+  cs.AddChar("uR",'R', new double[][]{{17, 1}});
+  cs.AddChar("uS",'S', new double[][]{{18, 1}});
+  cs.AddChar("uT",'T', new double[][]{{19, 1}});
+  cs.AddChar("uU",'U', new double[][]{{20, 1}});
+  cs.AddChar("uV",'V', new double[][]{{21, 1}});
+  cs.AddChar("uW",'W', new double[][]{{22, 1}});
+  cs.AddChar("uX",'X', new double[][]{{23, 1}});
+  cs.AddChar("uY",'Y', new double[][]{{24, 1}});
+  cs.AddChar("uZ",'Z', new double[][]{{25, 1}});
+  cs.AddChar("la",'a', new double[][]{{0, 1}});
+  cs.AddChar("lb",'b', new double[][]{{1, 1}});
+  cs.AddChar("lc",'c', new double[][]{{2, 1}});
+  cs.AddChar("ld",'d', new double[][]{{3, 1}});
+  cs.AddChar("le",'e', new double[][]{{4, 1}});
+  cs.AddChar("lf",'f', new double[][]{{5, 1}});
+  cs.AddChar("lg",'g', new double[][]{{6, 1}});
+  cs.AddChar("lh",'h', new double[][]{{7, 1}});
+  cs.AddChar("li",'i', new double[][]{{8, 1}});
+  cs.AddChar("lj",'j', new double[][]{{9, 1}});
+  cs.AddChar("lk",'k', new double[][]{{10, 1}});
+  cs.AddChar("ll",'l', new double[][]{{11, 1}});
+  cs.AddChar("lm",'m', new double[][]{{12, 1}});
+  cs.AddChar("ln",'n', new double[][]{{13, 1}});
+  cs.AddChar("lo",'o', new double[][]{{14, 1}});
+  cs.AddChar("lp",'p', new double[][]{{15, 1}});
+  cs.AddChar("lq",'q', new double[][]{{16, 1}});
+  cs.AddChar("lr",'r', new double[][]{{17, 1}});
+  cs.AddChar("ls",'s', new double[][]{{18, 1}});
+  cs.AddChar("lt",'t', new double[][]{{19, 1}});
+  cs.AddChar("lu",'u', new double[][]{{20, 1}});
+  cs.AddChar("lv",'v', new double[][]{{21, 1}});
+  cs.AddChar("lw",'w', new double[][]{{22, 1}});
+  cs.AddChar("lx",'x', new double[][]{{23, 1}});
+  cs.AddChar("ly",'y', new double[][]{{24, 1}});
+  cs.AddChar("lz",'z', new double[][]{{25, 1}});
+  cs.AddChar("0",'0', new double[][]{{14, 0.8}});
+  cs.AddChar("1",'1', new double[][]{{8, 0.3}, {11, 0.3}});
+  cs.AddChar("2",'z', new double[][]{});
+  cs.AddChar("3",'z', new double[][]{{1, 0.1}});
+  cs.AddChar("4",'z', new double[][]{{0, 0.4}});
+  cs.AddChar("5",'z', new double[][]{{18, 0.5}});
+  cs.AddChar("6",'z', new double[][]{{18, 0.2}});
+  cs.AddChar("7",'z', new double[][]{{8, 0.1}});
+  cs.AddChar("8",'z', new double[][]{{1, 0.5}});
+  cs.AddChar("9",'z', new double[][]{{6, 0.5}});
+  
+  /*
+  cs.AddChar("+",'+', new double[][]{});
+  cs.AddChar("-",'-', new double[][]{});
+  cs.AddChar("cr",'×', new double[][]{});
+  cs.AddChar("@",'@', new double[][]{{0, 0.2}});
+  cs.AddChar("#",'#', new double[][]{});
+  cs.AddChar("im",'?', new double[][]{});
+  cs.AddChar("!",'!', new double[][]{});
+  cs.AddChar("€",'€', new double[][]{{4, 0.2}});
+  cs.AddChar("$",'$', new double[][]{{18, 0.4}});
+  cs.AddChar("%",'%', new double[][]{});
+  cs.AddChar("(",'(', new double[][]{});
+  cs.AddChar(")",')', new double[][]{});
+  cs.AddChar("=",'=', new double[][]{});
+  */
 }
 
 

@@ -1,4 +1,7 @@
 class Bayes {
+  String name;
+  String filePath;
+  
   ArrayList<HyperParameters> xs = new ArrayList<HyperParameters>();
   ArrayList<Double> ys = new ArrayList<Double>();
   
@@ -11,11 +14,17 @@ class Bayes {
   double overfittingImportance = 0.3;
   
   //c
-  Bayes() {
+  Bayes(String n) {
+    this.name = n;
+    this.filePath = sketchPath() + "/Bayes/" + n + ".by";
     
+    File f = dataFile(filePath);
+    if(f.isFile()) {
+      this.Import(filePath);
+    }
   }
   
-  //f Exporte le Bayes _this_
+  //f Exporte le Bayes _this_ dans le fichier _name_
   public void Export(String name) {
     Matrix xMatrix = new Matrix(numOfHyperParameters, xs.size());
     Matrix yMatrix = new Matrix(1, ys.size());
@@ -120,21 +129,23 @@ class Bayes {
       }
     }
     
-    cl.pln("Maximum EI", String.format("%7.4f", max));
+    cl.pln("Maximum EI", String.format("%9.3E", max));
     
     return params[maxIdx];
   }
   
-  
+  //f Effectue le processus Gaussien de recherche de meilleur candidat
+  // Effectué _iter_ fois
+  // On limite le temps de recherche par candidat à _time_ secondes
   public double GaussianProcess(int iter, int time) {
     LetterDataset ds = new LetterDataset(5*session.w, 5*session.h);
     Matrix[] globalTrainingData = ds.CreateSample(
-        allCharacters,
+        cs.allC,
         handTrainingDatas,
         fontTrainingDatas,
         16, 1);
     Matrix[] globalTestingData = ds.CreateSample(
-        allCharacters,
+        cs.allC,
         handTestingDatas,
         fontTestingDatas,
         8, 1);
@@ -156,6 +167,8 @@ class Bayes {
       ys.add(loss);
       
       MinLoss();
+      
+      this.Export(this.filePath);
     }
     
     cl.pln("Bayes process is finished");
@@ -184,7 +197,7 @@ class Bayes {
     int[] layers = new int[hp.layerSize.length + 2];
     layers[0] = session.w * session.h;
     for(int k = 0; k < hp.layerSize.length; k++) layers[k+1] = hp.layerSize[k];
-    layers[hp.layerSize.length + 1] = allCharacters.length;
+    layers[hp.layerSize.length + 1] = cs.allC.length;
     
     NeuralNetwork nn = new NeuralNetwork(layers);
     nn.lambda = hp.lambda * hp.batchSize;
@@ -213,7 +226,7 @@ class Bayes {
     cl.pln("Accuracy", String.format("%6.4f", accuracy));
     
     // Puissance pour éviter d'avoir un écart en log, permettant d'augmenter l'écart type ie l'exploration
-    return Math.pow(1.5, testLoss  * Math.pow(testLoss / trainLoss, overfittingImportance) / accuracy / 100);
+    return testLoss  * Math.pow(testLoss / trainLoss, overfittingImportance) / accuracy / 100;
   }
   
   

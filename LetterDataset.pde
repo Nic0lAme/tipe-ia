@@ -9,10 +9,10 @@ import java.util.concurrent.ExecutionException;
 public class LetterDataset {
   final int wData, hData;
   final float move = 0.15;
-  final float blur = 0.07;
+  final float blur = 0.05;
   final float density = 0.02;
-  final float perlin = 2;
-  final float deformation = 0.1;
+  final float perlin = 0.5;
+  final float deformation = 0.15;
 
   //c Créateur de dataset
   // Zone de travail définie par _wData_ * _hData_
@@ -201,6 +201,6 @@ public synchronized void AddToRes(ArrayList<Matrix[]> res, Matrix[] toAdd, int s
   res.add(toAdd);
 
   if(res.size() % (sampleSize / 10) == 0) {
-    cl.pln(String.format("%5.3f", (float)res.size() / sampleSize), "Time Remaining :", RemainingTime(startTime, res.size(), sampleSize));
+    cl.pln(String.format("%5.3f", (double)res.size() / sampleSize), "Time Remaining :", RemainingTime(startTime, res.size(), sampleSize));
   }
 }

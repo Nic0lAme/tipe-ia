@@ -24,7 +24,7 @@ public class Session {
     this.h = 21;
 
     this.name = name;
-    this.characters = allCharacters;
+    this.characters = cs.allC;
 
     this.handTrainingDatas = new String[]{"AntoineME", "NicolasMA", "LenaME", "TheoLA", "MatteoPR", "ElioKE", "AkramBE", "MaximeMB", "NathanLU", "LubinDE", "MatheoLB", "SachaAD", "MatisBR", "ValerieAR", "ArthurLO", "RomaneFI", "ThelioLA", "YanisIH"};
     //this.handTrainingDatas = new String[]{};
@@ -58,7 +58,7 @@ public class Session {
   // _startDef_ et _endDef_ correspondent à l'évolution du taux de déformation
   // _rep_ est le nombre de répétition de chaque échantillon
   // _prop_ est la proportion minimale de _rep_ pour chaque échantillon, modulé par la performance du réseau sur le charactère associé
-  void TrainForImages(int phaseNumber, int epochPerSet, float startMinLR, float endMinLR, float startMaxLR, float endMaxLR, int period, int batchSize, float startDef, float endDef, int rep, float minProp) {
+  void TrainForImages(int phaseNumber, int epochPerSet, double startMinLR, double endMinLR, double startMaxLR, double endMaxLR, int period, int batchSize, float startDef, float endDef, int rep, float minProp) {
     float[] accuracy = new float[nn.outputSize];
     int[] repList;
     Arrays.fill(accuracy, 0.5);
@@ -107,8 +107,8 @@ public class Session {
           this.fontTrainingDatas,
           repList, deformationRate);
 
-        float maxLR = startMaxLR * pow(endMaxLR / startMaxLR, (float)(k-1)/max(1, (phaseNumber-1)));
-        float minLR = startMinLR * pow(endMinLR / startMinLR, (float)(k-1)/max(1, (phaseNumber-1)));
+        double maxLR = startMaxLR * Math.pow(endMaxLR / startMaxLR, (double)(k-1)/max(1, (phaseNumber-1)));
+        double minLR = startMinLR * Math.pow(endMinLR / startMinLR, (double)(k-1)/max(1, (phaseNumber-1)));
         this.nn.MiniBatchLearn(sample, epochPerSet, batchSize, minLR, maxLR, period, new Matrix[][]{testSampleHand, testSampleFont}, k + "/" + phaseNumber);
 
         if (abortTraining.get()) {
@@ -260,8 +260,8 @@ public class Session {
 
           if(!isGood) {
             fill(200);
-            textSize(rScale * this.w);
-            text(characters[mIndex], x, y, rScale*this.w, rScale*this.h);
+            //textSize(rScale * this.w);
+            //text(characters[mIndex], x, y, rScale*this.w, rScale*this.h);
           }
         }
 
@@ -278,13 +278,13 @@ public class Session {
   double[] ImgPP(PImage img) { // Images post-processing
     double[] nImg = new double[this.w*this.h];
     PImage PPImage = im.Gray(img);
-    PPImage = im.Contrast(PPImage, 0.015);
-    PPImage = im.AutoCrop(PPImage, 210, 0.05);
+    PPImage = im.Contrast(PPImage, 0.02);
+    PPImage = im.AutoCrop(PPImage, 128, 0.12);
     //PPImage = im.Contrast(PPImage, 0.02); // If there is a dark patch in the center
 
     im.Resize(PPImage, this.w, this.h);
     PPImage.loadPixels();
-    for(int k = 0; k < PPImage.pixels.length; k++) nImg[k] = 1 - (float)brightness(PPImage.pixels[k]) / 255;
+    for(int k = 0; k < PPImage.pixels.length; k++) nImg[k] = 1 - (double)brightness(PPImage.pixels[k]) / 255;
 
     return nImg;
   }

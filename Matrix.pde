@@ -144,6 +144,8 @@ class Matrix {
       e.printStackTrace();
 
       cl.pln("Want to SET a NaN");
+      
+      System.exit(-1);
       return this;
     }
     this.values[i][j] = val;
@@ -235,7 +237,7 @@ class Matrix {
     if (j < 0 || j >= this.p) { cl.pln(this, j, "Dilat", "Wrong Column Index"); Exception e = new Exception(); e.printStackTrace(); return this; }
 
     for(int i = 0; i < this.n; i++)
-      this.values[i][j] = this.values[i][j] * scal;
+      this.values[i][j] *= scal;
 
     return this;
   }
@@ -358,7 +360,7 @@ class Matrix {
     for(int i = 0; i < this.n; i++) {
       double avg = 0;
       for(int j = 0; j < this.p; j++)
-        avg += this.Get(i,j) / this.p;
+        avg += this.values[i][j] / this.p;
 
       matrixOfAverage.values[i][0] = avg;
     }
@@ -445,7 +447,15 @@ class Matrix {
     double s = 0;
     for(int j = 0; j < this.p; j++) {
       s = SumCol(j);
-      if(s != 0) this.Dilat(j, 1/s);
+      if(s <= 0) {
+        this.Debug();
+        println("SOME PROBLEMS IN THE VALUES OF THE ARRAY (NORM COLUMN)");
+        System.exit(-1);
+      }
+      if(Math.log10(s) * Math.log10(s) > 10) {
+        println("NORMS BEGIN TO BE REALLY HIGH");
+      }
+      this.Dilat(j, (double)1 / s);
     }
 
     return this;
