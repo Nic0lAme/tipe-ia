@@ -79,7 +79,7 @@ void settings() {
 
 void setup() {
   background(255);
-  
+
   frame = (Frame) ((processing.awt.PSurfaceAWT.SmoothCanvas) surface.getNative()).getFrame();
   frame.setVisible(false); // Cache la fenêtre d'activation java
   frame.setResizable(true);
@@ -87,10 +87,10 @@ void setup() {
   im = new ImageManager();
   graphApplet = new GraphApplet();
   cl = new ConsoleLog("./Log/log1.txt");
-  
+
   HyperParameters hp = new HyperParameters();
   session = new Session("", hp);
-  
+
   /*
   Bayes bayes = new Bayes().Import("./Bayes/Test4.by");
   bayes.GaussianProcess(12, 300);
@@ -105,6 +105,11 @@ boolean directTest = false;
 void draw() {
   if(testImages) session.TestImages();
   if(directTest) session.DirectTest();
+}
+
+void setMainSession(Session newSession) {
+  session = newSession;
+  graphApplet.setNetworkName(session.nn.toString());
 }
 
 

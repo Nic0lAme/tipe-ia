@@ -30,63 +30,67 @@ class GraphApplet extends JFrame {
   private LearnGraph graph;
 
   private JButton pinButton, pauseButton;
-  JMenu files, edit, display;
+  private JMenu files, edit, display;
   private JMenuItem importItem, newNNItem, exportItem, dataItem, avgItem, testItem, trainItem;
-  JMenuBar menuBar;
+  private JLabel networkLabel;
+  private JMenuBar menuBar;
   public JScrollPane consoleScroll;
   public JTextArea console;
   private boolean pin = false;
-  
+
   //c
   public GraphApplet() {
     graph = new LearnGraph("Itérations", "Coût");
     this.setTitle("TIPE");
-    
+
     this.getContentPane().setPreferredSize(new Dimension(600, 600));
-    
-    
+
+
     try { this.setIconImage(ImageIO.read(new File(sketchPath() + "/AuxiliarFiles/icon.png"))); }
     catch(Exception e) { println(e); }
-    
+
     setResizable(true);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setVisible(true);
     setAlwaysOnTop(pin);
-    
-    
+
+
     Init(graph);
     pack();
-    
+
     CenterFrame(this);
   }
-  
+
   //f Centre la frame _frame_ dans l'écran
   private void CenterFrame(JFrame frame) {
     Dimension windowSize = frame.getSize();
     GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
     Point centerPoint = ge.getCenterPoint();
-  
+
     int dx = centerPoint.x - windowSize.width / 2;
-    int dy = centerPoint.y - windowSize.height / 2;    
+    int dy = centerPoint.y - windowSize.height / 2;
     frame.setLocation(dx, dy);
   }
 
-  
+  public void setNetworkName(String name) {
+    networkLabel.setText(name);
+  }
+
   //f Ajoute le point _x_,_y_ au graphique
   public void AddValue(double x, double y) {
     graph.Add(x, y);
   }
-  
+
   //f Ajoute le point _y_ au graphique
   public void AddValue(double y) {
     graph.Add(y);
   }
-  
+
   //f Nettoie le graphique
   public void ClearGraph()  {
     graph.Clear();
   }
-  
+
   //f Active/désactive l'épinglage de la fenêtre
   private void TogglePin() {
     pin = !pin;
@@ -94,18 +98,18 @@ class GraphApplet extends JFrame {
     if (pin) pinButton.setText("Désépingler");
     else pinButton.setText("Épingler");
   }
-  
+
   //f Permet d'exporter le réseau de neurone actif
   // A FAIRE : Devra au final exporter toute la session
   private void ExportNN() {
     if (!stopLearning.get()) TogglePause();
     boolean wasPin = this.pin;
     if(wasPin) TogglePin();
-    
+
     pauseButton.setEnabled(false);
     JFileChooser fileChooser = new JFileChooser();
     fileChooser.setAcceptAllFileFilterUsed(false);
-    
+
     File defaultDir = new File(sketchPath() + "/NeuralNetworkSave");
     fileChooser.setCurrentDirectory(defaultDir);
     int response = fileChooser.showOpenDialog(null);
@@ -116,14 +120,14 @@ class GraphApplet extends JFrame {
     pauseButton.setEnabled(true);
     if (stopLearning.get()) TogglePause();
   }
-  
+
   /*
   private void ImportNN() {
     if (!stopLearning.get()) TogglePause();
     pauseButton.setEnabled(false);
     JFileChooser fileChooser = new JFileChooser();
     fileChooser.setAcceptAllFileFilterUsed(false);
-    
+
     File defaultDir = new File(sketchPath() + "/NeuralNetworkSave");
     fileChooser.setCurrentDirectory(defaultDir);
     int response = fileChooser.showOpenDialog(null);
@@ -134,7 +138,7 @@ class GraphApplet extends JFrame {
     if (stopLearning.get()) TogglePause();
   }
   */
-  
+
   //f Importe un réseau de neurone
   // A FAIRE : devra au final importer une session entière
   private void ImportNN() {
@@ -143,7 +147,7 @@ class GraphApplet extends JFrame {
     if(wasPin) TogglePin();
     frame.setSize(600, 200);
     CenterFrame(frame);
-    
+
     frame.addWindowListener(new WindowAdapter() {
       public void windowClosing(WindowEvent e) {
         if(wasPin) TogglePin();
@@ -151,26 +155,26 @@ class GraphApplet extends JFrame {
         if (stopLearning.get()) TogglePause();
       }
     });
-    
+
     if (!stopLearning.get()) TogglePause();
     pauseButton.setEnabled(false);
     JFileChooser fileChooser = new JFileChooser();
     fileChooser.setAcceptAllFileFilterUsed(false);
-    
+
     File defaultDir = new File(sketchPath() + "/NeuralNetworkSave");
     fileChooser.setCurrentDirectory(defaultDir);
 
     JPanel panel = new JPanel();
     panel.setLayout(new GridLayout(5, 2));
-    
+
     JLabel wLabel = new JLabel("Largeur");
     JFormattedTextField wField = new JFormattedTextField(NumberFormat.getIntegerInstance());
     wField.setValue(session.w);
-    
+
     JLabel hLabel = new JLabel("Hauteur");
     JFormattedTextField hField = new JFormattedTextField(NumberFormat.getIntegerInstance());
     hField.setValue(session.h);
-    
+
     JButton openFile = new JButton("Ouvrir");
     openFile.setFocusable(false);
     openFile.setMargin(new Insets(5, 5, 5, 5));
@@ -190,46 +194,46 @@ class GraphApplet extends JFrame {
     checkBox.setSelected(true);
 
     JButton validateButton = new JButton("Valider");
-    
+
     /*
     importButton.setFocusable(false);
     importButton.setMargin(new Insets(5, 5, 5, 5));
     importButton.setFont(new Font("", Font.PLAIN, 16));
     */
-    
+
     validateButton.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             boolean isChecked = checkBox.isSelected();
-            
+
             HyperParameters hp = new HyperParameters();
-            
+
             NeuralNetwork newNN = new NeuralNetwork().Import(fileChooser.getSelectedFile().getAbsolutePath());
-            
+
             if (newNN.outputSize != session.characters.length) {
               cl.pln("Wrong output size");
               return;
             }
-            
+
             Session s = new Session("", hp);
             s.nn = newNN;
             s.nn.useSoftMax = isChecked;
             s.w = int(wField.getText());
             s.h = int(hField.getText());
-            
-            session = s;
-            
+
+            setMainSession(s);
+
             graph.Clear();
-            
+
             cl.pln(s.nn);
-            
+
             if(wasPin) TogglePin();
             pauseButton.setEnabled(true);
             if (stopLearning.get()) TogglePause();
             frame.setVisible(false);
         }
     });
-    
+
     panel.add(wLabel);
     panel.add(wField);
     panel.add(hLabel);
@@ -246,24 +250,24 @@ class GraphApplet extends JFrame {
     // Affichez la fenêtre
     frame.setVisible(true);
   }
-  
+
   //f Permet de créer un nouveau réseau de neurones
   // A FAIRE : devra au final permettre de créer une nouvelle session
   private void NewNN() {
     JFrame frame = new JFrame("Nouveau réseau");
     boolean wasPin = this.pin;
     if(wasPin) TogglePin();
-    
+
     frame.setSize(600, 200);
     CenterFrame(frame);
 
     JPanel panel = new JPanel();
     panel.setLayout(new GridLayout(5, 2));
-    
+
     JLabel wLabel = new JLabel("Largeur");
     JFormattedTextField wField = new JFormattedTextField(NumberFormat.getIntegerInstance());
     wField.setValue(19);
-    
+
     JLabel hLabel = new JLabel("Hauteur");
     JFormattedTextField hField = new JFormattedTextField(NumberFormat.getIntegerInstance());
     hField.setValue(21);
@@ -276,39 +280,39 @@ class GraphApplet extends JFrame {
     checkBox.setSelected(true);
 
     JButton validateButton = new JButton("Valider");
-    
+
     /*
     importButton.setFocusable(false);
     importButton.setMargin(new Insets(5, 5, 5, 5));
     importButton.setFont(new Font("", Font.PLAIN, 16));
     */
-    
+
     validateButton.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             String text = textField.getText();
             boolean isChecked = checkBox.isSelected();
-            
+
             HyperParameters hp = new HyperParameters();
             session.w = int(wField.getText());
             session.h = int(hField.getText());
 
             int[] layers = int((str(session.w*session.h) + "," + text + "," + str(session.characters.length)).split("[,\\;]"));
-            
+
             Session s = new Session("", hp);
             s.nn = new NeuralNetwork(layers);
             s.nn.useSoftMax = isChecked;
-            
-            session = s;
-            
+
+            setMainSession(s);
+
             graph.Clear();
-            
+
             cl.pln(s.nn);
             if(wasPin) TogglePin();
             frame.setVisible(false);
         }
     });
-    
+
     panel.add(wLabel);
     panel.add(wField);
     panel.add(hLabel);
@@ -325,32 +329,32 @@ class GraphApplet extends JFrame {
     // Affichez la fenêtre
     frame.setVisible(true);
   }
-  
+
   //f Permet de mettre en pause les epochs
   private void TogglePause() {
     synchronized(stopLearning) {
       stopLearning.set(!stopLearning.get());
       if (!stopLearning.get()) stopLearning.notifyAll();
-      
+
       try { Thread.sleep(500); }
       catch (Exception e) {}
       if (stopLearning.get()) pauseButton.setText("Reprendre");
       else pauseButton.setText("Pause");
     }
   }
-  
+
   //f Permet de montrer/cacher la valeur moyenne sur le graphique
   private void ToggleAvg() {
     graph.ToggleAvg();
     avgItem.setText((graph.IsAvgShowed() ? "Masquer" : "Afficher") + " la moyenne glissante");
   }
-  
+
   //f Permet de montrer/cacher les valeurs des loss
   private void ToggleData() {
     graph.ToggleData();
     dataItem.setText((graph.IsDataShowed() ? "Masquer" : "Afficher") + " les données brutes");
   }
-  
+
   //f Permet de lancer un test du réseau de neurones actif
   private void ToggleTest() {
     testImages = true;
@@ -358,80 +362,80 @@ class GraphApplet extends JFrame {
       catch (Exception e) {}
     testImages = false;
   }
-  
+
   //f Permet de lancer un entrainement du réseau de neurones actif
-  private void ToggleTrain() {    
+  private void ToggleTrain() {
     boolean wasPin = this.pin;
     if(wasPin) TogglePin();
-    
-    JFrame frame = new JFrame("Importer un réseau");
+
+    JFrame frame = new JFrame("Lancer un entrainement");
     frame.setSize(900, 200);
     CenterFrame(frame);
-    
+
     JPanel panel = new JPanel();
     panel.setLayout(new GridLayout(4, 8));
-    
-    
-    JLabel iterLabel = new JLabel("# d'itération");
-    JFormattedTextField iterField = new JFormattedTextField(NumberFormat.getIntegerInstance());
-    iterField.setValue(4);
-    
+
+
+    JLabel phaseLabel = new JLabel("# de phase");
+    JFormattedTextField phaseField = new JFormattedTextField(NumberFormat.getIntegerInstance());
+    phaseField.setValue(4);
+
     JLabel epochLabel = new JLabel("# d'epoch");
     JFormattedTextField epochField = new JFormattedTextField(NumberFormat.getIntegerInstance());
     epochField.setValue(16);
-    
+
     JLabel batchLabel = new JLabel("Taille des batches");
     JFormattedTextField batchField = new JFormattedTextField(NumberFormat.getIntegerInstance());
     batchField.setValue(64);
-    
+
     JLabel periodLabel = new JLabel("Période de LR");
     JFormattedTextField periodField = new JFormattedTextField(NumberFormat.getIntegerInstance());
     periodField.setValue(4);
-    
+
     JLabel startMinLRLabel = new JLabel("LR min intial");
     JFormattedTextField startMinLRField = new JFormattedTextField();
     startMinLRField.setValue(0.5);
-    
+
     JLabel startMaxLRLabel = new JLabel("LR max intial");
     JFormattedTextField startMaxLRField = new JFormattedTextField();
     startMaxLRField.setValue(1.5);
-    
+
     JLabel endMinLRLabel = new JLabel("LR min final");
     JFormattedTextField endMinLRField = new JFormattedTextField();
     endMinLRField.setValue(0.1);
-    
+
     JLabel endMaxLRLabel = new JLabel("LR max final");
     JFormattedTextField endMaxLRField = new JFormattedTextField();
     endMaxLRField.setValue(0.5);
-    
+
     JLabel startDefLabel = new JLabel("Déformation initiale");
     JFormattedTextField startDefField = new JFormattedTextField();
     startDefField.setValue(1.0);
-    
+
     JLabel endDefLabel = new JLabel("Déformation finale");
     JFormattedTextField endDefField = new JFormattedTextField();
     endDefField.setValue(1.0);
-    
+
     JLabel repLabel = new JLabel("Répétition d'échantillon");
     JFormattedTextField repField = new JFormattedTextField(NumberFormat.getIntegerInstance());
     repField.setValue(8);
-    
+
     JLabel propLabel = new JLabel("Proportion min");
     JFormattedTextField propField = new JFormattedTextField();
     propField.setValue(1.0);
 
     JButton validateButton = new JButton("Valider");
-    
+
     validateButton.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
           frame.setVisible(false);
           if(wasPin) TogglePin();
-          
+
           class Train implements Runnable {
             public void run() {
               session.TrainForImages (
-                int(iterField.getText()), int(epochField.getText()),
+                int(phaseField.getText()), int(epochField.getText()),
                 float(startMinLRField.getText().replace(',', '.')), float(endMinLRField.getText().replace(',', '.')),
                 float(startMaxLRField.getText().replace(',', '.')), float(endMaxLRField.getText().replace(',', '.')),
                 int(periodField.getText()), int(batchField.getText()),
@@ -440,12 +444,12 @@ class GraphApplet extends JFrame {
               );
             }
           }
-          
+
           new Thread(new Train()).start();
-          
+
           /*
           TrainForImages (
-            int(iterField.getText()), int(epochField.getText()),
+            int(phaseField.getText()), int(epochField.getText()),
             float(startMinLRField.getText()), float(endMinLRField.getText()),
             float(startMaxLRField.getText()), float(endMaxLRField.getText()),
             int(periodField.getText()), int(batchField.getText()),
@@ -455,9 +459,9 @@ class GraphApplet extends JFrame {
           */
         }
     });
-    
-    panel.add(iterLabel);
-    panel.add(iterField);
+
+    panel.add(phaseLabel);
+    panel.add(phaseField);
     panel.add(epochLabel);
     panel.add(epochField);
     panel.add(batchLabel);
@@ -480,27 +484,27 @@ class GraphApplet extends JFrame {
     panel.add(repField);
     panel.add(propLabel);
     panel.add(propField);
-    
+
     for(int i = 0; i < 7; i++) panel.add(new JLabel());
     panel.add(validateButton);
-    
+
     frame.add(panel);
     frame.setVisible(true);
   }
-  
+
   //f Ajoute l'entrée _text_ à la console
   public void WriteToConsole(String text) {
     console.append(text);
     consoleScroll.getVerticalScrollBar().setValue(consoleScroll.getVerticalScrollBar().getMaximum());
   }
-  
+
   //f Initialise la fenêtre, en utlisant le graphique _graph_
   private void Init(LearnGraph graph) {
     setLayout(new BorderLayout());
-    
+
     menuBar = new JMenuBar();
     files = new JMenu("Fichier");
-    
+
     newNNItem = new JMenuItem("Nouveau réseau");
     newNNItem.setFocusable(false);
     newNNItem.addActionListener(e -> NewNN());
@@ -508,7 +512,7 @@ class GraphApplet extends JFrame {
     newNNItem.setFont(new Font("", Font.PLAIN, 16));
     newNNItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK));
     files.add(newNNItem);
-    
+
     importItem = new JMenuItem("Importer");
     importItem.setFocusable(false);
     importItem.addActionListener(e -> ImportNN());
@@ -516,7 +520,7 @@ class GraphApplet extends JFrame {
     importItem.setFont(new Font("", Font.PLAIN, 16));
     importItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, KeyEvent.CTRL_DOWN_MASK));
     files.add(importItem);
-    
+
     exportItem = new JMenuItem("Exporter");
     exportItem.setFocusable(false);
     exportItem.addActionListener(e -> ExportNN());
@@ -524,30 +528,30 @@ class GraphApplet extends JFrame {
     exportItem.setFont(new Font("", Font.PLAIN, 16));
     exportItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, KeyEvent.CTRL_DOWN_MASK));
     files.add(exportItem);
-    
+
     menuBar.add(files);
-    
+
     edit = new JMenu("Éditer");
-    
+
     testItem = new JMenuItem("Tester");
     testItem.setFocusable(false);
     testItem.addActionListener(e -> ToggleTest());
     testItem.setMargin(new Insets(5, 5, 5, 5));
     testItem.setFont(new Font("", Font.PLAIN, 16));
     edit.add(testItem);
-    
+
     trainItem = new JMenuItem("Entrainer");
     trainItem.setFocusable(false);
     trainItem.addActionListener(e -> ToggleTrain());
     trainItem.setMargin(new Insets(5, 5, 5, 5));
     trainItem.setFont(new Font("", Font.PLAIN, 16));
     edit.add(trainItem);
-    
+
     menuBar.add(edit);
-    
-    
+
+
     display = new JMenu("Affichage");
-    
+
     dataItem = new JMenuItem("Masquer les données brutes");
     dataItem.setFocusable(false);
     dataItem.addActionListener(e -> ToggleData());
@@ -561,10 +565,10 @@ class GraphApplet extends JFrame {
     avgItem.setMargin(new Insets(5, 5, 5, 5));
     avgItem.setFont(new Font("", Font.PLAIN, 16));
     display.add(avgItem);
-    
+
     menuBar.add(display);
-    
-    
+
+
 
     JPanel top = new JPanel();
     JPanel topCenter = new JPanel();
@@ -589,45 +593,53 @@ class GraphApplet extends JFrame {
     pinButton.addActionListener(e -> TogglePin());
     pinButton.setMargin(new Insets(5, 5, 5, 5));
     pinButton.setFont(new Font("", Font.PLAIN, 16));
-    
+
     try { pinButton.setIcon(new ImageIcon(ImageIO.read(new File(sketchPath() + "/AuxiliarFiles/pin.png")).getScaledInstance(24, 24, Image.SCALE_DEFAULT))); }
     catch(Exception e) {}
-    
+
     gbc.gridx = 0;
     gbc.gridy = 0;
     gbc.anchor = GridBagConstraints.WEST;
     top.add(pinButton, gbc);
-    
+
+    networkLabel = new JLabel("");
+    networkLabel.setFont(new Font("", Font.PLAIN, 16));
+
+    gbc.gridx = 1;
+    gbc.gridy = 0;
+    gbc.anchor = GridBagConstraints.CENTER;
+    top.add(networkLabel, gbc);
+
     pauseButton = new JButton("Pause");
     pauseButton.setFocusable(false);
     pauseButton.addActionListener(e -> TogglePause());
     pauseButton.setMargin(new Insets(5, 5, 5, 5));
     pauseButton.setFont(new Font("", Font.PLAIN, 16));
-    
+
     try { pauseButton.setIcon(new ImageIcon(ImageIO.read(new File(sketchPath() + "/AuxiliarFiles/pause.png")).getScaledInstance(24, 24, Image.SCALE_DEFAULT))); }
     catch(Exception e) {}
-    
-    gbc.gridx = 1;
+
+    gbc.gridx = 2;
     gbc.gridy = 0;
     gbc.anchor = GridBagConstraints.EAST;
     top.add(pauseButton, gbc);
-    
+
     this.setJMenuBar(menuBar);
 
     add(top, BorderLayout.NORTH);
     add(graph.GetPanel(), BorderLayout.CENTER);
-    
-    
-    
+
+
+
     console = new JTextArea();
     console.setBackground(Color.lightGray);
     console.setEditable(false);
-    
+
     consoleScroll = new JScrollPane(console);
     consoleScroll.setPreferredSize(new Dimension(this.getWidth() - 20, 200));
     consoleScroll.setBorder(new TitledBorder(new EtchedBorder(), "Console"));
     consoleScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-    
+
     add(consoleScroll, BorderLayout.SOUTH);
   }
 }
