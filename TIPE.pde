@@ -9,6 +9,7 @@ ImageManager im;
 GraphApplet graphApplet;
 Frame frame;
 WordCorrector wc;
+Database db;
 
 Session session;
 
@@ -91,6 +92,8 @@ void setup() {
   cl = new ConsoleLog("./Log/log1.txt");
   wc = new WordCorrector();
   wc.ImportWords();
+  
+  db = new Database("https://tipe-877f6-default-rtdb.europe-west1.firebasedatabase.app/");
 
   HyperParameters hp = new HyperParameters();
   session = new Session("", hp);

@@ -1300,4 +1300,36 @@
 
 	</details>
 
+</details><details>
+<summary>
+
+**Database**
+
+</summary>
+
+- _link_ correspond au lien de la realtime database
+>
+- _Database(String link)_
+
+
+- ***
+
+	<details>
+	<summary>GetData</summary>
+
+	- >Réccupère le contenu des _data_ dans la base de donnée, dans la section _fileName_  
+	- _public String[] GetData(String fileName)_
+
+	</details>
+
+- ***
+
+	<details>
+	<summary>PostData</summary>
+
+	- >Ajoute à la base de donnée, dans la section _fileName_, le String _data_  
+	- _public void PostData(String fileName, String data)_
+
+	</details>
+
 </details>

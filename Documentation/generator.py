@@ -30,7 +30,8 @@ files_name = [
     ("../LetterDataset.pde", "LetterDataset"),
     ("../WordCorrector.pde", "WordCorrector"),
     ("../CharactersStorage.pde", "CharactersStorage"),
-    ("../ConsoleLog.pde", "ConsoleLog")
+    ("../ConsoleLog.pde", "ConsoleLog"),
+    ("../Database.pde", "Database")
     ]
 classes = []
 
