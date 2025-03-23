@@ -19,6 +19,7 @@ final int numThreadsLearning = 4; // Apprentissage (si 1, pas de parallélisatio
 
 // Attention, à ne pas modifier n'importe comment sous peine de conséquences
 final AtomicBoolean stopLearning = new AtomicBoolean(false);
+final AtomicBoolean abortTraining = new AtomicBoolean(false); // Note: Annule aussi toute construction de dataset
 
 float rScale = 1; // Scale for the representations (draw)
 float testDerformation = 1;
@@ -114,9 +115,9 @@ void draw() {
   if(directTest) session.DirectTest();
 }
 
-void setMainSession(Session newSession) {
+void SetMainSession(Session newSession) {
   session = newSession;
-  graphApplet.setNetworkName(session.nn.toString());
+  graphApplet.SetNetworkName(session.nn.toString());
 }
 
 

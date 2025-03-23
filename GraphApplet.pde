@@ -31,7 +31,7 @@ class GraphApplet extends JFrame {
 
   private JButton pinButton, pauseButton;
   private JMenu files, edit, display;
-  private JMenuItem importItem, newNNItem, exportItem, dataItem, avgItem, testItem, trainItem;
+  private JMenuItem importItem, newNNItem, exportItem, dataItem, avgItem, testItem, trainItem, stopTrainItem;
   private JLabel networkLabel;
   private JMenuBar menuBar;
   public JScrollPane consoleScroll;
@@ -71,7 +71,8 @@ class GraphApplet extends JFrame {
     frame.setLocation(dx, dy);
   }
 
-  public void setNetworkName(String name) {
+  //f Change le nom du réseau de neurone affiché
+  public void SetNetworkName(String name) {
     networkLabel.setText(name);
   }
 
@@ -220,7 +221,7 @@ class GraphApplet extends JFrame {
             s.w = int(wField.getText());
             s.h = int(hField.getText());
 
-            setMainSession(s);
+            SetMainSession(s);
 
             graph.Clear();
 
@@ -302,7 +303,7 @@ class GraphApplet extends JFrame {
             s.nn = new NeuralNetwork(layers);
             s.nn.useSoftMax = isChecked;
 
-            setMainSession(s);
+            SetMainSession(s);
 
             graph.Clear();
 
@@ -491,6 +492,12 @@ class GraphApplet extends JFrame {
     frame.setVisible(true);
   }
 
+  //f Demande l'arrêt de l'entrainement en cours si il y en a
+  private void TryStopTraining() {
+    if (!session.IsInTraining()) cl.pln("[WARNING] Aucun entrainement en cours !");
+    else session.AskStopTraining();
+  }
+
   //f Ajoute l'entrée _text_ à la console
   public void WriteToConsole(String text) {
     console.append(text);
@@ -545,6 +552,13 @@ class GraphApplet extends JFrame {
     trainItem.setMargin(new Insets(5, 5, 5, 5));
     trainItem.setFont(new Font("", Font.PLAIN, 16));
     edit.add(trainItem);
+
+    stopTrainItem = new JMenuItem("Arrêter l'entrainement");
+    stopTrainItem.setFocusable(false);
+    stopTrainItem.addActionListener(e -> TryStopTraining());
+    stopTrainItem.setMargin(new Insets(5, 5, 5, 5));
+    stopTrainItem.setFont(new Font("", Font.PLAIN, 16));
+    edit.add(stopTrainItem);
 
     menuBar.add(edit);
 
