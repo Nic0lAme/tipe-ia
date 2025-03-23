@@ -7,7 +7,7 @@ class NeuralNetwork {
   // Paramètres du réseau de neurones
   Matrix[] weights; // Poids des liaisons (pour un indice i, liaisons entre couche i et couche i+1)
   Matrix[] bias; // Biais (pour un indice i, biais entre couche i et i+1)
-  
+
   double lambda;
 
   boolean useSoftMax = false; // Détermine l'utilisation de la fonction softmax sur la dernière couche du réseau
@@ -120,21 +120,21 @@ class NeuralNetwork {
     for(int i = 0; i < this.numLayers - 1; i++) {
       layerVal[i + 1] = CalcLayer(i, layerVal[i]);
     }
-    
+
     return layerVal;
   }
 
   //f Calcule la sortie correspondant à l'entrée _in_, de la couche _from_ à la couche _from+1_
   private Matrix CalcLayer(int from, Matrix in) {
     Matrix result = weights[from].Mult(in);
-    
+
     result.Add(bias[from], 1, true);
 
     if(from == this.numLayers - 2 && this.useSoftMax) {
       result.Map((x) -> Math.exp(x));
       return result.NormColumn();
     }
-    
+
     result.Map((x) -> sigmoid(x));
 
     return result;
@@ -151,7 +151,7 @@ class NeuralNetwork {
 
     Matrix[] weightGrad = new Matrix[this.numLayers - 1];
     Matrix[] biasGrad = new Matrix[this.numLayers - 1];
-    
+
     boolean hasNaN = false;
     for(int l = this.numLayers - 2; l >= 0; l--) {
       if(gradient.Contains(Double.NaN)) hasNaN = true;
@@ -284,7 +284,7 @@ class NeuralNetwork {
 
       if(weights[l].HasNAN() || bias[l].HasNAN()) hasNaN = true;
     }
-    
+
     double J = this.ComputeLoss(S, Y);
 
     /*
@@ -305,7 +305,7 @@ class NeuralNetwork {
 
     return J;
   }
-  
+
   //f Permet le calcul du loss
   // _S_ est la sortie du système
   // _Y_ est la sortie attendue
@@ -329,9 +329,9 @@ class NeuralNetwork {
 
   public double MiniBatchLearn(Matrix[] data, int numOfEpoch, int batchSize, double minLR, double maxLR, int period, Matrix[][] testSets, String label) {
     cl.pln("Mini Batch Gradient Descent " + label + " - " + numOfEpoch + " Epochs - " + batchSize + " Batch Size - " + String.format("%9.3E", maxLR) + " LR");
-    
+
     double lossAverage = 0;
-    
+
     int startTime = millis();
     int numOfBatches = floor(data[0].p / batchSize);
     for (int k = 0; k < numOfEpoch; k++) {
@@ -343,7 +343,7 @@ class NeuralNetwork {
         data[0].ComutCol(i, j);
         data[1].ComutCol(i, j);
       }
-      
+
       lossAverage = 0;
 
       for (int i = 0; i < numOfBatches; i++) {
@@ -352,13 +352,16 @@ class NeuralNetwork {
         double l = this.Learn(batch, batchAns, learningRate);
         lossAverage += l / numOfBatches;
         graphApplet.AddValue(l);
+
+        if (abortTraining.get()) return lossAverage;
+
         if (i % (numOfBatches / 4) == 0)
           cl.pln("\t Epoch " + String.format("%05d",k+1) +
             " Batch " + String.format("%05d",i+1) + " : " + String.format("%9.3E",l) +
             "\t Time remaining " + RemainingTime(startTime, k * numOfBatches + i + 1, numOfBatches * numOfEpoch)
           );
       }
-      
+
       if((k+1)%6 != 0 && k != numOfEpoch - 1) continue;
 
       for(int s = 0; s < testSets.length; s++) {
@@ -367,7 +370,7 @@ class NeuralNetwork {
       }
       cl.pln();
     }
-    
+
     return lossAverage;
   }
 

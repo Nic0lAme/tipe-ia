@@ -76,6 +76,9 @@ public class LetterDataset {
 
           class ScramblingTask implements Callable<Object> {
             public Object call() {
+              // Termine en avance si une demande d'arrêt a été faite
+              if (abortTraining.get()) return this;
+
               // Récupère l'image source et la modifie
               String path = s < hwSources.length
                 ? "./TextFileGetter/output/" + characters[c] + "/" + characters[c] + " - " + hwSources[s] + ".jpg"
@@ -93,10 +96,10 @@ public class LetterDataset {
               Matrix[] r = new Matrix[2];
               r[0] = new Matrix(imgPixels.length, 1).ColumnFromArray(0, imgPixels);
               r[1] = new Matrix(nbChar, 1).ColumnFromArray(0, answerArray);
-              
+
               synchronized (stopLearning) {
                 if (stopLearning.get()) {
-                  try { println("Learning stopped"); stopLearning.wait(); println("Le retour");}
+                  try { println("Dataset creation stopped"); stopLearning.wait(); println("Le retour");}
                   catch (Exception e) { e.printStackTrace(); }
                 }
               }
@@ -130,7 +133,8 @@ public class LetterDataset {
     //inputs.ColumnFromArray(numColonne, imgPixels);
     //outputs.Set(c, numColonne, 1);
 
-    cl.pln("Created - Total time", String.format("%9.3f",(float)(millis() - startTime) / 1000));
+    if (abortTraining.get()) cl.pln("Dataset creation aborted");
+    else cl.pln("Created - Total time", String.format("%9.3f",(float)(millis() - startTime) / 1000));
 
     return new Matrix[]{ inputs, outputs };
   }
