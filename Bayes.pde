@@ -192,7 +192,7 @@ class Bayes {
   public void RandomFill(int numSamples, int time) {
     if (!isLoaded) LoadImageData();
 
-    for (int i = 0; i < numSamples) {
+    for (int i = 0; i < numSamples; i++) {
       HyperParameters hp = new HyperParameters().Random();
       double loss = Evaluate(hp, globalTrainingData, globalTestingData, time);
       xs.add(hp);
@@ -210,6 +210,8 @@ class Bayes {
 
     for(int i = 0; i < iter; i++) {
       cl.pln("\nCandidate n°", String.format("%04d", i + 1), "/", String.format("%04d", iter));
+      
+      this.SERV_Import();
 
       HyperParameters candidate = new HyperParameters();
       if(xs.size() == 0) candidate = new HyperParameters().Random();
