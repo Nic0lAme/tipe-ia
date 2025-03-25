@@ -113,6 +113,48 @@ class HyperParameters {
     return this;
   }
   
+  public HyperParameters fromJSON(JSONObject json) { return FromJSON(json); }
+  
+  public HyperParameters FromJSON(JSONObject json) {
+    this.minLR = (double)json.getFloat("MinLR");
+    this.maxLR = (double)json.getFloat("MaxLR");
+    this.period = json.getInt("Period");
+    this.batchSize = json.getInt("BatchSize");
+    this.lambda = json.getFloat("Lambda");
+    
+    String[] items = json.getString("Layers").replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\\s", "").split(",");
+
+    int[] results = new int[items.length];
+    
+    for (int i = 0; i < items.length; i++) {
+      try {
+        results[i] = Integer.parseInt(items[i]);
+      } catch (NumberFormatException nfe) {
+        //NOTE: write something here if you need to recover from formatting errors
+      };
+    }
+    
+    json.setString("Layers", Arrays.toString(this.layerSize));
+    
+    return this;
+  }
+  
+  public JSONObject toJSON() { return ToJSON(); }
+  
+  public JSONObject ToJSON() {
+    JSONObject json = new JSONObject();
+    
+    json.setFloat("MinLR", (float)this.minLR);
+    json.setFloat("MaxLR", (float)this.maxLR);
+    json.setInt("Period", this.period);
+    json.setInt("BatchSize", this.batchSize);
+    json.setFloat("Lambda", (float)this.lambda);
+    
+    json.setString("Layers", Arrays.toString(this.layerSize));
+    
+    return json;
+  }
+  
   @Override
   public String toString() {
     String str = "HyperParameters | Layers[";
