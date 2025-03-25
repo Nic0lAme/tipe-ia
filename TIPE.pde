@@ -101,12 +101,16 @@ void setup() {
 
   db = new Database("https://tipe-877f6-default-rtdb.europe-west1.firebasedatabase.app/");
 
+
   HyperParameters hp = new HyperParameters();
   session = new Session("", hp);
 
-  /*
-  Bayes bayes = new Bayes("Test6");
+  Bayes bayes = new Bayes("Test7");
   bayes.GaussianProcess(6, 300);
+
+  /*
+  for(int k = 0; k < 10; k++)
+    bayes.SERV_Export(new HyperParameters().Random(), random(1));
   */
 
 }

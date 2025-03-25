@@ -21,11 +21,15 @@ class Bayes {
   Bayes(String n) {
     this.name = n;
     this.filePath = sketchPath() + "/Bayes/" + n + ".by";
-
+	
+	/*
     File f = dataFile(filePath);
     if(f.isFile()) {
       this.Import(filePath);
     }
+    */
+    
+    this.SERV_Import();
   }
 
   //f Charge les images (test et train) à utiliser pendant l'optimisation
@@ -63,6 +67,7 @@ class Bayes {
     for (String s : yString) output.add(s);
 
     String[] writedOutput = new String[output.size()];
+    
     saveStrings(name, output.toArray(writedOutput));
   }
 
@@ -98,7 +103,36 @@ class Bayes {
 
     return this;
   }
-
+  
+  //f Exporte l'hyperparamètre _hp_, associé à son score _score_
+  public void SERV_Export(HyperParameters hp, double score) {
+    JSONObject output = new JSONObject();
+    
+    output.setJSONObject("HyperParameters", hp.toJSON());
+    output.setFloat("Score", (float)score);
+    
+    db.PostData("Bayes/" + this.name, output);
+  }
+  
+  //f Importe l'ensemble du dataset
+  public Bayes SERV_Import() {
+    JSONArray candidates = db.GetData("Bayes/" + this.name);
+    if(candidates.size() == 0) return this;
+    
+    this.xs = new ArrayList<HyperParameters>();
+    this.ys = new ArrayList<Double>();
+    
+    for(int k = 0; k < candidates.size(); k++) {
+      JSONObject obj = candidates.getJSONObject(k);
+      this.xs.add(new HyperParameters().FromJSON(obj.getJSONObject("HyperParameters")));
+      this.ys.add((double)obj.getFloat("Score"));
+    }
+    
+    MinLoss();
+    
+    return this;
+  }
+  
   //f Kernel
   // Calcule la "covariance" entre _hp1_ et _hp2_
   public double Kernel(HyperParameters hp1, HyperParameters hp2) {
@@ -177,6 +211,8 @@ class Bayes {
 
     for(int i = 0; i < iter; i++) {
       cl.pln("\nCandidate n°", String.format("%04d", i + 1), "/", String.format("%04d", iter));
+      
+      this.SERV_Import();
 
       HyperParameters candidate = new HyperParameters();
       if(xs.size() == 0) candidate = new HyperParameters().Random();
@@ -192,8 +228,7 @@ class Bayes {
       ys.add(loss);
 
       MinLoss();
-
-      this.Export(this.filePath);
+      this.SERV_Export(candidate, loss);
     }
 
     cl.pln("Bayes process is finished");
