@@ -155,10 +155,11 @@ class Bayes {
 
   //f Ajoute _numSamples_ données à la database (pour initialiser Bayes)
   // On limite le temps de recherche par hyperparamètres à _time_ secondes
+  // TODO: À VÉRIF IMPÉRATIVEMENT
   public void RandomFill(int numSamples, int time) {
     if (!isLoaded) LoadImageData();
 
-    for (int i = 0; i < numSamples) {
+    for (int i = 0; i < numSamples; i++) {
       HyperParameters hp = new HyperParameters().Random();
       double loss = Evaluate(hp, globalTrainingData, globalTestingData, time);
       xs.add(hp);

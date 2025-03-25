@@ -8,11 +8,11 @@ import java.util.concurrent.ExecutionException;
 
 public class LetterDataset {
   final int wData, hData;
-  final float move = 0.15;
-  final float blur = 0.05;
-  final float density = 0.02;
-  final float perlin = 0.5;
-  final float deformation = 0.15;
+  final float move = 0.12;
+  final float blur = 0.02;
+  final float density = 0.2;
+  final float perlin = 0.2;
+  final float deformation = 0.05;
 
   //c Créateur de dataset
   // Zone de travail définie par _wData_ * _hData_
@@ -139,7 +139,28 @@ public class LetterDataset {
     return new Matrix[]{ inputs, outputs };
   }
 
+  //s Les paramètres de brouillage sont ceux de la classe
+  public PImage[] GetRandomCouple(int xw, int xh) {
+    return GetRandomCouple(xw, xh, this.move, this.blur, this.density, this.perlin, this.deformation);
+  }
 
+  //f Récupère un couple aléatoire [image, image brouillée pour les paramètres donnés]
+  public PImage[] GetRandomCouple(int xw, int xh, float mv, float blr, float dst, float prln, float defrm) {
+    int s = floor(random(1) * (handPolicies.length + fontPolicies.length));
+    int c = floor(random(1) * (cs.allC.length));
+    PImage original;
+
+    String path = s < handPolicies.length
+      ? "./TextFileGetter/output/" + cs.allC[c] + "/" + cs.allC[c] + " - " + handPolicies[s] + ".jpg"
+      : "./FromFontGetter/output/" + cs.allC[c] + "/" + cs.allC[c] + " - " + fontPolicies[s - handPolicies.length] + ".jpg";
+    original = loadImage(path);
+    PImage img = im.ScrambleImage(im.Resize(original, xw, xh), mv, blr, dst, prln, defrm);
+
+    double[] imgPixels = session.ImgPP(img);
+    Matrix input = new Matrix(imgPixels.length, 1).ColumnFromArray(0, imgPixels);
+
+    return new PImage[] {original, GetImageFromInputs(input, 0)};
+  }
 
   //f Renvoie une image affichable de l'image stockée en colonne _j_ de l'entrée _inputs_
   public PImage GetImageFromInputs(Matrix inputs, int j) {

@@ -7,11 +7,14 @@ Matrix[] sample;
 ConsoleLog cl;
 ImageManager im;
 GraphApplet graphApplet;
+DraftingArea draftingArea;
 Frame frame;
 WordCorrector wc;
 Database db;
 
 Session session;
+
+final boolean enableDraftingArea = false;
 
 // Nombre de threads pour les différentes tâches
 final int numThreadsDataset = 16; // Création des datasets
@@ -93,17 +96,19 @@ void setup() {
   cl = new ConsoleLog("./Log/log1.txt");
   wc = new WordCorrector();
   wc.ImportWords();
-  
+
+  if (enableDraftingArea) draftingArea = new DraftingArea();
+
   db = new Database("https://tipe-877f6-default-rtdb.europe-west1.firebasedatabase.app/");
 
   HyperParameters hp = new HyperParameters();
   session = new Session("", hp);
-  
+
   /*
   Bayes bayes = new Bayes("Test6");
   bayes.GaussianProcess(6, 300);
   */
-  
+
 }
 
 int index = 0;
@@ -185,7 +190,7 @@ void InitCStorage() {
   cs.AddChar("7",'z', new double[][]{{8, 0.1}});
   cs.AddChar("8",'z', new double[][]{{1, 0.5}});
   cs.AddChar("9",'z', new double[][]{{6, 0.5}});
-  
+
   /*
   cs.AddChar("+",'+', new double[][]{});
   cs.AddChar("-",'-', new double[][]{});
