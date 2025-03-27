@@ -18,7 +18,7 @@ final boolean enableDraftingArea = false;
 
 // Nombre de threads pour les différentes tâches
 final int numThreadsDataset = 16; // Création des datasets
-final int numThreadsLearning = 4; // Apprentissage (si 1, pas de parallélisation)
+final int numThreadsLearning = 8; // Apprentissage (si 1, pas de parallélisation)
 
 // Attention, à ne pas modifier n'importe comment sous peine de conséquences
 final AtomicBoolean stopLearning = new AtomicBoolean(false);
@@ -107,7 +107,7 @@ void setup() {
 
   Bayes bayes = new Bayes("NimporteComment");
   //bayes.GaussianProcess(6, 300);
-  bayes.RandomFill(5, 5);
+  bayes.RandomFill(5, 2);
   /*
   for(int k = 0; k < 10; k++)
     bayes.SERV_Export(new HyperParameters().Random(), random(1));

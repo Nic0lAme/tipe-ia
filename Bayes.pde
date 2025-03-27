@@ -22,14 +22,14 @@ class Bayes {
   Bayes(String n) {
     this.name = n;
     this.filePath = sketchPath() + "/Bayes/" + n + ".by";
-	
+
 	/*
     File f = dataFile(filePath);
     if(f.isFile()) {
       this.Import(filePath);
     }
     */
-    
+
     this.SERV_Import();
   }
 
@@ -70,7 +70,7 @@ class Bayes {
     for (String s : yString) output.add(s);
 
     String[] writedOutput = new String[output.size()];
-    
+
     saveStrings(name, output.toArray(writedOutput));
   }
 
@@ -106,36 +106,36 @@ class Bayes {
 
     return this;
   }
-  
+
   //f Exporte l'hyperparamètre _hp_, associé à son score _score_
   public void SERV_Export(HyperParameters hp, double score) {
     JSONObject output = new JSONObject();
-    
+
     output.setJSONObject("HyperParameters", hp.toJSON());
     output.setFloat("Score", (float)score);
-    
+
     db.PostData("Bayes/" + this.name, output);
   }
-  
+
   //f Importe l'ensemble du dataset
   public Bayes SERV_Import() {
     JSONArray candidates = db.GetData("Bayes/" + this.name);
     if(candidates.size() == 0) return this;
-    
+
     this.xs = new ArrayList<HyperParameters>();
     this.ys = new ArrayList<Double>();
-    
+
     for(int k = 0; k < candidates.size(); k++) {
       JSONObject obj = candidates.getJSONObject(k);
       this.xs.add(new HyperParameters().FromJSON(obj.getJSONObject("HyperParameters")));
       this.ys.add((double)obj.getFloat("Score"));
     }
-    
+
     MinLoss();
-    
+
     return this;
   }
-  
+
   //f Kernel
   // Calcule la "covariance" entre _hp1_ et _hp2_
   public double Kernel(HyperParameters hp1, HyperParameters hp2) {
@@ -191,8 +191,8 @@ class Bayes {
   }
 
   //f Ajoute _numSamples_ données à la database (pour initialiser Bayes)
-  // On limite le temps de recherche par hyperparamètres à _time_ secondes
-  // TODO: À VÉRIF IMPÉRATIVEMENT
+  // On limite le temps de recherche par hyperparamètres à un multiple _numOfEtalon_
+  // du temps de création des datasets
   public void RandomFill(int numSamples, int numOfEtalon) {
     if (!isLoaded) LoadImageData();
 
@@ -202,19 +202,20 @@ class Bayes {
       xs.add(hp);
       ys.add(loss);
 
-      this.Export(this.filePath);
+      this.SERV_Export(hp, loss);
     }
   }
 
   //f Effectue le processus Gaussien de recherche de meilleur candidat
   // Effectué _iter_ fois
-  // On limite le temps de recherche par candidat à _time_ secondes
+  // On limite le temps de recherche par candidat à un multiple _numOfEtalon_
+  // du temps de création des datasets
   public double GaussianProcess(int iter, int numOfEtalon) {
     if (!isLoaded) LoadImageData();
 
     for(int i = 0; i < iter; i++) {
       cl.pln("\nCandidate n°", String.format("%04d", i + 1), "/", String.format("%04d", iter));
-      
+
       this.SERV_Import();
 
       HyperParameters candidate = new HyperParameters();
@@ -272,11 +273,11 @@ class Bayes {
     double testLoss = 1;
 
     int iterNum = 0;
-    while(millis() < startTime + time) {
+    while (millis() < startTime + time) {
       double lr = CyclicalLearningRate(iterNum, hp.minLR, hp.maxLR, hp.period);
       trainLoss = nn.MiniBatchLearn(trainSet, 1, hp.batchSize, lr, lr, 1, new Matrix[0][], String.format("%05d", iterNum + 1));
 
-      cl.pln("Candidate Remaining Time", String.format("%7.3f", time - (float)(millis() - startTime) / 1000));
+      cl.pln("Candidate Remaining Time", String.format("%7.3f", (float)(time - millis() + startTime) / 1000));
 
       iterNum++;
     }
@@ -291,7 +292,6 @@ class Bayes {
     // Puissance pour éviter d'avoir un écart en log, permettant d'augmenter l'écart type ie l'exploration
     return testLoss  * Math.pow(testLoss / trainLoss, overfittingImportance) / accuracy / 100;
   }
-
 
   //f Piqué sur un site mais on n'a pas enregistré lequel
   // Calcul de la *fonction de répartition cumulative de la distribution normale standard*
