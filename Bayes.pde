@@ -14,6 +14,7 @@ class Bayes {
   double overfittingImportance = 0.3;
 
   private boolean isLoaded = false;
+  public int etalonnedTime = 0;
   final private LetterDataset ds = new LetterDataset(5*session.w, 5*session.h);
   Matrix[] globalTrainingData, globalTestingData;
 
@@ -34,6 +35,7 @@ class Bayes {
 
   //f Charge les images (test et train) à utiliser pendant l'optimisation
   private void LoadImageData() {
+    int startTime = millis();
     globalTrainingData = ds.CreateSample(
         cs.allC,
         handTrainingDatas,
@@ -45,6 +47,7 @@ class Bayes {
         fontTestingDatas,
         8, 1);
     isLoaded = true;
+    etalonnedTime = millis() - startTime;
   }
 
   //f Exporte le Bayes _this_ dans le fichier _name_
@@ -190,12 +193,12 @@ class Bayes {
   //f Ajoute _numSamples_ données à la database (pour initialiser Bayes)
   // On limite le temps de recherche par hyperparamètres à _time_ secondes
   // TODO: À VÉRIF IMPÉRATIVEMENT
-  public void RandomFill(int numSamples, int time) {
+  public void RandomFill(int numSamples, int numOfEtalon) {
     if (!isLoaded) LoadImageData();
 
     for (int i = 0; i < numSamples; i++) {
       HyperParameters hp = new HyperParameters().Random();
-      double loss = Evaluate(hp, globalTrainingData, globalTestingData, time);
+      double loss = Evaluate(hp, globalTrainingData, globalTestingData, numOfEtalon * this.etalonnedTime);
       xs.add(hp);
       ys.add(loss);
 
@@ -206,7 +209,7 @@ class Bayes {
   //f Effectue le processus Gaussien de recherche de meilleur candidat
   // Effectué _iter_ fois
   // On limite le temps de recherche par candidat à _time_ secondes
-  public double GaussianProcess(int iter, int time) {
+  public double GaussianProcess(int iter, int numOfEtalon) {
     if (!isLoaded) LoadImageData();
 
     for(int i = 0; i < iter; i++) {
@@ -220,7 +223,7 @@ class Bayes {
 
       cl.pln(candidate.toString());
 
-      double loss = Evaluate(candidate, globalTrainingData, globalTestingData, time);
+      double loss = Evaluate(candidate, globalTrainingData, globalTestingData, numOfEtalon * this.etalonnedTime);
 
       cl.pln("Score", String.format("%7.3f", loss));
 
@@ -269,7 +272,7 @@ class Bayes {
     double testLoss = 1;
 
     int iterNum = 0;
-    while(millis() < startTime + 1000 * time) {
+    while(millis() < startTime + time) {
       double lr = CyclicalLearningRate(iterNum, hp.minLR, hp.maxLR, hp.period);
       trainLoss = nn.MiniBatchLearn(trainSet, 1, hp.batchSize, lr, lr, 1, new Matrix[0][], String.format("%05d", iterNum + 1));
 

@@ -105,9 +105,9 @@ void setup() {
   HyperParameters hp = new HyperParameters();
   session = new Session("", hp);
 
-  Bayes bayes = new Bayes("Test7");
-  bayes.GaussianProcess(6, 300);
-
+  Bayes bayes = new Bayes("NimporteComment");
+  //bayes.GaussianProcess(6, 300);
+  bayes.RandomFill(5, 5);
   /*
   for(int k = 0; k < 10; k++)
     bayes.SERV_Export(new HyperParameters().Random(), random(1));
