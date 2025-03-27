@@ -1,0 +1,92 @@
+type 'a bintree = F of 'a | N of 'a bintree * 'a bintree;;
+
+let rec nb_feuilles a = match a with
+    F x -> 1
+  | N(a0,a1) -> nb_feuilles a0 + nb_feuilles a1
+;;
+
+let rec nb_feuilles a = match a with
+    F x -> 0
+  | N(a0,a1) -> nb_feuilles a0 + nb_feuilles a1
+;;
+
+let rec hauteur a = match a with
+    F x -> 0
+  | N(a0, a1) -> 1 + max (hauteur a0) (hauteur a1)
+;;
+
+let rec max_arbre a = match a with
+    F x -> x
+  | N(a0, a1) -> max (max_arbre a0) (max_arbre a1)
+;;
+
+let rec sous_arbre a w = match w with
+    [] -> a
+  | e::w1 ->
+      match a with
+        F x -> failwith "T'es mauvais opur les sous arbres"
+      | N(a0,a1) -> if e then sous_arbre a0 w1 else sous_arbre a1 w1
+;;
+
+let rec etiquette a w = match a with
+    F x -> x, w
+  | N(a0,a1) -> 
+      match w with
+      | [] -> failwith "T'es mauvais pour les étiquettes"
+      | e::w1 -> if e then etiquette a0 w1 else etiquette a1 w1
+;;
+  
+  
+let rec decode a w =
+  let c, w1 = etiquette a w in
+  (String.make 1 c) ^ (decode a w1)
+;;
+
+
+let rec insere l x =
+  match l with
+    [] -> [x]
+  | e::l1 -> if e < x then e::(insere l1 x) else x::l
+;;
+
+let tri_insertion l =
+  let rec aux acc l1 =
+    match l1 with [] -> acc | e::l1 -> aux (insere acc e) l1
+  in aux [] l
+;;
+
+let rec reduction l =
+  match l with
+    [] -> failwith "Pas d'arbres vide"
+  | [x] -> x
+  | e1::e2::l1 ->
+      reduction (insere l1 ((fst e1) + (fst e2), N(snd e1, snd e2)))
+;;
+
+let huffman l =
+  let rec aux acc l1 = 
+    match l1 with
+      [] -> acc
+    | x::xs -> aux ((fst x, F(snd x))::acc) xs
+  in reduction(tri_insertion(aux [] l))
+;;
+
+
+let extraire_code a =
+  let rec aux t w =
+    match t with
+      F x -> [(x, w)]
+    | N(a0,a1) -> (aux a0 (w@[false])) @ (aux a1 (w@[true]))
+  in aux a []
+;;
+
+
+let encode a s =
+  let code = extraire_code a in
+  
+
+
+
+
+
+
