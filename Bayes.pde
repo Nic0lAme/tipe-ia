@@ -195,6 +195,7 @@ class Bayes {
   // du temps de création des datasets
   public void RandomFill(int numSamples, int numOfEtalon) {
     if (!isLoaded) LoadImageData();
+    cl.pln("Bayes random fill start - Time per candidate : " + String.format("%7.3f", (float)(numOfEtalon * this.etalonnedTime) / 1000));
 
     for (int i = 0; i < numSamples; i++) {
       HyperParameters hp = new HyperParameters().Random();
@@ -204,6 +205,8 @@ class Bayes {
 
       this.SERV_Export(hp, loss);
     }
+
+    cl.pln("Bayes random fill end");
   }
 
   //f Effectue le processus Gaussien de recherche de meilleur candidat
@@ -213,6 +216,7 @@ class Bayes {
   public double GaussianProcess(int iter, int numOfEtalon) {
     if (!isLoaded) LoadImageData();
 
+    cl.pln("Bayes gaussian process start - Time per candidate : " + String.format("%7.3f", (float)(numOfEtalon * this.etalonnedTime) / 1000));
     for(int i = 0; i < iter; i++) {
       cl.pln("\nCandidate n°", String.format("%04d", i + 1), "/", String.format("%04d", iter));
 
@@ -235,7 +239,7 @@ class Bayes {
       this.SERV_Export(candidate, loss);
     }
 
-    cl.pln("Bayes process is finished");
+    cl.pln("Bayes gaussian process end");
     return fBest;
   }
 

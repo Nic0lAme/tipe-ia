@@ -42,7 +42,7 @@ class GraphApplet extends JFrame {
   public GraphApplet() {
     graph = new LearnGraph("Itérations", "Coût");
     this.setTitle("TIPE");
-    
+
     this.getContentPane().setPreferredSize(new Dimension(1000, 600));
 
     try { this.setIconImage(ImageIO.read(new File(sketchPath() + "/AuxiliarFiles/icon.png"))); }
@@ -640,11 +640,11 @@ class GraphApplet extends JFrame {
     this.setJMenuBar(menuBar);
 
     add(top, BorderLayout.NORTH);
-  
+
     JSplitPane split = new JSplitPane();
     split.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
     split.setResizeWeight(0.6);
-    
+
     graph.GetPanel().setPreferredSize(new Dimension(600, 200));
 
     console = new JTextArea();
@@ -655,10 +655,10 @@ class GraphApplet extends JFrame {
     consoleScroll.setPreferredSize(new Dimension(400, 200));
     consoleScroll.setBorder(new TitledBorder(new EtchedBorder(), "Console"));
     consoleScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-    
+
     split.add(graph.GetPanel(), JSplitPane.LEFT);
     split.add(consoleScroll, JSplitPane.RIGHT);
-    
+
     add(split, BorderLayout.CENTER);
   }
 }
@@ -730,6 +730,8 @@ public class LearnGraph {
   public void Clear() {
     series.clear();
     average.clear();
+    avgDatas.clear();
+    somme = 0;
   }
 
   public void Add(double y) {
