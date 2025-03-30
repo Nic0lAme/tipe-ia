@@ -37,7 +37,9 @@ void settings() {
   size(floor(w * scaleRes), floor(h * scaleRes));
 }
 
+String[] links;
 String[] names;
+String folder;
 PImage doc;
 Zone[] zones;
 int idx = 0;
@@ -110,6 +112,11 @@ PImage Crop(PImage img, float cap) { // Consider the object as black (or darker 
   return img.get(left, top, right - left, bottom - top);
 }
 
+String[] ReadFolder(String name) {
+  File f = new File(sketchPath() + "/doc/" + name);
+  return f.list();
+}
+
 
 
 /*
@@ -121,7 +128,12 @@ CONSIGNES :
  5/ Appuyer sur entrée pour enregistrer
  */
 void setup() {
-  names = new String[]{"JeanneAR", "Ivalua3", "Ivalua4", "Ivalua5", "Ivalua6"};
+  folder = "BCPST";
+  links = ReadFolder(folder);
+  names = new String[links.length];
+  for(int i = 0; i < names.length; i++) names[i] = folder + String.format("%05d", i);
+  
+  println(names);
 
   zones = new Zone[]{
     new Zone("uA", 130, 496, 156, 175),
@@ -202,15 +214,16 @@ void setup() {
     new Zone("(", 1816, 1953, 156, 175),
     new Zone(")", 1985, 1953, 156, 175),
     new Zone("=", 2154, 1953, 156, 175),
-    new Zone("Name", 130, 2287, 2180, 186),
-    new Zone("Message", 130, 2632, 2180, 400)
+    //new Zone("Name", 130, 2287, 2180, 186),
+    //new Zone("Message", 130, 2632, 2180, 400)
   };
 }
 
 void draw() {
-  String name = names[idx];
-  //doc = Crop(loadImage("./doc/" + name + ".jpg"), 10);
-  doc = loadImage("./doc/" + name + ".jpg");
+  String link = links[idx];
+  doc = Crop(loadImage("./doc/" + (folder=="" ? "" : folder + "/") + link), 10);
+  doc.resize(w, h);
+  //doc = loadImage("./doc/" + (folder=="" ? "" : folder + "/") + link);
   image(doc, 0, 0, w * scaleRes, h * scaleRes);
 
   for (int i = 0; i < zones.length; i++) {

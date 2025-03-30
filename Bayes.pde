@@ -198,10 +198,17 @@ class Bayes {
     cl.pln("Bayes random fill start - Time per candidate : " + String.format("%7.3f", (float)(numOfEtalon * this.etalonnedTime) / 1000));
 
     for (int i = 0; i < numSamples; i++) {
+      cl.pln("\nCandidate n°", String.format("%04d", i + 1), "/", String.format("%04d", numSamples));
+
       HyperParameters hp = new HyperParameters().Random();
+      cl.pln(hp.toString());
+
       double loss = Evaluate(hp, globalTrainingData, globalTestingData, numOfEtalon * this.etalonnedTime);
       xs.add(hp);
       ys.add(loss);
+      
+      cl.pln("Score", String.format("%7.3f", loss));
+
 
       this.SERV_Export(hp, loss);
     }
