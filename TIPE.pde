@@ -51,7 +51,15 @@ String[] handPolicies = new String[]{
   "AntoineME", "NicolasMA", "LenaME", "TheoLA", "ElioKE", "AkramBE", "IVALUA1", "IVALUA2", "SamuelJE", "QuentinGU",
   "TaoPO","GuillaumeLI","YacoutGA", "LoicRA", "MaximeMB", "NathanLU", "LubinDE", "MatheoLB", "SachaAD", "MatisBR",
   "ValerieAR", "ArthurLO", "RomaneFI", "ThelioLA", "YanisIH", "MrMollier", "MrChauvet", "SachaBE", "IrinaRU", "NoematheoBLB",
-  "JeanneAR", "Ivalua3", "Ivalua4", "Ivalua5", "Ivalua6", "MatteoPR"
+  "JeanneAR", "Ivalua3", "Ivalua4", "Ivalua5", "Ivalua6", "MatteoPR", "BCPST00000", "BCPST00001", "BCPST00002", "BCPST00003",
+  "BCPST00004", "BCPST00005", "BCPST00006", "BCPST00007", "BCPST00008", "BCPST00009", "BCPST00010", "BCPST00011", "BCPST00012", "BCPST00013",
+  "BCPST00014", "BCPST00015", "BCPST00016", "BCPST00017", "BCPST00018", "BCPST00019", "BCPST00020", "BCPST00021", "BCPST00022", "BCPST00023",
+  "BCPST00024", "BCPST00025", "BCPST00026", "BCPST00027", "BCPST00028", "BCPST00029", "BCPST00030", "BCPST00031", "BCPST00032", "BCPST00033",
+  "BCPST00034", "BCPST00035", "BCPST00036", "BCPST00037", "BCPST00038", "BCPST00039", "BCPST00040", "BCPST00041", "BCPST00042", "BCPST00043",
+  "BCPST00044", "BCPST00045", "BCPST00046", "BCPST00047", "BCPST00048", "BCPST00049", "BCPST00050", "BCPST00051", "BCPST00052", "BCPST00053",
+  "BCPST00054", "BCPST00055", "BCPST00056", "BCPST00057", "BCPST00058", "BCPST00059", "BCPST00060", "BCPST00061", "BCPST00062", "BCPST00063",
+  "BCPST00064", "BCPST00065", "BCPST00066", "BCPST00067", "BCPST00068", "BCPST00069", "BCPST00070", "BCPST00071", "BCPST00072", "BCPST00073",
+  "BCPST00074", "BCPST00075", "BCPST00076", "BCPST00077", "BCPST00078", "BCPST00079", "BCPST00080", "BCPST00081"
 };
 
 String[] fontPolicies = new String[]{
@@ -65,7 +73,14 @@ String[] handTrainingDatas = new String[]{
   "AntoineME", "NicolasMA", "LenaME", "TheoLA", "ElioKE", "AkramBE", "IVALUA1", "IVALUA2", "SamuelJE", "QuentinGU",
   "TaoPO","GuillaumeLI","YacoutGA", "LoicRA", "MaximeMB", "NathanLU", "LubinDE", "MatheoLB", "SachaAD", "MatisBR",
   "ValerieAR", "ArthurLO", "RomaneFI", "ThelioLA", "YanisIH", "JeanneAR", "Ivalua3", "Ivalua4", "Ivalua5", "Ivalua6",
-  "MatteoPR"
+  "MatteoPR", "BCPST00000", "BCPST00001", "BCPST00002", "BCPST00003", "BCPST00077", "BCPST00078", "BCPST00079", "BCPST00080", "BCPST00081",
+  "BCPST00004", "BCPST00005", "BCPST00006", "BCPST00007", "BCPST00008", "BCPST00009", "BCPST00010", "BCPST00011", "BCPST00012", "BCPST00013",
+  "BCPST00014", "BCPST00015", "BCPST00016", "BCPST00017", "BCPST00018", "BCPST00019", "BCPST00020", "BCPST00021", "BCPST00022", "BCPST00023",
+  "BCPST00024", "BCPST00025", "BCPST00026", "BCPST00027", "BCPST00028", "BCPST00029", "BCPST00030", "BCPST00031", "BCPST00032", "BCPST00033",
+  "BCPST00034", "BCPST00035", "BCPST00036", "BCPST00037", "BCPST00038", "BCPST00039", "BCPST00040", "BCPST00041", "BCPST00042", "BCPST00043",
+  "BCPST00044", "BCPST00045", "BCPST00046", "BCPST00047", "BCPST00048", "BCPST00049", "BCPST00050", "BCPST00051", "BCPST00052", "BCPST00053",
+  "BCPST00054", "BCPST00055", "BCPST00056", "BCPST00057", "BCPST00058", "BCPST00059", "BCPST00060", "BCPST00061", "BCPST00062", "BCPST00063",
+  "BCPST00064", "BCPST00065", "BCPST00066", "BCPST00067", "BCPST00068", "BCPST00069", "BCPST00070", "BCPST00071"
 };
 //String[] handTrainingDatas = new String[]{};
 String[] fontTrainingDatas = new String[]{
@@ -74,7 +89,7 @@ String[] fontTrainingDatas = new String[]{
 };
 //String[] fontTrainingDatas = new String[]{};
 
-String[] handTestingDatas = new String[]{"MrMollier", "MrChauvet", "SachaBE", "IrinaRU", "NoematheoBLB"};
+String[] handTestingDatas = new String[]{"MrMollier", "MrChauvet", "SachaBE", "IrinaRU", "NoematheoBLB", "BCPST00072", "BCPST00073", "BCPST00074", "BCPST00075", "BCPST00076"};
 String[] fontTestingDatas = new String[]{"Liberation Serif", "Calibri", "Book Antiqua", "Gabriola", "Noto Serif"};
 
 int numOfHyperParameters = 15;
@@ -106,8 +121,8 @@ void setup() {
   session = new Session("", hp);
 
   Bayes bayes = new Bayes("RandomInitFois5");
-  //bayes.GaussianProcess(6, 300);
-  bayes.RandomFill(5, 5);
+  bayes.GaussianProcess(5, 5);
+  //bayes.RandomFill(5, 5);
   /*
   for(int k = 0; k < 10; k++)
     bayes.SERV_Export(new HyperParameters().Random(), random(1));

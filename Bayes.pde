@@ -12,6 +12,9 @@ class Bayes {
   double h = 2;
   int numOfCandidate = 32768;
   double overfittingImportance = 0.3;
+  
+  int trainingRep = 8;
+  int testingRep = 6;
 
   private boolean isLoaded = false;
   public int etalonnedTime = 0;
@@ -40,12 +43,12 @@ class Bayes {
         cs.allC,
         handTrainingDatas,
         fontTrainingDatas,
-        16, 1);
+        trainingRep, 1);
     globalTestingData = ds.CreateSample(
         cs.allC,
         handTestingDatas,
         fontTestingDatas,
-        8, 1);
+        testingRep, 1);
     isLoaded = true;
     etalonnedTime = millis() - startTime;
   }

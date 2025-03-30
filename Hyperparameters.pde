@@ -134,7 +134,7 @@ class HyperParameters {
       };
     }
     
-    json.setString("Layers", Arrays.toString(this.layerSize));
+    this.layerSize = results;
     
     return this;
   }
