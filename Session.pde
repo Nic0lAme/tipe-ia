@@ -117,15 +117,20 @@ public class Session {
         }
       }
 
+      double averageTrainingAccuracy = 0;
       if(k >= 1) {
         Matrix[] shuffledSample = new Matrix(0).ShuffleCol(sample);
-        cl.pln("Accuracy on training set :", String.format("%6.3f", Average(CompilScore(this.AccuracyScore(this.nn, shuffledSample, false)))));
+        averageTrainingAccuracy = Average(CompilScore(this.AccuracyScore(this.nn, shuffledSample, false)));
+        cl.pln("Accuracy on training set :", String.format("%6.3f", averageTrainingAccuracy));
       }
 
       accuracy = CompilScore(this.AccuracyScore(this.nn, new Matrix[][]{testSampleHand, testSampleFont}, false));
+      double averageTestingAccuracy = Average(accuracy);
 
-      cl.pln("Accuracy for test set :", String.format("%6.3f", Average(accuracy)));
+      cl.pln("Accuracy on test set :", String.format("%6.3f", averageTestingAccuracy));
       cl.pln();
+
+      if (k >= 1) graphApplet.AddTestResult(averageTrainingAccuracy, averageTestingAccuracy);
 
       cl.Update();
     }

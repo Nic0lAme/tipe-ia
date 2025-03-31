@@ -31,7 +31,9 @@ class GraphApplet extends JFrame {
 
   private JButton pinButton, pauseButton;
   private JMenu files, edit, display;
-  private JMenuItem importItem, newNNItem, exportItem, dataItem, avgItem, testItem, trainItem, stopTrainItem;
+  private JMenuItem newNNItem, importItem, exportItem;
+  private JMenuItem testItem, trainItem, stopTrainItem;
+  private JMenuItem dataItem, avgItem, axisItem;
   private JLabel networkLabel;
   private JMenuBar menuBar;
   public JScrollPane consoleScroll;
@@ -84,6 +86,10 @@ class GraphApplet extends JFrame {
   //f Ajoute le point _y_ au graphique
   public void AddValue(double y) {
     graph.Add(y);
+  }
+
+  public void AddTestResult(double train, double test) {
+    graph.AddTestResult(train, test);
   }
 
   //f Nettoie le graphique
@@ -355,6 +361,12 @@ class GraphApplet extends JFrame {
     dataItem.setText((graph.IsDataShowed() ? "Masquer" : "Afficher") + " les données brutes");
   }
 
+  //f Permet de passer en échelle log ou linéaire
+  private void ToggleLogAxis() {
+    graph.SwitchOrdAxis();
+    axisItem.setText("Passer en échelle " + (graph.IsLogAxis() ? "linéaire" : "log"));
+  }
+
   //f Permet de lancer un test du réseau de neurones actif
   private void ToggleTest() {
     testImages = true;
@@ -579,6 +591,13 @@ class GraphApplet extends JFrame {
     avgItem.setFont(new Font("", Font.PLAIN, 16));
     display.add(avgItem);
 
+    axisItem = new JMenuItem("Passer en échelle linéaire");
+    axisItem.setFocusable(false);
+    axisItem.addActionListener(e -> ToggleLogAxis());
+    axisItem.setMargin(new Insets(5, 5, 5, 5));
+    axisItem.setFont(new Font("", Font.PLAIN, 16));
+    display.add(axisItem);
+
     menuBar.add(display);
 
 
@@ -672,11 +691,20 @@ public class LearnGraph {
   private final int DATA_INDEX, AVG_INDEX;
   private float strokeWeight = 1.25f;
 
+  private final String ordonnesName;
+  private final LogAxis logAxis;
+  private final NumberAxis linAxis;
+  private final Font annotationFont = new Font("Dialog", Font.PLAIN, 13);
+  private boolean isLog;
+
   private final LinkedList<Double> avgDatas = new LinkedList<Double>();
   private final int avgPeriod = 100;
   private double somme = 0;
 
   public LearnGraph(String abscisses, String ordonnees) {
+    ordonnesName = ordonnees;
+
+    // Datasets
     series = new XYSeries("Coût");
     average = new XYSeries("Moyenne glissante");
     XYSeriesCollection dataset = new XYSeriesCollection();
@@ -684,6 +712,8 @@ public class LearnGraph {
     dataset.addSeries(series);
     AVG_INDEX = 0;
     DATA_INDEX = 1;
+
+    // Graphique
     chart = ChartFactory.createXYLineChart("", abscisses, ordonnees, dataset, PlotOrientation.VERTICAL, true, true, true);
     SetStrokeWeight(strokeWeight);
     chart.getXYPlot().getRenderer().setSeriesPaint(DATA_INDEX, Color.decode("#ff535a"));
@@ -693,16 +723,32 @@ public class LearnGraph {
     panel.setRangeZoomable(false);
     panel.setMouseWheelEnabled(true);
     chart.getXYPlot().setDomainPannable(true);
+
+    // Axes
     NumberAxis absAxis = new NumberAxis(abscisses);
-    LogAxis ordAxis = new LogAxis(ordonnees + " (log)");
-    ordAxis.setBase(10);
-    ordAxis.setNumberFormatOverride(new DecimalFormat("0.000E0"));
+    linAxis = new NumberAxis(ordonnesName + " (linéaire)");
+    linAxis.setNumberFormatOverride(new DecimalFormat("0.000E0"));
+    linAxis.setAutoRangeIncludesZero(false);
+    logAxis = new LogAxis(ordonnesName + " (log)");
+    logAxis.setBase(10);
+    logAxis.setNumberFormatOverride(new DecimalFormat("0.000E0"));
     chart.getXYPlot().setDomainAxis(absAxis);
-    chart.getXYPlot().setRangeAxis(ordAxis);
+    chart.getXYPlot().setRangeAxis(logAxis);
+    isLog = true;
 
     jpanel = new JPanel();
     jpanel.setLayout(new BorderLayout());
     jpanel.add(panel, BorderLayout.CENTER);
+  }
+
+  public void SwitchOrdAxis() {
+    if (isLog) chart.getXYPlot().setRangeAxis(linAxis);
+    else chart.getXYPlot().setRangeAxis(logAxis);
+    isLog = !isLog;
+  }
+
+  public boolean IsLogAxis() {
+    return isLog;
   }
 
   public void SetStrokeWeight(float sw) {
@@ -732,6 +778,21 @@ public class LearnGraph {
     average.clear();
     avgDatas.clear();
     somme = 0;
+    chart.getXYPlot().clearAnnotations();
+  }
+
+  public void AddTestResult(double trainSet, double testSet) {
+    int x = (series.getItemCount() == 0 ? 0 : series.getX(series.getItemCount()-1).intValue());
+    double y = avgDatas.size() < avgPeriod
+      ? series.getY(series.getItemCount()-1).doubleValue()
+      : average.getY(average.getItemCount()-1).doubleValue();
+    String tr = String.format("%.1f",trainSet*100) + "%";
+    String ts = String.format("%.1f",testSet*100) + "%";
+    String text = "[Train] " + tr + " [Test] " + ts;
+    XYTextAnnotation result = new XYTextAnnotation(text, x, y);
+    result.setBackgroundPaint(Color.WHITE);
+    result.setFont(annotationFont);
+    chart.getXYPlot().addAnnotation(result);
   }
 
   public void Add(double y) {

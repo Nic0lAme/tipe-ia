@@ -135,15 +135,15 @@ class NeuralNetwork {
       for(int i = 0; i < result.n; i++)
         for(int j = 0; j < result.p; j++)
           if(result.Get(i,j) > max) max = result.Get(i,j);
-          
+
       result.Add(new Matrix(result.n, result.p).Fill(-max));
-      
+
       result.Map((x) -> Math.exp(x));
       if(result.HasNAN()) {
         println("IN MAP EXP");
         System.exit(-1);
       }
-      
+
       result.NormColumn();
       if(result.HasNAN()) {
         println("IN NORMCOLUMN");

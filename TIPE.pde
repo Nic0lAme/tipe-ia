@@ -121,7 +121,7 @@ void setup() {
   session = new Session("", hp);
 
   Bayes bayes = new Bayes("RandomInitFois5");
-  bayes.GaussianProcess(5, 5);
+  // bayes.GaussianProcess(5, 5);
   //bayes.RandomFill(5, 5);
   /*
   for(int k = 0; k < 10; k++)
