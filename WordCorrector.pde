@@ -32,7 +32,7 @@ class WordCorrector {
   // Simule toutes les manipulations possibles de manière probabiliste
   // Algorithme assez (très) naïf, donc à voir dans la pratique
   public String WordAutoCorrection(double[][] letterProb) {
-    double[][] processedProb = new double[letterProb.length + letterSpreading.length][this.charList.length];
+    double[][] processedProb = new double[letterProb.length][this.charList.length];
     
     for(int letter = 0; letter < letterProb.length; letter++) {
       // Permet de normer les probabilités (somme vaut un)
@@ -46,6 +46,7 @@ class WordCorrector {
       }
     }
     
+    /*
     // Simule l'insertion / la délétion de lettre
     for(int letter = 0; letter < letterProb.length + this.letterSpreading.length; letter++) {
       for(int k = 0; k < this.charList.length; k++) {
@@ -55,12 +56,13 @@ class WordCorrector {
         }
       }
     }
+    */
     
     int[] bestWord = words[0];
     double bestProb = 0;
     
     for(int[] word : this.words) {
-      if(word.length > processedProb.length || word.length < processedProb.length - 2 * this.letterSpreading.length) continue;
+      if(word.length != processedProb.length) continue;
       
       double prob = 1;
       for(int letter = 0; letter < word.length; letter++) {

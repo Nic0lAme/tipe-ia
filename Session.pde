@@ -142,7 +142,8 @@ public class Session {
 
   //f Teste _this.nn_ sur les sets de tests
   void TestImages() {
-    frame.setSize(floor(this.w * rScale * this.characters.length), floor(this.h * rScale * numOfTestSample));
+    frame.setSize(new Dimension(floor(this.w * rScale * cs.allC.length), floor(this.h * rScale * numOfTestSample)));
+
     Matrix[] testSample = ds.CreateSample(
       this.characters,
       this.handTestingDatas,
@@ -174,10 +175,13 @@ public class Session {
     space to reset
     enter to show prediction directly on the sketch
   */
-  int brushSize = 32;
+  int brushSize = 16;
 
   //f Permet de tester en direct les performances du réseau
   void DirectTest() {
+    frame.setSize(new Dimension(400, 300));
+    frame.setVisible(true);
+    
     if(keyPressed && key == ' ') background(255);
     if(keyPressed && key == '+') {
       brushSize += 1;
@@ -198,18 +202,25 @@ public class Session {
 
     PImage img = get(0, 0, width, height);
     img.filter(THRESHOLD, 0.5);
-
+    
+    ArrayList<double[]> charactersProb = new ArrayList<double[]>();
+    
     ArrayList<ArrayList<PVector>> contours = im.ContourDetection(img);
     for(ArrayList<PVector> contour : contours) {
       if(!im.IsClockwise(contour)) continue;
 
       PImage c = im.ImageFromContour(img, contour, 0.02, 0.89);
+      charactersProb.add(this.CharactersProb(c));
+      
       if(keyPressed && keyCode == ENTER) {
         fill(0,255,0);
         text(Result(c).keyArray()[0], contour.get(0).x, contour.get(0).y);
       }
       print(Result(c).keyArray()[0], "");
     }
+    
+    println(wc.WordAutoCorrection(charactersProb.toArray(new double[0][])));
+    
     println();
   }
 
@@ -308,6 +319,14 @@ public class Session {
     result.sortValuesReverse();
 
     return result;
+  }
+  
+  double[] CharactersProb(PImage img) {
+    double[] input = ImgPP(img);
+    Matrix inputMatrix = new Matrix(this.w*this.h,1).ColumnFromArray(0, input);
+
+    Matrix outputMatrix = nn.Predict(inputMatrix);
+    return cs.GetProb(outputMatrix.ColumnToArray(0));
   }
 
 }

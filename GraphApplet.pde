@@ -32,8 +32,8 @@ class GraphApplet extends JFrame {
   private JButton pinButton, pauseButton;
   private JMenu files, edit, display;
   private JMenuItem newNNItem, importItem, exportItem;
-  private JMenuItem testItem, trainItem, stopTrainItem;
-  private JMenuItem dataItem, avgItem, axisItem;
+  private JMenuItem testItem, directItem, trainItem, stopTrainItem;
+  private JMenuItem dataItem, avgItem, axisItem, screenItem;
   private JLabel networkLabel;
   private JMenuBar menuBar;
   public JScrollPane consoleScroll;
@@ -374,6 +374,13 @@ class GraphApplet extends JFrame {
       catch (Exception e) {}
     testImages = false;
   }
+  
+  //f Permet de lancer un test du réseau de neurones actif, sur un tableau interactif
+  private void ToggleDirectTest() {
+    directTest = !directTest;
+    try { Thread.sleep(500); }
+      catch (Exception e) {}
+  }
 
   //f Permet de lancer un entrainement du réseau de neurones actif
   private void ToggleTrain() {
@@ -515,6 +522,11 @@ class GraphApplet extends JFrame {
     console.append(text);
     consoleScroll.getVerticalScrollBar().setValue(consoleScroll.getVerticalScrollBar().getMaximum());
   }
+  
+  //f Affiche/Cache la fenêtre processing
+  public void ToggleScreenVisibility() {
+    frame.setVisible(!frame.isVisible());
+  }
 
   //f Initialise la fenêtre, en utlisant le graphique _graph_
   private void Init(LearnGraph graph) {
@@ -557,6 +569,13 @@ class GraphApplet extends JFrame {
     testItem.setMargin(new Insets(5, 5, 5, 5));
     testItem.setFont(new Font("", Font.PLAIN, 16));
     edit.add(testItem);
+    
+    directItem = new JMenuItem("Test en direct");
+    directItem.setFocusable(false);
+    directItem.addActionListener(e -> ToggleDirectTest());
+    directItem.setMargin(new Insets(5, 5, 5, 5));
+    directItem.setFont(new Font("", Font.PLAIN, 16));
+    edit.add(directItem);
 
     trainItem = new JMenuItem("Entrainer");
     trainItem.setFocusable(false);
@@ -597,6 +616,13 @@ class GraphApplet extends JFrame {
     axisItem.setMargin(new Insets(5, 5, 5, 5));
     axisItem.setFont(new Font("", Font.PLAIN, 16));
     display.add(axisItem);
+    
+    screenItem = new JMenuItem("Afficher/Cacher l'écran");
+    screenItem.setFocusable(false);
+    screenItem.addActionListener(e -> ToggleScreenVisibility());
+    screenItem.setMargin(new Insets(5, 5, 5, 5));
+    screenItem.setFont(new Font("", Font.PLAIN, 16));
+    display.add(screenItem);
 
     menuBar.add(display);
 
