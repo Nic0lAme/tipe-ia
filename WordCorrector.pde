@@ -78,6 +78,7 @@ class WordCorrector {
     String ret = "";
     for(int l : bestWord) ret += charList[l];
     
+    cl.pln(ret, "\twith prob", String.format("%9.3e", bestProb));
     return ret;
   }
 }

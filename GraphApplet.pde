@@ -377,6 +377,7 @@ class GraphApplet extends JFrame {
   
   //f Permet de lancer un test du réseau de neurones actif, sur un tableau interactif
   private void ToggleDirectTest() {
+    frame.setSize(new Dimension(500, 400));
     directTest = !directTest;
     try { Thread.sleep(500); }
       catch (Exception e) {}

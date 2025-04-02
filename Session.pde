@@ -7,10 +7,10 @@ public class Session {
   NeuralNetwork nn;
   String[] characters;
 
-  String[] handTrainingDatas;
-  String[] fontTrainingDatas;
-  String[] handTestingDatas;
-  String[] fontTestingDatas;
+  String[] sessionHandTrainingDatas;
+  String[] sessionFontTrainingDatas;
+  String[] sessionHandTestingDatas;
+  String[] sessionFontTestingDatas;
 
   LetterDataset ds;
 
@@ -26,13 +26,13 @@ public class Session {
     this.name = name;
     this.characters = cs.allC;
 
-    this.handTrainingDatas = new String[]{"AntoineME", "NicolasMA", "LenaME", "TheoLA", "MatteoPR", "ElioKE", "AkramBE", "MaximeMB", "NathanLU", "LubinDE", "MatheoLB", "SachaAD", "MatisBR", "ValerieAR", "ArthurLO", "RomaneFI", "ThelioLA", "YanisIH"};
+    this.sessionHandTrainingDatas = handTrainingDatas;
     //this.handTrainingDatas = new String[]{};
-    this.fontTrainingDatas = new String[]{"Arial", "Bahnschrift", "Eras Demi ITC", "Lucida Handwriting Italique", "DejaVu Serif", "Fira Code Retina Moyen", "Consolas", "Lucida Handwriting Italique", "Playwrite IT Moderna", "Just Another Hand"};
+    this.sessionFontTrainingDatas = fontTrainingDatas;
     //this.fontTrainingDatas = new String[]{};
 
-    handTestingDatas = new String[]{"MrMollier", "MrChauvet", "SachaBE", "IrinaRU", "NoematheoBLB"};
-    fontTestingDatas = new String[]{"Liberation Serif", "Calibri", "Book Antiqua", "Gabriola", "Noto Serif"};
+    this.sessionHandTestingDatas = handTestingDatas;
+    this.sessionFontTestingDatas = fontTestingDatas;
 
     ds = new LetterDataset(5*this.w, 5*this.h);
   }
@@ -67,14 +67,14 @@ public class Session {
 
     Matrix[] testSampleHand = ds.CreateSample(
       this.characters,
-      this.handTestingDatas,
+      this.sessionHandTestingDatas,
       new String[]{},
     3, startDef);
 
     Matrix[] testSampleFont = ds.CreateSample(
       this.characters,
       new String[]{},
-      this.fontTestingDatas,
+      this.sessionFontTestingDatas,
     3, startDef);
 
     for(int k = 0; k <= phaseNumber; k++) {
@@ -86,14 +86,14 @@ public class Session {
 
         testSampleHand = ds.CreateSample(
           this.characters,
-          this.handTestingDatas,
+          this.sessionHandTestingDatas,
           new String[]{},
         3, deformationRate);
 
         testSampleFont = ds.CreateSample(
           this.characters,
           new String[]{},
-          this.fontTestingDatas,
+          this.sessionFontTestingDatas,
         3, deformationRate);
       }
 
@@ -102,9 +102,9 @@ public class Session {
 
         sample = ds.CreateSample(
           this.characters,
-          this.handTrainingDatas,
+          this.sessionHandTrainingDatas,
           //new String[]{},
-          this.fontTrainingDatas,
+          this.sessionFontTrainingDatas,
           repList, deformationRate);
 
         double maxLR = startMaxLR * Math.pow(endMaxLR / startMaxLR, (double)(k-1)/max(1, (phaseNumber-1)));
@@ -146,9 +146,9 @@ public class Session {
 
     Matrix[] testSample = ds.CreateSample(
       this.characters,
-      this.handTestingDatas,
+      this.sessionHandTestingDatas,
       // new String[]{},
-      this.fontTestingDatas,
+      this.sessionFontTestingDatas,
       4, testDerformation);
 
     frame.setVisible(true);
@@ -179,7 +179,7 @@ public class Session {
 
   //f Permet de tester en direct les performances du réseau
   void DirectTest() {
-    frame.setSize(new Dimension(400, 300));
+    frame.setPreferredSize(new Dimension(500, 400));
     frame.setVisible(true);
     
     if(keyPressed && key == ' ') background(255);
