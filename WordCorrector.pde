@@ -1,7 +1,7 @@
 class WordCorrector {
   char[] charList = new char[]{'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
   double[] letterSpreading = new double[]{0.1, 0.05};
-  double fiability = 1; // 0 -> c'est vraiment très mauvais / 1 -> c'est vraiment excellent
+  double fiability = 0.95; // 0 -> c'est vraiment très mauvais / 1 -> c'est vraiment excellent
   
   int[][] words;
   
