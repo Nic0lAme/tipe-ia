@@ -558,6 +558,85 @@ class Matrix {
     return inverse;
   }
 
+  //f Retourne une nouvelle matrice _mat_ sur laquelle on a effectué la convolution complète _filter_
+  Matrix FullConvolution(Matrix mat, Matrix filter) {
+    Matrix nMat = mat.C();
+    
+    for(int i = 0; i < mat.n; i++) {
+      for(int j = 0; j < mat.p; j++) {
+        nMat.Set(i, j, this.Filter(mat, filter, i - floor((filter.n - 1) / 2), j - floor((filter.p - 1) / 2)));
+      }
+    }
+    
+    return nMat;
+  }
+
+  //f Retourne une nouvelle matrice _mat_ sur laquelle on a effectué la convolution _filter_
+  Matrix Convolution(Matrix mat, Matrix filter) {
+    Matrix nMat = new Matrix(mat.n - filter.n + 1, mat.p - filter.p + 1);
+    
+    for(int i = 0; i < nMat.n; i++) {
+      for(int j = 0; j < nMat.p; j++) {
+        nMat.Set(i, j, this.Filter(mat, filter, i, j));
+      }
+    }
+    
+    return nMat;
+  }
+
+  //f Retourne la valeur (_x_, _y_) de la matrice _mat_ à laquelle on applique la convolution de filtre _filter_
+  // _x_ représente la ligne et _y_ la colonne (oui, c'est moche)
+  double Filter(Matrix mat, Matrix filter, int x, int y) {
+    int ret = 0;
+    for(int i = 0; i < filter.n; i++) {
+      for(int j = 0; j < filter.p; j++) {
+        int rx = x + i;
+        int ry = y + j;
+        if(rx < 0 || ry < 0 || rx >= mat.n || ry >= mat.p) continue; // Considère les pixels en dehors de l'image comme des 0
+
+        ret += mat.Get(rx, ry);
+      }
+    }
+
+    return ret;
+  }
+  
+  //f Retourne une copie de la matrice _this_ retournée de 180°
+  Matrix Rotate180() {
+    Matrix rotated = this.C();
+    
+    for(int i = 0; i < this.n; i++) {
+      for(int j = 0; j < this.p; j++) {
+        rotated.values[i][j] = this.values[this.n - i - 1][this.p - j - 1];
+      }
+    }
+    
+    return rotated;
+  }
+  
+  //f Fonction de MaxPooling de l'image _img_ (sous forme de matrice) en utilisant un pool de taille _w_ * _h_
+  Matrix MaxPooling(Matrix mat, int w, int h) {
+    Matrix pooledMat = new Matrix(ceil((float)mat.n / h), ceil((float)mat.p / w));
+    
+    for(int i = 0; i < pooledMat.n; i++) {
+      for(int j = 0; j < pooledMat.p; j++) {
+        double max = 0;
+        
+        for(int k = h * i; k < h * (i+1); k++) {
+          for(int l = w * j; l < w * (j+1); l++) {
+            if(k > mat.n || l > mat.p) continue;
+            
+            max = Math.max(max, mat.values[k][l]);
+          }
+        }
+        
+        pooledMat.values[i][j] = max;
+      }
+    }
+    
+    return pooledMat;
+  }
+
   @Override
   public String toString() {
     return "Matrix[" + this.n + "," + this.p + "]";

@@ -168,57 +168,6 @@ class ImageManager {
     return scrambledImage;
   }
 
-  //s Effectue la convolution sur l'ensemble des images correspondant à la matrice _images_, en considérant des images de taille _w_ * _h_
-  Matrix FullConvolution(Matrix images, Matrix filter, int w, int h) {
-    if(images.n != w*h) { cl.pln("Convolution", "Wrong size Matrix"); Exception e = new Exception(); e.printStackTrace(); return images; }
-
-    Matrix filtered = images.C();
-    PImage img;
-    for(int k = 0; k < images.p; k++) {
-      img = createImage(w, h, RGB);
-      img.loadPixels();
-      for(int i = 0; i < images.n; i++) img.pixels[i] = color((int)(images.Get(i, k)));
-      img.updatePixels();
-
-      img = FullConvolution(img, filter);
-      img.loadPixels();
-      for(int i = 0; i < images.n; i++) filtered.Set(i, k, brightness(img.pixels[i]) / 255);
-    }
-
-    return filtered;
-  }
-
-  //f Retourne une nouvelle image _img_ sur laqeulle on a effectué la convolution _filter_
-  PImage FullConvolution(PImage img, Matrix filter) {
-    PImage nImg = img.copy();
-    nImg.loadPixels();
-    for(int i = 0; i < img.width; i++) {
-      for(int j = 0; j < img.height; j++) {
-        nImg.set(i,j,this.Filter(img, filter, i, j));
-      }
-    }
-    nImg.updatePixels();
-    return nImg;
-  }
-
-  //f Retourne le pixel (_x_, _y_) de l'image _img_ auquelle on applique la convolution de filtre _filter_
-  color Filter(PImage img, Matrix filter, int x, int y) {
-    int r = 0, g = 0, b = 0;
-    for(int i = 0; i < filter.n; i++) {
-      for(int j = 0; j < filter.p; j++) {
-        int rx = x + i - floor((float)filter.p / 2);
-        int ry = y + j - floor((float)filter.p / 2);
-        if(rx < 0 || ry < 0 || rx >= img.width || ry >= img.height) continue;
-
-        r += red(img.get(rx, ry));
-        g += green(img.get(rx, ry));
-        b += blue(img.get(rx, ry));
-      }
-    }
-
-    return color(r,g,b);
-  }
-
   //s Contraste linéaire
   PImage Contrast(PImage img, float intensity) {
     return Contrast(img, intensity, (x) -> x);

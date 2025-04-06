@@ -1,7 +1,7 @@
 import java.util.HashSet;
 
 void setup() {
-  size(1000, 200);
+  size(1200, 1200);
   
   noLoop();
 }
@@ -10,13 +10,13 @@ int wordMarge = 3;
 int lineMarge = 8;
 
 void draw() {
-  PImage img = loadImage("./Message - AntoineME.jpg");
+  PImage img = loadImage("./LivresPagGrandMeaulnes.jpg");
   img.resize(width, height);
   image(img, 0, 0);
   
   img.filter(THRESHOLD, 0.8);  
   
-  ArrayList<ArrayList<PVector>> chars = ContourDetection(img, 5);
+  ArrayList<ArrayList<PVector>> chars = ContourDetection(img, 10);
   println(chars.size());
   
   ArrayList<int[]> rects = new ArrayList<int[]>();
@@ -30,6 +30,16 @@ void draw() {
   }
   
   
+  float averageSize = 0;
+  for(int k = 0; k < rects.size(); k++) {
+    averageSize += pow((float)rects.get(k)[2] * rects.get(k)[3] * rects.get(k)[3], 0.33) / rects.size();
+  }
+  
+  for(int k = rects.size() - 1; k >= 0; k--) {
+    float ratio = pow((float)rects.get(k)[2] * rects.get(k)[3] * rects.get(k)[3], 0.33) / averageSize;
+    if(ratio > 5 || ratio < 0.2) rects.remove(k);
+  }
+  
   
   for(int[] r : rects) {
     stroke(255,0,0);
@@ -40,7 +50,7 @@ void draw() {
     //text(chars.indexOf(c), rect[0], rect[1] - 10);
   }
   
-  ArrayList<ArrayList<int[]>> words = RectGroups(rects, 1, 1.2);
+  ArrayList<ArrayList<int[]>> words = RectGroups(rects, 2.5, 1.2);
   ArrayList<int[]> wordsRects = new ArrayList<int[]>();
   for(ArrayList<int[]> w : words) {
     wordsRects.add(CompilRect(w));
@@ -55,7 +65,7 @@ void draw() {
     rect(rect[0] - wordMarge, rect[1] - wordMarge, rect[2] + 2 * wordMarge, rect[3] + 2 * wordMarge);
   }
   
-  ArrayList<ArrayList<int[]>> lines = RectGroups(wordsRects, 8, 0.5);
+  ArrayList<ArrayList<int[]>> lines = RectGroups(wordsRects, 8, 1.2);
   for(ArrayList<int[]> g : lines) {
     int[] rect = CompilRect(g);
     
@@ -76,12 +86,14 @@ ArrayList<ArrayList<int[]>> RectGroups(int[][] rect, float hMarge, float vMarge)
     centers[k] = new PVector(rect[k][0] + rect[k][2] / 2, rect[k][1] + rect[k][3] / 2);
   }
   
+  float size = 0;
+  for(int k = 0; k < rect.length; k++) {
+    size += pow((float)rect[k][2] * rect[k][3] * rect[k][3], 0.33) / rect.length;
+  }
+  
   ArrayList<ArrayList<Integer>> indexGroups = new ArrayList<ArrayList<Integer>>();
   for(int k = 0; k < rect.length; k++) {
     ArrayList<Integer> indexGroup = new ArrayList<Integer>();
-    
-    float size = pow((float)rect[k][2] * rect[k][3] * rect[k][3], 0.33);
-    // float size = rect[k][3];
     
     for(int dx = -floor(hMarge * size); dx <= floor(hMarge * size); dx++) {
       for(int dy = -floor(vMarge * size); dy <= floor(vMarge * size); dy++) {
