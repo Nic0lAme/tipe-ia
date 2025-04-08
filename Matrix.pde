@@ -222,6 +222,14 @@ class Matrix {
 
     return this;
   }
+  
+  //f Ajoute un scalaire
+  Matrix AddScal(double scal) {
+    for (int i = 0; i < this.n; i++) 
+      for (int j = 0; j < this.p; j++)
+        this.values[i][j] += scal;
+    return this;
+  }
 
   //f Multiplie l'ensemble de la matrice _this_ par le facteur _scal_
   Matrix Scale(double scal) {
@@ -572,12 +580,12 @@ class Matrix {
   }
 
   //f Retourne une nouvelle matrice _mat_ sur laquelle on a effectué la convolution _filter_
-  Matrix Convolution(Matrix mat, Matrix filter) {
-    Matrix nMat = new Matrix(mat.n - filter.n + 1, mat.p - filter.p + 1);
+  Matrix Convolution(Matrix filter) {
+    Matrix nMat = new Matrix(this.n - filter.n + 1, this.p - filter.p + 1);
     
     for(int i = 0; i < nMat.n; i++) {
       for(int j = 0; j < nMat.p; j++) {
-        nMat.Set(i, j, this.Filter(mat, filter, i, j));
+        nMat.Set(i, j, this.Filter(this, filter, i, j));
       }
     }
     
@@ -615,26 +623,53 @@ class Matrix {
   }
   
   //f Fonction de MaxPooling de l'image _img_ (sous forme de matrice) en utilisant un pool de taille _w_ * _h_
-  Matrix MaxPooling(Matrix mat, int w, int h) {
-    Matrix pooledMat = new Matrix(ceil((float)mat.n / h), ceil((float)mat.p / w));
+  Matrix[] MaxPooling(int w, int h) {
+    Matrix pooledMat = new Matrix(ceil((float)this.n / h), ceil((float)this.p / w));
+    Matrix mask = new Matrix(this.n, this.p);
     
     for(int i = 0; i < pooledMat.n; i++) {
       for(int j = 0; j < pooledMat.p; j++) {
         double max = 0;
+        int kmax = -1; int lmax = -1;
         
         for(int k = h * i; k < h * (i+1); k++) {
           for(int l = w * j; l < w * (j+1); l++) {
-            if(k > mat.n || l > mat.p) continue;
+            if(k >= this.n || l >= this.p) continue;
             
-            max = Math.max(max, mat.values[k][l]);
+            max = Math.max(max, this.values[k][l]);
+            kmax = k;
+            lmax = l;
           }
         }
+        
+        if(kmax != -1 && lmax != -1) mask.Set(kmax, lmax, 1);
         
         pooledMat.values[i][j] = max;
       }
     }
     
-    return pooledMat;
+    return new Matrix[]{pooledMat, mask};
+  }
+  
+  Matrix ToCol() {
+    Matrix newMat = new Matrix(this.n * this.p, 1);
+    
+    for(int i = 0; i < this.n; i++)
+      for(int j = 0; j < this.p; j++)
+        newMat.values[i * this.p + j][0] = this.values[i][j];
+        
+    return newMat;
+  }
+  
+  Matrix FromCol(int w, int h) {
+    if (w * h != this.n) { cl.pln(this, "FromCol", "Wrong Size column"); Exception e = new Exception(); e.printStackTrace(); return new Matrix(this.n, this.p); }
+
+    Matrix newMat = new Matrix(w, h);
+    for(int i = 0; i < w; i++)
+      for(int j = 0; j < h; j++)
+        newMat.values[i][j] = this.values[i * w + j][0];
+        
+    return newMat;
   }
 
   @Override

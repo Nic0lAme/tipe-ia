@@ -127,7 +127,10 @@ void setup() {
   for(int k = 0; k < 10; k++)
     bayes.SERV_Export(new HyperParameters().Random(), random(1));
   */
-
+  
+  CNN cnn = new CNN(25, new int[]{5, 10}, new int[]{128, 64, 32});
+  Matrix test = new Matrix(25, 25).Random(-1, 1);
+  println(cnn.ForwardPropagation(test));
 }
 
 int index = 0;
