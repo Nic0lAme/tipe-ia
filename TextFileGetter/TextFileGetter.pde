@@ -44,7 +44,7 @@ PImage doc;
 Zone[] zones;
 int idx = 0;
 
-PImage Crop(PImage img, float cap) { // Consider the object as black (or darker part)
+PImage Crop(PImage img, float cap, int margin) { // Consider the object as black (or darker part)
   int left = 0, right = img.width - 1, top = 0, bottom = img.height - 1;
   img.loadPixels();
   
@@ -65,31 +65,39 @@ PImage Crop(PImage img, float cap) { // Consider the object as black (or darker 
     }
   }
   
+  int m = margin;
   for(int k = left; k < img.width; k++) {
     left = k;
     if(minBrightnessCol[k] < cap) {
-      break;
+      m--;
+      if(m == 0) break;
     }
   }
   
+  m = margin;
   for(int k = right; k > 0; k--) {
     right = k;
     if(minBrightnessCol[k] < cap) {
-      break;
+      m--;
+      if(m == 0) break;
     }
   }
   
+  m = margin;
   for(int k = top; k < img.height; k++) {
     top = k;
     if(minBrightnessRow[k] < cap) {
-      break;
+      m--;
+      if(m == 0) break;
     }
   }
   
+  m = margin;
   for(int k = bottom; k > 0; k--) {
     bottom = k;
     if(minBrightnessRow[k] < cap) {
-      break;
+      m--;
+      if(m == 0) break;
     }
   }
   
@@ -108,6 +116,11 @@ PImage Crop(PImage img, float cap) { // Consider the object as black (or darker 
     left = constrain(left - 1, 0, img.width - 1);
   }
   */
+  
+  left = max(left - margin, 0);
+  top = max(top - margin, 0);
+  right = min(right + margin, img.width - 1);
+  bottom = max(bottom + margin, img.height - 1);
   
   return img.get(left, top, right - left, bottom - top);
 }
