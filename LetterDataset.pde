@@ -121,12 +121,11 @@ public class LetterDataset {
     // Actualise les matrices entrées / sorties en regroupant les données
     try {
       List<Future<Object>> answers = executor.invokeAll(tasks);
-      int numColonne = 0;
       int k = 0;
       for (Matrix[] ms : results) {
         inputs[k] = ms[0];
-        outputs.ColumnFromArray(numColonne, ms[1].ColumnToArray(0));
-        numColonne += 1;
+        outputs.ColumnFromArray(k, ms[1].ColumnToArray(0));
+        k++;
       }
     } catch (InterruptedException e) {
       cl.pln("LetterDataset, CreateSample : Erreur critique, bonne chance pour la suite");

@@ -117,10 +117,10 @@ PImage Crop(PImage img, float cap, int margin) { // Consider the object as black
   }
   */
   
-  left = max(left - margin, 0);
-  top = max(top - margin, 0);
-  right = min(right + margin, img.width - 1);
-  bottom = max(bottom + margin, img.height - 1);
+  left = max(left - margin + 1, 0);
+  top = max(top - margin + 1, 0);
+  right = min(right + margin - 1, img.width - 1);
+  bottom = min(bottom + margin - 1, img.height - 1);
   
   return img.get(left, top, right - left, bottom - top);
 }
@@ -141,7 +141,7 @@ CONSIGNES :
  5/ Appuyer sur entrée pour enregistrer
  */
 void setup() {
-  folder = "BCPST";
+  folder = "MPSIB";
   links = ReadFolder(folder);
   names = new String[links.length];
   for(int i = 0; i < names.length; i++) names[i] = folder + String.format("%05d", i);
@@ -234,7 +234,7 @@ void setup() {
 
 void draw() {
   String link = links[idx];
-  doc = Crop(loadImage("./doc/" + (folder=="" ? "" : folder + "/") + link), 10);
+  doc = Crop(loadImage("./doc/" + (folder=="" ? "" : folder + "/") + link), 10, 25);
   doc.resize(w, h);
   //doc = loadImage("./doc/" + (folder=="" ? "" : folder + "/") + link);
   image(doc, 0, 0, w * scaleRes, h * scaleRes);

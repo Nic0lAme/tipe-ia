@@ -577,11 +577,11 @@ class Matrix {
 
   //f Retourne une nouvelle matrice _mat_ sur laquelle on a effectué la convolution complète _filter_
   Matrix FullConvolution(Matrix filter) {
-    Matrix nMat = this.C();
+    Matrix nMat = new Matrix(this.n + filter.n - 1, this.p + filter.p - 1);
     
-    for(int i = 0; i < this.n; i++) {
-      for(int j = 0; j < this.p; j++) {
-        nMat.Set(i, j, this.Filter(this, filter, i - floor((filter.n - 1) / 2), j - floor((filter.p - 1) / 2)));
+    for(int i = 0; i < this.n + filter.n - 1; i++) {
+      for(int j = 0; j < this.p + filter.p - 1; j++) {
+        nMat.Set(i, j, this.Filter(this, filter, i - filter.n + 1, j - filter.p + 1));
       }
     }
     
@@ -673,11 +673,11 @@ class Matrix {
   Matrix FromCol(int w, int h) {
     if (w * h != this.n) { cl.pln(this, "FromCol", "Wrong Size column"); Exception e = new Exception(); e.printStackTrace(); return new Matrix(this.n, this.p); }
 
-    Matrix newMat = new Matrix(w, h);
-    for(int i = 0; i < w; i++)
-      for(int j = 0; j < h; j++)
+    Matrix newMat = new Matrix(h, w);
+    for(int i = 0; i < h; i++)
+      for(int j = 0; j < w; j++)
         newMat.values[i][j] = this.values[i * w + j][0];
-        
+    
     return newMat;
   }
 

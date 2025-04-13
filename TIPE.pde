@@ -128,14 +128,14 @@ void setup() {
     bayes.SERV_Export(new HyperParameters().Random(), random(1));
   */
   
-  CNN cnn = new CNN(25, new int[]{5, 10}, new int[]{128, 64, 32});
+  CNN cnn = new CNN(25, new int[]{5, 10}, new int[]{128, 64, 32, cs.allC.length});
   
   Matrix[][] sample = session.ds.CreateSample(
       cs.allC,
       handTrainingDatas,
       //new String[]{},
       fontTrainingDatas,
-      6, 1);
+      1, 1);
       
   cnn.MiniBatchLearn(sample, 8, 32, 1, 1, 4);
 }
