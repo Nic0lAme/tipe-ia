@@ -20,8 +20,8 @@ public class Session {
   Session(String name, HyperParameters hp) {
     this.hp = hp;
 
-    this.w = 19;
-    this.h = 21;
+    this.w = 25;
+    this.h = 25;
 
     this.name = name;
     this.characters = cs.allC;
@@ -65,17 +65,17 @@ public class Session {
 
     inTraining = true;
 
-    Matrix[] testSampleHand = ds.CreateSample(
+    Matrix[] testSampleHand = ds.SampleLining(ds.CreateSample(
       this.characters,
       this.sessionHandTestingDatas,
       new String[]{},
-    3, startDef);
+    3, startDef));
 
-    Matrix[] testSampleFont = ds.CreateSample(
+    Matrix[] testSampleFont = ds.SampleLining(ds.CreateSample(
       this.characters,
       new String[]{},
       this.sessionFontTestingDatas,
-    3, startDef);
+    3, startDef));
 
     for(int k = 0; k <= phaseNumber; k++) {
       cl.pln("\nPhase", k, "/", phaseNumber);
@@ -84,28 +84,28 @@ public class Session {
 
       if(k > 1) {
 
-        testSampleHand = ds.CreateSample(
+        testSampleHand = ds.SampleLining(ds.CreateSample(
           this.characters,
           this.sessionHandTestingDatas,
           new String[]{},
-        3, deformationRate);
+        3, deformationRate));
 
-        testSampleFont = ds.CreateSample(
+        testSampleFont = ds.SampleLining(ds.CreateSample(
           this.characters,
           new String[]{},
           this.sessionFontTestingDatas,
-        3, deformationRate);
+        3, deformationRate));
       }
 
       if(k != 0) {
         repList = RepList(accuracy, rep, minProp);
 
-        sample = ds.CreateSample(
+        sample = ds.SampleLining(ds.CreateSample(
           this.characters,
           this.sessionHandTrainingDatas,
           //new String[]{},
           this.sessionFontTrainingDatas,
-          repList, deformationRate);
+          repList, deformationRate));
 
         double maxLR = startMaxLR * Math.pow(endMaxLR / startMaxLR, (double)(k-1)/max(1, (phaseNumber-1)));
         double minLR = startMinLR * Math.pow(endMinLR / startMinLR, (double)(k-1)/max(1, (phaseNumber-1)));
@@ -144,12 +144,12 @@ public class Session {
   void TestImages() {
     frame.setSize(new Dimension(floor(this.w * rScale * cs.allC.length), floor(this.h * rScale * numOfTestSample)));
 
-    Matrix[] testSample = ds.CreateSample(
+    Matrix[] testSample = ds.SampleLining(ds.CreateSample(
       this.characters,
       this.sessionHandTestingDatas,
       // new String[]{},
       this.sessionFontTestingDatas,
-      4, testDerformation);
+      4, testDerformation));
 
     frame.setVisible(true);
     background(255);
@@ -176,7 +176,8 @@ public class Session {
     enter to show prediction directly on the sketch
   */
   int brushSize = 16;
-
+  
+  /*
   //f Permet de tester en direct les performances du réseau
   void DirectTest() {
     frame.setPreferredSize(new Dimension(500, 400));
@@ -223,6 +224,7 @@ public class Session {
     
     println();
   }
+  */
 
   float[][] AccuracyScore(NeuralNetwork nn, Matrix[] data, boolean doDraw) {
     return AccuracyScore(nn, new Matrix[][]{data}, doDraw);
@@ -290,9 +292,75 @@ public class Session {
 
     return score;
   }
+  
+  float[][] AccuracyScore(CNN nn, Matrix[][] data, boolean doDraw) {
+    return AccuracyScore(nn, new Matrix[][][]{data}, doDraw);
+  }
+  
+  float[][] AccuracyScore(CNN nn, Matrix[][][] data, boolean doDraw) {
+    float[][] score = new float[data.length][data[0][1][0].n];
+    int[][] countOutput = new int[data.length][data[0][1][0].n]; // Compte le nombre d'output ayant pour retour i
 
-  double[] ImgPP(PImage img) { // Images post-processing
-    double[] nImg = new double[this.w*this.h];
+    int ret = 0; // To draw
+    for(int k = 0; k < data.length; k++) {
+      Matrix[][] d = data[k];
+      Matrix prediction = nn.Predict(d[0]);
+
+      int x = 0; int y = 0;
+      textAlign(LEFT, BOTTOM); textSize(this.w); fill(255,0,0);
+
+      int mIndex; double m; // Recherche de la prédiction la plus haute
+      for(int j = 0; j < d[0].length; j++) {
+        boolean isGood = false;
+        fill(255,0,0,100);
+
+        mIndex = -1;
+        m = -1;
+        for(int i = 0; i < d[1][0].n; i++) {
+          if(prediction.Get(i, j) > m) {
+            mIndex = i;
+            m = prediction.Get(mIndex, j);
+          }
+        }
+
+        for(int i = 0; i < d[1][0].n; i++) {
+          if(d[1][0].Get(i,j) == 1) {
+            countOutput[k][i] += 1;
+            if(mIndex == i) {
+              score[k][i] += 1;
+              fill(0,255,0,100);
+              isGood = true;
+            }
+          }
+        }
+
+
+        if(doDraw) {
+          x = floor(floor(rScale*this.h*ret) / height * rScale * this.w);
+          y = floor(floor(rScale*this.h*ret) % height);
+          image(ds.CNNGetImageFromInputs(d[0][j]), x, y, rScale*this.w, rScale*this.h);
+
+          noStroke();
+          rect(x, y, rScale * this.w, rScale * this.h);
+
+          if(!isGood) {
+            fill(200);
+            //textSize(rScale * this.w);
+            //text(characters[mIndex], x, y, rScale*this.w, rScale*this.h);
+          }
+        }
+
+        ret++;
+      }
+      for(int i = 0; i < data[0][1][0].n; i++) {
+        score[k][i] = countOutput[k][i] != 0 ? score[k][i] / (float)countOutput[k][i] : 0;
+      }
+    }
+
+    return score;
+  }
+
+  Matrix ImgPP(PImage img) { // Images post-processing
     PImage PPImage = im.Gray(img);
     PPImage = im.Contrast(PPImage, 0.02);
     PPImage = im.AutoCrop(PPImage, 128, 0.12);
@@ -300,11 +368,16 @@ public class Session {
 
     im.Resize(PPImage, this.w, this.h);
     PPImage.loadPixels();
-    for(int k = 0; k < PPImage.pixels.length; k++) nImg[k] = 1 - (double)brightness(PPImage.pixels[k]) / 255;
+    
+    Matrix ret = new Matrix(this.h, this.w);
+    for(int i = 0; i < this.h; i++)
+      for(int j = 0; j < this.w; j++)
+        ret.values[i][j] = PPImage.pixels[i * this.w + j];
 
-    return nImg;
+    return ret;
   }
-
+  
+  /*
   FloatDict Result(PImage img) {
     FloatDict result = new FloatDict();
 
@@ -328,5 +401,6 @@ public class Session {
     Matrix outputMatrix = nn.Predict(inputMatrix);
     return cs.GetProb(outputMatrix.ColumnToArray(0));
   }
+  */
 
 }

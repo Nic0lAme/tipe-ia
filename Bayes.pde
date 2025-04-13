@@ -39,16 +39,16 @@ class Bayes {
   //f Charge les images (test et train) à utiliser pendant l'optimisation
   private void LoadImageData() {
     int startTime = millis();
-    globalTrainingData = ds.CreateSample(
+    globalTrainingData = ds.SampleLining(ds.CreateSample(
         cs.allC,
         handTrainingDatas,
         fontTrainingDatas,
-        trainingRep, 1);
-    globalTestingData = ds.CreateSample(
+        trainingRep, 1));
+    globalTestingData = ds.SampleLining(ds.CreateSample(
         cs.allC,
         handTestingDatas,
         fontTestingDatas,
-        testingRep, 1);
+        testingRep, 1));
     isLoaded = true;
     etalonnedTime = millis() - startTime;
   }

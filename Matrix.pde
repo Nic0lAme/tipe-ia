@@ -350,6 +350,15 @@ class Matrix {
     }
     return col;
   }
+  
+  //f Calcule la somme totale des coefficients de la matrice _this_
+  double TotalSum() {
+    double sum = 0;
+    for(int i = 0; i < this.n; i++)
+      for(int j = 0; j < this.p; j++)
+        sum += this.values[i][j];
+    return sum;
+  }
 
   //f Somme les coefficients de la colonne _j_ de _this_
   double SumCol(int j) {
@@ -567,12 +576,12 @@ class Matrix {
   }
 
   //f Retourne une nouvelle matrice _mat_ sur laquelle on a effectué la convolution complète _filter_
-  Matrix FullConvolution(Matrix mat, Matrix filter) {
-    Matrix nMat = mat.C();
+  Matrix FullConvolution(Matrix filter) {
+    Matrix nMat = this.C();
     
-    for(int i = 0; i < mat.n; i++) {
-      for(int j = 0; j < mat.p; j++) {
-        nMat.Set(i, j, this.Filter(mat, filter, i - floor((filter.n - 1) / 2), j - floor((filter.p - 1) / 2)));
+    for(int i = 0; i < this.n; i++) {
+      for(int j = 0; j < this.p; j++) {
+        nMat.Set(i, j, this.Filter(this, filter, i - floor((filter.n - 1) / 2), j - floor((filter.p - 1) / 2)));
       }
     }
     

@@ -129,8 +129,15 @@ void setup() {
   */
   
   CNN cnn = new CNN(25, new int[]{5, 10}, new int[]{128, 64, 32});
-  Matrix test = new Matrix(25, 25).Random(-1, 1);
-  println(cnn.ForwardPropagation(test));
+  
+  Matrix[][] sample = session.ds.CreateSample(
+      cs.allC,
+      handTrainingDatas,
+      //new String[]{},
+      fontTrainingDatas,
+      6, 1);
+      
+  cnn.MiniBatchLearn(sample, 8, 32, 1, 1, 4);
 }
 
 int index = 0;
@@ -139,7 +146,7 @@ boolean directTest = false;
 
 void draw() {
   if(testImages) session.TestImages();
-  if(directTest) session.DirectTest();
+  //if(directTest) session.DirectTest();
 }
 
 void SetMainSession(Session newSession) {

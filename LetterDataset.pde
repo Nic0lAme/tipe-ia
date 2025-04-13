@@ -22,12 +22,12 @@ public class LetterDataset {
   }
 
   //s On fixe le nombre de répétitions des caractères identiquement à _rep_. On fixe la _deformationRate_ à 1
-  public Matrix[] CreateSample(String[] characters, String[] hwSources, String[] fSources, int rep) {
+  public Matrix[][] CreateSample(String[] characters, String[] hwSources, String[] fSources, int rep) {
     return this.CreateSample(characters, hwSources, fSources, rep, 1);
   }
 
   //s On fixe le nombre de répétitions des caractères identiquement à _rep_
-  public Matrix[] CreateSample(String[] characters, String[] hwSources, String[] fSources, int rep, float deformationRate) {
+  public Matrix[][] CreateSample(String[] characters, String[] hwSources, String[] fSources, int rep, float deformationRate) {
     int[] repList = new int[characters.length];
     Arrays.fill(repList, rep);
 
@@ -35,7 +35,7 @@ public class LetterDataset {
   }
 
   //s _deformationrate_ à 1
-  public Matrix[] CreateSample(String[] characters, String[] hwSources, String[] fSources, int[] repList) {
+  public Matrix[][] CreateSample(String[] characters, String[] hwSources, String[] fSources, int[] repList) {
     return this.CreateSample(characters, hwSources, fSources, repList, 1);
   }
 
@@ -44,7 +44,7 @@ public class LetterDataset {
   // _hwSources_ et _fSources_ correspondent aux noms respectivement des écritures à la main et des polices utilisées
   // _repList_ correspond au nombre de répétition de chaque caractère respectivement, par échantillon initial
   // _deformationRate_ correspond au taux de déformation utilisé
-  public Matrix[] CreateSample(String[] characters, String[] hwSources, String[] fSources, int[] repList, float deformationRate) {
+  public Matrix[][] CreateSample(String[] characters, String[] hwSources, String[] fSources, int[] repList, float deformationRate) {
     int repSum = 0;
     for(int k = 0; k < repList.length; k++) repSum += repList[k];
 
@@ -54,7 +54,7 @@ public class LetterDataset {
 
     cl.pln("Creating Dataset of size " + sampleSize + "...");
 
-    Matrix inputs = new Matrix(session.w*session.h, sampleSize);
+    Matrix[] inputs = new Matrix[sampleSize];
     Matrix outputs = new Matrix(nbChar, sampleSize);
     outputs.Fill(0);
 
@@ -89,12 +89,12 @@ public class LetterDataset {
               //cl.pln(idx);
 
               // Récupère les pixels et les normalise
-              double[] imgPixels = session.ImgPP(img);
+              Matrix imgPixels = session.ImgPP(img);
               double[] answerArray = new double[nbChar];
               answerArray[c] = 1;
 
               Matrix[] r = new Matrix[2];
-              r[0] = new Matrix(imgPixels.length, 1).ColumnFromArray(0, imgPixels);
+              r[0] = imgPixels;
               r[1] = new Matrix(nbChar, 1).ColumnFromArray(0, answerArray);
 
               synchronized (stopLearning) {
@@ -122,8 +122,9 @@ public class LetterDataset {
     try {
       List<Future<Object>> answers = executor.invokeAll(tasks);
       int numColonne = 0;
+      int k = 0;
       for (Matrix[] ms : results) {
-        inputs.ColumnFromArray(numColonne, ms[0].ColumnToArray(0));
+        inputs[k] = ms[0];
         outputs.ColumnFromArray(numColonne, ms[1].ColumnToArray(0));
         numColonne += 1;
       }
@@ -136,7 +137,18 @@ public class LetterDataset {
     if (abortTraining.get()) cl.pln("Dataset creation aborted");
     else cl.pln("Created - Total time", String.format("%9.3f",(float)(millis() - startTime) / 1000));
 
-    return new Matrix[]{ inputs, outputs };
+    return new Matrix[][]{ inputs, {outputs} };
+  }
+  
+  public Matrix[] SampleLining(Matrix[][] sample) {
+    Matrix inputs = new Matrix(sample[0][0].n * sample[0][0].p, sample[0].length);
+    for(int k = 0; k < sample[0].length; k++) {
+      for(int i = 0; i < sample[0][k].n; i++)
+        for(int j = 0; j < sample[0][k].p; j++)
+          inputs.values[i * sample[0][k].p + j][0] = sample[0][k].values[i][j];
+    }
+    
+    return new Matrix[]{inputs, sample[1][0]};
   }
 
   //s Les paramètres de brouillage sont ceux de la classe
@@ -156,10 +168,9 @@ public class LetterDataset {
     original = loadImage(path);
     PImage img = im.ScrambleImage(im.Resize(original, xw, xh), mv, blr, dst, prln, defrm);
 
-    double[] imgPixels = session.ImgPP(img);
-    Matrix input = new Matrix(imgPixels.length, 1).ColumnFromArray(0, imgPixels);
+    Matrix imgPixels = session.ImgPP(img);
 
-    return new PImage[] {original, GetImageFromInputs(input, 0)};
+    return new PImage[] {original, CNNGetImageFromInputs(imgPixels)};
   }
 
   //f Renvoie une image affichable de l'image stockée en colonne _j_ de l'entrée _inputs_
@@ -168,6 +179,18 @@ public class LetterDataset {
     img.loadPixels();
     for(int i = 0; i < img.pixels.length; i++) {
       int val = floor((float)inputs.Get(i, j) * 255);
+      img.pixels[i] = color(val, val, val);
+    }
+    img.updatePixels();
+    return img;
+  }
+  
+  //f Renvoie une image affichable de l'image stockée en colonne _j_ de l'entrée _inputs_
+  public PImage CNNGetImageFromInputs(Matrix inputs) {
+    PImage img = createImage(session.w, session.h, RGB);
+    img.loadPixels();
+    for(int i = 0; i < img.pixels.length; i++) {
+      int val = floor((float)inputs.Get(floor(i / session.w), i % session.w) * 255);
       img.pixels[i] = color(val, val, val);
     }
     img.updatePixels();
