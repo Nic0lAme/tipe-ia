@@ -604,14 +604,14 @@ class Matrix {
   //f Retourne la valeur (_x_, _y_) de la matrice _mat_ à laquelle on applique la convolution de filtre _filter_
   // _x_ représente la ligne et _y_ la colonne (oui, c'est moche)
   double Filter(Matrix mat, Matrix filter, int x, int y) {
-    int ret = 0;
+    double ret = 0;
     for(int i = 0; i < filter.n; i++) {
       for(int j = 0; j < filter.p; j++) {
         int rx = x + i;
         int ry = y + j;
         if(rx < 0 || ry < 0 || rx >= mat.n || ry >= mat.p) continue; // Considère les pixels en dehors de l'image comme des 0
 
-        ret += mat.Get(rx, ry);
+        ret += mat.values[rx][ry];
       }
     }
 
@@ -638,14 +638,15 @@ class Matrix {
     
     for(int i = 0; i < pooledMat.n; i++) {
       for(int j = 0; j < pooledMat.p; j++) {
-        double max = 0;
-        int kmax = -1; int lmax = -1;
+        double max = this.values[h * i][w * j];
+        int kmax = h * i; int lmax = w * j;
         
         for(int k = h * i; k < h * (i+1); k++) {
           for(int l = w * j; l < w * (j+1); l++) {
             if(k >= this.n || l >= this.p) continue;
+            if(max >= this.values[k][l]) continue;
             
-            max = Math.max(max, this.values[k][l]);
+            max = this.values[k][l];
             kmax = k;
             lmax = l;
           }
