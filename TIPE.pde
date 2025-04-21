@@ -18,7 +18,7 @@ final boolean enableDraftingArea = false;
 
 // Nombre de threads pour les différentes tâches
 final int numThreadsDataset = 16; // Création des datasets
-final int numThreadsLearning = 8; // Apprentissage (si 1, pas de parallélisation)
+final int numThreadsLearning = 1; // Apprentissage (si 1, pas de parallélisation)
 
 // Attention, à ne pas modifier n'importe comment sous peine de conséquences
 final AtomicBoolean stopLearning = new AtomicBoolean(false);
@@ -135,9 +135,9 @@ void setup() {
       handTrainingDatas,
       //new String[]{},
       fontTrainingDatas,
-      2, 1);
+      1, 1);
       
-  cnn.MiniBatchLearn(sample, 8, 256, 1, 1, 4);
+  cnn.MiniBatchLearn(sample, 8, 1180, 1, 1, 4);
 }
 
 int index = 0;

@@ -283,6 +283,7 @@ class CNN {
           }
           if(k==0) {
             cBiasGrad[i] = gradients[3][0][i].Scale((double)1/X.length);
+            continue;
           }
           
           cBiasGrad[i].Add(gradients[3][0][i].Scale((double)1/X.length));
@@ -360,6 +361,7 @@ class CNN {
                 }
                 if(k==0) {
                   cBiasGrad[i] = gradients[3][0][i].Scale((double)1/trainingData[index].length);
+                  continue;
                 }
                 
                 cBiasGrad[i].Add(gradients[3][0][i].Scale((double)1/trainingData[index].length));
@@ -436,12 +438,12 @@ class CNN {
     
     for(int l = 0; l < this.cFilters.length; l++) {
       for(int f = 0; f < this.cFilters[l].length; f++) {
-        this.cFilters[l][f].Add(cFiltersGrad[l][f], -learning_rate / 100);
+        this.cFilters[l][f].Add(cFiltersGrad[l][f], -learning_rate);
         cl.pln("Filters " + str(l) + "," + str(f));
         cFiltersGrad[l][f].Debug();
         this.cFilters[l][f].Debug();
       }
-      this.cBias[l].Add(cBiasGrad[l], -learning_rate / 100);
+      this.cBias[l].Add(cBiasGrad[l], -learning_rate);
     }
 
     double J = this.ComputeLoss(S, Y);
@@ -478,7 +480,7 @@ class CNN {
     double lossAverage = 0;
 
     int startTime = millis();
-    int numOfBatches = floor(data[0].length / batchSize);
+    int numOfBatches = ceil(data[0].length / batchSize);
     for (int k = 0; k < numOfEpoch; k++) {
       double learningRate = CyclicalLearningRate(k, minLR, maxLR, period);
       cl.pln("(" + label + ") \tEpoch " + (k+1) + "/" + numOfEpoch + "\t Learning Rate : " + String.format("%6.4f", learningRate));
@@ -494,15 +496,15 @@ class CNN {
       lossAverage = 0;
 
       for (int i = 0; i < numOfBatches; i++) {
-        Matrix[] batch = Arrays.copyOfRange(data[0], i*batchSize, i*batchSize + batchSize);
-        Matrix batchAns = data[1][0].GetCol(i*batchSize, i*batchSize + batchSize - 1);
+        Matrix[] batch = Arrays.copyOfRange(data[0], i*batchSize, min(i*batchSize + batchSize, data[0].length));
+        Matrix batchAns = data[1][0].GetCol(i*batchSize, min(i*batchSize + batchSize - 1, data[0].length - 1));
         double l = this.Learn(batch, batchAns, learningRate);
         lossAverage += l / numOfBatches;
         graphApplet.AddValue(l);
 
         if (abortTraining.get()) return lossAverage;
 
-        if (i % (numOfBatches / 4) == 0)
+        if (i % max(1, (numOfBatches / 4)) == 0)
           cl.pln("\t Epoch " + String.format("%05d",k+1) +
             " Batch " + String.format("%05d",i+1) + " : " + String.format("%9.3E",l) +
             "\t Time remaining " + RemainingTime(startTime, k * numOfBatches + i + 1, numOfBatches * numOfEpoch)

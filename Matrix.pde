@@ -611,7 +611,7 @@ class Matrix {
         int ry = y + j;
         if(rx < 0 || ry < 0 || rx >= mat.n || ry >= mat.p) continue; // Considère les pixels en dehors de l'image comme des 0
 
-        ret += mat.values[rx][ry];
+        ret += mat.values[rx][ry] * filter.values[i][j];
       }
     }
 
@@ -639,7 +639,7 @@ class Matrix {
     for(int i = 0; i < pooledMat.n; i++) {
       for(int j = 0; j < pooledMat.p; j++) {
         double max = this.values[h * i][w * j];
-        int kmax = h * i; int lmax = w * j;
+        int kmax = -1; int lmax = -1;
         
         for(int k = h * i; k < h * (i+1); k++) {
           for(int l = w * j; l < w * (j+1); l++) {
