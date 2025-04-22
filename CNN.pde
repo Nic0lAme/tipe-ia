@@ -15,7 +15,7 @@ class CNN {
   Matrix[] cBias;
   int[] cImageSizes;
 
-  double lambda = 0.0000001;
+  double lambda = 0;
 
   boolean useSoftMax = false; // Détermine l'utilisation de la fonction softmax sur la dernière couche du réseau
 
@@ -164,7 +164,7 @@ class CNN {
 
     //dJ/dZl
     Matrix a = activations[this.numLayers-1].C();
-    Matrix gradient = a.C().Add(expectedOutput, -1).HProduct(a.C().Add(a.C().HProduct(a), -1));
+    Matrix gradient = a.C().Add(expectedOutput, -1).HProduct(a.C().HProduct(a.C().AddScal(-1.0).Scale(-1.0)));
 
     Matrix[] weightGrad = new Matrix[this.numLayers - 1];
     Matrix[] biasGrad = new Matrix[this.numLayers - 1];
@@ -187,7 +187,9 @@ class CNN {
     }
     
     int areaOfOutput = this.cImageSizes[this.cNumLayers] * this.cImageSizes[this.cNumLayers];
-    int numOfImageInOutput = activations[0].n / areaOfOutput;
+    int numOfImageInOutput = convActivations[this.cNumLayers].length;
+    assert activations[0].n == areaOfOutput * numOfImageInOutput;
+
     Matrix[] cGradient = new Matrix[numOfImageInOutput];
     for(int k = 0; k < numOfImageInOutput; k++) {
       //  A REFAIRE PROPREMENT
@@ -201,11 +203,14 @@ class CNN {
       
       cBiasGrad[k] = new Matrix(this.cFilters[k].length, 1);
       Matrix[] cSizedGradient = new Matrix[cGradient.length];
-      for(int g = 0; g < cSizedGradient.length; g++) {
-        cSizedGradient[g] = new Matrix(convActivations[k][0].n - this.cFilterSize + 1);
-        for(int i = 0; i < cSizedGradient[g].n; i++) {
-          for(int j = 0; j < cSizedGradient[g].p; j++) {
-            cSizedGradient[g].Set(i, j, masks[k][g / this.cFilters[k].length].Get(i,j) * cGradient[g].Get((int)Math.floor((float)i / this.cPool), (int)Math.floor((float)j / this.cPool)));
+      for(int oImg = 0; oImg < prevLayerOutputSize; oImg++) {
+        for(int fImg = 0; fImg < this.cFilters[k].length; fImg++) {
+          int g = oImg * this.cFilters[k].length + fImg;
+          cSizedGradient[g] = new Matrix(convActivations[k][0].n - this.cFilterSize + 1);
+          for(int i = 0; i < cSizedGradient[g].n; i++) {
+            for(int j = 0; j < cSizedGradient[g].p; j++) {
+              cSizedGradient[g].Set(i, j, masks[k][oImg].Get(i,j) * cGradient[g].Get((int)Math.floor((float)i / this.cPool), (int)Math.floor((float)j / this.cPool)));
+            }
           }
         }
       }
@@ -439,13 +444,18 @@ class CNN {
     for(int l = 0; l < this.cFilters.length; l++) {
       for(int f = 0; f < this.cFilters[l].length; f++) {
         this.cFilters[l][f].Add(cFiltersGrad[l][f], -learning_rate);
+        
+        // DEBUG FILTERS
+        /*
         cl.pln("Filters " + str(l) + "," + str(f));
         cFiltersGrad[l][f].Debug();
         this.cFilters[l][f].Debug();
+        */
       }
       this.cBias[l].Add(cBiasGrad[l], -learning_rate);
     }
-
+    
+    //S.Debug();
     double J = this.ComputeLoss(S, Y);
     return J;
   }
