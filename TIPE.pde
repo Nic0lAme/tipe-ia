@@ -18,7 +18,7 @@ final boolean enableDraftingArea = false;
 
 // Nombre de threads pour les différentes tâches
 final int numThreadsDataset = 16; // Création des datasets
-final int numThreadsLearning = 8; // Apprentissage (si 1, pas de parallélisation)
+final int numThreadsLearning = 64; // Apprentissage (si 1, pas de parallélisation)
 
 // Attention, à ne pas modifier n'importe comment sous peine de conséquences
 final AtomicBoolean stopLearning = new AtomicBoolean(false);
@@ -128,7 +128,7 @@ void setup() {
     bayes.SERV_Export(new HyperParameters().Random(), random(1));
   */
   
-  CNN cnn = new CNN(25, new int[]{20}, new int[]{512, 256, cs.allC.length});
+  CNN cnn = new CNN(25, new int[]{20, 10}, new int[]{512, 256, cs.allC.length});
   cnn.UseSoftMax();
   
   Matrix[][] sample = session.ds.CreateSample(
@@ -137,9 +137,9 @@ void setup() {
       handTrainingDatas,
       //new String[]{},
       fontTrainingDatas,
-      2, 1);
+      1, 1);
       
-  cnn.MiniBatchLearn(sample, 64, 128, 1, 1, 4);
+  cnn.MiniBatchLearn(sample, 64, 512, 0.05, 0.3, 4);
 }
 
 int index = 0;
@@ -158,7 +158,7 @@ void SetMainSession(Session newSession) {
 
 
 void InitCStorage() {
-  cs = new CharactersStorage(65);
+  cs = new CharactersStorage(62);
   
   cs.AddChar("uA",'A', new double[][]{{0, 1}});
   cs.AddChar("uB",'B', new double[][]{{1, 1}});
