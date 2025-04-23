@@ -14,6 +14,25 @@ class CNN {
   Matrix[][] cFilters;
   Matrix[] cBias;
   int[] cImageSizes;
+  
+  
+  // ADAM Learning Rate Optimization
+  boolean useADAM = true;
+  
+  Matrix[] ADAMweightsMoment;
+  Matrix[] ADAMweightsSqMoment;
+  Matrix[] ADAMbiasMoment;
+  Matrix[] ADAMbiasSqMoment;
+  
+  Matrix[][] cADAMfiltersMoment;
+  Matrix[][] cADAMfiltersSqMoment;
+  Matrix[] cADAMbiasMoment;
+  Matrix[] cADAMbiasSqMoment;
+  
+  int numOfLearningCall = 0;
+  double b1 = 0.9;
+  double b2 = 0.99;
+  
 
   double lambda = 0;
 
@@ -30,7 +49,17 @@ class CNN {
     this.cNumLayers = cNumFilters.length;
     this.cFilters = new Matrix[cNumLayers][];
     this.cBias = new Matrix[cNumLayers];
-    for (int i = 0; i < cNumLayers; i++) cFilters[i] = new Matrix[cNumFilters[i]];
+    
+    this.cADAMfiltersMoment = new Matrix[cNumLayers][];
+    this.cADAMfiltersSqMoment = new Matrix[cNumLayers][];
+    this.cADAMbiasMoment = new Matrix[cNumLayers];
+    this.cADAMbiasSqMoment = new Matrix[cNumLayers];
+
+    for (int i = 0; i < cNumLayers; i++) {
+      this.cFilters[i] = new Matrix[cNumFilters[i]];
+      this.cADAMfiltersMoment[i] = new Matrix[cNumFilters[i]];
+      this.cADAMfiltersSqMoment[i] = new Matrix[cNumFilters[i]];
+    }
     
     this.cImageSize = imageSize;
     
@@ -57,20 +86,40 @@ class CNN {
     // Calcul aléatoire d'initialisation des weights et bias du réseau normal
     weights = new Matrix[numLayers-1];
     bias = new Matrix[numLayers-1];
+    
+    ADAMweightsMoment = new Matrix[numLayers-1];
+    ADAMweightsSqMoment = new Matrix[numLayers-1];
+    ADAMbiasMoment = new Matrix[numLayers-1];
+    ADAMbiasSqMoment = new Matrix[numLayers-1];
 
     for (int i = 0; i < numLayers-1; i++) {
       // Normal Xavier Weight Initialization
       bias[i] = new Matrix(layers[i+1], 1).Random(-sqrt(6) / sqrt(layers[i] + layers[i+1]), sqrt(6) / sqrt(layers[i] + layers[i+1]));
-      weights[i] = new Matrix(layers[i+1], layers[i]).Random(-1, 1);
+      weights[i] = new Matrix(layers[i+1], layers[i]).Random(-sqrt(6) / sqrt(layers[i] + layers[i+1]), sqrt(6) / sqrt(layers[i] + layers[i+1]));
+      
+      ADAMweightsMoment[i] = new Matrix(layers[i+1], layers[i]);
+      ADAMweightsSqMoment[i] = new Matrix(layers[i+1], layers[i]);
+      ADAMbiasMoment[i] = new Matrix(layers[i+1], 1);
+      ADAMbiasSqMoment[i] = new Matrix(layers[i+1], 1);
     }
     
     // Calcul aléatoire d'init des filters et bias du CNN
     for (int i = 0; i < cNumLayers; i++) {
-      for(int k = 0; k < this.cFilters[i].length; k++) {
-        this.cFilters[i][k] = new Matrix(cFilterSize).Random(-1, 1);
+      int nin = i == 0 ? 1 : this.cFilters[i-1].length;
+      int nout = this.cFilters[i].length;
+      
+      for(int f = 0; f < this.cFilters[i].length; f++) {
+        // He Kaiming Initialization (for ReLU)
+        this.cFilters[i][f] = new Matrix(cFilterSize).Random(0, sqrt(2 / nin));
+        
+        this.cADAMfiltersMoment[i][f] = new Matrix(cFilterSize);
+        this.cADAMfiltersSqMoment[i][f] = new Matrix(cFilterSize);
       }
       
-      cBias[i] = new Matrix(this.cFilters[i].length, 1).Random(-1, 1);
+      // Normal Xavier Weight Initialization
+      cBias[i] = new Matrix(this.cFilters[i].length, 1).Random(-sqrt(6) / sqrt(nin + nout), sqrt(6) / sqrt(nin + nout));
+      this.cADAMbiasMoment[i] = new Matrix(this.cFilters[i].length, 1);
+      this.cADAMbiasSqMoment[i] = new Matrix(this.cFilters[i].length, 1);
     }
   }
   
@@ -249,6 +298,8 @@ class CNN {
   //f Effectue une étape d'apprentissage, ayant pour entrée _X_ et pour sortie _Y_
   // Le taux d'apprentissage est _learning\_rate_
   public double Learn(Matrix[] X, Matrix Y, double learning_rate) {
+    this.numOfLearningCall++;
+    
     // Activation de la dernière couche
     Matrix S = new Matrix(Y.n, X.length);
     
@@ -437,13 +488,41 @@ class CNN {
     }
     
     for(int l = 0; l < this.numLayers - 1; l++) {
-      this.weights[l].Add(weightGrad[l], -learning_rate);
-      this.bias[l].Add(biasGrad[l], -learning_rate);
+      if(!useADAM) {
+        this.weights[l].Add(weightGrad[l], -learning_rate);
+        this.bias[l].Add(biasGrad[l], -learning_rate);
+        continue;
+      }
+      
+      this.ADAMweightsMoment[l].Scale(b1).Add(weightGrad[l].C(), 1-b1);
+      this.ADAMweightsSqMoment[l].Scale(b2).Add(weightGrad[l].C().HProduct(weightGrad[l]), 1-b2);
+      this.weights[l].Add(this.ADAMweightsMoment[l].C()
+        .HProduct(this.ADAMweightsSqMoment[l].C().Map((x) -> 1 / Math.sqrt(x + 1e-10)))
+        .Scale(Math.sqrt(1 - Math.pow(b2, this.numOfLearningCall)) / (1 - Math.pow(b1, this.numOfLearningCall))),
+        -learning_rate);
+        
+        
+      this.ADAMbiasMoment[l].Scale(b1).Add(biasGrad[l].C(), 1-b1);
+      this.ADAMbiasSqMoment[l].Scale(b2).Add(biasGrad[l].C().HProduct(biasGrad[l]), 1-b2);
+      this.bias[l].Add(this.ADAMbiasMoment[l].C()
+        .HProduct(this.ADAMbiasSqMoment[l].C().Map((x) -> 1 / Math.sqrt(x + 1e-10)))
+        .Scale(Math.sqrt(1 - Math.pow(b2, this.numOfLearningCall)) / (1 - Math.pow(b1, this.numOfLearningCall))),
+        -learning_rate);
     }
     
     for(int l = 0; l < this.cFilters.length; l++) {
       for(int f = 0; f < this.cFilters[l].length; f++) {
-        this.cFilters[l][f].Add(cFiltersGrad[l][f], -learning_rate);
+        if(!useADAM) {
+          this.cFilters[l][f].Add(cFiltersGrad[l][f], -learning_rate);
+          continue;
+        }
+        
+        this.cADAMfiltersMoment[l][f].Scale(b1).Add(cFiltersGrad[l][f].C(), 1-b1);
+        this.cADAMfiltersSqMoment[l][f].Scale(b2).Add(cFiltersGrad[l][f].C().HProduct(cFiltersGrad[l][f]), 1-b2);
+        this.cFilters[l][f].Add(this.cADAMfiltersMoment[l][f].C()
+          .HProduct(this.cADAMfiltersSqMoment[l][f].C().Map((x) -> 1 / Math.sqrt(x + 1e-10)))
+          .Scale(Math.sqrt(1 - Math.pow(b2, this.numOfLearningCall)) / (1 - Math.pow(b1, this.numOfLearningCall))),
+          -learning_rate);
         
         // DEBUG FILTERS
         /*
@@ -452,7 +531,17 @@ class CNN {
         this.cFilters[l][f].Debug();
         */
       }
-      this.cBias[l].Add(cBiasGrad[l], -learning_rate);
+      
+      if(!useADAM) {
+        this.cBias[l].Add(cBiasGrad[l], -learning_rate);
+      }
+      
+      this.cADAMbiasMoment[l].Scale(b1).Add(cBiasGrad[l].C(), 1-b1);
+      this.cADAMbiasSqMoment[l].Scale(b2).Add(cBiasGrad[l].C().HProduct(cBiasGrad[l]), 1-b2);
+      this.cBias[l].Add(this.cADAMbiasMoment[l].C()
+        .HProduct(this.cADAMbiasSqMoment[l].C().Map((x) -> 1 / Math.sqrt(x + 1e-10)))
+        .Scale(Math.sqrt(1 - Math.pow(b2, this.numOfLearningCall)) / (1 - Math.pow(b1, this.numOfLearningCall))),
+        -learning_rate);
     }
     
     //S.Debug();
