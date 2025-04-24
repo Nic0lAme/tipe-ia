@@ -1,6 +1,9 @@
+import com.aparapi.Kernel;
+import com.aparapi.Range;
+
 class Matrix {
   final int n, p;            //n : # lines | p : # columns
-  double [][] values;      //values stored in the matrix
+  double [] values;      //values stored in the matrix
 
   //c Crée une matrice de taille _n_ \* _p_ (# de lignes \* # de colonnes)
   Matrix(int n, int p) {
@@ -21,7 +24,7 @@ class Matrix {
 
   //f Initialise la matrice (remet ses valeurs à 0)
   void Init() {
-    values = new double[n][p];
+    values = new double[n*p];
   }
 
   //f Afficher la matrice _this_ dans la console
@@ -29,7 +32,7 @@ class Matrix {
     //if(true) return; //if you want to disable all debug
     for(int i = 0; i < n; i++) {
       for(int j = 0; j < p; j++) {
-        cl.p(this.values[i][j], "\t");
+        cl.p(this.values[i * this.p + j], "\t");
       }
       cl.pln();
     }
@@ -45,7 +48,7 @@ class Matrix {
   void DebugCol(int j) {
     cl.p("Colonne " + str(j) + " [");
     for (int i = 0; i < this.n; i++) {
-      cl.p(this.values[i][j] + " ");
+      cl.p(this.values[i * this.p + j] + " ");
     }
     cl.p("]");
     cl.pln();
@@ -64,7 +67,7 @@ class Matrix {
     for (int i = 0; i < this.n; i++) {
       output[i] = "";
       for (int j = 0; j < this.p; j++)
-        output[i] += this.values[i][j] + (j != this.p - 1 ? "," : "");
+        output[i] += this.values[i * this.p + j] + (j != this.p - 1 ? "," : "");
       if(doLog) cl.pln("\t" + (i + 1) + "/" + this.n + "\t Time remaining " + RemainingTime(startTime, i+1, this.n));
     }
     return output;
@@ -90,7 +93,7 @@ class Matrix {
     Matrix new_mat = new Matrix(n, p);
     for (int i = 0; i < n; i++)
       for (int j = 0; j < p; j++)
-        new_mat.Set(i, j, this.values[i][j]);
+        new_mat.Set(i, j, this.values[i * this.p + j]);
 
     return new_mat;
   }
@@ -99,7 +102,7 @@ class Matrix {
   Matrix Fill(double val) {
     for(int i = 0; i < n; i++)
       for(int j = 0; j < p; j++)
-        this.values[i][j] = val;
+        this.values[i * this.p + j] = val;
     return this;
   }
 
@@ -108,7 +111,7 @@ class Matrix {
     if (val.length != n || val[0].length != p) { cl.pln(this, "FromArray", "Wrong size array"); Exception e = new Exception(); e.printStackTrace(); return this; }
     for (int i = 0; i < n; i++)
       for (int j = 0; j < p; j++)
-        this.values[i][j] = val[i][j];
+        this.values[i * this.p + j] = val[i][j];
 
     return this;
   }
@@ -117,7 +120,7 @@ class Matrix {
   Matrix Random(double min, double max) {
     for (int i = 0; i < n; i++)
       for (int j = 0; j < p; j++)
-        this.values[i][j] = min + (max - min)*random(1);
+        this.values[i*this.p + j] = min + (max - min)*random(1);
     return this;
   }
 
@@ -131,7 +134,7 @@ class Matrix {
     if (this.n != this.p) { cl.pln(this, "Identity", "Not square matrix"); Exception e = new Exception(); e.printStackTrace(); return this; }
     for (int i = 0; i < this.n; i++)
       for (int j = 0; j < this.n; j++)
-        this.values[i][j] = (i == j ? 1 : 0);
+        this.values[i * this.p + j] = (i == j ? 1 : 0);
 
     return this;
   }
@@ -148,7 +151,7 @@ class Matrix {
       System.exit(-1);
       return this;
     }
-    this.values[i][j] = val;
+    this.values[i * this.p + j] = val;
     
     return this;
   }
@@ -156,14 +159,14 @@ class Matrix {
   //f Réccupère la valeur de _this_ à la ligne _i_ et la colonne _j_
   double Get(int i, int j) {
     if (i < 0 || i >= n || j < 0 || j >= p) { cl.pln(this, i, j, "Get", "Wrong indices"); Exception e = new Exception(); e.printStackTrace(); return 0; }
-    return this.values[i][j];
+    return this.values[i * this.p + j];
   }
 
   //f Vérifie si _val_ est dans la matrice _this_
   boolean Contains(double val) {
     for (int i = 0; i < this.n; i++)
       for (int j = 0; j < this.p; j++)
-        if (val == this.values[i][j]) return true;
+        if (val == this.values[i * this.p + j]) return true;
     return false;
   }
 
@@ -171,7 +174,7 @@ class Matrix {
   boolean HasNAN() {
     for (int i = 0; i < this.n; i++)
       for (int j = 0; j < this.p; j++)
-        if (this.values[i][j] != this.values[i][j]) return true;
+        if (this.values[i * this.p + j] != this.values[i * this.p + j]) return true;
     return false;
   }
 
@@ -180,18 +183,20 @@ class Matrix {
   Matrix Map(FunctionMap func) {
     for (int i = 0; i < this.n; i++)
       for (int j = 0; j < this.p; j++)
-        this.values[i][j] = func.calc(this.values[i][j]);
+        this.values[i * this.p + j] = func.calc(this.values[i * this.p + j]);
     return this;
   }
 
   //f Crée une nouvelle matrice, transposée de _this_
   Matrix T() {
-    double [][] n_matcoeff = new double[p][n];
+    double [] n_matcoeff = new double[n * p];
     for (int i = 0; i < n; i++)
       for (int j = 0; j < p; j++)
-        n_matcoeff[j][i] = this.values[i][j];
-
-    return new Matrix(this.p,this.n).FromArray(n_matcoeff);
+        n_matcoeff[j * this.n + i] = this.values[i * this.p + j];
+    
+    Matrix ret = new Matrix(this.p, this.n);
+    ret.values = n_matcoeff;
+    return ret;
   }
 
   //s broadcast à false & scal = 1
@@ -218,25 +223,20 @@ class Matrix {
     for (int i = 0; i < n; i++)
       for (int j = 0; j < p; j++)
         // Le broadcasting permet d'additionner à une matrice un vecteur, qui s'étend sur toutes les colonnes (oui j'ai expliqué en fr celui-là)
-        this.values[i][j] = (this.values[i][j] + scal * m.values[i][broadcast ? 0 : j]);
+        this.values[i * this.p + j] = (this.values[i * this.p + j] + scal * m.values[i * m.p + (broadcast ? 0 : j)]);
 
     return this;
   }
   
   //f Ajoute un scalaire
   Matrix AddScal(double scal) {
-    for (int i = 0; i < this.n; i++) 
-      for (int j = 0; j < this.p; j++)
-        this.values[i][j] += scal;
+    for(int k = 0; k < this.values.length; k++) this.values[k] += scal;
     return this;
   }
 
   //f Multiplie l'ensemble de la matrice _this_ par le facteur _scal_
   Matrix Scale(double scal) {
-    for (int i = 0; i < n; i++)
-      for (int j = 0; j < p; j++)
-        this.values[i][j] = scal * this.values[i][j];
-
+    for(int k = 0; k < this.values.length; k++) this.values[k] *= scal;
     return this;
   }
 
@@ -245,7 +245,7 @@ class Matrix {
     if (j < 0 || j >= this.p) { cl.pln(this, j, "Dilat", "Wrong Column Index"); Exception e = new Exception(); e.printStackTrace(); return this; }
 
     for(int i = 0; i < this.n; i++)
-      this.values[i][j] *= scal;
+      this.values[i * this.p + j] *= scal;
 
     return this;
   }
@@ -256,9 +256,9 @@ class Matrix {
 
     double temp;
     for(int i = 0; i < this.n; i++) {
-      temp = this.values[i][j1];
-      this.values[i][j1] = this.values[i][j2];
-      this.values[i][j2] = temp;
+      temp = this.values[i * this.p + j1];
+      this.values[i * this.p + j1] = this.values[i * this.p + j2];
+      this.values[i * this.p + j2] = temp;
     }
 
     return this;
@@ -325,7 +325,7 @@ class Matrix {
     Matrix new_mat = new Matrix(this.n, endCol - startCol);
     for(int k = 0; k < endCol - startCol; k++) {
       for(int i = 0; i < this.n; i++)
-        new_mat.values[i][k] = this.values[i][jList[k + startCol]];
+        new_mat.values[i * new_mat.p + k] = this.values[i * this.p + jList[k + startCol]];
     }
 
     return new_mat;
@@ -336,7 +336,7 @@ class Matrix {
     if (j < 0 || j >= this.p) { cl.pln(this, j, "ColumnFromArray", "Wrong Column Index"); Exception e = new Exception(); e.printStackTrace(); return this; }
     if (col.length != this.n) { cl.pln(this, col.length, "ColumnFromArray", "Wrong Sized Column"); Exception e = new Exception(); e.printStackTrace(); return this; }
 
-    for(int i = 0; i < this.n; i++) this.values[i][j] = col[i];
+    for(int i = 0; i < this.n; i++) this.values[i * this.p + j] = col[i];
 
     return this;
   }
@@ -346,7 +346,7 @@ class Matrix {
     double[] col = new double[this.n];
     if (j < 0 || j >= this.p) { cl.pln(this, j, "ColumnToArray", "Wrong Column Index"); Exception e = new Exception(); e.printStackTrace(); return col; }
     for (int i = 0; i < this.n ;i++) {
-      col[i] = this.values[i][j];
+      col[i] = this.values[i * this.p + j];
     }
     return col;
   }
@@ -356,7 +356,7 @@ class Matrix {
     double sum = 0;
     for(int i = 0; i < this.n; i++)
       for(int j = 0; j < this.p; j++)
-        sum += this.values[i][j];
+        sum += this.values[i * this.p + j];
     return sum;
   }
 
@@ -366,7 +366,7 @@ class Matrix {
 
     double sum = 0;
     for(int i = 0; i < this.n; i++)
-      sum += this.values[i][j];
+      sum += this.values[i * this.p + j];
 
     return sum;
   }
@@ -377,9 +377,9 @@ class Matrix {
     for(int i = 0; i < this.n; i++) {
       double avg = 0;
       for(int j = 0; j < this.p; j++)
-        avg += this.values[i][j] / this.p;
+        avg += this.values[i * this.p + j] / this.p;
 
-      matrixOfAverage.values[i][0] = avg;
+      matrixOfAverage.values[i] = avg;
     }
     return matrixOfAverage;
   }
@@ -432,28 +432,79 @@ class Matrix {
   //f Crée une nouvelle matrice, correspondant au produit de _this_ par _m_
   Matrix Mult(Matrix m) {
     if (p != m.n) { cl.pln(this, m, "Mult", "Wrong sized matrixes"); Exception e = new Exception(); e.printStackTrace(); return this; }
-
+    
+    int initTime = millis();
+    
     Matrix new_mat = new Matrix(n, m.p);
     double s = 0;
     for (int i = 0; i < n; i++) {
       for (int j = 0; j < m.p; j++) {
         s = 0;
         for (int k = 0; k < p; k++)
-          s += this.values[i][k] * m.values[k][j];
+          s += this.values[i *  this.p + k] * m.values[k * m.p + j];
 
-        new_mat.values[i][j] = s;
+        new_mat.values[i * new_mat.p + j] = s;
       }
     }
+    
+    println("MULT : (" + str(this.n) + "*" + str(this.p) + ")x(" + str(m.n) + "*"  + str(m.p) + ") Time : " + str(millis() - initTime));
+    
     return new_mat;
+  }
+  
+  Matrix GPUMult(Matrix m) {
+    int initTime = millis();
+
+    double[] A = this.Flatten();
+    double[] B = m.Flatten();
+    
+    double[] C = new double[this.n * m.p];
+    
+    final int N = this.n;
+    final int K = this.p;
+    final int M = m.p;
+    
+    Kernel kernel = new Kernel() {
+      @Override
+      public void run() {
+        int gid = getGlobalId();
+        int row = gid / M;
+        int col = gid % M;
+        
+        double sum = 0;
+        for(int k = 0; k < K; k++)
+          sum += A[row * K + k] * B[k * M + col];
+          
+        C[row * M + col] = sum;
+      }
+    };
+    
+    kernel.execute(Range.create(N * M));
+    kernel.dispose();
+    
+    println("GPUMULT : (" + str(this.n) + "*" + str(this.p) + ")x(" + str(m.n) + "*"  + str(m.p) + ") Time : " + str(millis() - initTime));
+
+    
+    return new Matrix(this.n, m.p).Unflatten(C);
+  }
+  
+  double[] Flatten() {
+    return this.values;
+  }
+  
+  Matrix Unflatten(double[] flat) {
+    if(flat.length != this.n * this.p) { cl.pln(this, flat, "Unflatten", "Wrong sized array"); Exception e = new Exception(); e.printStackTrace(); return this; }
+
+    this.values = flat;
+    return this;
   }
 
   //f Renvoie une nouvelle matrice, correspondant au produit de Hadamard entre _this_ et _m_
   Matrix HProduct(Matrix m) {
     if((p != m.p && m.p != 1)  || n != m.n) { cl.pln(this, m, "HPrduct", "Wrong sized matrixes"); Exception e = new Exception(); e.printStackTrace(); return this; }
 
-    for (int i = 0; i < n; i++)
-      for (int j = 0; j < p; j++)
-        this.values[i][j] = this.values[i][j] * (m.p == 1 ? m.values[i][0] : m.values[i][j]);
+    for(int k = 0; k < this.values.length; k++)
+      this.values[k] = this.values[k] * (m.p == 1 ? m.values[k / this.p] : m.values[k]);
 
     return this;
   }
@@ -469,7 +520,7 @@ class Matrix {
         println("SOME PROBLEMS IN THE VALUES OF THE ARRAY (NORM COLUMN)");
         System.exit(-1);
       }
-      if(Math.log10(s) * Math.log10(s) > 10) {
+      if(Math.log10(s) * Math.log10(s) > 100) {
         println("NORMS BEGIN TO BE REALLY HIGH");
       }
       this.Dilat(j, (double)1 / s);
@@ -486,7 +537,7 @@ class Matrix {
     Matrix min = new Matrix(this.n - 1, this.p - 1);
     for (int e = 0; e < this.n - 1; e++)
       for (int f = 0; f < this.p - 1; f++)
-        min.values[e][f] = this.values[e >= i ? e+1 : e][f >= j ? f+1 : f];
+        min.values[e * min.p + f] = this.values[(e >= i ? e+1 : e) * this.p + (f >= j ? f+1 : f)];
 
     return min;
   }
@@ -496,12 +547,12 @@ class Matrix {
   double Det() {
     if (this.n != this.p) { cl.pln(this, "Det", "Not square matrix"); Exception e = new Exception(); e.printStackTrace(); return 0; }
     if (this.n == 1) {
-      return this.values[0][0];
+      return this.values[0];
     }
 
     double det = 0;
     for (int k = 0; k < this.n; k++)
-      det += pow(-1, k) * this.values[k][0] * this.MinMatrix(k, 0).Det();
+      det += pow(-1, k) * this.values[k * this.p] * this.MinMatrix(k, 0).Det();
 
     return det;
   }
@@ -531,21 +582,18 @@ class Matrix {
     if (this.n != this.p) { cl.pln(this, "Inversed", "Not square matrix"); Exception e = new Exception(); e.printStackTrace(); return new Matrix(this.n, this.p); }
     Matrix augmentedMatrix = new Matrix(2 * this.n, this.n);
 
-    for (int i = 0; i < this.n; i++) {
-      for (int j = 0; j < this.n; j++) {
-        augmentedMatrix.values[i][j] = this.values[i][j];
-      }
-    }
+    for(int k = 0; k < this.values.length; k++)
+      augmentedMatrix.values[k] = this.values[k];
 
     for (int i = 0; i < this.n; i++) {
-      augmentedMatrix.values[i + this.n][i] = 1;
+      augmentedMatrix.values[(i + this.n) * this.p + i] = 1;
     }
 
     // Élimination de Gauss-Jordan
     for (int i = 0; i < this.n; i++) {        
       double pivot = 0; int k = i;
       while(k < this.n) {
-        pivot = augmentedMatrix.values[i][k];
+        pivot = augmentedMatrix.values[i * this.p + k];
         if(pivot != 0) break;
         k++;
       }
@@ -557,10 +605,10 @@ class Matrix {
       for (int j = 0; j < this.n; j++) {
         if (j == i) continue;
         
-        double factor = augmentedMatrix.values[i][j];
+        double factor = augmentedMatrix.values[i * this.p + j];
         
         for (int l = 0; l < 2 * this.n; l++) {
-          augmentedMatrix.values[l][j] -= factor * augmentedMatrix.values[l][i];
+          augmentedMatrix.values[l * this.p + j] -= factor * augmentedMatrix.values[l * this.p + i];
         }
       }
     }
@@ -568,7 +616,7 @@ class Matrix {
     Matrix inverse = new Matrix(this.n, this.n);
     for (int i = 0; i < this.n; i++) {
       for (int j = 0; j < this.n; j++) {
-          inverse.values[i][j] = augmentedMatrix.values[i + this.n][j];
+          inverse.values[i * this.p + j] = augmentedMatrix.values[(i + this.n) * this.p + j];
       }
     }
     
@@ -577,6 +625,8 @@ class Matrix {
 
   //f Retourne une nouvelle matrice _mat_ sur laquelle on a effectué la convolution complète _filter_
   Matrix FullConvolution(Matrix filter) {
+    int initTime = millis();
+    
     Matrix nMat = new Matrix(this.n + filter.n - 1, this.p + filter.p - 1);
     
     for(int i = 0; i < this.n + filter.n - 1; i++) {
@@ -585,11 +635,15 @@ class Matrix {
       }
     }
     
+    convolutionTime += millis() - initTime;
+    
     return nMat;
   }
 
   //f Retourne une nouvelle matrice _mat_ sur laquelle on a effectué la convolution _filter_
   Matrix Convolution(Matrix filter) {
+    int initTime = millis();
+    
     Matrix nMat = new Matrix(this.n - filter.n + 1, this.p - filter.p + 1);
     
     for(int i = 0; i < nMat.n; i++) {
@@ -597,6 +651,8 @@ class Matrix {
         nMat.Set(i, j, this.Filter(this, filter, i, j));
       }
     }
+    
+    convolutionTime += millis() - initTime;
     
     return nMat;
   }
@@ -611,20 +667,65 @@ class Matrix {
         int ry = y + j;
         if(rx < 0 || ry < 0 || rx >= mat.n || ry >= mat.p) continue; // Considère les pixels en dehors de l'image comme des 0
 
-        ret += mat.values[rx][ry] * filter.values[i][j];
+        ret += mat.values[rx * mat.p + ry] * filter.values[i * filter.p + j];
       }
     }
 
     return ret;
   }
   
+  //f Dans les faits complétement inutilisables (prend de l'ordre de 50 ms là où une simple prend moins de 1 ms)
+  Matrix GPUConvolution(Matrix filter) {
+    double[] m = this.Flatten();
+    double[] f = filter.Flatten();
+    
+    int initTime = millis();
+    
+    final int mn= this.n;
+    final int mp = this.p;
+    final int fn = filter.n;
+    final int fp = filter.p;
+    
+    final int N = (this.n - filter.n + 1);
+    final int P = (this.p - filter.p + 1);
+    
+    double[] ret = new double[N*P];
+    
+    Kernel kernel = new Kernel() {
+      @Override
+      public void run() {
+        int gid = getGlobalId();
+        int x = gid / P;
+        int y = gid % P;
+        
+        double r = 0;
+        for(int i = 0; i < fn; i++) {
+          for(int j = 0; j < fp; j++) {
+            int rx = x + i;
+            int ry = y + j;
+            if(rx < 0 || ry < 0 || rx >= mn || ry >= mp) continue; // Considère les pixels en dehors de l'image comme des 0
+    
+            r += m[rx * mp + ry] * f[i * fp + j];
+          }
+        }
+        
+        ret[y * P + x] = r;
+      }
+    };
+    
+    kernel.execute(Range.create(N * P));
+    kernel.dispose();
+    
+    return new Matrix(N, P).Unflatten(ret);
+  }
+    
   //f Retourne une copie de la matrice _this_ retournée de 180°
-  Matrix Rotate180() {
+  Matrix Rotate180() {    
     Matrix rotated = this.C();
     
     for(int i = 0; i < this.n; i++) {
       for(int j = 0; j < this.p; j++) {
-        rotated.values[i][j] = this.values[this.n - i - 1][this.p - j - 1];
+        rotated.values[i * this.p + j] = this.values[(this.n - i - 1) * this.p + (this.p - j - 1)];
       }
     }
     
@@ -644,9 +745,9 @@ class Matrix {
         for(int k = h * i; k < h * (i+1); k++) {
           for(int l = w * j; l < w * (j+1); l++) {
             if(k >= this.n || l >= this.p) continue;
-            if(max >= this.values[k][l]) continue;
+            if(max >= this.values[k * this.p + l]) continue;
             
-            max = this.values[k][l];
+            max = this.values[k * this.p + l];
             kmax = k;
             lmax = l;
           }
@@ -654,7 +755,7 @@ class Matrix {
         
         if(kmax != -1 && lmax != -1) mask.Set(kmax, lmax, 1);
         
-        pooledMat.values[i][j] = max;
+        pooledMat.values[i * pooledMat.p + j] = max;
       }
     }
     
@@ -663,11 +764,8 @@ class Matrix {
   
   Matrix ToCol() {
     Matrix newMat = new Matrix(this.n * this.p, 1);
+    newMat.values = this.values;
     
-    for(int i = 0; i < this.n; i++)
-      for(int j = 0; j < this.p; j++)
-        newMat.values[i * this.p + j][0] = this.values[i][j];
-        
     return newMat;
   }
   
@@ -675,9 +773,7 @@ class Matrix {
     if (w * h != this.n) { cl.pln(this, "FromCol", "Wrong Size column"); Exception e = new Exception(); e.printStackTrace(); return new Matrix(this.n, this.p); }
 
     Matrix newMat = new Matrix(h, w);
-    for(int i = 0; i < h; i++)
-      for(int j = 0; j < w; j++)
-        newMat.values[i][j] = this.values[i * w + j][0];
+    newMat.values = this.values;
     
     return newMat;
   }

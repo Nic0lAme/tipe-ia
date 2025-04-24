@@ -20,8 +20,8 @@ public class Session {
   Session(String name, HyperParameters hp) {
     this.hp = hp;
 
-    this.w = 25;
-    this.h = 25;
+    this.w = 28;
+    this.h = 28;
 
     this.name = name;
     this.characters = cs.allC;
