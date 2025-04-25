@@ -17,6 +17,7 @@ class ImageSeparator {
   // et qu'il est contrasté par rapport à la couleur de fond. Il ne doit
   // y avoir que du texte sur l'image, et écrit en ligne. Ne marche pas pour
   // les textes écrits en italique.
+  // Note : L'image doit être bien orientée (voir GetRotatedImage)
   public ArrayList<PImage> GetAllLettersImages() {
     ArrayList<PVector[]> allCoords = GetAllCoords();
     ArrayList<PImage> allLetters = new ArrayList<PImage>();
@@ -52,7 +53,7 @@ class ImageSeparator {
     img.loadPixels();
 
     int[][] bwPixels = GetBWPixels(img);
-    BinarizePixels(bwPixels);
+    bwPixels = BinarizePixels(bwPixels);
     ArrayList<Integer> lineLevels = GetLineLevels(bwPixels);
 
     ArrayList<PVector[]> allCoords = new ArrayList<PVector[]>();
@@ -63,17 +64,87 @@ class ImageSeparator {
     return allCoords;
   }
 
+  //f Trouve le meilleur angle possible pour orienter le texte correctement.
+  // L'amplitude de recherche est _amplitude_ (en degrés), et le nombre de pas est _nbPas_
+  // C'est assez lent, et il y a de quoi optimiser si c'est dérangeant (et c'est facile à paralléliser)
+  // Un nombre de pas de 100 semble être un bon compromis.
+  public PImage GetRotatedImage(float amplitude, int nbPas) {
+    PImage img = originalImage.copy();
+    img.filter(GRAY);
+
+    float maxVariance = 0;
+    PImage bestImage = null;
+    for (float k = 0; k < nbPas; k++) {
+      float angle = (k*(2*amplitude)/(nbPas-1)) - amplitude;
+      int[][] preRotatedPixels = RotatedPixels(img, angle);
+      int[][] rotatedPixels = BinarizePixels(preRotatedPixels);
+      int size = rotatedPixels.length;
+
+      int[] means = GetLineMeans(rotatedPixels);
+
+      float mean = 0, variance = 0;
+      for (int i = 0; i < means.length; i++) mean += (float)means[i]/means.length;
+      for (int i = 0; i < means.length; i++) variance += (float)Math.pow(means[i] - mean, 2)/means.length;
+
+      if (variance > maxVariance) {
+        maxVariance = variance;
+        bestImage = PixelsToImage(preRotatedPixels);
+      }
+    }
+
+    return bestImage;
+  }
+
+  //f Renvoie l'image construite avec les pixels _pxls_
+  private PImage PixelsToImage(int[][] pxls) {
+    PImage result = createImage(pxls[0].length, pxls.length, RGB);
+    result.loadPixels();
+    for (int i = 0; i < pxls[0].length; i++) {
+      for (int j = 0; j < pxls.length; j++) {
+        result.pixels[j*pxls[0].length + i] = color(pxls[i][j]);
+      }
+    }
+    result.updatePixels();
+    return result;
+  }
+
+  //f Renvoie les pixels de l'image _img_ tournée de _angle
+  public int[][] RotatedPixels(PImage img, float angle) {
+    int size = floor(sqrt((float)Math.pow(img.width, 2) + (float)Math.pow(img.height, 2)));
+    PGraphics pg = createGraphics(size, size);
+    pg.beginDraw();
+    pg.background(255);
+    pg.push();
+    pg.translate(pg.width/2, pg.height/2);
+    pg.rotate(radians(angle));
+    pg.imageMode(CENTER);
+    pg.image(img, 0, 0);
+    pg.pop();
+    pg.endDraw();
+
+    int[][] rotatedPixels = new int[pg.width][pg.height];
+    for (int i = 0; i < pg.height; i++) {
+      for (int j = 0; j < pg.width; j++) rotatedPixels[i][j] = ToGray(pg.get(i, j));
+    }
+
+    return rotatedPixels;
+  }
+
+  //f Renvoie le niveau de gris correspondant à la couleur _c_
+  private int ToGray(int c) {
+    int red = (c & redMask) >> 16;
+    int green = (c & greenMask) >> 8;
+    int blue = c & blueMask;
+    return (int)(red + green + blue)/3;
+  }
+
   //f Renvoie les pixels de l'image en niveaux de gris
   private int[][] GetBWPixels(PImage img) {
-    int[][] bwPixels = new int[h][w];
-    for (int i = 0; i < h; i++) {
-      for (int j = 0; j < w; j++) {
-        int c = img.pixels[i*w + j];
-        int red = (c & redMask) >> 16;
-        int green = (c & greenMask) >> 8;
-        int blue = c & blueMask;
-        int col = (int)(red + green + blue)/3;
-        bwPixels[i][j] = col;
+    int[][] bwPixels = new int[img.height][img.width];
+    for (int i = 0; i < img.height; i++) {
+      for (int j = 0; j < img.width; j++) {
+        int c = img.pixels[i*img.width + j];
+        bwPixels[i][j] = ToGray(c);
       }
     }
     return bwPixels;
@@ -125,14 +196,30 @@ class ImageSeparator {
   }
 
   //f Transforme les pixels _pxls_ en 2 catégories : pixels noirs et blancs
-  private void BinarizePixels(int[][] pxls) {
+  private int[][] BinarizePixels(int[][] pxls) {
+    int[][] result = new int[pxls.length][pxls[0].length];
     int threshold = OtsuThreshold(pxls);
-    for (int i = 0; i < h; i++) {
-      for (int j = 0; j < w; j++) {
-        if (pxls[i][j] > threshold) pxls[i][j] = 255;
-        else pxls[i][j] = 0;
+    for (int i = 0; i < pxls.length; i++) {
+      for (int j = 0; j < pxls[0].length; j++) {
+        if (pxls[i][j] > threshold) result[i][j] = 255;
+        else result[i][j] = 0;
       }
     }
+    return result;
+  }
+
+  //f Renvoie une moyenne pondérée des lignes de _bwPiwels_ (2 couleurs)
+  private int[] GetLineMeans(int[][] bwPixels) {
+    int[] means = new int[bwPixels.length];
+    for (int i = 0; i < bwPixels.length; i++) {
+      int blacks = 0;
+      for (int j = 0; j < bwPixels[0].length; j++) {
+        if (bwPixels[i][j] == 0) blacks++;
+      }
+      float m = 5*(float)blacks/w;
+      means[i] = constrain(floor(map(m, 0, 1, 255, 0)), 0, 255);
+    }
+    return means;
   }
 
   //f Récupère les ordonnées des lignes de séparation à partir des pixels
@@ -143,15 +230,7 @@ class ImageSeparator {
     lineSep.add(0);
 
     // Moyenne (pondérée) des lignes
-    int[] preMeans = new int[h];
-    for (int i = 0; i < h; i++) {
-      int blacks = 0;
-      for (int j = 0; j < w; j++) {
-        if (bwPixels[i][j] == 0) blacks++;
-      }
-      float m = 5*(float)blacks/w;
-      preMeans[i] = constrain(floor(map(m, 0, 1, 255, 0)), 0, 255);
-    }
+    int[] preMeans = GetLineMeans(bwPixels);
 
     // Moyenne glissante pour lisser
     int[] means = new int[h];
