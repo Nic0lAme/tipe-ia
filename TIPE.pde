@@ -131,27 +131,29 @@ void setup() {
     bayes.SERV_Export(new HyperParameters().Random(), random(1));
   */
   
-  CNN cnn = new CNN(28, new int[]{8, 32}, new int[]{512, cs.allC.length});
+  CNN cnn = new CNN(28, new int[]{32, 32}, new int[]{128, cs.allC.length});
   cnn.UseSoftMax();
   cnn.useADAM = true;
   
   Matrix[][] sample = session.ds.CreateSample(
       cs.allC,
       //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
-      handTrainingDatas,
+      //handTrainingDatas,
       new String[]{},
-      //fontTrainingDatas,
-      4, 1);
+      fontTrainingDatas,
+      2, 1);
       
   Matrix[][] testSample = session.ds.CreateSample(
       cs.allC,
       //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
       handTestingDatas,
-      new String[]{},
-      //fontTestingDatas,
+      //new String[]{},
+      fontTestingDatas,
       1, 1);
       
-  cnn.MiniBatchLearn(sample, 64, 256, 0.001, 0.001, 4, new Matrix[][][]{sample, testSample}, "");
+  cnn.MiniBatchLearn(sample, 256, 16, 0.001, 0.001, 4, new Matrix[][][]{sample, testSample}, "");
+  
+  session.AccuracyScore(cnn, testSample, true);
 }
 
 int index = 0;
@@ -225,19 +227,19 @@ void InitCStorage() {
   cs.AddChar("lw",'w', new double[][]{{22, 1}});
   cs.AddChar("lx",'x', new double[][]{{23, 1}});
   cs.AddChar("ly",'y', new double[][]{{24, 1}});
-  cs.AddChar("lz",'z', new double[][]{{25, 1}});  
+  cs.AddChar("lz",'z', new double[][]{{25, 1}});
   */
   
   cs.AddChar("0",'0', new double[][]{{14, 0.8}});
   cs.AddChar("1",'1', new double[][]{{8, 0.3}, {11, 0.3}});
-  cs.AddChar("2",'z', new double[][]{});
-  cs.AddChar("3",'z', new double[][]{{1, 0.1}});
-  cs.AddChar("4",'z', new double[][]{{0, 0.4}});
-  cs.AddChar("5",'z', new double[][]{{18, 0.5}});
-  cs.AddChar("6",'z', new double[][]{{18, 0.2}});
-  cs.AddChar("7",'z', new double[][]{{8, 0.1}});
-  cs.AddChar("8",'z', new double[][]{{1, 0.5}});
-  cs.AddChar("9",'z', new double[][]{{6, 0.5}});
+  cs.AddChar("2",'2', new double[][]{});
+  cs.AddChar("3",'3', new double[][]{{1, 0.1}});
+  cs.AddChar("4",'4', new double[][]{{0, 0.4}});
+  cs.AddChar("5",'5', new double[][]{{18, 0.5}});
+  cs.AddChar("6",'6', new double[][]{{18, 0.2}});
+  cs.AddChar("7",'7', new double[][]{{8, 0.1}});
+  cs.AddChar("8",'8', new double[][]{{1, 0.5}});
+  cs.AddChar("9",'9', new double[][]{{6, 0.5}});
 
   /*
   cs.AddChar("+",'+', new double[][]{});

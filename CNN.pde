@@ -31,10 +31,10 @@ class CNN {
   
   int numOfLearningCall = 0;
   double b1 = 0.9;
-  double b2 = 0.99;
+  double b2 = 0.995;
   
 
-  double lambda = 0.01;
+  double lambda = 0;
 
   boolean useSoftMax = false; // Détermine l'utilisation de la fonction softmax sur la dernière couche du réseau
 
@@ -110,7 +110,7 @@ class CNN {
       
       for(int f = 0; f < this.cFilters[i].length; f++) {
         // He Kaiming Initialization (for ReLU)
-        this.cFilters[i][f] = new Matrix(cFilterSize).Random(0, sqrt(2 / nin));
+        this.cFilters[i][f] = new Matrix(cFilterSize).Random(0, sqrt(2f / nin));
         
         this.cADAMfiltersMoment[i][f] = new Matrix(cFilterSize);
         this.cADAMfiltersSqMoment[i][f] = new Matrix(cFilterSize);
@@ -126,13 +126,19 @@ class CNN {
 
   //f Donne la sortie du réseau de neurones _this_ pour l'entrée _entry_
   public Matrix Predict(Matrix[] entries) {
-    return this.ForwardPropagation(entries)[2][0][0][this.numLayers - 1];
+    Matrix ret = this.ForwardPropagation(entries)[2][0][0][this.numLayers - 1];
+    
+    //ret.Debug();
+    return ret;
   }
 
   //f  
   public Matrix[][][][] ForwardPropagation(Matrix[] entries) {
     Matrix[][][] masks = new Matrix[entries.length][this.cNumLayers][];
     Matrix[][][] convVal = new Matrix[entries.length][this.cNumLayers + 1][];
+    
+    Matrix convoluted;
+    Matrix[] pooled;
       
     Matrix entry = entries[0];
     for(int x = 0; x < entries.length; x++) {
@@ -155,10 +161,10 @@ class CNN {
         
         for(int e = 0; e < convVal[x][k].length; e++) {
           for(int f = 0; f < numOfFilter; f++) {
-            Matrix convoluted = convVal[x][k][e].Convolution(this.cFilters[k][f]).AddScal(this.cBias[k].Get(f, 0));
+            convoluted = convVal[x][k][e].Convolution(this.cFilters[k][f]).AddScal(this.cBias[k].Get(f, 0));
             //convoluted.Add(new Matrix(convoluted.n).Fill(this.cBias[k].Get(f,0)));
             
-            Matrix[] pooled = convoluted.MaxPooling(2, 2);
+            pooled = convoluted.MaxPooling(2, 2);
             masks[x][k][e * numOfFilter + f] = pooled[1];
             
             convVal[x][k+1][e * numOfFilter + f] = pooled[0];
@@ -175,10 +181,11 @@ class CNN {
     Matrix nnEntry = new Matrix(convVal[0][this.cNumLayers].length * outputArea, entries.length);
     for(int x = 0; x < entries.length; x++) {
       for(int k = 0; k < convVal[x][this.cNumLayers].length; k++) {
-        Matrix mat = convVal[x][this.cNumLayers][k];
-        for(int i = 0; i < mat.n; i++) {
-          for(int j = 0; j < mat.p; j++) {
-            nnEntry.Set(k * outputArea + i * mat.p + j, x, mat.Get(i, j));
+        int matN = convVal[x][this.cNumLayers][k].n;
+        int matP = convVal[x][this.cNumLayers][k].p;
+        for(int i = 0; i < matN; i++) {
+          for(int j = 0; j < matP; j++) {
+            nnEntry.Set(k * outputArea + i * matP + j, x, convVal[x][this.cNumLayers][k].Get(i, j));
           }
         }
       }
@@ -234,6 +241,7 @@ class CNN {
     //dJ/dZl
     Matrix a = activations[this.numLayers-1].C();
     Matrix gradient = a.C().Add(expectedOutput, -1).HProduct(a.C().HProduct(a.C().AddScal(-1.0).Scale(-1.0)));
+    a = null;
 
     Matrix[] weightGrad = new Matrix[this.numLayers - 1];
     Matrix[] biasGrad = new Matrix[this.numLayers - 1];
@@ -255,6 +263,7 @@ class CNN {
 
       a = activations[l].C();
       gradient = (weights[l].T().GPUMult(gradient)).HProduct(a.C().Add(a.C().HProduct(a), -1));
+      a =  null;
     }
     
     int FCLTime = millis();
@@ -266,9 +275,11 @@ class CNN {
     Matrix[][] cGradient = new Matrix[inputNumber][numOfImageInOutput];
     for(int k = 0; k < numOfImageInOutput; k++) {
       cGradient[0][k] = new Matrix(areaOfOutput, 1);
-      for(int i = 0; i < areaOfOutput; i++) cGradient[0][k].values[i][0] = gradient.values[i + k * areaOfOutput][0];
+      for(int i = 0; i < areaOfOutput; i++) cGradient[0][k].values[i * cGradient[0][k].p] = gradient.values[(i + k * areaOfOutput) * gradient.p];
       cGradient[0][k] = cGradient[0][k].FromCol(this.cImageSizes[this.cNumLayers], this.cImageSizes[this.cNumLayers]);
     }
+    
+    gradient = null;
     
     for(int x = 1; x < inputNumber; x++) cGradient[x] = Arrays.copyOf(cGradient[0], cGradient[0].length);
     
@@ -284,20 +295,22 @@ class CNN {
       cFiltersGrad[l] = new Matrix[this.cFilters[l].length];
       for(int f = 0; f < this.cFilters[l].length; f++) cFiltersGrad[l][f] = new Matrix(cFilterSize);
     }
-    for(int x = 0; x < inputNumber; x++) {
-      for(int k = this.cNumLayers - 1; k >= 0; k--) {
-        int prevLayerOutputSize = cGradient[x].length / this.cFilters[k].length;
-        
+    
+    Matrix[][] cSizedGradient;
+    for(int k = this.cNumLayers - 1; k >= 0; k--) {
+      int prevLayerOutputSize = cGradient[0].length / this.cFilters[k].length;
+      cSizedGradient = new Matrix[inputNumber][cGradient[0].length];
+      for(int x = 0; x < inputNumber; x++) {
         int layerTime = millis();
         
-        Matrix[] cSizedGradient = new Matrix[cGradient[x].length];
+        
         for(int oImg = 0; oImg < prevLayerOutputSize; oImg++) {
           for(int fImg = 0; fImg < this.cFilters[k].length; fImg++) {
             int g = oImg * this.cFilters[k].length + fImg;
-            cSizedGradient[g] = new Matrix(convActivations[x][k][0].n - this.cFilterSize + 1);
-            for(int i = 0; i < cSizedGradient[g].n; i++) {
-              for(int j = 0; j < cSizedGradient[g].p; j++) {
-                cSizedGradient[g].Set(i, j, masks[x][k][oImg].Get(i,j) * cGradient[x][g].Get((int)Math.floor((float)i / this.cPool), (int)Math.floor((float)j / this.cPool)));
+            cSizedGradient[x][g] = new Matrix(convActivations[x][k][0].n - this.cFilterSize + 1);
+            for(int i = 0; i < cSizedGradient[x][g].n; i++) {
+              for(int j = 0; j < cSizedGradient[x][g].p; j++) {
+                cSizedGradient[x][g].Set(i, j, masks[x][k][oImg].Get(i,j) * cGradient[x][g].Get((int)Math.floor((float)i / this.cPool), (int)Math.floor((float)j / this.cPool)));
               }
             }
           }
@@ -307,8 +320,8 @@ class CNN {
         
         for(int f = 0; f < this.cFilters[k].length; f++) {
           for(int i = 0; i < convActivations[x][k].length; i++) {
-            cFiltersGrad[k][f].Add(convActivations[x][k][i].Convolution(cSizedGradient[f + i * this.cFilters[k].length]).Scale((double)1/ convActivations[x][k].length / inputNumber));
-            cBiasGrad[k].values[f][0] += cSizedGradient[i].TotalSum() / cSizedGradient[i].n / cSizedGradient[i].p / convActivations[x][k].length / inputNumber;
+            cFiltersGrad[k][f].Add(convActivations[x][k][i].Convolution(cSizedGradient[x][f + i * this.cFilters[k].length]).Scale((double)1/ convActivations[x][k].length / inputNumber));
+            cBiasGrad[k].values[f * cBiasGrad[k].p] += cSizedGradient[x][i].TotalSum() / cSizedGradient[x][i].n / cSizedGradient[x][i].p / convActivations[x][k].length / inputNumber;
           }
         }
         
@@ -316,26 +329,102 @@ class CNN {
         
         maskTime += maskFixTime - layerTime; gradTime += gradFixTime - maskFixTime;
         
-        /*
-        cl.pln("Layer " + str(k));
-        cFiltersGrad[k][0].Debug();
-        cBiasGrad[k].Debug();
-        */
+      }
         
-        if (k==0) continue; // Pas besoin de calculer le gradient suivant (et surtout ça ne peut pas)
-        
+      /*
+      cl.pln("Layer " + str(k));
+      cFiltersGrad[k][0].Debug();
+      cBiasGrad[k].Debug();
+      */
+      
+      if (k==0) continue; // Pas besoin de calculer le gradient suivant (et surtout ça ne peut pas)
+      int beforeNextG = millis();
+      
+      
+      final int filterN = this.cFilterSize;
+      final int filterP = this.cFilterSize;
+      final int filterArea = this.cFilterSize * this.cFilterSize;
+      final int numOfFilters = this.cFilters[k].length;
+      
+      double[] rotatedFiltersFlat = new double[numOfFilters * filterArea];
+      for(int f = 0; f < this.cFilters[k].length; f++)
+        for(int i = 0; i < filterArea; i++)
+          rotatedFiltersFlat[filterArea * f + (filterArea - i - 1)] = this.cFilters[k][f].values[i];
+      
+      final int gradientN = cSizedGradient[0][0].n;
+      final int gradientP = cSizedGradient[0][0].p;
+      final int gradientArea = gradientN * gradientP;
+      final int gradientNumber = cSizedGradient[0].length;
+      final int inputArea = gradientNumber * gradientArea;
+      
+      double[] cGradientFlat = new double[inputArea * inputNumber];
+      for(int x = 0; x < inputNumber; x++)
+        for(int p = 0; p < gradientNumber; p++)
+          for(int i = 0; i < gradientArea; i++)
+            cGradientFlat[x * inputArea + p * gradientArea + i] = cSizedGradient[x][p].values[i];
+      
+      
+      final int outN = cImageSizes[k];
+      final int outP = cImageSizes[k];
+      double[] output = new double[inputNumber * prevLayerOutputSize * outN * outP];
+      Kernel kernel = new Kernel() {
+        @Override
+        public void run() {
+          int gid = getGlobalId();
+          int x = gid / prevLayerOutputSize;
+          int p = gid % prevLayerOutputSize;
+          
+          for(int i = 0; i < outN; i++) {
+            for(int j = 0; j < outP; j++) {
+              double sum = 0d;
+              
+              for(int f = 0; f < numOfFilters; f++) {
+                for(int gi = 0; gi < gradientN; gi++) {
+                  for(int gj = 0; gj < gradientP; gj++) {
+                    int ii = i - gi;
+                    int jj = j - gj;
+                    
+                    if(ii < 0 || ii >= filterN || jj < 0 || jj >= filterP) continue;
+                    
+                    sum += rotatedFiltersFlat[f * filterArea + ii * filterP + jj] * cGradientFlat[x * inputArea + (p * numOfFilters + f) * gradientArea + gi * gradientP + gj];
+                  }
+                }
+              }
+              
+              output[x * prevLayerOutputSize + p * (outN * outP) + i * outP + j] = sum;
+            }
+          }
+        }
+      };
+      
+      kernel.execute(Range.create(inputNumber * prevLayerOutputSize));
+      kernel.dispose();
+      
+      for(int x = 0; x < inputNumber; x++) {
+        cGradient[x] = new Matrix[prevLayerOutputSize];
+        for(int p = 0; p < prevLayerOutputSize; p++) {
+          cGradient[x][p] = new Matrix(cImageSizes[k]);
+          for(int i = 0; i < outN; i++)
+            for(int j = 0; j < outP; j++)
+              cGradient[x][p].values[i * outP + j] = output[x * prevLayerOutputSize * (outN * outP) + p * (outN * outP) + i * outP + j]; 
+        }
+      }
+      
+      /* ANCIENNE VERSION POUR COMPRENDRE CE QU'IL SE PASSE AU DESSUS
+      for(int x = 0; x < inputNumber; x++) {
         Matrix[] nextCGrad = new Matrix[prevLayerOutputSize];
         for(int p = 0; p < prevLayerOutputSize; p++) {
           nextCGrad[p] = new Matrix(cImageSizes[k]);
           for(int f = 0; f < this.cFilters[k].length; f++) {
-            nextCGrad[p].Add(this.cFilters[k][f].Rotate180().FullConvolution(cSizedGradient[p * this.cFilters[k].length + f]));
+            nextCGrad[p].Add(this.cFilters[k][f].Rotate180().FullConvolution(cSizedGradient[x][p * this.cFilters[k].length + f]));
           }
         }
         
-        nextGTime += millis() - gradFixTime;
-        
         cGradient[x] = nextCGrad;
       }
+      */
+      
+      nextGTime += millis() - beforeNextG;
     }
     
     BPFCLTime += FCLTime - initTime;
@@ -343,6 +432,8 @@ class CNN {
     BPmaskTime += maskTime;
     BPgradTime += gradTime;
     BPnextGTime += nextGTime;
+    
+    cGradient = null;
 
     return new Matrix[][][]{new Matrix[][]{weightGrad}, new Matrix[][]{biasGrad}, cFiltersGrad, new Matrix[][]{cBiasGrad}};
   }
@@ -378,6 +469,8 @@ class CNN {
       int startKTimeBis = millis();
       Matrix[][][] gradients = BackPropagation(activations[2][0][0], activations[0], activations[1], Y);
       backwardTime += millis() - startKTimeBis;
+      
+      activations = null;
       
       weightGrad = gradients[0][0];
       biasGrad = gradients[1][0];
@@ -433,6 +526,8 @@ class CNN {
             output= activations[2][0][0][numOfLayers - 1].C();
             
             Matrix[][][] gradients = BackPropagation(activations[2][0][0], activations[0], activations[1], Y);
+            
+            activations = null;
             
             weightGrad = gradients[0][0];
             biasGrad = gradients[1][0];
@@ -517,18 +612,18 @@ class CNN {
         continue;
       }
       
-      this.ADAMweightsMoment[l].Scale(b1).Add(weightGrad[l].C(), 1-b1);
-      this.ADAMweightsSqMoment[l].Scale(b2).Add(weightGrad[l].C().HProduct(weightGrad[l]), 1-b2);
+      this.ADAMweightsMoment[l].Scale(b1).Add(weightGrad[l], 1-b1);
+      this.ADAMweightsSqMoment[l].Scale(b2).Add(weightGrad[l].HProduct(weightGrad[l]), 1-b2);
       this.weights[l].Add(this.ADAMweightsMoment[l].C()
-        .HProduct(this.ADAMweightsSqMoment[l].C().Map((x) -> 1 / Math.sqrt(x + 1e-10)))
+        .HProduct(this.ADAMweightsSqMoment[l].C().Map((x) -> 1 / Math.sqrt(x + 1e-8)))
         .Scale(Math.sqrt(1 - Math.pow(b2, this.numOfLearningCall)) / (1 - Math.pow(b1, this.numOfLearningCall))),
         -learning_rate);
         
         
-      this.ADAMbiasMoment[l].Scale(b1).Add(biasGrad[l].C(), 1-b1);
-      this.ADAMbiasSqMoment[l].Scale(b2).Add(biasGrad[l].C().HProduct(biasGrad[l]), 1-b2);
+      this.ADAMbiasMoment[l].Scale(b1).Add(biasGrad[l], 1-b1);
+      this.ADAMbiasSqMoment[l].Scale(b2).Add(biasGrad[l].HProduct(biasGrad[l]), 1-b2);
       this.bias[l].Add(this.ADAMbiasMoment[l].C()
-        .HProduct(this.ADAMbiasSqMoment[l].C().Map((x) -> 1 / Math.sqrt(x + 1e-10)))
+        .HProduct(this.ADAMbiasSqMoment[l].C().Map((x) -> 1 / Math.sqrt(x + 1e-8)))
         .Scale(Math.sqrt(1 - Math.pow(b2, this.numOfLearningCall)) / (1 - Math.pow(b1, this.numOfLearningCall))),
         -learning_rate);
     }
@@ -540,10 +635,10 @@ class CNN {
           continue;
         }
         
-        this.cADAMfiltersMoment[l][f].Scale(b1).Add(cFiltersGrad[l][f].C(), 1-b1);
-        this.cADAMfiltersSqMoment[l][f].Scale(b2).Add(cFiltersGrad[l][f].C().HProduct(cFiltersGrad[l][f]), 1-b2);
+        this.cADAMfiltersMoment[l][f].Scale(b1).Add(cFiltersGrad[l][f], 1-b1);
+        this.cADAMfiltersSqMoment[l][f].Scale(b2).Add(cFiltersGrad[l][f].HProduct(cFiltersGrad[l][f]), 1-b2);
         this.cFilters[l][f].Add(this.cADAMfiltersMoment[l][f].C()
-          .HProduct(this.cADAMfiltersSqMoment[l][f].C().Map((x) -> 1 / Math.sqrt(x + 1e-10)))
+          .HProduct(this.cADAMfiltersSqMoment[l][f].C().Map((x) -> 1 / Math.sqrt(x + 1e-8)))
           .Scale(Math.sqrt(1 - Math.pow(b2, this.numOfLearningCall)) / (1 - Math.pow(b1, this.numOfLearningCall))),
           -learning_rate);
         
@@ -559,10 +654,10 @@ class CNN {
         this.cBias[l].Add(cBiasGrad[l], -learning_rate);
       }
       
-      this.cADAMbiasMoment[l].Scale(b1).Add(cBiasGrad[l].C(), 1-b1);
-      this.cADAMbiasSqMoment[l].Scale(b2).Add(cBiasGrad[l].C().HProduct(cBiasGrad[l]), 1-b2);
+      this.cADAMbiasMoment[l].Scale(b1).Add(cBiasGrad[l], 1-b1);
+      this.cADAMbiasSqMoment[l].Scale(b2).Add(cBiasGrad[l].HProduct(cBiasGrad[l]), 1-b2);
       this.cBias[l].Add(this.cADAMbiasMoment[l].C()
-        .HProduct(this.cADAMbiasSqMoment[l].C().Map((x) -> 1 / Math.sqrt(x + 1e-10)))
+        .HProduct(this.cADAMbiasSqMoment[l].C().Map((x) -> 1 / Math.sqrt(x + 1e-8)))
         .Scale(Math.sqrt(1 - Math.pow(b2, this.numOfLearningCall)) / (1 - Math.pow(b1, this.numOfLearningCall))),
         -learning_rate);
     }
@@ -573,6 +668,12 @@ class CNN {
     
     //S.Debug();
     double J = this.ComputeLoss(S, Y);
+    
+    weightGrad = null;
+    biasGrad = null;
+    cFiltersGrad = null;
+    cBiasGrad = null;
+    
     return J;
   }
 
@@ -637,7 +738,7 @@ class CNN {
           );
       }
 
-      if((k+1)%6 != 0 && k != numOfEpoch - 1) continue;
+      if((k+1)%2 != 0 && k != numOfEpoch - 1) continue;
 
       for(int s = 0; s < testSets.length; s++) {
         float[] score = CompilScore(session.AccuracyScore(this, testSets[s], false));

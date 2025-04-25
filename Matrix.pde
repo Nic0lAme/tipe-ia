@@ -3,7 +3,7 @@ import com.aparapi.Range;
 
 class Matrix {
   final int n, p;            //n : # lines | p : # columns
-  double [] values;      //values stored in the matrix
+  double[] values;      //values stored in the matrix
 
   //c Crée une matrice de taille _n_ \* _p_ (# de lignes \* # de colonnes)
   Matrix(int n, int p) {
@@ -447,7 +447,7 @@ class Matrix {
       }
     }
     
-    println("MULT : (" + str(this.n) + "*" + str(this.p) + ")x(" + str(m.n) + "*"  + str(m.p) + ") Time : " + str(millis() - initTime));
+    //println("MULT : (" + str(this.n) + "*" + str(this.p) + ")x(" + str(m.n) + "*"  + str(m.p) + ") Time : " + str(millis() - initTime));
     
     return new_mat;
   }
@@ -482,7 +482,7 @@ class Matrix {
     kernel.execute(Range.create(N * M));
     kernel.dispose();
     
-    println("GPUMULT : (" + str(this.n) + "*" + str(this.p) + ")x(" + str(m.n) + "*"  + str(m.p) + ") Time : " + str(millis() - initTime));
+    //println("GPUMULT : (" + str(this.n) + "*" + str(this.p) + ")x(" + str(m.n) + "*"  + str(m.p) + ") Time : " + str(millis() - initTime));
 
     
     return new Matrix(this.n, m.p).Unflatten(C);

@@ -372,7 +372,7 @@ public class Session {
     Matrix ret = new Matrix(this.h, this.w);
     for(int i = 0; i < this.h; i++)
       for(int j = 0; j < this.w; j++)
-        ret.values[i][j] = 1 - brightness(PPImage.pixels[i * this.w + j])/255;
+        ret.values[i * ret.p + j] = 1 - brightness(PPImage.pixels[i * this.w + j])/255;
 
     return ret;
   }

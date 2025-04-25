@@ -144,7 +144,7 @@ public class LetterDataset {
     for(int k = 0; k < sample[0].length; k++) {
       for(int i = 0; i < sample[0][k].n; i++)
         for(int j = 0; j < sample[0][k].p; j++)
-          inputs.values[i * sample[0][k].p + j][0] = sample[0][k].values[i][j];
+          inputs.values[(i * sample[0][k].p + j) * inputs.p] = sample[0][k].values[i * sample[0][k].p + j];
     }
     
     return new Matrix[]{inputs, sample[1][0]};
