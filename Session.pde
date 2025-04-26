@@ -24,7 +24,7 @@ public class Session {
     this.h = 28;
 
     this.name = name;
-    this.characters = cs.allC;
+    this.characters = cs.GetChars();
 
     this.sessionHandTrainingDatas = handTrainingDatas;
     //this.handTrainingDatas = new String[]{};
@@ -142,7 +142,7 @@ public class Session {
 
   //f Teste _this.nn_ sur les sets de tests
   void TestImages() {
-    frame.setSize(new Dimension(floor(this.w * rScale * cs.allC.length), floor(this.h * rScale * numOfTestSample)));
+    frame.setSize(new Dimension(floor(this.w * rScale * cs.NumChars()), floor(this.h * rScale * numOfTestSample)));
 
     Matrix[] testSample = ds.SampleLining(ds.CreateSample(
       this.characters,
@@ -176,13 +176,13 @@ public class Session {
     enter to show prediction directly on the sketch
   */
   int brushSize = 16;
-  
+
   /*
   //f Permet de tester en direct les performances du réseau
   void DirectTest() {
     frame.setPreferredSize(new Dimension(500, 400));
     frame.setVisible(true);
-    
+
     if(keyPressed && key == ' ') background(255);
     if(keyPressed && key == '+') {
       brushSize += 1;
@@ -203,25 +203,25 @@ public class Session {
 
     PImage img = get(0, 0, width, height);
     img.filter(THRESHOLD, 0.5);
-    
+
     ArrayList<double[]> charactersProb = new ArrayList<double[]>();
-    
+
     ArrayList<ArrayList<PVector>> contours = im.ContourDetection(img);
     for(ArrayList<PVector> contour : contours) {
       if(!im.IsClockwise(contour)) continue;
 
       PImage c = im.ImageFromContour(img, contour, 0.02, 0.89);
       charactersProb.add(this.CharactersProb(c));
-      
+
       if(keyPressed && keyCode == ENTER) {
         fill(0,255,0);
         text(Result(c).keyArray()[0], contour.get(0).x, contour.get(0).y);
       }
       print(Result(c).keyArray()[0], "");
     }
-    
+
     println(wc.WordAutoCorrection(charactersProb.toArray(new double[0][])));
-    
+
     println();
   }
   */
@@ -292,11 +292,11 @@ public class Session {
 
     return score;
   }
-  
+
   float[][] AccuracyScore(CNN nn, Matrix[][] data, boolean doDraw) {
     return AccuracyScore(nn, new Matrix[][][]{data}, doDraw);
   }
-  
+
   float[][] AccuracyScore(CNN nn, Matrix[][][] data, boolean doDraw) {
     float[][] score = new float[data.length][data[0][1][0].n];
     int[][] countOutput = new int[data.length][data[0][1][0].n]; // Compte le nombre d'output ayant pour retour i
@@ -368,7 +368,7 @@ public class Session {
 
     im.Resize(PPImage, this.w, this.h);
     PPImage.loadPixels();
-    
+
     Matrix ret = new Matrix(this.h, this.w);
     for(int i = 0; i < this.h; i++)
       for(int j = 0; j < this.w; j++)
@@ -376,7 +376,7 @@ public class Session {
 
     return ret;
   }
-  
+
   /*
   FloatDict Result(PImage img) {
     FloatDict result = new FloatDict();
@@ -393,7 +393,7 @@ public class Session {
 
     return result;
   }
-  
+
   double[] CharactersProb(PImage img) {
     double[] input = ImgPP(img);
     Matrix inputMatrix = new Matrix(this.w*this.h,1).ColumnFromArray(0, input);

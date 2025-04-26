@@ -138,7 +138,7 @@ public class LetterDataset {
 
     return new Matrix[][]{ inputs, {outputs} };
   }
-  
+
   public Matrix[] SampleLining(Matrix[][] sample) {
     Matrix inputs = new Matrix(sample[0][0].n * sample[0][0].p, sample[0].length);
     for(int k = 0; k < sample[0].length; k++) {
@@ -146,7 +146,7 @@ public class LetterDataset {
         for(int j = 0; j < sample[0][k].p; j++)
           inputs.values[(i * sample[0][k].p + j) * inputs.p] = sample[0][k].values[i * sample[0][k].p + j];
     }
-    
+
     return new Matrix[]{inputs, sample[1][0]};
   }
 
@@ -158,12 +158,12 @@ public class LetterDataset {
   //f Récupère un couple aléatoire [image, image brouillée pour les paramètres donnés]
   public PImage[] GetRandomCouple(int xw, int xh, float mv, float blr, float dst, float prln, float defrm) {
     int s = floor(random(1) * (handPolicies.length + fontPolicies.length));
-    int c = floor(random(1) * (cs.allC.length));
+    int c = floor(random(1) * (cs.NumChars()));
     PImage original;
 
     String path = s < handPolicies.length
-      ? "./TextFileGetter/output/" + cs.allC[c] + "/" + cs.allC[c] + " - " + handPolicies[s] + ".jpg"
-      : "./FromFontGetter/output/" + cs.allC[c] + "/" + cs.allC[c] + " - " + fontPolicies[s - handPolicies.length] + ".jpg";
+      ? "./TextFileGetter/output/" + cs.GetChars()[c] + "/" + cs.GetChars()[c] + " - " + handPolicies[s] + ".jpg"
+      : "./FromFontGetter/output/" + cs.GetChars()[c] + "/" + cs.GetChars()[c] + " - " + fontPolicies[s - handPolicies.length] + ".jpg";
     original = loadImage(path);
     PImage img = im.ScrambleImage(im.Resize(original, xw, xh), mv, blr, dst, prln, defrm);
 
@@ -183,7 +183,7 @@ public class LetterDataset {
     img.updatePixels();
     return img;
   }
-  
+
   //f Renvoie une image affichable de l'image stockée en colonne _j_ de l'entrée _inputs_
   public PImage CNNGetImageFromInputs(Matrix inputs) {
     PImage img = createImage(session.w, session.h, RGB);

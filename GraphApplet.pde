@@ -25,6 +25,8 @@ import javax.imageio.ImageIO;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.NumberFormat;
+import java.util.List;
+import java.awt.Frame;
 
 class GraphApplet extends JFrame {
   private LearnGraph graph;
@@ -374,7 +376,7 @@ class GraphApplet extends JFrame {
       catch (Exception e) {}
     testImages = false;
   }
-  
+
   //f Permet de lancer un test du réseau de neurones actif, sur un tableau interactif
   private void ToggleDirectTest() {
     frame.setSize(new Dimension(500, 400));
@@ -523,7 +525,7 @@ class GraphApplet extends JFrame {
     console.append(text);
     consoleScroll.getVerticalScrollBar().setValue(consoleScroll.getVerticalScrollBar().getMaximum());
   }
-  
+
   //f Affiche/Cache la fenêtre processing
   public void ToggleScreenVisibility() {
     frame.setVisible(!frame.isVisible());
@@ -570,7 +572,7 @@ class GraphApplet extends JFrame {
     testItem.setMargin(new Insets(5, 5, 5, 5));
     testItem.setFont(new Font("", Font.PLAIN, 16));
     edit.add(testItem);
-    
+
     directItem = new JMenuItem("Test en direct");
     directItem.setFocusable(false);
     directItem.addActionListener(e -> ToggleDirectTest());
@@ -617,7 +619,7 @@ class GraphApplet extends JFrame {
     axisItem.setMargin(new Insets(5, 5, 5, 5));
     axisItem.setFont(new Font("", Font.PLAIN, 16));
     display.add(axisItem);
-    
+
     screenItem = new JMenuItem("Afficher/Cacher l'écran");
     screenItem.setFocusable(false);
     screenItem.addActionListener(e -> ToggleScreenVisibility());

@@ -12,7 +12,7 @@ class Bayes {
   double h = 2;
   int numOfCandidate = 32768;
   double overfittingImportance = 0.3;
-  
+
   int trainingRep = 8;
   int testingRep = 6;
 
@@ -40,12 +40,12 @@ class Bayes {
   private void LoadImageData() {
     int startTime = millis();
     globalTrainingData = ds.SampleLining(ds.CreateSample(
-        cs.allC,
+        cs.GetChars(),
         handTrainingDatas,
         fontTrainingDatas,
         trainingRep, 1));
     globalTestingData = ds.SampleLining(ds.CreateSample(
-        cs.allC,
+        cs.GetChars(),
         handTestingDatas,
         fontTestingDatas,
         testingRep, 1));
@@ -209,7 +209,7 @@ class Bayes {
       double loss = Evaluate(hp, globalTrainingData, globalTestingData, numOfEtalon * this.etalonnedTime);
       xs.add(hp);
       ys.add(loss);
-      
+
       cl.pln("Score", String.format("%7.3f", loss));
 
 
@@ -275,7 +275,7 @@ class Bayes {
     int[] layers = new int[hp.layerSize.length + 2];
     layers[0] = session.w * session.h;
     for(int k = 0; k < hp.layerSize.length; k++) layers[k+1] = hp.layerSize[k];
-    layers[hp.layerSize.length + 1] = cs.allC.length;
+    layers[hp.layerSize.length + 1] = cs.NumChars();
 
     NeuralNetwork nn = new NeuralNetwork(layers);
     nn.lambda = hp.lambda * hp.batchSize;
