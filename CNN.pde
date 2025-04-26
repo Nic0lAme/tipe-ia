@@ -126,14 +126,14 @@ class CNN {
 
   //f Donne la sortie du réseau de neurones _this_ pour l'entrée _entry_
   public Matrix Predict(Matrix[] entries) {
-    Matrix ret = this.ForwardPropagation(entries)[2][0][0][this.numLayers - 1];
+    Matrix ret = this.ForwardPropagation(entries, false)[2][0][0][this.numLayers - 1];
     
     //ret.Debug();
     return ret;
   }
 
   //f  
-  public Matrix[][][][] ForwardPropagation(Matrix[] entries) {
+  public Matrix[][][][] ForwardPropagation(Matrix[] entries, boolean doSavePrevLayers) {
     Matrix[][][] masks = new Matrix[entries.length][this.cNumLayers][];
     Matrix[][][] convVal = new Matrix[entries.length][this.cNumLayers + 1][];
     
@@ -170,6 +170,11 @@ class CNN {
             convVal[x][k+1][e * numOfFilter + f] = pooled[0];
           }
         }
+        
+        if(!doSavePrevLayers) {
+          convVal[x][k] = null;
+          masks[x][k] = null;
+        }
       }
     }
       
@@ -198,6 +203,7 @@ class CNN {
     layerVal[0] = nnEntry;
     for(int i = 0; i < this.numLayers - 1; i++) {
       layerVal[i + 1] = CalcLayer(i, layerVal[i]);
+      if(!doSavePrevLayers) layerVal[i] = null;
     }
 
     return new Matrix[][][][]{ convVal, masks, new Matrix[][][]{{layerVal}} }; // :) :)
@@ -391,7 +397,7 @@ class CNN {
                 }
               }
               
-              output[x * prevLayerOutputSize + p * (outN * outP) + i * outP + j] = sum;
+              output[x * prevLayerOutputSize * (outN * outP) + p * (outN * outP) + i * outP + j] = sum;
             }
           }
         }
@@ -461,7 +467,7 @@ class CNN {
     // Sans multithreading, back propagation classique
     if (numThreadsLearning <= 1) {
       int startKTime = millis();
-      Matrix[][][][] activations = ForwardPropagation(X);
+      Matrix[][][][] activations = ForwardPropagation(X, true);
       forwardTime += (double)(millis() - startKTime);
       
       S = activations[2][0][0][this.numLayers - 1].C();
@@ -521,7 +527,7 @@ class CNN {
             
             Matrix output = new Matrix(Y.n, trainingData[index].length);
 
-            Matrix[][][][] activations = ForwardPropagation(X);
+            Matrix[][][][] activations = ForwardPropagation(X, true);
             
             output= activations[2][0][0][numOfLayers - 1].C();
             
