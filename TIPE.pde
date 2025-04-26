@@ -104,7 +104,7 @@ void settings() {
 
 void setup() {
   background(255);
-  InitCStorage();
+  InitCStorageNumeral();
   frame = (Frame) ((processing.awt.PSurfaceAWT.SmoothCanvas) surface.getNative()).getFrame();
   frame.setVisible(false); // Cache la fenêtre d'activation java
   frame.setResizable(true);
@@ -131,15 +131,15 @@ void setup() {
     bayes.SERV_Export(new HyperParameters().Random(), random(1));
   */
   
-  CNN cnn = new CNN(28, new int[]{32, 32}, new int[]{128, cs.allC.length});
+  CNN cnn = new CNN(28, new int[]{16, 32, 64}, new int[]{256, 128, cs.allC.length});
   cnn.UseSoftMax();
   cnn.useADAM = true;
   
   Matrix[][] sample = session.ds.CreateSample(
       cs.allC,
       //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
-      //handTrainingDatas,
-      new String[]{},
+      handTrainingDatas,
+      //new String[]{},
       fontTrainingDatas,
       2, 1);
       
@@ -151,7 +151,7 @@ void setup() {
       fontTestingDatas,
       1, 1);
       
-  cnn.MiniBatchLearn(sample, 256, 16, 0.001, 0.001, 4, new Matrix[][][]{sample, testSample}, "");
+  cnn.MiniBatchLearn(sample, 256, 32, 0.001, 0.001, 4, new Matrix[][][]{sample, testSample}, "");
   
   session.AccuracyScore(cnn, testSample, true);
 }
@@ -172,6 +172,93 @@ void SetMainSession(Session newSession) {
 
 
 void InitCStorage() {
+  cs = new CharactersStorage(62);
+  //cs = new CharactersStorage(10);
+  
+  
+  cs.AddChar("uA",'A', new double[][]{{0, 1}});
+  cs.AddChar("uB",'B', new double[][]{{1, 1}});
+  cs.AddChar("uC",'C', new double[][]{{2, 1}});
+  cs.AddChar("uD",'D', new double[][]{{3, 1}});
+  cs.AddChar("uE",'E', new double[][]{{4, 1}});
+  cs.AddChar("uF",'F', new double[][]{{5, 1}});
+  cs.AddChar("uG",'G', new double[][]{{6, 1}});
+  cs.AddChar("uH",'H', new double[][]{{7, 1}});
+  cs.AddChar("uI",'I', new double[][]{{8, 1}});
+  cs.AddChar("uJ",'J', new double[][]{{9, 1}});
+  cs.AddChar("uK",'K', new double[][]{{10, 1}});
+  cs.AddChar("uL",'L', new double[][]{{11, 1}});
+  cs.AddChar("uM",'M', new double[][]{{12, 1}});
+  cs.AddChar("uN",'N', new double[][]{{13, 1}});
+  cs.AddChar("uO",'O', new double[][]{{14, 1}});
+  cs.AddChar("uP",'P', new double[][]{{15, 1}});
+  cs.AddChar("uQ",'Q', new double[][]{{16, 1}});
+  cs.AddChar("uR",'R', new double[][]{{17, 1}});
+  cs.AddChar("uS",'S', new double[][]{{18, 1}});
+  cs.AddChar("uT",'T', new double[][]{{19, 1}});
+  cs.AddChar("uU",'U', new double[][]{{20, 1}});
+  cs.AddChar("uV",'V', new double[][]{{21, 1}});
+  cs.AddChar("uW",'W', new double[][]{{22, 1}});
+  cs.AddChar("uX",'X', new double[][]{{23, 1}});
+  cs.AddChar("uY",'Y', new double[][]{{24, 1}});
+  cs.AddChar("uZ",'Z', new double[][]{{25, 1}});
+  cs.AddChar("la",'a', new double[][]{{0, 1}});
+  cs.AddChar("lb",'b', new double[][]{{1, 1}});
+  cs.AddChar("lc",'c', new double[][]{{2, 1}});
+  cs.AddChar("ld",'d', new double[][]{{3, 1}});
+  cs.AddChar("le",'e', new double[][]{{4, 1}});
+  cs.AddChar("lf",'f', new double[][]{{5, 1}});
+  cs.AddChar("lg",'g', new double[][]{{6, 1}});
+  cs.AddChar("lh",'h', new double[][]{{7, 1}});
+  cs.AddChar("li",'i', new double[][]{{8, 1}});
+  cs.AddChar("lj",'j', new double[][]{{9, 1}});
+  cs.AddChar("lk",'k', new double[][]{{10, 1}});
+  cs.AddChar("ll",'l', new double[][]{{11, 1}});
+  cs.AddChar("lm",'m', new double[][]{{12, 1}});
+  cs.AddChar("ln",'n', new double[][]{{13, 1}});
+  cs.AddChar("lo",'o', new double[][]{{14, 1}});
+  cs.AddChar("lp",'p', new double[][]{{15, 1}});
+  cs.AddChar("lq",'q', new double[][]{{16, 1}});
+  cs.AddChar("lr",'r', new double[][]{{17, 1}});
+  cs.AddChar("ls",'s', new double[][]{{18, 1}});
+  cs.AddChar("lt",'t', new double[][]{{19, 1}});
+  cs.AddChar("lu",'u', new double[][]{{20, 1}});
+  cs.AddChar("lv",'v', new double[][]{{21, 1}});
+  cs.AddChar("lw",'w', new double[][]{{22, 1}});
+  cs.AddChar("lx",'x', new double[][]{{23, 1}});
+  cs.AddChar("ly",'y', new double[][]{{24, 1}});
+  cs.AddChar("lz",'z', new double[][]{{25, 1}});
+  
+  
+  cs.AddChar("0",'0', new double[][]{{14, 0.8}});
+  cs.AddChar("1",'1', new double[][]{{8, 0.3}, {11, 0.3}});
+  cs.AddChar("2",'2', new double[][]{});
+  cs.AddChar("3",'3', new double[][]{{1, 0.1}});
+  cs.AddChar("4",'4', new double[][]{{0, 0.4}});
+  cs.AddChar("5",'5', new double[][]{{18, 0.5}});
+  cs.AddChar("6",'6', new double[][]{{18, 0.2}});
+  cs.AddChar("7",'7', new double[][]{{8, 0.1}});
+  cs.AddChar("8",'8', new double[][]{{1, 0.5}});
+  cs.AddChar("9",'9', new double[][]{{6, 0.5}});
+
+  /*
+  cs.AddChar("+",'+', new double[][]{});
+  cs.AddChar("-",'-', new double[][]{});
+  cs.AddChar("cr",'×', new double[][]{});
+  cs.AddChar("@",'@', new double[][]{{0, 0.2}});
+  cs.AddChar("#",'#', new double[][]{});
+  cs.AddChar("im",'?', new double[][]{});
+  cs.AddChar("!",'!', new double[][]{});
+  cs.AddChar("€",'€', new double[][]{{4, 0.2}});
+  cs.AddChar("$",'$', new double[][]{{18, 0.4}});
+  cs.AddChar("%",'%', new double[][]{});
+  cs.AddChar("(",'(', new double[][]{});
+  cs.AddChar(")",')', new double[][]{});
+  cs.AddChar("=",'=', new double[][]{});
+  */
+}
+
+void InitCStorageNumeral() {
   //cs = new CharactersStorage(62);
   cs = new CharactersStorage(10);
   
@@ -240,7 +327,7 @@ void InitCStorage() {
   cs.AddChar("7",'7', new double[][]{{8, 0.1}});
   cs.AddChar("8",'8', new double[][]{{1, 0.5}});
   cs.AddChar("9",'9', new double[][]{{6, 0.5}});
-
+  
   /*
   cs.AddChar("+",'+', new double[][]{});
   cs.AddChar("-",'-', new double[][]{});
