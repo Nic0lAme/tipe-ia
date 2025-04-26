@@ -54,7 +54,7 @@ void setup() {
   HyperParameters hp = new HyperParameters();
   session = new Session("", hp);
 
-  // Bayes bayes = new Bayes("RandomInitFois5");
+  Bayes bayes = new Bayes("RandomInitFois5");
   // bayes.GaussianProcess(5, 5);
   //bayes.RandomFill(5, 5);
   /*
@@ -62,12 +62,12 @@ void setup() {
     bayes.SERV_Export(new HyperParameters().Random(), random(1));
   */
 
-  CNN cnn = new CNN(28, new int[]{16, 32, 64}, new int[]{256, 128, cs.allC.length});
+  CNN cnn = new CNN(28, new int[]{16, 32, 64}, new int[]{256, 128, cs.NumChars()});
   cnn.UseSoftMax();
   cnn.useADAM = true;
 
   Matrix[][] sample = session.ds.CreateSample(
-      cs.allC,
+      cs.GetChars(),
       //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
       handTrainingDatas,
       //new String[]{},
@@ -75,7 +75,7 @@ void setup() {
       2, 1);
 
   Matrix[][] testSample = session.ds.CreateSample(
-      cs.allC,
+      cs.GetChars(),
       //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
       handTestingDatas,
       //new String[]{},
@@ -118,8 +118,6 @@ int[] RepList(float[] score, int baseRep, float minProp) {
 
   return repList;
 }
-
-
 
 float Sum(float[] list) {
   float sum = 0;
