@@ -58,7 +58,7 @@ void setup() {
   HyperParameters hp = new HyperParameters();
   session = new Session("", hp);
 
-  // Bayes bayes = new Bayes("RandomInitFois5");
+  Bayes bayes = new Bayes("RandomInitFois5");
   // bayes.GaussianProcess(5, 5);
   //bayes.RandomFill(5, 5);
   /*
@@ -122,8 +122,6 @@ int[] RepList(float[] score, int baseRep, float minProp) {
 
   return repList;
 }
-
-
 
 float Sum(float[] list) {
   float sum = 0;
