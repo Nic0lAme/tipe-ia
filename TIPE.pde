@@ -16,6 +16,7 @@ int numOfHyperParameters = 15;
 final boolean enableDraftingArea = false;
 float rScale = 1; // Scale for the representations (draw)
 float testDerformation = 1;
+Random globalRandom = new Random();
 
 // Nombre de threads pour les différentes tâches
 final int numThreadsDataset = 16; // Création des datasets
@@ -34,7 +35,7 @@ void setup() {
   background(255);
 
   cs = new CharactersStorage();
-  cs.LoadNumbersOnly();
+  cs.LoadLettersAndNumbers();
 
   frame = (Frame) ((processing.awt.PSurfaceAWT.SmoothCanvas) surface.getNative()).getFrame();
   frame.setVisible(false); // Cache la fenêtre d'activation java
@@ -43,8 +44,11 @@ void setup() {
   im = new ImageManager();
   graphApplet = new GraphApplet();
   cl = new ConsoleLog("./Log/log1.txt");
+  
+  /*
   wc = new WordCorrector();
   wc.ImportWords();
+  */
 
   if (enableDraftingArea) draftingArea = new DraftingArea();
 
@@ -62,27 +66,27 @@ void setup() {
     bayes.SERV_Export(new HyperParameters().Random(), random(1));
   */
 
-  CNN cnn = new CNN(28, new int[]{16, 32, 64}, new int[]{256, 128, cs.allC.length});
+  CNN cnn = new CNN(32, new int[]{16, 32, 64}, new int[]{256, cs.GetChars().length});
   cnn.UseSoftMax();
   cnn.useADAM = true;
 
   Matrix[][] sample = session.ds.CreateSample(
-      cs.allC,
+      cs.GetChars(),
       //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
       handTrainingDatas,
       //new String[]{},
       fontTrainingDatas,
-      2, 1);
+      1, 1);
 
   Matrix[][] testSample = session.ds.CreateSample(
-      cs.allC,
+      cs.GetChars(),
       //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
       handTestingDatas,
       //new String[]{},
       fontTestingDatas,
       1, 1);
 
-  cnn.MiniBatchLearn(sample, 256, 32, 0.001, 0.001, 4, new Matrix[][][]{sample, testSample}, "");
+  cnn.MiniBatchLearn(sample, 128, 32, 0.01, 0.01, 4, new Matrix[][][]{testSample}, "");
 
   session.AccuracyScore(cnn, testSample, true);
 }

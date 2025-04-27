@@ -128,6 +128,14 @@ class Matrix {
   Matrix Random() {
     return Random(0, 1);
   }
+  
+  //f Chaque valeur de la matrice est tiré aléatoirement et uniformément entre _min_ et _max_
+  Matrix RandomGaussian(double mean, double deviation) {
+    for (int i = 0; i < n; i++)
+      for (int j = 0; j < p; j++)
+        this.values[i*this.p + j] = mean + deviation * globalRandom.nextGaussian();
+    return this;
+  }
 
   //f Si la matrice _this_ est carré, fait d'elle la matrice identité
   Matrix Identity() {
@@ -455,8 +463,8 @@ class Matrix {
   Matrix GPUMult(Matrix m) {
     int initTime = millis();
 
-    double[] A = this.Flatten();
-    double[] B = m.Flatten();
+    double[] A = this.values;
+    double[] B = m.values;
     
     double[] C = new double[this.n * m.p];
     
@@ -509,7 +517,7 @@ class Matrix {
     return this;
   }
 
-  //f Normalise la matrice _this_
+  //f Normalise les colonnes de la matrice _this_
   // La somme de chaque colonne est ramené à 1
   Matrix NormColumn() {
     double s = 0;
@@ -526,6 +534,32 @@ class Matrix {
       this.Dilat(j, (double)1 / s);
     }
 
+    return this;
+  }
+  
+  //f Norme la matrice _this_
+  // Applique (x - mean) / sqrt(variance)
+  Matrix Norm() {
+    double[] mean = new double[this.p];
+    for(int j = 0; j  < this.p; j++) {
+      double sum = 0d;
+      for(int i = 0; i < this.n; i++) sum += this.values[i * this.p + j];
+      mean[j] = sum / this.n;
+    }
+    
+    double[] variance = new double[this.p];
+    for(int j = 0; j  < this.p; j++) {
+      double sum = 0d;
+      for(int i = 0; i < this.n; i++) sum += Math.pow(this.values[i * this.p + j] - mean[j], 2);
+      variance[j] = sum / this.n;
+    }
+    
+    for(int i = 0; i < this.n; i++) {
+      for(int j = 0; j < this.p; j++) {
+        this.values[i * this.p + j] = (this.values[i * this.p + j] - mean[j]) / (Math.sqrt(variance[j] + 1e-8));
+      }
+    }
+    
     return this;
   }
 

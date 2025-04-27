@@ -20,8 +20,8 @@ public class Session {
   Session(String name, HyperParameters hp) {
     this.hp = hp;
 
-    this.w = 28;
-    this.h = 28;
+    this.w = 32;
+    this.h = 32;
 
     this.name = name;
     this.characters = cs.GetChars();

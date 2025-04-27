@@ -31,7 +31,7 @@ class CNN {
   
   int numOfLearningCall = 0;
   double b1 = 0.9;
-  double b2 = 0.995;
+  double b2 = 0.999;
   
 
   double lambda = 0;
@@ -103,33 +103,40 @@ class CNN {
       ADAMbiasSqMoment[i] = new Matrix(layers[i+1], 1);
     }
     
+    int nin = this.cFilterSize * this.cFilterSize;
     // Calcul aléatoire d'init des filters et bias du CNN
     for (int i = 0; i < cNumLayers; i++) {
-      int nin = i == 0 ? 1 : this.cFilters[i-1].length;
       int nout = this.cFilters[i].length;
       
       for(int f = 0; f < this.cFilters[i].length; f++) {
         // He Kaiming Initialization (for ReLU)
-        this.cFilters[i][f] = new Matrix(cFilterSize).Random(0, sqrt(2f / nin));
+        this.cFilters[i][f] = new Matrix(cFilterSize).RandomGaussian(0, sqrt(2f / nin));
         
         this.cADAMfiltersMoment[i][f] = new Matrix(cFilterSize);
         this.cADAMfiltersSqMoment[i][f] = new Matrix(cFilterSize);
       }
       
-      // Normal Xavier Weight Initialization
-      cBias[i] = new Matrix(this.cFilters[i].length, 1).Random(-sqrt(6) / sqrt(nin + nout), sqrt(6) / sqrt(nin + nout));
+      // He Kaiming Initialization (for ReLU)
+      cBias[i] = new Matrix(this.cFilters[i].length, 1).RandomGaussian(0, sqrt(2f / nin));
       this.cADAMbiasMoment[i] = new Matrix(this.cFilters[i].length, 1);
       this.cADAMbiasSqMoment[i] = new Matrix(this.cFilters[i].length, 1);
+      
+      nin *= this.cFilters[i].length;
     }
   }
   
 
   //f Donne la sortie du réseau de neurones _this_ pour l'entrée _entry_
   public Matrix Predict(Matrix[] entries) {
-    Matrix ret = this.ForwardPropagation(entries, false)[2][0][0][this.numLayers - 1];
+    int size = 128;
+    int numOfBatches = ceil((float)entries.length / size);
+    Matrix[] ret = new Matrix[numOfBatches];
+    for(int b = 0; b < numOfBatches; b++) {
+      ret[b] = this.ForwardPropagation(Arrays.copyOfRange(entries, b * size, min((b+1) * size, entries.length)), false)[2][0][0][this.numLayers - 1];
+    }
     
     //ret.Debug();
-    return ret;
+    return new Matrix(0).Concat(ret);
   }
 
   //f  
@@ -139,6 +146,8 @@ class CNN {
     
     Matrix convoluted;
     Matrix[] pooled;
+    
+    int initTime = millis();
       
     Matrix entry = entries[0];
     for(int x = 0; x < entries.length; x++) {
@@ -148,9 +157,6 @@ class CNN {
         println("Taille de l'entrée invalide");
         return null;
       }
-      
-      int initTime = millis();
-      
       
       convVal[x][0] = new Matrix[]{entry};
       for(int k = 0; k < this.cNumLayers; k++) {
@@ -196,7 +202,7 @@ class CNN {
       }
     }
     
-    int FCLTime = millis();
+    int transitionTime = millis();
     
     //cl.pln("CONV : " + str(convTime - initTime) + " | FCL : " + str(FCLTime - convTime));
     
@@ -205,6 +211,13 @@ class CNN {
       layerVal[i + 1] = CalcLayer(i, layerVal[i]);
       if(!doSavePrevLayers) layerVal[i] = null;
     }
+    
+    int FCLTime = millis();
+    
+    println("FORWARD TIME : ", FCLTime - initTime);
+    println("Convolution : ", convTime - initTime);
+    println("Transition : ", transitionTime - convTime);
+    println("FCL : ", FCLTime - transitionTime);
 
     return new Matrix[][][][]{ convVal, masks, new Matrix[][][]{{layerVal}} }; // :) :)
   }
