@@ -20,8 +20,8 @@ public class Session {
   Session(String name, HyperParameters hp) {
     this.hp = hp;
 
-    this.w = 32;
-    this.h = 32;
+    this.w = 28;
+    this.h = 28;
 
     this.name = name;
     this.characters = cs.GetChars();
@@ -58,7 +58,7 @@ public class Session {
   // _startDef_ et _endDef_ correspondent à l'évolution du taux de déformation
   // _rep_ est le nombre de répétition de chaque échantillon
   // _prop_ est la proportion minimale de _rep_ pour chaque échantillon, modulé par la performance du réseau sur le charactère associé
-  void TrainForImages(int phaseNumber, int epochPerSet, double startMinLR, double endMinLR, double startMaxLR, double endMaxLR, int period, int batchSize, float startDef, float endDef, int rep, float minProp) {
+  void TrainForImages(int phaseNumber, int epochPerSet, float startMinLR, float endMinLR, float startMaxLR, float endMaxLR, int period, int batchSize, float startDef, float endDef, int rep, float minProp) {
     float[] accuracy = new float[nn.outputSize];
     int[] repList;
     Arrays.fill(accuracy, 0.5);
@@ -107,8 +107,8 @@ public class Session {
           this.sessionFontTrainingDatas,
           repList, deformationRate));
 
-        double maxLR = startMaxLR * Math.pow(endMaxLR / startMaxLR, (double)(k-1)/max(1, (phaseNumber-1)));
-        double minLR = startMinLR * Math.pow(endMinLR / startMinLR, (double)(k-1)/max(1, (phaseNumber-1)));
+        float maxLR = startMaxLR * pow(endMaxLR / startMaxLR, (float)(k-1)/max(1, (phaseNumber-1)));
+        float minLR = startMinLR * pow(endMinLR / startMinLR, (float)(k-1)/max(1, (phaseNumber-1)));
         this.nn.MiniBatchLearn(sample, epochPerSet, batchSize, minLR, maxLR, period, new Matrix[][]{testSampleHand, testSampleFont}, k + "/" + phaseNumber);
 
         if (abortTraining.get()) {
@@ -117,7 +117,7 @@ public class Session {
         }
       }
 
-      double averageTrainingAccuracy = 0;
+      float averageTrainingAccuracy = 0;
       if(k >= 1) {
         Matrix[] shuffledSample = new Matrix(0).ShuffleCol(sample);
         averageTrainingAccuracy = Average(CompilScore(this.AccuracyScore(this.nn, shuffledSample, false)));
@@ -125,7 +125,7 @@ public class Session {
       }
 
       accuracy = CompilScore(this.AccuracyScore(this.nn, new Matrix[][]{testSampleHand, testSampleFont}, false));
-      double averageTestingAccuracy = Average(accuracy);
+      float averageTestingAccuracy = Average(accuracy);
 
       cl.pln("Accuracy on test set :", String.format("%6.3f", averageTestingAccuracy));
       cl.pln();
@@ -204,7 +204,7 @@ public class Session {
     PImage img = get(0, 0, width, height);
     img.filter(THRESHOLD, 0.5);
 
-    ArrayList<double[]> charactersProb = new ArrayList<double[]>();
+    ArrayList<float[]> charactersProb = new ArrayList<float[]>();
 
     ArrayList<ArrayList<PVector>> contours = im.ContourDetection(img);
     for(ArrayList<PVector> contour : contours) {
@@ -220,7 +220,7 @@ public class Session {
       print(Result(c).keyArray()[0], "");
     }
 
-    println(wc.WordAutoCorrection(charactersProb.toArray(new double[0][])));
+    println(wc.WordAutoCorrection(charactersProb.toArray(new float[0][])));
 
     println();
   }
@@ -242,7 +242,7 @@ public class Session {
       int x = 0; int y = 0;
       textAlign(LEFT, BOTTOM); textSize(this.w); fill(255,0,0);
 
-      int mIndex; double m; // Recherche de la prédiction la plus haute
+      int mIndex; float m; // Recherche de la prédiction la plus haute
       for(int j = 0; j < d[0].p; j++) {
         boolean isGood = false;
         fill(255,0,0,100);
@@ -309,7 +309,7 @@ public class Session {
       int x = 0; int y = 0;
       textAlign(LEFT, BOTTOM); textSize(this.w); fill(255,0,0);
 
-      int mIndex; double m; // Recherche de la prédiction la plus haute
+      int mIndex; float m; // Recherche de la prédiction la plus haute
       for(int j = 0; j < d[0].length; j++) {
         boolean isGood = false;
         fill(255,0,0,100);
@@ -381,7 +381,7 @@ public class Session {
   FloatDict Result(PImage img) {
     FloatDict result = new FloatDict();
 
-    double[] input = ImgPP(img);
+    float[] input = ImgPP(img);
     Matrix inputMatrix = new Matrix(this.w*this.h,1).ColumnFromArray(0, input);
 
     Matrix outputMatrix = nn.Predict(inputMatrix);
@@ -394,8 +394,8 @@ public class Session {
     return result;
   }
 
-  double[] CharactersProb(PImage img) {
-    double[] input = ImgPP(img);
+  float[] CharactersProb(PImage img) {
+    float[] input = ImgPP(img);
     Matrix inputMatrix = new Matrix(this.w*this.h,1).ColumnFromArray(0, input);
 
     Matrix outputMatrix = nn.Predict(inputMatrix);

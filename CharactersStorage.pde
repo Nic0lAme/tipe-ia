@@ -63,19 +63,19 @@ class CharactersStorage {
 
   private ArrayList<String> usedChars;
   private ArrayList<Character> display;
-  private ArrayList<double[][]> letterCorrespondance;
+  private ArrayList<float[][]> letterCorrespondance;
 
   //c
   CharactersStorage() {
     usedChars = new ArrayList<String>();
     display = new ArrayList<Character>();;
-    letterCorrespondance = new ArrayList<double[][]>();
+    letterCorrespondance = new ArrayList<float[][]>();
   }
 
   //f Ajoute le caractère dont le fichier est _name_, associé au caractère _d_, qui sera associé pour l'alphabet par _correspondance_
   // Dans _correspondance_, on a la liste des couple de lettres ressemblantes, avec la part de ressemblance
   // _Exemple : correspondance = {{8, 0.3}, {11, 0.3}}) pour le 1, qui ressemble au i et au l_
-  public void AddChar(String name, char d, double[][] correspondance) {
+  public void AddChar(String name, char d, float[][] correspondance) {
     usedChars.add(name);
     display.add(d);
     letterCorrespondance.add(correspondance);
@@ -90,11 +90,11 @@ class CharactersStorage {
   }
 
   //f Permet d'obtenir les probabilités pour chacune des 26 lettres à partir de la sortie du réseau _allProb_
-  double[] GetProb(double[] allProb) {
-    double[] ret = new double[26]; // TODO: 26 ? On considère pas les chiffres ?
+  float[] GetProb(float[] allProb) {
+    float[] ret = new float[26]; // TODO: 26 ? On considère pas les chiffres ?
 
     for (int i = 0; i < allProb.length; i++) {
-      for (double[] c : letterCorrespondance.get(i)) ret[(int)c[0]] += allProb[i] * c[1];
+      for (float[] c : letterCorrespondance.get(i)) ret[(int)c[0]] += allProb[i] * c[1];
     }
 
     return ret;
@@ -127,11 +127,11 @@ class CharactersStorage {
       if (!found) continue;
 
       String[] sp = split(parts[1], ", ");
-      double[][] corr = new double[sp.length][];
+      float[][] corr = new float[sp.length][];
       for (int i = 0; i < corr.length; i++) {
         String[] spl = split(sp[i], " ");
         int charNameInd = FindIndex(spl[0]);
-        corr[i] = new double[]{charNameInd, Double.parseDouble(spl[1])};
+        corr[i] = new float[]{charNameInd, Float.parseFloat(spl[1])};
       }
 
       // println(name, d);

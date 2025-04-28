@@ -90,7 +90,7 @@ public class LetterDataset {
 
               // Récupère les pixels et les normalise
               Matrix imgPixels = session.ImgPP(img);
-              double[] answerArray = new double[nbChar];
+              float[] answerArray = new float[nbChar];
               answerArray[c] = 1;
 
               Matrix[] r = new Matrix[2];
@@ -244,6 +244,6 @@ public synchronized void AddToRes(ArrayList<Matrix[]> res, Matrix[] toAdd, int s
   res.add(toAdd);
 
   if(res.size() % (sampleSize / 10) == 0) {
-    cl.pln(String.format("%5.3f", (double)res.size() / sampleSize), "Time Remaining :", RemainingTime(startTime, res.size(), sampleSize));
+    cl.pln(String.format("%5.3f", (float)res.size() / sampleSize), "Time Remaining :", RemainingTime(startTime, res.size(), sampleSize));
   }
 }

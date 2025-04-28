@@ -152,7 +152,7 @@ class ImageManager {
     NoiseGenerator ng = new NoiseGenerator();
     for (int i = 0; i < x; i++) {
       for (int j = 0; j < y; j++) {
-        float pI = perlin * (float)ng.noise((double)i / x * perlinScale, (double)j / y * perlinScale) - perlin / 2;
+        float pI = perlin * (float)ng.noise((float)i / x * perlinScale, (float)j / y * perlinScale) - perlin / 2;
         color init = scrambledImage.get(i,j);
         scrambledImage.set(i, j, color(100 * pI + red(init),pI + green(init), pI+blue(init)));
 
@@ -480,9 +480,9 @@ class ImageManager {
   // Il s'agit évidemment de magie noire, toujours pas regardé d'où ça vient ce truc
   // https://stackoverflow.com/questions/1165647/how-to-determine-if-a-list-of-polygon-points-are-in-clockwise-order
   boolean IsClockwise(PVector[] contour) {  // Si un contour est clockwise, alors il s'agit d'un contour extérieur
-    double sum = 0;
+    float sum = 0;
     for(int k = 0; k < contour.length - 1; k++) {
-      sum += (double)(contour[k+1].x - contour[k].x) / (contour[k+1].y + contour[k].y);
+      sum += (float)(contour[k+1].x - contour[k].x) / (contour[k+1].y + contour[k].y);
     }
     return sum >= 0;
   }

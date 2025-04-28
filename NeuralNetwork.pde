@@ -8,7 +8,7 @@ class NeuralNetwork {
   Matrix[] weights; // Poids des liaisons (pour un indice i, liaisons entre couche i et couche i+1)
   Matrix[] bias; // Biais (pour un indice i, biais entre couche i et i+1)
 
-  double lambda = 0.0000001;
+  float lambda = 0.0000001;
 
   boolean useSoftMax = false; // Détermine l'utilisation de la fonction softmax sur la dernière couche du réseau
 
@@ -131,14 +131,14 @@ class NeuralNetwork {
     result.Add(bias[from], 1, true);
 
     if(from == this.numLayers - 2 && this.useSoftMax) {
-      double max = result.Get(0,0);
+      float max = result.Get(0,0);
       for(int i = 0; i < result.n; i++)
         for(int j = 0; j < result.p; j++)
           if(result.Get(i,j) > max) max = result.Get(i,j);
 
       result.Add(new Matrix(result.n, result.p).Fill(-max));
 
-      result.Map((x) -> Math.exp(x));
+      result.Map((x) -> exp(x));
       if(result.HasNAN()) {
         println("IN MAP EXP");
         System.exit(-1);
@@ -181,7 +181,7 @@ class NeuralNetwork {
       }
 
       //dJ/dWl = dJ/dZl * dZl/dWl
-      weightGrad[l] = gradient.Mult(activations[l].T()).Scale(1/ (double)max(1, expectedOutput.p));
+      weightGrad[l] = gradient.Mult(activations[l].T()).Scale(1/ (float)max(1, expectedOutput.p));
       if(weightGrad[l].HasNAN()) {
         println("IN WEIGHTGRAD");
         System.exit(-1);
@@ -228,7 +228,7 @@ class NeuralNetwork {
 
   //f Effectue une étape d'apprentissage, ayant pour entrée _X_ et pour sortie _Y_
   // Le taux d'apprentissage est _learning\_rate_
-  public double Learn(Matrix X, Matrix Y, double learning_rate) {
+  public float Learn(Matrix X, Matrix Y, float learning_rate) {
     // Gradients des poids ([0]) et des biais([1]) pour chaque couche l ([][l])
     Matrix[][] gradients = new Matrix[2][this.numLayers-1];
 
@@ -289,7 +289,7 @@ class NeuralNetwork {
 
       // Recombine les données pour former les gradients et l'activation de la dernière couche
       for (int l = 0; l < this.numLayers-1; l++) {
-        double[] coeffs = new double[numThreadsLearning];
+        float[] coeffs = new float[numThreadsLearning];
         Matrix[] wlGradients = new Matrix[numThreadsLearning]; // Gradients pour les poids de la couche l
         Matrix[] blGradients = new Matrix[numThreadsLearning]; // Gradients pour les biais de la couche l
         for (int k = 0; k < coeffs.length; k++) {
@@ -317,7 +317,7 @@ class NeuralNetwork {
       if(weights[l].HasNAN() || bias[l].HasNAN()) hasNaN = true;
     }
 
-    double J = this.ComputeLoss(S, Y);
+    float J = this.ComputeLoss(S, Y);
 
     /*
     if(hasNaN || J != J) {
@@ -341,33 +341,33 @@ class NeuralNetwork {
   //f Permet le calcul du loss
   // _S_ est la sortie du système
   // _Y_ est la sortie attendue
-  public double ComputeLoss(Matrix S, Matrix Y) {
-    double J = 0;
+  public float ComputeLoss(Matrix S, Matrix Y) {
+    float J = 0;
     for(int c = 0; c < Y.p; c++) { //colonne de la sortie
       for(int i = 0; i < Y.n; i++) { //ligne de la sortie
-        if((double)S.Get(i, c) != 0) J -= Y.Get(i, c) * Math.log(Math.abs((double)S.Get(i, c))) / Y.p;
+        if((float)S.Get(i, c) != 0) J -= Y.Get(i, c) * Math.log(Math.abs((float)S.Get(i, c))) / Y.p;
       }
     }
     return J;
   }
 
-  public double MiniBatchLearn(Matrix[] data, int numOfEpoch, int batchSize, double lr) {
+  public float MiniBatchLearn(Matrix[] data, int numOfEpoch, int batchSize, float lr) {
     return MiniBatchLearn(data, numOfEpoch, batchSize, lr, lr, 1);
   }
 
-  public double MiniBatchLearn(Matrix[] data, int numOfEpoch, int batchSize, double minLR, double maxLR, int period) {
+  public float MiniBatchLearn(Matrix[] data, int numOfEpoch, int batchSize, float minLR, float maxLR, int period) {
     return MiniBatchLearn(data, numOfEpoch, batchSize, minLR, maxLR, period, new Matrix[][]{data}, "");
   }
 
-  public double MiniBatchLearn(Matrix[] data, int numOfEpoch, int batchSize, double minLR, double maxLR, int period, Matrix[][] testSets, String label) {
+  public float MiniBatchLearn(Matrix[] data, int numOfEpoch, int batchSize, float minLR, float maxLR, int period, Matrix[][] testSets, String label) {
     cl.pln("Mini Batch Gradient Descent " + label + " - " + numOfEpoch + " Epochs - " + batchSize + " Batch Size - " + String.format("%9.3E", maxLR) + " LR");
 
-    double lossAverage = 0;
+    float lossAverage = 0;
 
     int startTime = millis();
     int numOfBatches = floor(data[0].p / batchSize);
     for (int k = 0; k < numOfEpoch; k++) {
-      double learningRate = CyclicalLearningRate(k, minLR, maxLR, period);
+      float learningRate = CyclicalLearningRate(k, minLR, maxLR, period);
       cl.pln("(" + label + ") \tEpoch " + (k+1) + "/" + numOfEpoch + "\t Learning Rate : " + String.format("%6.4f", learningRate));
 
       for (int i = 0; i < data[0].p-1; i++) {
@@ -381,7 +381,7 @@ class NeuralNetwork {
       for (int i = 0; i < numOfBatches; i++) {
         Matrix batch = data[0].GetCol(i*batchSize, i*batchSize + batchSize - 1);
         Matrix batchAns = data[1].GetCol(i*batchSize, i*batchSize + batchSize - 1);
-        double l = this.Learn(batch, batchAns, learningRate);
+        float l = this.Learn(batch, batchAns, learningRate);
         lossAverage += l / numOfBatches;
         graphApplet.AddValue(l);
 
@@ -417,12 +417,12 @@ class NeuralNetwork {
   }
 }
 
-double sigmoid(double x) {
-  return 1/(1+Math.exp(-x));
+float sigmoid(float x) {
+  return 1/(1+exp(-x));
 }
 
 // En gros ça fait un blinker de period min suivi de period max
-double CyclicalLearningRate(int iter, double min, double max, int period) {
+float CyclicalLearningRate(int iter, float min, float max, int period) {
   if(iter%period + 1 <= period/2) return max;
   return min;
 }

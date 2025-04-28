@@ -1,7 +1,7 @@
 class WordCorrector {
   char[] charList = new char[]{'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
-  double[] letterSpreading = new double[]{0.1, 0.05};
-  double fiability = 0.95; // 0 -> c'est vraiment très mauvais / 1 -> c'est vraiment excellent
+  float[] letterSpreading = new float[]{0.1, 0.05};
+  float fiability = 0.95; // 0 -> c'est vraiment très mauvais / 1 -> c'est vraiment excellent
   
   int[][] words;
   
@@ -31,12 +31,12 @@ class WordCorrector {
   // _letterProb_ contient pour chaque emplacement les probabilités de chaque caractère
   // Simule toutes les manipulations possibles de manière probabiliste
   // Algorithme assez (très) naïf, donc à voir dans la pratique
-  public String WordAutoCorrection(double[][] letterProb) {
-    double[][] processedProb = new double[letterProb.length][this.charList.length];
+  public String WordAutoCorrection(float[][] letterProb) {
+    float[][] processedProb = new float[letterProb.length][this.charList.length];
     
     for(int letter = 0; letter < letterProb.length; letter++) {
       // Permet de normer les probabilités (somme vaut un)
-      double sum = 1 - this.fiability;
+      float sum = 1 - this.fiability;
       for(int k = 0; k < this.charList.length; k++) {
         sum += letterProb[letter][k];
       }
@@ -59,12 +59,12 @@ class WordCorrector {
     */
     
     int[] bestWord = words[0];
-    double bestProb = 0;
+    float bestProb = 0;
     
     for(int[] word : this.words) {
       if(word.length != processedProb.length) continue;
       
-      double prob = 1;
+      float prob = 1;
       for(int letter = 0; letter < word.length; letter++) {
         prob *= processedProb[letter][word[letter]];
       }

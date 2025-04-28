@@ -11,6 +11,10 @@ Database db;
 Session session;
 CharactersStorage cs;
 
+// KERNEL CLASSES
+MatrixMultKernel matrixMultKernel;
+NextGradKernel nextGradKernel;
+
 int convolutionTime = 0;
 int numOfHyperParameters = 15;
 final boolean enableDraftingArea = false;
@@ -33,9 +37,12 @@ void settings() {
 
 void setup() {
   background(255);
+  
+  matrixMultKernel = new MatrixMultKernel();
+  nextGradKernel = new NextGradKernel();
 
   cs = new CharactersStorage();
-  cs.LoadLettersAndNumbers();
+  cs.LoadNumbersOnly();
 
   frame = (Frame) ((processing.awt.PSurfaceAWT.SmoothCanvas) surface.getNative()).getFrame();
   frame.setVisible(false); // Cache la fenêtre d'activation java
@@ -66,7 +73,7 @@ void setup() {
     bayes.SERV_Export(new HyperParameters().Random(), random(1));
   */
 
-  CNN cnn = new CNN(32, new int[]{16, 32, 64}, new int[]{256, cs.GetChars().length});
+  CNN cnn = new CNN(28, new int[]{16, 32}, new int[]{128, 128, cs.GetChars().length});
   cnn.UseSoftMax();
   cnn.useADAM = true;
 
@@ -86,7 +93,7 @@ void setup() {
       fontTestingDatas,
       1, 1);
 
-  cnn.MiniBatchLearn(sample, 128, 32, 0.01, 0.01, 4, new Matrix[][][]{testSample}, "");
+  cnn.MiniBatchLearn(sample, 128, 32, 0.001, 0.001, 4, new Matrix[][][]{testSample}, "");
 
   session.AccuracyScore(cnn, testSample, true);
 }

@@ -172,9 +172,9 @@ class ImageSeparator {
     }
 
     int bestThreshold = -1;
-    double bestVal = -1;
+    float bestVal = -1;
     for (int threshold = 0; threshold < 256; threshold++) {
-      double w0 = 0, w1 = 0, mu0 = 0, mu1 = 0;
+      float w0 = 0, w1 = 0, mu0 = 0, mu1 = 0;
       for (int i = 0; i < threshold; i++) w0 += intensities[i];
       for (int i = threshold; i < 256; i++) w1 += intensities[i];
       w0 /= pixelNumber;
@@ -185,7 +185,7 @@ class ImageSeparator {
       mu0 /= w0;
       mu1 /= w1;
 
-      double val = w0 * w1 * Math.pow((mu0 - mu1), 2);
+      float val = w0 * w1 * pow((mu0 - mu1), 2);
       if (val > bestVal) {
         bestVal = val;
         bestThreshold = threshold;
