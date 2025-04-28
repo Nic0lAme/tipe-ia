@@ -112,7 +112,7 @@ class CNN {
     int nin = this.cFilterSize * this.cFilterSize;
     // Calcul aléatoire d'init des filters et bias du CNN
     for (int i = 0; i < cNumLayers; i++) {
-      int nout = this.cFilters[i].length;
+      int nout = this.cFilters[i].length * this.cFilterSize * this.cFilterSize;
 
       for(int f = 0; f < this.cFilters[i].length; f++) {
         // He Kaiming Initialization (for ReLU)
@@ -468,7 +468,7 @@ class CNN {
       final int outP = cImageSizes[k];
       float[] output = new float[inputNumber * prevLayerOutputSize * outN * outP];
       
-      nextGradKernel.SetData(filterN, filterP, filterArea, numOfFilters, rotatedFiltersFlat, gradientN, gradientP, gradientArea, gradientNumber, inputArea, cGradientFlat, outN, outP, output);
+      nextGradKernel.SetData(filterN, filterP, filterArea, numOfFilters, rotatedFiltersFlat, gradientN, gradientP, gradientArea, gradientNumber, inputArea, cGradientFlat, outN, outP, output, prevLayerOutputSize);
       nextGradKernel.execute(Range.create(inputNumber * prevLayerOutputSize));
 
       for(int x = 0; x < inputNumber; x++) {
