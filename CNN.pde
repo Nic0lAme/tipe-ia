@@ -32,7 +32,7 @@ class CNN {
   int numOfLearningCall = 0;
   float b1 = 0.9;
   float b2 = 0.999;
-  
+
 
   float lambda = 0;
 
@@ -108,7 +108,7 @@ class CNN {
       ADAMbiasMoment[i] = new Matrix(layers[i+1], 1);
       ADAMbiasSqMoment[i] = new Matrix(layers[i+1], 1);
     }
-    
+
     int nin = this.cFilterSize * this.cFilterSize;
     // Calcul aléatoire d'init des filters et bias du CNN
     for (int i = 0; i < cNumLayers; i++) {
@@ -117,16 +117,16 @@ class CNN {
       for(int f = 0; f < this.cFilters[i].length; f++) {
         // He Kaiming Initialization (for ReLU)
         this.cFilters[i][f] = new Matrix(cFilterSize).RandomGaussian(0, sqrt(2f / nin));
-        
+
         this.cADAMfiltersMoment[i][f] = new Matrix(cFilterSize);
         this.cADAMfiltersSqMoment[i][f] = new Matrix(cFilterSize);
       }
-      
+
       // He Kaiming Initialization (for ReLU)
       cBias[i] = new Matrix(this.cFilters[i].length, 1).RandomGaussian(0, sqrt(2f / nin));
       this.cADAMbiasMoment[i] = new Matrix(this.cFilters[i].length, 1);
       this.cADAMbiasSqMoment[i] = new Matrix(this.cFilters[i].length, 1);
-      
+
       nin *= this.cFilters[i].length;
     }
   }
@@ -135,11 +135,6 @@ class CNN {
   public void Export(String name) {
     cl.pln("Export begin");
     ArrayList<String> output = new ArrayList<String>();
-
-    // Informations diverses
-    output.add(str(cImageSize));
-    output.add(str(numLayers));
-    output.add(str(cNumLayers));
 
     // Informations FCL
     output.add("");
@@ -152,6 +147,11 @@ class CNN {
     for (int i = 0; i < cNumFilters.length; i++) {
       output.set(1, output.get(1) + str(cNumFilters[i]) + (i != cNumFilters.length - 1 ? "," : ""));
     }
+
+    // Informations diverses
+    output.add(str(cImageSize));
+    output.add(str(numLayers));
+    output.add(str(cNumLayers));
 
     // Stockage FCL (poids puis biais)
     Save1DParam(weights, output);
@@ -181,13 +181,45 @@ class CNN {
 
   //f Importe un réseau de neurones depuis le fichier _name_
   public CNN Import(String name) {
-    // à faire :'(
+    String[] output = loadStrings(name);
 
-    // Récupère les paramètres (3 premières lignes)
+    // Récupère des paramètres
+    this.cImageSize = Integer.valueOf(output[2]);
+    this.numLayers = Integer.valueOf(output[3]);
+    this.cNumLayers = Integer.valueOf(output[4]);
+
+    // D'autres paramètres !
+    String[] llccrf = split(output[0], ','); // :)
+    String[] dgccrf = split(output[1], ','); // :D
+    this.layers = new int[numLayers];
+    this.cNumFilters = new int[cNumLayers];
+    for (int i = 0; i < llccrf.length; i++) layers[i] = Integer.valueOf(llccrf[i]);
+    for (int i = 0; i < dgccrf.length; i++) cNumFilters[i] = Integer.valueOf(dgccrf[i]);
+
+    // Initialise !!
     Init();
 
-    // Remplit les matrices !
+    // Remplit les matrices !!!
+    int i = Load1DParam(weights, output, 5);
+    i = Load1DParam(bias, output, i);
+    cl.pln("Import : FCL done");
 
+    i = Load2DParam(cFilters, output, i);
+    i = Load1DParam(cBias, output, i);
+    cl.pln("Import : CONV done");
+
+    i = Load1DParam(ADAMweightsMoment, output, i);
+    i = Load1DParam(ADAMweightsSqMoment, output, i);
+    i = Load1DParam(ADAMbiasMoment, output, i);
+    i = Load1DParam(ADAMbiasSqMoment, output, i);
+    i = Load2DParam(cADAMfiltersMoment, output, i);
+    i = Load2DParam(cADAMfiltersSqMoment, output, i);
+    i = Load1DParam(cADAMbiasMoment, output, i);
+    Load1DParam(cADAMbiasSqMoment, output, i);
+    cl.pln("Import : ADAM done");
+
+    // C'est terminé !!!!
+    cl.pln("Import ended");
     return this;
   }
 
@@ -207,6 +239,32 @@ class CNN {
     }
   }
 
+  private int Load1DParam(Matrix[] param, String[] output, int begin) {
+    int nextLine = begin;
+    for (int k = 0; k < param.length; k++) {
+      int endOfMatrix = nextLine + Integer.valueOf(split(output[nextLine], ",")[2]) - 1;
+      String[] matrixArray = new String[endOfMatrix - nextLine];
+      for (int i = 0; i < matrixArray.length; i++) matrixArray[i] = output[nextLine + i];
+      param[k].LoadString(matrixArray);
+      nextLine = endOfMatrix + 1;
+    }
+    return nextLine;
+  }
+
+  private int Load2DParam(Matrix[][] param, String[] output, int begin) {
+    int nextLine = begin;
+    for (int i = 0; i < param.length; i++) {
+      for (int j = 0; j < param[i].length; j++) {
+        int endOfMatrix = nextLine + Integer.valueOf(split(output[nextLine], ",")[2]) - 1;
+        String[] matrixArray = new String[endOfMatrix - nextLine];
+        for (int k = 0; k < matrixArray.length; k++) matrixArray[k] = output[nextLine + k];
+        param[i][j].LoadString(matrixArray);
+        nextLine = endOfMatrix + 1;
+      }
+    }
+    return nextLine;
+  }
+
   //f Donne la sortie du réseau de neurones _this_ pour l'entrée _entry_
   public Matrix Predict(Matrix[] entries) {
     int size = 128;
@@ -215,7 +273,7 @@ class CNN {
     for(int b = 0; b < numOfBatches; b++) {
       ret[b] = this.ForwardPropagation(Arrays.copyOfRange(entries, b * size, min((b+1) * size, entries.length)), false)[2][0][0][this.numLayers - 1];
     }
-    
+
     //ret.Debug();
     return new Matrix(0).Concat(ret);
   }
@@ -227,9 +285,9 @@ class CNN {
 
     Matrix convoluted;
     Matrix[] pooled;
-    
+
     int initTime = millis();
-      
+
     Matrix entry = entries[0];
     for(int x = 0; x < entries.length; x++) {
       entry = entries[x];
@@ -238,7 +296,7 @@ class CNN {
         println("Taille de l'entrée invalide");
         return null;
       }
-      
+
       convVal[x][0] = new Matrix[]{entry};
       for(int k = 0; k < this.cNumLayers; k++) {
         int numOfFilter = this.cFilters[k].length;
@@ -282,9 +340,9 @@ class CNN {
         }
       }
     }
-    
+
     int transitionTime = millis();
-    
+
     //cl.pln("CONV : " + str(convTime - initTime) + " | FCL : " + str(FCLTime - convTime));
 
     layerVal[0] = nnEntry;
@@ -292,9 +350,9 @@ class CNN {
       layerVal[i + 1] = CalcLayer(i, layerVal[i]);
       if(!doSavePrevLayers) layerVal[i] = null;
     }
-    
+
     int FCLTime = millis();
-    
+
     println("FORWARD TIME : ", FCLTime - initTime);
     println("Convolution : ", convTime - initTime);
     println("Transition : ", transitionTime - convTime);
@@ -467,7 +525,7 @@ class CNN {
       final int outN = cImageSizes[k];
       final int outP = cImageSizes[k];
       float[] output = new float[inputNumber * prevLayerOutputSize * outN * outP];
-      
+
       nextGradKernel.SetData(filterN, filterP, filterArea, numOfFilters, rotatedFiltersFlat, gradientN, gradientP, gradientArea, gradientNumber, inputArea, cGradientFlat, outN, outP, output, prevLayerOutputSize);
       nextGradKernel.execute(Range.create(inputNumber * prevLayerOutputSize));
 
@@ -817,7 +875,7 @@ class CNN {
       }
       cl.pln();
     }
-    
+
     matrixMultKernel.dispose();
     nextGradKernel.dispose();
 
@@ -862,33 +920,33 @@ public class NextGradKernel extends Kernel {
   private int outN;
   private int outP;
   private float[] output;
-  
+
   private int prevLayerOutputSize;
-  
+
   public void SetData(int filterN, int filterP, int filterArea, int numOfFilters, float[] rotatedFiltersFlat, int gradientN, int gradientP, int gradientArea, int gradientNumber, int inputArea, float[] cGradientFlat, int outN, int outP, float[] output, int prevLayerOutputSize) {
     this.filterN = filterN;
     this.filterP = filterP;
     this.filterArea = filterArea;
     this.numOfFilters = numOfFilters;
-  
+
     this.rotatedFiltersFlat = rotatedFiltersFlat;
-  
+
     this.gradientN = gradientN;
     this.gradientP = gradientP;
     this.gradientArea = gradientArea;
     this.gradientNumber = gradientNumber;
     this.inputArea = inputArea;
-  
+
     this.cGradientFlat = cGradientFlat;
-  
-  
+
+
     this.outN = outN;
     this.outP = outP;
     this.output = output;
-    
+
     this.prevLayerOutputSize = prevLayerOutputSize;
   }
-  
+
   @Override
   public void run() {
     int gid = getGlobalId();

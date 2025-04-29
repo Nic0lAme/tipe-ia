@@ -37,7 +37,7 @@ void settings() {
 
 void setup() {
   background(255);
-  
+
   matrixMultKernel = new MatrixMultKernel();
   nextGradKernel = new NextGradKernel();
 
@@ -51,7 +51,7 @@ void setup() {
   im = new ImageManager();
   graphApplet = new GraphApplet();
   cl = new ConsoleLog("./Log/log1.txt");
-  
+
   /*
   wc = new WordCorrector();
   wc.ImportWords();
@@ -65,7 +65,7 @@ void setup() {
   HyperParameters hp = new HyperParameters();
   session = new Session("", hp);
 
-  Bayes bayes = new Bayes("RandomInitFois5");
+  // Bayes bayes = new Bayes("RandomInitFois5");
   // bayes.GaussianProcess(5, 5);
   //bayes.RandomFill(5, 5);
   /*
@@ -73,7 +73,7 @@ void setup() {
     bayes.SERV_Export(new HyperParameters().Random(), random(1));
   */
 
-  CNN cnn = new CNN(28, new int[]{16, 32}, new int[]{512, 256, 128, cs.GetChars().length});
+  CNN cnn = new CNN(28, new int[]{16, 32, 64}, new int[]{512, 256, 128, cs.GetChars().length});
   cnn.UseSoftMax();
   cnn.useADAM = true;
 
