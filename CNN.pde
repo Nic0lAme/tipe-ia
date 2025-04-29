@@ -80,7 +80,8 @@ class CNN {
     // Calcul de la taille de la première couche du réseau normal
     cImageSizes = new int[cNumLayers + 1];
     cImageSizes[0] = this.cImageSize;
-    for(int k = 0; k < cNumLayers; k++) cImageSizes[k+1] = (int)Math.ceil((cImageSizes[k] - this.cFilterSize + 1) / this.cPool);
+    for(int k = 0; k < cNumLayers; k++) cImageSizes[k+1] = (int)Math.ceil((float)(cImageSizes[k] - this.cFilterSize + 1) / this.cPool);
+    println(cImageSizes);
 
     layers[0] = cImageSizes[cNumLayers] * cImageSizes[cNumLayers];
     for(int k = 0; k < cNumLayers; k++) layers[0] *= cFilters[k].length;
@@ -325,8 +326,6 @@ class CNN {
       int prevSize = this.cImageSizes[k];
       int cSize = prevSize - filterN + 1;
       
-      cl.pln(cSize);
-      
       float[] prevConvValFlat = new float[numOfSamples * numOfAntecedant * prevSize * prevSize];
       for(int x = 0; x < numOfSamples; x++)
         for(int e = 0; e < numOfAntecedant; e++)
@@ -340,7 +339,7 @@ class CNN {
       
       forwardConvolutionKernel.SetData(numOfSamples, numOfFilters, filterN, filterP, filterArea, numOfAntecedant, cFiltersFlat, cBiasFlat, prevConvValFlat, convValFlat, convolutedFlat, masksFlat, prevSize, size, cSize, this.cPool);
       forwardConvolutionKernel.execute(Range.create(numOfAntecedant * numOfFilters * numOfSamples));
-      forwardConvolutionKernel.dispose();
+      //forwardConvolutionKernel.dispose();
       
       for(int x = 0; x < numOfSamples; x++) {
         for(int e = 0; e < numOfAntecedant; e++) {
@@ -1113,6 +1112,7 @@ class ForwardConvolutionKernel extends Kernel {
         imax = -1; jmax = -1;
         for(int ii = 0; ii < poolSize; ii++) {
           for(int jj = 0; jj < poolSize; jj++) {
+            if(i+ii >= cSize || j+jj >= cSize) continue;
             if(convolutedFlat[convolutedIndex + (i * poolSize + ii) * cSize + (j * poolSize + jj)] > convVal[sampleIndex + antecedantIndex + filterIndex + i * size + j]) {
               convVal[sampleIndex + antecedantIndex + filterIndex + i * size + j] = convolutedFlat[convolutedIndex + (i * poolSize + ii) * cSize + (j * poolSize + jj)];
               imax = ii;
