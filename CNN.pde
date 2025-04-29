@@ -9,7 +9,7 @@ class CNN {
   // Paramètre du réseau de convolution
   int cImageSize;
   int cNumLayers;
-  float cPool = 2;
+  int cPool = 2;
   int cFilterSize = 3;
   int[] cNumFilters;
   Matrix[][] cFilters;
@@ -298,6 +298,73 @@ class CNN {
       }
 
       convVal[x][0] = new Matrix[]{entry};
+    }
+    
+    int numOfSamples = entries.length;
+    for(int k = 0; k < this.cNumLayers; k++) {
+      
+      int numOfFilters = this.cFilters[k].length;
+      int filterN = this.cFilterSize;
+      int filterP = this.cFilterSize;
+      int filterArea = this.cFilterSize * this.cFilterSize;
+      int numOfAntecedant = convVal[0][k].length;
+      
+      for(int x = 0; x < numOfSamples; x++) {
+        masks[x][k] = new Matrix[numOfAntecedant * numOfFilters];
+        convVal[x][k+1] = new Matrix[numOfAntecedant * numOfFilters];
+      }
+      
+      float[] cFiltersFlat = new float[numOfFilters * filterArea];
+      for(int f = 0; f < this.cFilters[k].length; f++)
+        for(int i = 0; i < filterArea; i++)
+          cFiltersFlat[filterArea * f + i] = this.cFilters[k][f].values[i];
+          
+      float[] cBiasFlat = this.cBias[k].values;
+      
+      int size = this.cImageSizes[k+1];
+      int prevSize = this.cImageSizes[k];
+      int cSize = prevSize - filterN + 1;
+      
+      cl.pln(cSize);
+      
+      float[] prevConvValFlat = new float[numOfSamples * numOfAntecedant * prevSize * prevSize];
+      for(int x = 0; x < numOfSamples; x++)
+        for(int e = 0; e < numOfAntecedant; e++)
+          for(int c = 0; c < convVal[x][k][e].values.length; c++)
+            prevConvValFlat[x * numOfAntecedant * prevSize * prevSize + e * prevSize * prevSize + c] = convVal[x][k][e].values[c];
+            
+      
+      float[] convValFlat = new float[numOfSamples * numOfAntecedant * numOfFilters * size * size];
+      float[] convolutedFlat = new float[numOfSamples * numOfAntecedant * numOfFilters * cSize * cSize];
+      float[] masksFlat = new float[numOfSamples * numOfAntecedant * numOfFilters * cSize * cSize];
+      
+      forwardConvolutionKernel.SetData(numOfSamples, numOfFilters, filterN, filterP, filterArea, numOfAntecedant, cFiltersFlat, cBiasFlat, prevConvValFlat, convValFlat, convolutedFlat, masksFlat, prevSize, size, cSize, this.cPool);
+      forwardConvolutionKernel.execute(Range.create(numOfAntecedant * numOfFilters * numOfSamples));
+      forwardConvolutionKernel.dispose();
+      
+      for(int x = 0; x < numOfSamples; x++) {
+        for(int e = 0; e < numOfAntecedant; e++) {
+          for(int f = 0; f < numOfFilters; f++) {
+            convVal[x][k+1][e * numOfFilters + f] = new Matrix(size);
+            masks[x][k][e * numOfFilters + f] = new Matrix(cSize);
+            
+            for(int c = 0; c < size * size; c++) {
+              convVal[x][k+1][e * numOfFilters + f].values[c] = convValFlat[x * numOfAntecedant * numOfFilters * size * size + e * numOfFilters * size * size + f * size * size + c];
+            }
+            
+            for(int c = 0; c < cSize * cSize; c++) {
+              masks[x][k][e * numOfFilters + f].values[c] = masksFlat[x * numOfAntecedant * numOfFilters * cSize * cSize + e * numOfFilters * cSize * cSize + f * cSize * cSize + c];
+            }
+          }
+        }
+      }
+      
+    }
+   
+    /*
+    //here
+    for(int x = 0; x < entries.length; x++) {
+      convVal[x][0] = new Matrix[]{entry};
       for(int k = 0; k < this.cNumLayers; k++) {
         int numOfFilter = this.cFilters[k].length;
         masks[x][k] = new Matrix[convVal[x][k].length * numOfFilter];
@@ -322,6 +389,7 @@ class CNN {
         }
       }
     }
+    */
 
     int convTime = millis();
 
@@ -916,7 +984,6 @@ public class NextGradKernel extends Kernel {
 
   private float[] cGradientFlat;
 
-
   private int outN;
   private int outP;
   private float[] output;
@@ -974,4 +1041,99 @@ public class NextGradKernel extends Kernel {
       }
     }
   }
+}
+
+
+//here2
+class ForwardConvolutionKernel extends Kernel {
+  int numOfSamples;
+  int numOfFilters;
+  int filterN;
+  int filterP;
+  int filterArea;
+  int numOfAntecedant;
+  float[] cFiltersFlat;
+  float[] cBiasFlat;
+  float[] prevConvVal;
+  float[] convVal;
+  float[] convolutedFlat;
+  float[] masksFlat;
+  int prevSize;
+  int size;
+  int cSize;
+  int poolSize;
+  
+  public void SetData(int numOfSamples, int numOfFilters, int filterN, int filterP, int filterArea, int numOfAntecedant, float[] cFiltersFlat, float[] cBiasFlat, float[] prevConvVal, float[] convVal, float[] convolutedFlat, float[] masksFlat, int prevSize, int size, int cSize, int poolSize) {
+    this.numOfSamples = numOfSamples;
+    this.numOfFilters = numOfFilters;
+    this.filterN = filterN;
+    this.filterP = filterP;
+    this.filterArea = filterArea;
+    this.numOfAntecedant = numOfAntecedant;
+    this.cFiltersFlat = cFiltersFlat;
+    this.cBiasFlat = cBiasFlat;
+    this.prevConvVal = prevConvVal;
+    this.convVal = convVal;
+    this.convolutedFlat = convolutedFlat;
+    this.masksFlat = masksFlat;
+    this.prevSize = prevSize;
+    this.size = size;
+    this.cSize = cSize;
+    this.poolSize = poolSize;
+  }
+  
+  @Override
+  public void run() {
+    int gid = getGlobalId();
+    int x = gid / (numOfAntecedant * numOfFilters);
+    int e = (gid / numOfFilters) % numOfAntecedant;
+    int f = gid % numOfFilters;
+    
+    int sampleIndex = x * numOfAntecedant * numOfFilters * size * size;
+    int antecedantIndex = e * numOfFilters * size * size;
+    int filterIndex = f * size * size;
+    
+    int convolutedIndex = x * numOfAntecedant * numOfFilters * cSize * cSize + e * numOfFilters * cSize * cSize + f * cSize * cSize;
+    
+    int index;
+    for(int i = 0; i < cSize; i++) {
+      for(int j = 0; j < cSize; j++) {
+        index = i * cSize + j;
+        convolutedFlat[convolutedIndex + index] = cBiasFlat[f];
+        
+        for(int ii = 0; ii < filterN; ii++)
+          for(int jj = 0; jj< filterP; jj++)
+            convolutedFlat[convolutedIndex + index] += this.cFiltersFlat[f * filterArea + ii * filterP + jj] * prevConvVal[x * numOfAntecedant * prevSize * prevSize + e * prevSize * prevSize + (i * poolSize + ii) * cSize + (j * poolSize + jj)];
+      }
+    }
+    
+    int imax; int jmax;
+    for(int i = 0; i < size; i++) {
+      for(int j = 0; j < size; j++) {
+        imax = -1; jmax = -1;
+        for(int ii = 0; ii < poolSize; ii++) {
+          for(int jj = 0; jj < poolSize; jj++) {
+            if(convolutedFlat[convolutedIndex + (i * poolSize + ii) * cSize + (j * poolSize + jj)] > convVal[sampleIndex + antecedantIndex + filterIndex + i * size + j]) {
+              convVal[sampleIndex + antecedantIndex + filterIndex + i * size + j] = convolutedFlat[convolutedIndex + (i * poolSize + ii) * cSize + (j * poolSize + jj)];
+              imax = ii;
+              jmax = jj;
+            }
+          }
+          
+          if(imax != -1)
+            masksFlat[convolutedIndex + (i * poolSize + imax) * cSize + (j * poolSize + jmax)] = 1;
+        }
+      }
+    }
+  }
+  
+  /*
+    convoluted = convVal[x][k][e].Convolution(this.cFilters[k][f]).AddScal(this.cBias[k].Get(f, 0));
+    //convoluted.Add(new Matrix(convoluted.n).Fill(this.cBias[k].Get(f,0)));
+
+    pooled = convoluted.MaxPooling(2, 2);
+    masks[x][k][e * numOfFilter + f] = pooled[1];
+
+    convVal[x][k+1][e * numOfFilter + f] = pooled[0];
+  */
 }
