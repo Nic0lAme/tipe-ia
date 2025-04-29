@@ -727,7 +727,7 @@ public class LearnGraph {
   private boolean isLog;
 
   private final LinkedList<Double> avgDatas = new LinkedList<Double>();
-  private final int avgPeriod = 100;
+  private final int avgPeriod = 30;
   private double somme = 0;
 
   public LearnGraph(String abscisses, String ordonnees) {
