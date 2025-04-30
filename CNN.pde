@@ -244,7 +244,7 @@ class CNN {
     int nextLine = begin;
     for (int k = 0; k < param.length; k++) {
       int endOfMatrix = nextLine + Integer.valueOf(split(output[nextLine], ",")[2]) - 1;
-      String[] matrixArray = new String[endOfMatrix - nextLine];
+      String[] matrixArray = new String[endOfMatrix - nextLine + 1];
       for (int i = 0; i < matrixArray.length; i++) matrixArray[i] = output[nextLine + i];
       param[k].LoadString(matrixArray);
       nextLine = endOfMatrix + 1;
@@ -257,7 +257,7 @@ class CNN {
     for (int i = 0; i < param.length; i++) {
       for (int j = 0; j < param[i].length; j++) {
         int endOfMatrix = nextLine + Integer.valueOf(split(output[nextLine], ",")[2]) - 1;
-        String[] matrixArray = new String[endOfMatrix - nextLine];
+        String[] matrixArray = new String[endOfMatrix - nextLine + 1];
         for (int k = 0; k < matrixArray.length; k++) matrixArray[k] = output[nextLine + k];
         param[i][j].LoadString(matrixArray);
         nextLine = endOfMatrix + 1;
@@ -807,7 +807,8 @@ class CNN {
         this.bias[l].Add(biasGrad[l], -learning_rate);
         continue;
       }
-
+      
+      weightGrad[l].Norm();
       this.ADAMweightsMoment[l].Scale(b1).Add(weightGrad[l], 1-b1);
       this.ADAMweightsSqMoment[l].Scale(b2).Add(weightGrad[l].HProduct(weightGrad[l]), 1-b2);
       this.weights[l].Add(this.ADAMweightsMoment[l].C()
@@ -815,7 +816,8 @@ class CNN {
         .Scale(sqrt(1 - pow(b2, this.numOfLearningCall)) / (1 - pow(b1, this.numOfLearningCall))),
         -learning_rate);
 
-
+    
+      biasGrad[l].Norm();
       this.ADAMbiasMoment[l].Scale(b1).Add(biasGrad[l], 1-b1);
       this.ADAMbiasSqMoment[l].Scale(b2).Add(biasGrad[l].HProduct(biasGrad[l]), 1-b2);
       this.bias[l].Add(this.ADAMbiasMoment[l].C()
@@ -830,7 +832,8 @@ class CNN {
           this.cFilters[l][f].Add(cFiltersGrad[l][f], -learning_rate);
           continue;
         }
-
+        
+        cFiltersGrad[l][f].Norm();
         this.cADAMfiltersMoment[l][f].Scale(b1).Add(cFiltersGrad[l][f], 1-b1);
         this.cADAMfiltersSqMoment[l][f].Scale(b2).Add(cFiltersGrad[l][f].HProduct(cFiltersGrad[l][f]), 1-b2);
         this.cFilters[l][f].Add(this.cADAMfiltersMoment[l][f].C()
@@ -849,7 +852,8 @@ class CNN {
       if(!useADAM) {
         this.cBias[l].Add(cBiasGrad[l], -learning_rate);
       }
-
+      
+      cBiasGrad[l].Norm();
       this.cADAMbiasMoment[l].Scale(b1).Add(cBiasGrad[l], 1-b1);
       this.cADAMbiasSqMoment[l].Scale(b2).Add(cBiasGrad[l].HProduct(cBiasGrad[l]), 1-b2);
       this.cBias[l].Add(this.cADAMbiasMoment[l].C()

@@ -10,9 +10,9 @@ public class LetterDataset {
   final int wData, hData;
   final float move = 0.12;
   final float blur = 0.02;
-  final float density = 0.2;
+  final float density = 0.1;
   final float perlin = 0.2;
-  final float deformation = 0.05;
+  final float deformation = 0.06;
 
   //c Créateur de dataset
   // Zone de travail définie par _wData_ * _hData_

@@ -1,6 +1,6 @@
 /////////////////////////////////////////////////////////////////
 
-int numOfTestSample = 40; // This is just for the tests, not the training
+int numOfTestSample = 20; // This is just for the tests, not the training
 
 String[] handPolicies = new String[] {
   "AntoineME", "NicolasMA", "LenaME", "TheoLA", "ElioKE", "AkramBE", "IVALUA1", "IVALUA2", "SamuelJE", "QuentinGU",

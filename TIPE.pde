@@ -32,7 +32,7 @@ final AtomicBoolean stopLearning = new AtomicBoolean(false);
 final AtomicBoolean abortTraining = new AtomicBoolean(false); // Note : Annule aussi toute construction de dataset
 
 void settings() {
-  size(floor(25 * rScale * 75), floor(25 * rScale * numOfTestSample), JAVA2D); // For Global Test
+  size(floor(28 * rScale * 26), floor(28 * rScale * numOfTestSample), JAVA2D); // For Global Test
   //size(119, 180, P2D); // For Direct Test
 }
 
@@ -44,7 +44,7 @@ void setup() {
   forwardConvolutionKernel = new ForwardConvolutionKernel();
 
   cs = new CharactersStorage();
-  cs.LoadLettersAndNumbers();
+  cs.LoadMajOnly();
 
   frame = (Frame) ((processing.awt.PSurfaceAWT.SmoothCanvas) surface.getNative()).getFrame();
   frame.setVisible(false); // Cache la fenêtre d'activation java
@@ -75,7 +75,8 @@ void setup() {
     bayes.SERV_Export(new HyperParameters().Random(), random(1));
   */
 
-  CNN cnn = new CNN(28, new int[]{16, 32}, new int[]{512, 256, 128, cs.GetChars().length});
+  //CNN cnn = new CNN(28, new int[]{64}, new int[]{256, 256, 128, cs.GetChars().length});
+  CNN cnn = new CNN().Import("./CNN/Test3.cnn");
   cnn.UseSoftMax();
   cnn.useADAM = true;
 
@@ -93,11 +94,12 @@ void setup() {
       handTestingDatas,
       //new String[]{},
       fontTestingDatas,
-      1, 1);
-
-  cnn.MiniBatchLearn(sample, 128, 256, 0.002, 0.002, 2, new Matrix[][][]{testSample}, "");
-
+      2, 1);
+  
+  cnn.MiniBatchLearn(sample, 32, 32, 0.0002, 0.0002, 2, new Matrix[][][]{testSample}, "");
+  cnn.Export("./CNN/Test4.cnn");
   session.AccuracyScore(cnn, testSample, true);
+
 }
 
 int index = 0;
