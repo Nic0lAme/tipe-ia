@@ -75,8 +75,8 @@ void setup() {
     bayes.SERV_Export(new HyperParameters().Random(), random(1));
   */
 
-  //CNN cnn = new CNN(28, new int[]{64}, new int[]{256, 256, 128, cs.GetChars().length});
-  CNN cnn = new CNN().Import("./CNN/Test3.cnn");
+  //CNN cnn = new CNN(28, new int[]{32, 64}, new int[]{128, cs.GetChars().length});
+  CNN cnn = new CNN().Import("./CNN/Test21.cnn");
   cnn.UseSoftMax();
   cnn.useADAM = true;
 
@@ -86,7 +86,7 @@ void setup() {
       handTrainingDatas,
       //new String[]{},
       fontTrainingDatas,
-      2, 1);
+      3, 1);
 
   Matrix[][] testSample = session.ds.CreateSample(
       cs.GetChars(),
@@ -96,8 +96,8 @@ void setup() {
       fontTestingDatas,
       2, 1);
   
-  cnn.MiniBatchLearn(sample, 32, 32, 0.0002, 0.0002, 2, new Matrix[][][]{testSample}, "");
-  cnn.Export("./CNN/Test4.cnn");
+  cnn.MiniBatchLearn(sample, 8, 64, 0.0002, 0.0002, 2, new Matrix[][][]{testSample}, "");
+  cnn.Export("./CNN/Test21.cnn");
   session.AccuracyScore(cnn, testSample, true);
 
 }

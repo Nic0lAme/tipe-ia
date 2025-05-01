@@ -2,8 +2,8 @@ class DraftingArea extends PApplet {
 
   private ArrayList<PImage[]> history = new ArrayList<PImage[]>();
   private int mult = 20;
-  private int w = 19;
-  private int h = 21;
+  private int w = 28;
+  private int h = 28;
 
   private int currentIndex = -1;
 
