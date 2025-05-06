@@ -1,6 +1,5 @@
 String nameOfProcess = "GlobalTest5" + str(minute()) + str(hour()) + str(day()) + str(month()) + str(year());
 
-Matrix[] sample; // Mais qu'est-ce ?
 ConsoleLog cl;
 ImageManager im;
 GraphApplet graphApplet;
@@ -95,7 +94,7 @@ void setup() {
       //new String[]{},
       fontTestingDatas,
       2, 1);
-  
+
   cnn.MiniBatchLearn(sample, 8, 64, 0.0002, 0.0002, 2, new Matrix[][][]{testSample}, "");
   cnn.Export("./CNN/Test21.cnn");
   session.AccuracyScore(cnn, testSample, true);

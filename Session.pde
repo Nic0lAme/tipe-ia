@@ -5,6 +5,7 @@ public class Session {
   int w, h;
 
   NeuralNetwork nn;
+  Matrix[] sample;
   String[] characters;
 
   String[] sessionHandTrainingDatas;
