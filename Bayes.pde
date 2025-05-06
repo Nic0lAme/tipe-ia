@@ -13,13 +13,13 @@ class Bayes {
   int numOfCandidate = 32768;
   float overfittingImportance = 0.3;
 
-  int trainingRep = 8;
-  int testingRep = 6;
+  int trainingRep = 1;
+  int testingRep = 1;
 
   private boolean isLoaded = false;
   public int etalonnedTime = 0;
   final private LetterDataset ds = new LetterDataset(5*session.w, 5*session.h);
-  Matrix[] globalTrainingData, globalTestingData;
+  Matrix[][] globalTrainingData, globalTestingData;
 
   //c
   Bayes(String n) {
@@ -39,16 +39,16 @@ class Bayes {
   //f Charge les images (test et train) à utiliser pendant l'optimisation
   private void LoadImageData() {
     int startTime = millis();
-    globalTrainingData = ds.SampleLining(ds.CreateSample(
+    globalTrainingData = ds.CreateSample(
         cs.GetChars(),
         handTrainingDatas,
         fontTrainingDatas,
-        trainingRep, 1));
-    globalTestingData = ds.SampleLining(ds.CreateSample(
+        trainingRep, 1);
+    globalTestingData = ds.CreateSample(
         cs.GetChars(),
         handTestingDatas,
         fontTestingDatas,
-        testingRep, 1));
+        testingRep, 1);
     isLoaded = true;
     etalonnedTime = millis() - startTime;
   }
@@ -269,17 +269,20 @@ class Bayes {
   }
 
   //f Permet d'évaluer la force d'une combinaison d'hyperparamètres
-  public float Evaluate(HyperParameters hp, Matrix[] trainSet, Matrix[] testSet, int time) {
+  public float Evaluate(HyperParameters hp, Matrix[][] trainSet, Matrix[][] testSet, int time) {
     int startTime = millis();
 
     int[] layers = new int[hp.layerSize.length + 2];
     layers[0] = session.w * session.h;
     for(int k = 0; k < hp.layerSize.length; k++) layers[k+1] = hp.layerSize[k];
     layers[hp.layerSize.length + 1] = cs.NumChars();
-
-    NeuralNetwork nn = new NeuralNetwork(layers);
+    
+    CNN nn = new CNN(session.w, hp.cNumFilters, layers);
     nn.lambda = hp.lambda * hp.batchSize;
     nn.UseSoftMax();
+    nn.useADAM = true;
+    nn.b1 = hp.b1;
+    nn.b2 = hp.b2;
 
     graphApplet.ClearGraph();
 
@@ -289,14 +292,14 @@ class Bayes {
     int iterNum = 0;
     while (millis() < startTime + time) {
       float lr = CyclicalLearningRate(iterNum, hp.minLR, hp.maxLR, hp.period);
-      trainLoss = nn.MiniBatchLearn(trainSet, 1, hp.batchSize, lr, lr, 1, new Matrix[0][], String.format("%05d", iterNum + 1));
+      trainLoss = nn.MiniBatchLearn(trainSet, 1, hp.batchSize, lr, lr, 1, new Matrix[0][][], String.format("%05d", iterNum + 1));
 
       cl.pln("Candidate Remaining Time", String.format("%7.3f", (float)(time - millis() + startTime) / 1000));
 
       iterNum++;
     }
 
-    testLoss = nn.ComputeLoss(nn.Predict(testSet[0]), testSet[1]);
+    testLoss = nn.ComputeLoss(nn.Predict(testSet[0]), testSet[1][0]);
 
     float accuracy = Average(session.AccuracyScore(nn, testSet, false));
 

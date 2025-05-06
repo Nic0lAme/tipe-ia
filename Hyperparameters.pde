@@ -1,5 +1,6 @@
 class HyperParameters {
-  int maxNumberOfLayers = 10;
+  int maxNumberOfLayers = 8;
+  int maxNumberOfCLayers = 3;
   
   int[] layerSize;
   float minLR;
@@ -7,19 +8,29 @@ class HyperParameters {
   float lambda;
   int period;
   int batchSize;
+  float b1;
+  float b2;
+  int[] cNumFilters;
+  
   
   //f Tire des hyperparamètres aléatoirement
   HyperParameters Random() {
-    maxLR = LogRandom(0.1, 10);
-    minLR = LogRandom(0.0001, 1);
+    maxLR = LogRandom(0.0001, 0.1);
+    minLR = LogRandom(0.000001, 0.01);
     lambda = LogRandom(0.0000001, 0.1);
-    period = constrain(PoissonRandom(6), 1, 100);
-    batchSize = (int)LogRandom(8, 512);
+    period = (int)constrain(PoissonRandom(6), 1, 100);
+    batchSize = (int)LogRandom(8, 256);
+    b1 = 1 - LogRandom(0.001, 0.5);
+    b2 = 1 - LogRandom(0.00001, 0.3);
     
-    int numberOfLayer = constrain(PoissonRandom(3), 1, maxNumberOfLayers);
+    int numberOfLayer = constrain(PoissonRandom(2), 1, maxNumberOfLayers);
     layerSize = new int[numberOfLayer];
-    
     for(int k = 0; k < numberOfLayer; k++) layerSize[k] = (int)LogRandom(16, 1024);
+    
+    
+    int numberOfCLayer = (int)round(UniRandom(0, maxNumberOfCLayers));
+    cNumFilters = new int[numberOfCLayer];
+    for(int k = 0; k < numberOfCLayer; k++) cNumFilters[k] = (int)LogRandom(4, 1024);
     
     return this;
   }
@@ -87,7 +98,10 @@ class HyperParameters {
     ret[2] = this.lambda;
     ret[3] = this.period;
     ret[4] = this.batchSize;
-    for(int k = 0; k < layerSize.length; k++) ret[5+k] = this.layerSize[k];
+    ret[5] = this.b1;
+    ret[6] = this.b2;
+    for(int k = 0; k < layerSize.length; k++) ret[7+k] = this.layerSize[k];
+    for(int k = 0; k < cNumFilters.length; k++) ret[7+maxNumberOfLayers+k] = this.cNumFilters[k];
     
     return ret;
   }
@@ -98,10 +112,24 @@ class HyperParameters {
     this.lambda = array[2];
     this.period = (int)array[3];
     this.batchSize = (int)array[4];
+    this.b1 = array[5];
+    this.b2 = array[6];
+    
     
     ArrayList<Integer> layerList = new ArrayList<Integer>();
     for(int k = 0; k < maxNumberOfLayers; k++) {
-      if(array[k+5] != 0) layerList.add((int)array[k+5]);
+      if(array[k+7] != 0) layerList.add((int)array[k+5]);
+      else break;
+    }
+    
+    this.layerSize = new int[layerList.size()];
+    for(int k = 0; k < this.layerSize.length; k++) {
+      this.layerSize[k] = layerList.get(k);
+    }
+        
+    ArrayList<Integer> cLayerList = new ArrayList<Integer>();
+    for(int k = 0; k < maxNumberOfCLayers; k++) {
+      if(array[k+maxNumberOfLayers+7] != 0) cLayerList.add((int)array[k+maxNumberOfLayers+7]);
       else break;
     }
     
@@ -121,6 +149,8 @@ class HyperParameters {
     this.period = json.getInt("Period");
     this.batchSize = json.getInt("BatchSize");
     this.lambda = json.getFloat("Lambda");
+    this.b1 = json.getFloat("B1");
+    this.b2 = json.getFloat("B2");
     
     String[] items = json.getString("Layers").replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\\s", "").split(",");
 
@@ -135,6 +165,20 @@ class HyperParameters {
     }
     
     this.layerSize = results;
+    ////
+    items = json.getString("Filters").replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\\s", "").split(",");
+
+    results = new int[items.length];
+    
+    for (int i = 0; i < items.length; i++) {
+      try {
+        results[i] = Integer.parseInt(items[i]);
+      } catch (NumberFormatException nfe) {
+        //NOTE: write something here if you need to recover from formatting errors
+      };
+    }
+    
+    this.cNumFilters = results;
     
     return this;
   }
@@ -149,8 +193,11 @@ class HyperParameters {
     json.setInt("Period", this.period);
     json.setInt("BatchSize", this.batchSize);
     json.setFloat("Lambda", (float)this.lambda);
+    json.setFloat("B1", this.b1);
+    json.setFloat("B2", this.b2);
     
     json.setString("Layers", Arrays.toString(this.layerSize));
+    json.setString("Filters", Arrays.toString(this.cNumFilters));
     
     return json;
   }
@@ -158,6 +205,11 @@ class HyperParameters {
   @Override
   public String toString() {
     String str = "HyperParameters | Layers[";
+    for (int i = 0; i < this.cNumFilters.length; i++) {
+      str += str(this.cNumFilters[i]);
+      if (i < this.cNumFilters.length - 1) str += ", ";
+    }
+    str += " | ";
     for (int i = 0; i < this.layerSize.length; i++) {
       str += str(this.layerSize[i]);
       if (i < this.layerSize.length - 1) str += ", ";

@@ -16,7 +16,7 @@ NextGradKernel nextGradKernel;
 ForwardConvolutionKernel forwardConvolutionKernel;
 
 int convolutionTime = 0;
-int numOfHyperParameters = 15;
+int numOfHyperParameters = 18;
 final boolean enableDraftingArea = false;
 float rScale = 1; // Scale for the representations (draw)
 float testDerformation = 1;
@@ -66,14 +66,12 @@ void setup() {
   HyperParameters hp = new HyperParameters();
   session = new Session("", hp);
 
-  // Bayes bayes = new Bayes("RandomInitFois5");
-  // bayes.GaussianProcess(5, 5);
-  //bayes.RandomFill(5, 5);
+  Bayes bayes = new Bayes("RandomONTeste");
+  //bayes.GaussianProcess(5, 5);
+  bayes.RandomFill(5, 5);
+  
+  
   /*
-  for(int k = 0; k < 10; k++)
-    bayes.SERV_Export(new HyperParameters().Random(), random(1));
-  */
-
   //CNN cnn = new CNN(28, new int[]{32, 64}, new int[]{128, cs.GetChars().length});
   CNN cnn = new CNN().Import("./CNN/Test21.cnn");
   cnn.UseSoftMax();
@@ -98,6 +96,7 @@ void setup() {
   cnn.MiniBatchLearn(sample, 8, 64, 0.0002, 0.0002, 2, new Matrix[][][]{testSample}, "");
   cnn.Export("./CNN/Test21.cnn");
   session.AccuracyScore(cnn, testSample, true);
+  */
 
 }
 
