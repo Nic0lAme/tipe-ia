@@ -67,9 +67,8 @@ class ImageSeparator {
   //f Trouve le meilleur angle possible pour orienter le texte correctement.
   // L'amplitude de recherche est _amplitude_ (en degrés), et le nombre de pas est _nbPas_
   // C'est assez lent, et il y a de quoi optimiser si c'est dérangeant (et c'est facile à paralléliser)
-  // Un nombre de pas de 100 semble être un bon compromis.
-  public PImage GetRotatedImage(float amplitude, int nbPas) {
-    PImage img = originalImage.copy();
+  private PImage GetRotatedImageStep1(PImage ori, float amplitude, int nbPas) {
+    PImage img = ori.copy();
     img.filter(GRAY);
 
     float maxVariance = 0;
@@ -93,6 +92,21 @@ class ImageSeparator {
     }
 
     return bestImage;
+  }
+
+  //f Trouve le meilleur angle possible pour orienter le texte correctement,
+  // avec 2 tours de GetRotatedImageStep1
+  // L'amplitude maximale est _maxAmpl_, et la précision est _nbPasLast_ pour
+  // le dernier tour, et _nbPas_ pour le reste. Le nombre de tour est _nbTour_
+  public PImage GetRotatedImage(int nbTour, float maxAmpl, int nbPas, int nbPasLast) {
+    PImage img = originalImage.copy();
+    float nextAmpl = maxAmpl;
+
+    for (int i = 0; i < nbTour-1; i++) {
+      img = GetRotatedImageStep1(img, nextAmpl, nbPas);
+      nextAmpl = (nextAmpl/nbPas) + 0.314159; // un peu de rab
+    }
+    return GetRotatedImageStep1(img, nextAmpl, nbPasLast);
   }
 
   //f Renvoie l'image construite avec les pixels _pxls_
@@ -196,9 +210,9 @@ class ImageSeparator {
   }
 
   //f Transforme les pixels _pxls_ en 2 catégories : pixels noirs et blancs
-  private int[][] BinarizePixels(int[][] pxls) {
+  private int[][] BinarizePixels(int[][] pxls, int frac) {
     int[][] result = new int[pxls.length][pxls[0].length];
-    int threshold = OtsuThreshold(pxls);
+    int threshold = OtsuThreshold(pxls) / frac;
     for (int i = 0; i < pxls.length; i++) {
       for (int j = 0; j < pxls[0].length; j++) {
         if (pxls[i][j] > threshold) result[i][j] = 255;
@@ -208,16 +222,33 @@ class ImageSeparator {
     return result;
   }
 
+  private int[][] BinarizePixels(int[][] pxls) {
+    return BinarizePixels(pxls, 1);
+  }
+
   //f Renvoie une moyenne pondérée des lignes de _bwPiwels_ (2 couleurs)
+  // En fait c'est la variance
   private int[] GetLineMeans(int[][] bwPixels) {
+    // int[] means = new int[bwPixels.length];
+    // for (int i = 0; i < bwPixels.length; i++) {
+    //   int blacks = 0;
+    //   for (int j = 0; j < bwPixels[0].length; j++) {
+    //     if (bwPixels[i][j] == 0) blacks++;
+    //   }
+    //   float m = 5*(float)blacks/bwPixels[0].length; // :)
+    //   means[i] = constrain(floor(map(m, 0, 1, 255, 0)), 0, 255);
+    // }
+    // return means;
+
     int[] means = new int[bwPixels.length];
     for (int i = 0; i < bwPixels.length; i++) {
-      int blacks = 0;
-      for (int j = 0; j < bwPixels[0].length; j++) {
-        if (bwPixels[i][j] == 0) blacks++;
-      }
-      float m = 5*(float)blacks/w;
-      means[i] = constrain(floor(map(m, 0, 1, 255, 0)), 0, 255);
+      float moy = 0;
+      for (int j = 0; j < bwPixels[i].length; j++) moy += bwPixels[i][j];
+      moy /= bwPixels[i].length;
+
+      float variance = 0;
+      for (int j = 0; j < bwPixels[i].length; j++) variance += Math.pow(bwPixels[i][j] - moy, 2);
+      means[i] = 255 - int(variance/bwPixels[i].length);
     }
     return means;
   }
@@ -234,7 +265,7 @@ class ImageSeparator {
 
     // Moyenne glissante pour lisser
     int[] means = new int[h];
-    int pas = 11; // PARAM (impair)
+    int pas = floor(0.01*h); // PARAM (impair)
     for (int i = 0; i < h; i++) {
       int somme = 0, compteur = 0;
       for (int k = -pas/2; k <= pas/2; k++) {
