@@ -37,13 +37,14 @@ void settings() {
 
 void setup() {
   background(255);
+  cl = new ConsoleLog("./Log/log1.txt");
 
   matrixMultKernel = new MatrixMultKernel();
   nextGradKernel = new NextGradKernel();
   forwardConvolutionKernel = new ForwardConvolutionKernel();
 
   cs = new CharactersStorage();
-  cs.LoadMajOnly();
+  cs.LoadLettersOnly();
 
   frame = (Frame) ((processing.awt.PSurfaceAWT.SmoothCanvas) surface.getNative()).getFrame();
   frame.setVisible(false); // Cache la fenêtre d'activation java
@@ -51,7 +52,6 @@ void setup() {
 
   im = new ImageManager();
   graphApplet = new GraphApplet();
-  cl = new ConsoleLog("./Log/log1.txt");
 
   /*
   wc = new WordCorrector();
@@ -72,18 +72,23 @@ void setup() {
   
   
   /*
-  //CNN cnn = new CNN(28, new int[]{32, 64}, new int[]{128, cs.GetChars().length});
+  for(int k = 0; k < 10; k++)
+    bayes.SERV_Export(new HyperParameters().Random(), random(1));
+  */
+
+  //CNN cnn = new CNN(28, new int[]{4, 8}, new int[]{64, cs.GetChars().length});
   CNN cnn = new CNN().Import("./CNN/Test21.cnn");
   cnn.UseSoftMax();
   cnn.useADAM = true;
-
+  
+  /*
   Matrix[][] sample = session.ds.CreateSample(
       cs.GetChars(),
       //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
       handTrainingDatas,
       //new String[]{},
       fontTrainingDatas,
-      3, 1);
+      1, 1);
 
   Matrix[][] testSample = session.ds.CreateSample(
       cs.GetChars(),
@@ -91,9 +96,9 @@ void setup() {
       handTestingDatas,
       //new String[]{},
       fontTestingDatas,
-      2, 1);
+      1, 1);
 
-  cnn.MiniBatchLearn(sample, 8, 64, 0.0002, 0.0002, 2, new Matrix[][][]{testSample}, "");
+  cnn.MiniBatchLearn(sample, 8, 256, 0.001, 0.001, 2, new Matrix[][][]{testSample}, "");
   cnn.Export("./CNN/Test21.cnn");
   session.AccuracyScore(cnn, testSample, true);
   */

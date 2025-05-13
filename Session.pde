@@ -365,6 +365,7 @@ public class Session {
     PImage PPImage = im.Gray(img);
     PPImage = im.Contrast(PPImage, 0.02);
     PPImage = im.AutoCrop(PPImage, 128, 0.12);
+    PPImage = im.TargetRatio(PPImage, 1);
     //PPImage = im.Contrast(PPImage, 0.02); // If there is a dark patch in the center
 
     im.Resize(PPImage, this.w, this.h);
