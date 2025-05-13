@@ -6,6 +6,8 @@ class ImageSeparator {
   final private int greenMask = 0b1111111100000000;
   final private int blueMask = 0b11111111;
 
+  final private int lineThreshold = 5;
+
   public ImageSeparator(PImage img) {
     this.originalImage = img;
     w = originalImage.width;
@@ -18,27 +20,44 @@ class ImageSeparator {
   // y avoir que du texte sur l'image, et écrit en ligne. Ne marche pas pour
   // les textes écrits en italique.
   // Note : L'image doit être bien orientée (voir GetRotatedImage)
-  public ArrayList<PImage> GetAllLettersImages() {
-    ArrayList<PVector[]> allCoords = GetAllCoords();
-    ArrayList<PImage> allLetters = new ArrayList<PImage>();
-    for (PVector[] coords : allCoords) allLetters.add(GetImageLetter(coords));
+  public ArrayList<PImage[]> GetWordsImages() {
+    ArrayList<PVector[][]> allCoords = GetAllCoords();
+    ArrayList<PImage[]> allLetters = new ArrayList<PImage[]>();
+    for (PVector[][] word : allCoords) {
+      PImage[] letterImgs = new PImage[word.length];
+      for (int i = 0; i < word.length; i++) {
+        letterImgs[i] = GetImageLetter(word[i]);
+      }
+      allLetters.add(letterImgs);
+    }
     return allLetters;
   }
 
   //f Renvoie une visualisation du découpage de l'image en lettres
-  public void SaveSeparationPreview(String path) {
-    ArrayList<PVector[]> allCoords = GetAllCoords();
+  public void SaveSeparationPreview(String path, boolean withLetters) {
+    ArrayList<PVector[][]> allCoords = GetAllCoords();
     PGraphics pg = createGraphics(originalImage.width, originalImage.height);
     pg.beginDraw();
     pg.background(255);
     pg.image(originalImage, 0, 0);
 
-    for (PVector[] coords : allCoords) {
-      PVector ul = coords[0], br = coords[1];
-      pg.stroke(0, 255, 0, 200); pg.line(ul.x, ul.y, br.x, ul.y);
-      pg.stroke(255, 0, 0, 200); pg.line(ul.x, br.y, br.x, br.y);
-      pg.stroke(0, 0, 255, 200); pg.line(ul.x, ul.y, ul.x, br.y);
-      pg.stroke(0,   0, 0, 200); pg.line(br.x, ul.y, br.x, br.y);
+    for (PVector[][] word : allCoords) {
+
+      if (withLetters) {
+        for (PVector[] coords : word) {
+          PVector ul = coords[0], br = coords[1];
+          pg.stroke(10, 50, 240, 255); pg.line(ul.x, ul.y, br.x, ul.y);
+          pg.stroke(10, 50, 240, 255); pg.line(ul.x, br.y, br.x, br.y);
+          pg.stroke(10, 50, 240, 255); pg.line(ul.x, ul.y, ul.x, br.y);
+          pg.stroke(10, 50, 240, 255); pg.line(br.x, ul.y, br.x, br.y);
+        }
+      }
+
+      PVector wul = word[0][0], wbr = word[word.length-1][1];
+      pg.stroke(240, 180, 20); pg.line(wul.x, wul.y, wbr.x, wul.y);
+      pg.stroke(20, 240, 180); pg.line(wul.x, wbr.y, wbr.x, wbr.y);
+      pg.stroke(180, 20, 240); pg.line(wul.x, wul.y, wul.x, wbr.y);
+      pg.stroke(120, 120, 180); pg.line(wbr.x, wul.y, wbr.x, wbr.y);
     }
 
     pg.endDraw();
@@ -46,8 +65,8 @@ class ImageSeparator {
   }
 
   //f Renvoie la liste des coordonnées des lettres.
-  // Voir GetAllLettersImages pour plus d'informations
-  private ArrayList<PVector[]> GetAllCoords() {
+  // Voir GetWordsImages pour plus d'informations
+  private ArrayList<PVector[][]> GetAllCoords() {
     PImage img = originalImage.copy();
     img.filter(GRAY);
     img.loadPixels();
@@ -56,12 +75,18 @@ class ImageSeparator {
     bwPixels = BinarizePixels(bwPixels);
     ArrayList<Integer> lineLevels = GetLineLevels(bwPixels);
 
-    ArrayList<PVector[]> allCoords = new ArrayList<PVector[]>();
+    ArrayList<PVector[]> allWordsCoords = new ArrayList<PVector[]>();
     for (int i = 0; i < lineLevels.size()-1; i++) {
-      allCoords.addAll(GetLettersCoords(bwPixels, lineLevels, i));
+      ArrayList<Integer> colLevels = SplitWords(bwPixels, lineLevels, i);
+      PVector ul = new PVector(0, lineLevels.get(i)), br = new PVector(0, lineLevels.get(i+1));
+      for (int j = 0; j < colLevels.size()-1; j++) {
+        ul.x = colLevels.get(j);
+        br.x = colLevels.get(j+1);
+        allWordsCoords.add(new PVector[]{ul.copy(), br.copy()});
+      }
     }
 
-    return allCoords;
+    return CoordsFromWords(bwPixels, allWordsCoords);
   }
 
   //f Trouve le meilleur angle possible pour orienter le texte correctement.
@@ -258,18 +283,25 @@ class ImageSeparator {
   // et le reste en blanc (255)
   private ArrayList<Integer> GetLineLevels(int[][] bwPixels) {
     ArrayList<Integer> lineSep = new ArrayList<Integer>();
-    lineSep.add(0);
 
     // Moyenne (pondérée) des lignes
     int[] preMeans = GetLineMeans(bwPixels);
 
+    lineSep.addAll(ProcessMean(preMeans, floor(0.01*preMeans.length), 20));
+    return lineSep;
+  }
+
+  // Note: pas doit être impair !
+  private ArrayList<Integer> ProcessMean(int[] preMeans, int pas, int numCat) {
+    ArrayList<Integer> lineSep = new ArrayList<Integer>();
+    int s = preMeans.length;
+
     // Moyenne glissante pour lisser
-    int[] means = new int[h];
-    int pas = floor(0.01*h); // PARAM (impair)
-    for (int i = 0; i < h; i++) {
+    int[] means = new int[s];
+    for (int i = 0; i < s; i++) {
       int somme = 0, compteur = 0;
       for (int k = -pas/2; k <= pas/2; k++) {
-        if (constrain(i+k, 0, h-1) == i+k) {
+        if (constrain(i+k, 0, s-1) == i+k) {
           somme += preMeans[i+k];
           compteur++;
         }
@@ -278,27 +310,30 @@ class ImageSeparator {
     }
 
     // Échantillonnage des niveaux de gris
-    int numCat = 20; // PARAM
     int bSize = 255/numCat;
-    for (int i = 0; i < h; i++) {
+    for (int i = 0; i < s; i++) {
       int cat = means[i] / bSize;
       means[i] = cat * bSize;
     }
 
     // Récupère les maximums locaux de couleurs, qui sont les interlignes
+    lineSep.add(0);
     int phase = 0;
     Integer lastFirst0 = null;
     if (means[1] > means[0]) phase = 1;
     else if (means[1] < means[0]) phase = -1;
 
-    for (int i = 0; i < h-1; i++) {
+    for (int i = 0; i < s-1; i++) {
       int state = 0;
       if (means[i+1] > means[i]) state = 1;
       else if (means[i+1] < means[i]) state = -1;
 
-      if (phase == 1 && state == -1) lineSep.add(i);
+      if (phase == 1 && state == -1) {
+        if (i - lineSep.get(lineSep.size()-1) > lineThreshold) lineSep.add(i);
+      }
       if (phase == 0 && state == -1 && lastFirst0 != null) {
-        lineSep.add((i+lastFirst0)/2);
+        int c = (i+lastFirst0)/2;
+        if (c - lineSep.get(lineSep.size()-1) > lineThreshold) lineSep.add(c);
         lastFirst0 = null;
       }
 
@@ -306,19 +341,67 @@ class ImageSeparator {
       phase = state;
     }
 
-    lineSep.add(h-1);
+    lineSep.add(s-1);
     return lineSep;
   }
 
-  //f Récupère toutes les coordonnées des lettres correspondant à
+  // AMÉLIORABLE C'EST BIEN SI C'EST POSSIBLE QUE
+  //f Récupère toutes les coordonnées des colonnes des mots correspondant à
   // l'indice _lineIndex_ de la liste des lignes de séparations _lineSep_
-  private ArrayList<PVector[]> GetLettersCoords(int[][] bwPixels, ArrayList<Integer> lineSep, int lineIndex) {
-    ArrayList<PVector[]> result = new ArrayList<PVector[]>();
+  private ArrayList<Integer> SplitWords(int[][] bwPixels, ArrayList<Integer> lineSep, int lineIndex) {
     int up = lineSep.get(lineIndex);
     int down = lineSep.get(lineIndex+1);
+    int size = down - up + 1;
+
+    int[] means = new int[bwPixels[0].length];
+    for (int j = 0; j < bwPixels[0].length; j++) {
+      int blacks = 0;
+      for (int i = up; i < down; i++) {
+        if (bwPixels[i][j] == 0) blacks++;
+      }
+      float m = 5*(float)blacks/size;
+      means[j] = constrain(floor(map(m, 0, 1, 255, 0)), 0, 255);
+    }
+
+    ArrayList<Integer> result = ProcessMean(means, 25, 2);
+    ArrayList<Integer> corrected = new ArrayList<Integer>();
+    for (Integer k : result) {
+      if (!HasBlackAround(bwPixels, k, up, down, 3)) corrected.add(k);
+    }
+
+    return corrected;
+  }
+
+  private boolean HasBlackAround(int[][] bwPixels, int k, int up, int down, int s) {
+    int start = max(0, k-s);
+    int end = min(k+s, bwPixels[0].length-1);
+    for (int j = start; j < end; j++) {
+      for (int i = up; i < down; i++) {
+        if (bwPixels[i][j] == 0) return true;
+      }
+    }
+    return false;
+  }
+
+  private ArrayList<PVector[][]> CoordsFromWords(int[][] bwPixels, ArrayList<PVector[]> allWordsCoords) {
+    ArrayList<PVector[][]> allCoords = new ArrayList<PVector[][]>();
+
+    for (PVector[] v : allWordsCoords) {
+      PVector ul = v[0], br = v[1];
+      allCoords.add(GetLettersInWord(bwPixels, ul, br));
+    }
+
+    return allCoords;
+  }
+
+  private PVector[][] GetLettersInWord(int[][] bwPixels, PVector wordUl, PVector wordBr) {
+    ArrayList<PVector[]> result = new ArrayList<PVector[]>();
+
+    int up = int(wordUl.y);
+    int down = int(wordBr.y);
     PVector ul = null, br = null;
 
-    for (int j = 0; j < w; j++) {
+    for (int j = int(wordUl.x); j < int(wordBr.x); j++) {
       if (DetectLetterColumn(bwPixels, j, up, down)) {
         if (ul == null) ul = new PVector(j, up);
       }
@@ -330,7 +413,7 @@ class ImageSeparator {
         }
       }
     }
-    return result;
+    return result.toArray(new PVector[][]{});
   }
 
   //f Sur une colonne _col_ de la liste des pixels _bwPiwels_ en 2 couleurs,
@@ -361,7 +444,7 @@ class ImageSeparator {
 
 // PImage message = loadImage("img.jpg");
 // ImageSeparator is = new ImageSeparator(message);
-// ArrayList<PImage> imgs = is.GetAllLettersImages();
+// ArrayList<PImage> imgs = is.GetWordsImages();
 // int compteur = 0;
 // for (PImage img : imgs) {
 //   compteur++;
