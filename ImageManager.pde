@@ -219,7 +219,7 @@ class ImageManager {
     ArrayList<ArrayList<PVector>> contours = this.ContourDetection(cImg, img.width / 6);
 
     if(contours.size() == 0) {
-      println("Not found");
+      println("Used OLD Autocrop");
       return OLD_AutoCrop(img, cap, marge);
     }
 
@@ -365,6 +365,34 @@ class ImageManager {
     }
 
     return img.get(left, top, right - left, bottom - top);
+  }
+  
+  PImage TargetRatio(PImage img, float targetRatio) {
+    int top = 0, left = 0;
+    int bottom = img.height - 1, right = img.width - 1;
+    
+    while((right - left) / (bottom - top) > targetRatio * 1.1) { // Tolérance du ratio à 10%
+      bottom += 1;
+      top -= 1;
+    }
+
+    while((right - left) / (bottom - top) < targetRatio * 0.91) { // Tolérance du ratio à 10%
+      right += 1;
+      left -= 1;
+    }
+    
+    PImage returnedImg = createImage(right - left + 1, bottom - top + 1, RGB);
+    for(int x = left; x < right + 1; x++) {
+      for(int y = top; y < bottom + 1; y++) {
+        if(x < 0 || x >= img.width || y < 0 || y >= img.height) {
+          returnedImg.set(x + left, y + top, 255);
+          continue;
+        }
+        returnedImg.set(x+left, y+top, img.get(x+left, y+top));
+      }
+    }
+    
+    return returnedImg;
   }
 
   //f Retourne une nouvelle image de _img_, auquel on effectue une déformation élastique d'intensité _intensity_, et d'échelle de bruit _noiseScale_

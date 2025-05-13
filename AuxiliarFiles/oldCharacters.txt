@@ -1,0 +1,76 @@
+uA A / uA 1
+uB B / uB 1
+uC C / uC 1
+uD D / uD 1
+uE E / uE 1
+uF F / uF 1
+uG G / uG 1
+uH H / uH 1
+uI I / uI 1
+uJ J / uJ 1
+uK K / uK 1
+uL L / uL 1
+uM M / uM 1
+uN N / uN 1
+uO O / uO 1
+uP P / uP 1
+uQ Q / uQ 1
+uR R / uR 1
+uS S / uS 1
+uT T / uT 1
+uU U / uU 1
+uV V / uV 1
+uW W / uW 1
+uX X / uX 1
+uY Y / uY 1
+uZ Z / uZ 1
+la a / uA 1
+lb b / uB 1
+lc c / uC 1
+ld d / uD 1
+le e / uE 1
+lf f / uF 1
+lg g / uG 1
+lh h / uH 1
+li i / uI 1
+lj j / uJ 1
+lk k / uK 1
+ll l / uL 1
+lm m / uM 1
+ln n / uN 1
+lo o / uO 1
+lp p / uP 1
+lq q / uQ 1
+lr r / uR 1
+ls s / uS 1
+lt t / uT 1
+lu u / uU 1
+lv v / uV 1
+lw w / uW 1
+lx x / uX 1
+ly y / uY 1
+lz z / uZ 1
+0 0 / 0 0.8, uO 0.8, lo 0.8
+1 1 / 1 0.7, uI 0.3, uL 0.3
+2 2 / 2 1
+3 3 / 3 1
+4 4 / 4 0.8, uA 0.4
+5 5 / 5 0.8, uS 0.5
+6 6 / 6 0.8, uS 0.2
+7 7 / 7 0.7, uI 0.1
+8 8 / 8 0.8, uB 0.5
+9 9 / 9 0.8, lg 0.5
++ + / + 1, 4 0.5
+- - / - 1
+cr × / cr 1
+@ @ / @ 1, uA 0.6
+# # / # 1
+im ? / im 1
+! ! / ! 1
+€ € / € 1, uE 0.2
+$ $ / $ 1, uS 0.4
+% % / % 1
+( ( / ( 1, ) 0.5
+) ) / ) 1, ( 0.5
+= = / = 1
+// Caractères spéciaux ?
