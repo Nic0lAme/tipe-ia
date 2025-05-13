@@ -8,7 +8,7 @@ class ImageReader {
   public String Read(PImage img) {
     ImageSeparator is = new ImageSeparator(img);
     PImage[][] wordsImages = new PImage[0][];
-    //wordsImages = is.GetWordsImages();
+    wordsImages = is.GetWordsImages();
     
     String text = "";
     for(PImage[] w : wordsImages) {

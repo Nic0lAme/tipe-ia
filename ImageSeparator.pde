@@ -20,7 +20,7 @@ class ImageSeparator {
   // y avoir que du texte sur l'image, et écrit en ligne. Ne marche pas pour
   // les textes écrits en italique.
   // Note : L'image doit être bien orientée (voir GetRotatedImage)
-  public ArrayList<PImage[]> GetWordsImages() {
+  public PImage[][] GetWordsImages() {
     ArrayList<PVector[][]> allCoords = GetAllCoords();
     ArrayList<PImage[]> allLetters = new ArrayList<PImage[]>();
     for (PVector[][] word : allCoords) {
@@ -30,7 +30,7 @@ class ImageSeparator {
       }
       allLetters.add(letterImgs);
     }
-    return allLetters;
+    return allLetters.toArray(new PImage[][]{});
   }
 
   //f Renvoie une visualisation du découpage de l'image en lettres

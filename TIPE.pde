@@ -9,6 +9,7 @@ WordCorrector wc;
 Database db;
 Session session;
 CharactersStorage cs;
+ImageReader ir;
 
 // KERNEL CLASSES
 MatrixMultKernel matrixMultKernel;
@@ -52,11 +53,9 @@ void setup() {
 
   im = new ImageManager();
   graphApplet = new GraphApplet();
-
-  /*
+  
   wc = new WordCorrector();
   wc.ImportWords();
-  */
 
   if (enableDraftingArea) draftingArea = new DraftingArea();
 
@@ -65,11 +64,12 @@ void setup() {
 
   HyperParameters hp = new HyperParameters();
   session = new Session("", hp);
-
+  
+  /*
   Bayes bayes = new Bayes("RandomONTeste");
   //bayes.GaussianProcess(5, 5);
   bayes.RandomFill(5, 5);
-  
+  */
   
   /*
   for(int k = 0; k < 10; k++)
@@ -80,6 +80,13 @@ void setup() {
   CNN cnn = new CNN().Import("./CNN/Test21.cnn");
   cnn.UseSoftMax();
   cnn.useADAM = true;
+  
+  ir = new ImageReader(cnn);
+  
+  String text = ir.Read(loadImage("./AuxiliarFiles/FullImage.jpg"));
+  println(text);
+  
+  println("ended");
   
   /*
   Matrix[][] sample = session.ds.CreateSample(
@@ -102,6 +109,8 @@ void setup() {
   cnn.Export("./CNN/Test21.cnn");
   session.AccuracyScore(cnn, testSample, true);
   */
+  
+  
 
 }
 

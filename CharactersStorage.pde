@@ -100,7 +100,10 @@ class CharactersStorage {
     float[] ret = new float[26]; // TODO: 26 ? On considère pas les chiffres ?
 
     for (int i = 0; i < allProb.length; i++) {
-      for (float[] c : letterCorrespondance.get(i)) ret[(int)c[0]] += allProb[i] * c[1];
+      for (float[] c : letterCorrespondance.get(i)) {
+        if((int)c[0] >= 26) continue; 
+        ret[(int)c[0]] += allProb[i] * c[1];
+      }
     }
 
     return ret;
