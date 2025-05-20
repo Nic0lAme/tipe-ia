@@ -124,7 +124,7 @@ class CharactersStorage {
 
       String[] fp = split(parts[0], " ");
       String name = fp[0];
-      println(name);
+      // println(name);
       char d = fp[1].charAt(0);
 
       boolean found = false;

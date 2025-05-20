@@ -30,6 +30,8 @@ final int numThreadsLearning = 1; // Apprentissage (si 1, pas de parallélisatio
 final AtomicBoolean stopLearning = new AtomicBoolean(false);
 final AtomicBoolean abortTraining = new AtomicBoolean(false); // Note : Annule aussi toute construction de dataset
 
+Matrix[][] testSample;
+
 void settings() {
   size(floor(28 * rScale * 26), floor(28 * rScale * numOfTestSample), JAVA2D); // For Global Test
   //size(119, 180, P2D); // For Direct Test
@@ -66,21 +68,22 @@ void setup() {
   HyperParameters hp = new HyperParameters();
   session = new Session("", hp);
 
-  Bayes bayes = new Bayes("RandomONTeste");
-  //bayes.GaussianProcess(5, 5);
-  bayes.RandomFill(5, 5);
-  
-  
+  // Bayes bayes = new Bayes("RandomONTeste");
+  // bayes.GaussianProcess(5, 5);
+  // bayes.RandomFill(5, 5);
+
+  testSample = session.ds.GetMNISTDataset("AuxiliarFiles/MNIST/Train.csv");
+
   /*
   for(int k = 0; k < 10; k++)
     bayes.SERV_Export(new HyperParameters().Random(), random(1));
   */
 
   //CNN cnn = new CNN(28, new int[]{4, 8}, new int[]{64, cs.GetChars().length});
-  CNN cnn = new CNN().Import("./CNN/Test21.cnn");
-  cnn.UseSoftMax();
-  cnn.useADAM = true;
-  
+  // CNN cnn = new CNN().Import("./CNN/Test21.cnn");
+  // cnn.UseSoftMax();
+  // cnn.useADAM = true;
+  //
   /*
   Matrix[][] sample = session.ds.CreateSample(
       cs.GetChars(),
