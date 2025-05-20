@@ -1,7 +1,7 @@
 class WordCorrector {
   char[] charList = new char[]{'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
   float[] letterSpreading = new float[]{0.1, 0.05};
-  float fiability = 0.9; // 0 -> c'est vraiment très mauvais / 1 -> c'est vraiment excellent
+  float fiability = 0.6; // 0 -> c'est vraiment très mauvais / 1 -> c'est vraiment excellent
   
   int[][] words;
   
@@ -58,20 +58,40 @@ class WordCorrector {
     }
     */
     
-    int[] bestWord = words[0];
-    float bestProb = 0;
     
-    for(int[] word : this.words) {
-      if(word.length != processedProb.length) continue;
-      
-      float prob = 1;
-      for(int letter = 0; letter < word.length; letter++) {
-        prob *= processedProb[letter][word[letter]];
+    
+    int[] bestWord = new int[processedProb.length];
+    float bestProb = 1;
+    
+    float maxProb = 0;
+    int maxChar = 0;
+    for(int letter = 0; letter < processedProb.length; letter++) {
+      maxProb = 0;
+      for(int k = 0; k < this.charList.length; k++) {
+        if(processedProb[letter][k] <= maxProb) continue;
+        maxProb = processedProb[letter][k];
+        maxChar = k;
       }
       
-      if(prob > bestProb) {
-        bestProb = prob;
-        bestWord = word;
+      bestWord[letter] = maxChar;
+      bestProb *= maxProb;
+    }
+    
+    println(bestProb);
+    
+    if(fiability > 0) {
+      for(int[] word : this.words) {
+        if(word.length != processedProb.length) continue;
+        
+        float prob = 1;
+        for(int letter = 0; letter < word.length; letter++) {
+          prob *= processedProb[letter][word[letter]];
+        }
+        
+        if(prob > bestProb) {
+          bestProb = prob;
+          bestWord = word;
+        }
       }
     }
     

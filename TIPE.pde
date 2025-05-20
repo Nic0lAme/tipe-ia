@@ -77,16 +77,21 @@ void setup() {
   */
 
   //CNN cnn = new CNN(28, new int[]{4, 8}, new int[]{64, cs.GetChars().length});
+  /*
   CNN cnn = new CNN().Import("./CNN/Test21.cnn");
   cnn.UseSoftMax();
   cnn.useADAM = true;
+  */
   
-  ir = new ImageReader(cnn);
+  NeuralNetwork nn = new NeuralNetwork(0).Import("./NeuralNetworkSave/ThisIsAGoodOnePlusPlusMore.nn");
+  
+  ir = new ImageReader(nn);
   
   String text = ir.Read(loadImage("./AuxiliarFiles/FullImage.jpg"));
   println(text);
   
   println("ended");
+  
   
   /*
   Matrix[][] sample = session.ds.CreateSample(

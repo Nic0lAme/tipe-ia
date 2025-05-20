@@ -655,7 +655,7 @@ class CNN {
     Matrix[] cBiasGrad = new Matrix[this.cFilters.length];
 
     // Sans multithreading, back propagation classique
-    if (numThreadsLearning <= 1) {
+    if (true || numThreadsLearning <= 1) {
       int startKTime = millis();
       Matrix[][][][] activations = ForwardPropagation(X, true);
       forwardTime += (float)(millis() - startKTime);

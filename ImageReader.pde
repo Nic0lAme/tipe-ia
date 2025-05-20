@@ -1,8 +1,13 @@
 class ImageReader {
   CNN cnn;
+  NeuralNetwork nn;
   
   ImageReader(CNN cnn) {
     this.cnn = cnn;
+  }
+  
+  ImageReader(NeuralNetwork nn) {
+    this.nn = nn;
   }
   
   public String Read(PImage img) {
@@ -18,7 +23,14 @@ class ImageReader {
         entries[i] = session.ImgPP(w[i]);
       }
       
-      Matrix wordOutput = this.cnn.Predict(entries); 
+      Matrix wordOutput;
+      if(this.cnn == this.cnn) {
+        Matrix entry = new Matrix(entries[0].n * entries[0].p, entries.length);
+        for(int k = 0; k < entries.length; k++) entry.ColumnFromArray(k, entries[k].values);
+        wordOutput = this.nn.Predict(entry);
+      } else {
+        wordOutput = this.cnn.Predict(entries);
+      }
       
       // Réccupérer les listes de probabilités
       float[][] allProb = new float[w.length][];

@@ -21,8 +21,8 @@ public class Session {
   Session(String name, HyperParameters hp) {
     this.hp = hp;
 
-    this.w = 28;
-    this.h = 28;
+    this.w = 21;
+    this.h = 21;
 
     this.name = name;
     this.characters = cs.GetChars();
@@ -364,7 +364,7 @@ public class Session {
   Matrix ImgPP(PImage img) { // Images post-processing
     PImage PPImage = im.Gray(img);
     PPImage = im.Contrast(PPImage, 0.02);
-    PPImage = im.AutoCrop(PPImage, 128, 0.12);
+    PPImage = im.AutoCrop(PPImage, 128, 0);
     PPImage = im.TargetRatio(PPImage, 1);
     //PPImage = im.Contrast(PPImage, 0.02); // If there is a dark patch in the center
 
