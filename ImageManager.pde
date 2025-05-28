@@ -369,7 +369,7 @@ class ImageManager {
   
   PImage TargetRatio(PImage img, float targetRatio) {
     int top = 0, left = 0;
-    int bottom = img.height - 1, right = img.width - 1;
+    int bottom = img.height, right = img.width;
     
     while((right - left) / (bottom - top) > targetRatio * 1.1) { // Tolérance du ratio à 10%
       bottom += 1;
@@ -385,12 +385,14 @@ class ImageManager {
     for(int x = left; x < right + 1; x++) {
       for(int y = top; y < bottom + 1; y++) {
         if(x < 0 || x >= img.width || y < 0 || y >= img.height) {
-          returnedImg.set(x + left, y + top, 255);
+          returnedImg.set(x - left, y - top, img.get(0,0));
           continue;
         }
-        returnedImg.set(x+left, y+top, img.get(x+left, y+top));
+        returnedImg.set(x - left, y - top, img.get(x, y));
       }
     }
+    
+    returnedImg.save("AuxiliarFiles/Test/img" + frameCount + ".png");
     
     return returnedImg;
   }

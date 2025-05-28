@@ -364,7 +364,7 @@ public class Session {
   Matrix ImgPP(PImage img) { // Images post-processing
     PImage PPImage = im.Gray(img);
     PPImage = im.Contrast(PPImage, 0.02);
-    PPImage = im.AutoCrop(PPImage, 128, 0);
+    PPImage = im.AutoCrop(PPImage, 128, 0.03);
     PPImage = im.TargetRatio(PPImage, 1);
     //PPImage = im.Contrast(PPImage, 0.02); // If there is a dark patch in the center
 

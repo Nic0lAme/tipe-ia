@@ -8,7 +8,7 @@ class NeuralNetwork {
   Matrix[] weights; // Poids des liaisons (pour un indice i, liaisons entre couche i et couche i+1)
   Matrix[] bias; // Biais (pour un indice i, biais entre couche i et i+1)
 
-  float lambda = 0.0000001;
+  float lambda = 0.00001;
 
   boolean useSoftMax = false; // Détermine l'utilisation de la fonction softmax sur la dernière couche du réseau
 
@@ -164,7 +164,8 @@ class NeuralNetwork {
 
     //dJ/dZl
     Matrix a = activations[this.numLayers-1].C();
-    Matrix gradient = a.C().Add(expectedOutput, -1).HProduct(a.C().Add(a.C().HProduct(a), -1));
+    Matrix gradient = a.C().Add(expectedOutput, -1);
+    if(!this.useSoftMax) gradient = gradient.HProduct(a.C().Add(a.C().HProduct(a), -1));
 
     Matrix[] weightGrad = new Matrix[this.numLayers - 1];
     Matrix[] biasGrad = new Matrix[this.numLayers - 1];
@@ -357,7 +358,10 @@ class NeuralNetwork {
 
   public float MiniBatchLearn(Matrix[] data, int numOfEpoch, int batchSize, float minLR, float maxLR, int period, Matrix[][] testSets, String label) {
     cl.pln("Mini Batch Gradient Descent " + label + " - " + numOfEpoch + " Epochs - " + batchSize + " Batch Size - " + String.format("%9.3E", maxLR) + " LR");
+    
+    if (abortTraining.get()) return 0;
 
+    
     float lossAverage = 0;
 
     int startTime = millis();

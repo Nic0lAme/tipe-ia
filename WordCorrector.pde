@@ -1,7 +1,7 @@
 class WordCorrector {
   char[] charList = new char[]{'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
   float[] letterSpreading = new float[]{0.1, 0.05};
-  float fiability = 0.6; // 0 -> c'est vraiment très mauvais / 1 -> c'est vraiment excellent
+  float fiability = 0; // 0 -> c'est vraiment très mauvais / 1 -> c'est vraiment excellent
   
   int[][] words;
   
@@ -46,6 +46,8 @@ class WordCorrector {
       }
     }
     
+    //println(letterProb[0]);
+    
     /*
     // Simule l'insertion / la délétion de lettre
     for(int letter = 0; letter < letterProb.length + this.letterSpreading.length; letter++) {
@@ -68,7 +70,7 @@ class WordCorrector {
     for(int letter = 0; letter < processedProb.length; letter++) {
       maxProb = 0;
       for(int k = 0; k < this.charList.length; k++) {
-        if(processedProb[letter][k] <= maxProb) continue;
+        if(processedProb[letter][k] < maxProb) continue;
         maxProb = processedProb[letter][k];
         maxChar = k;
       }
@@ -77,7 +79,10 @@ class WordCorrector {
       bestProb *= maxProb;
     }
     
+    bestProb /= Math.pow(10, processedProb.length);
+    
     println(bestProb);
+    println(bestWord);
     
     if(fiability > 0) {
       for(int[] word : this.words) {

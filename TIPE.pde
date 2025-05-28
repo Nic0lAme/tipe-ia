@@ -76,31 +76,34 @@ void setup() {
     bayes.SERV_Export(new HyperParameters().Random(), random(1));
   */
 
-  //CNN cnn = new CNN(28, new int[]{4, 8}, new int[]{64, cs.GetChars().length});
-  /*
-  CNN cnn = new CNN().Import("./CNN/Test21.cnn");
+  //CNN cnn = new CNN(21, new int[]{16, 32}, new int[]{256, cs.GetChars().length});
+  
+  CNN cnn = new CNN().Import("./CNN/AnAmazingOne.cnn");
   cnn.UseSoftMax();
   cnn.useADAM = true;
-  */
   
-  NeuralNetwork nn = new NeuralNetwork(0).Import("./NeuralNetworkSave/ThisIsAGoodOnePlusPlusMore.nn");
+  
+  NeuralNetwork nn = new NeuralNetwork(0).Import("./NeuralNetworkSave/AWorkingOne.nn");
+  nn.UseSoftMax();
   
   ir = new ImageReader(nn);
+  println("NeuralNetwork");
+  println(ir.nn);
   
-  String text = ir.Read(loadImage("./AuxiliarFiles/FullImage.jpg"));
+  String text = ir.Read(loadImage("./AuxiliarFiles/EasyTest.jpg"));
   println(text);
   
   println("ended");
   
   
-  /*
+  
   Matrix[][] sample = session.ds.CreateSample(
       cs.GetChars(),
       //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
       handTrainingDatas,
       //new String[]{},
       fontTrainingDatas,
-      1, 1);
+      6, 1);
 
   Matrix[][] testSample = session.ds.CreateSample(
       cs.GetChars(),
@@ -108,15 +111,11 @@ void setup() {
       handTestingDatas,
       //new String[]{},
       fontTestingDatas,
-      1, 1);
+      2, 1);
 
-  cnn.MiniBatchLearn(sample, 8, 256, 0.001, 0.001, 2, new Matrix[][][]{testSample}, "");
-  cnn.Export("./CNN/Test21.cnn");
+  cnn.MiniBatchLearn(sample, 16, 256, 0.001, 0.001, 2, new Matrix[][][]{testSample}, "");
+  cnn.Export("./CNN/AnAmazingOne.cnn");
   session.AccuracyScore(cnn, testSample, true);
-  */
-  
-  
-
 }
 
 int index = 0;

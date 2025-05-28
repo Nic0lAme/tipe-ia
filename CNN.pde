@@ -465,7 +465,8 @@ class CNN {
 
     //dJ/dZl
     Matrix a = activations[this.numLayers-1].C();
-    Matrix gradient = a.C().Add(expectedOutput, -1).HProduct(a.C().HProduct(a.C().AddScal(-1.0).Scale(-1.0)));
+    Matrix gradient = a.C().Add(expectedOutput, -1);
+    if(!this.useSoftMax) gradient = gradient.HProduct(a.C().HProduct(a.C().AddScal(-1.0).Scale(-1.0)));
     a = null;
 
     Matrix[] weightGrad = new Matrix[this.numLayers - 1];
@@ -905,6 +906,9 @@ class CNN {
     cl.pln("Mini Batch Gradient Descent " + label + " - " + numOfEpoch + " Epochs - " + batchSize + " Batch Size - " + String.format("%9.3E", maxLR) + " LR");
 
     float lossAverage = 0;
+    
+    if (abortTraining.get()) return 0;
+
 
     int startTime = millis();
     int numOfBatches = ceil(data[0].length / batchSize);

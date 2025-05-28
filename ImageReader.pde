@@ -24,12 +24,17 @@ class ImageReader {
       }
       
       Matrix wordOutput;
-      if(this.cnn == this.cnn) {
-        Matrix entry = new Matrix(entries[0].n * entries[0].p, entries.length);
-        for(int k = 0; k < entries.length; k++) entry.ColumnFromArray(k, entries[k].values);
-        wordOutput = this.nn.Predict(entry);
-      } else {
+      if(this.cnn != null) {
         wordOutput = this.cnn.Predict(entries);
+      } else {
+        Matrix entry = new Matrix(entries[0].n * entries[0].p, entries.length);
+        for(int k = 0; k < entries.length; k++)
+          for(int i = 0; i < entries[k].n; i++)
+            for(int j = 0; j < entries[k].p; j++)
+              entry.values[(i * entries[k].p + j) * entry.p + k] = entries[k].values[i * entries[k].p + j];
+        wordOutput = this.nn.Predict(entry);
+        session.ds.GetImageFromInputs(entry, 0).save("./AuxiliarFiles/CharactersPicker/Test" + 10000 * random(1) + ".jpg");
+        //wordOutput.Debug();
       }
       
       // Réccupérer les listes de probabilités
@@ -38,10 +43,16 @@ class ImageReader {
         allProb[i] = wordOutput.ColumnToArray(i);
       }
       
+      //println("AllProb");
+      //println(allProb[0]);
+      
       float[][] effectiveProb = new float[w.length][];
       for(int i = 0; i < w.length; i++) {
         effectiveProb[i] = cs.GetProb(allProb[i]);
       }
+      
+      //println("EffectiveProb");
+      //println(effectiveProb[0]);
       
       String word = wc.WordAutoCorrection(effectiveProb);
       
