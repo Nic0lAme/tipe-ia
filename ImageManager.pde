@@ -80,7 +80,7 @@ class ImageManager {
   // -> ayant une déformation de facteur _deformation_.
   // L'image est enregistré dans ./ScrambledImage enregistré si _save_
   PImage ScrambleImage(PImage img, boolean save, float move, float blur, float density, float perlin, float deformation) {
-    float zRot = 2;
+    float zRot = 1;
     float d = 0.1;
     float delta = 0.02;
     float perlinScale = 1;

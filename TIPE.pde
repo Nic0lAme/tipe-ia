@@ -23,6 +23,8 @@ float rScale = 1; // Scale for the representations (draw)
 float testDerformation = 1;
 Random globalRandom = new Random();
 
+int imgSize = 21;
+
 // Nombre de threads pour les différentes tâches
 final int numThreadsDataset = 16; // Création des datasets
 final int numThreadsLearning = 1; // Apprentissage (si 1, pas de parallélisation)
@@ -76,46 +78,52 @@ void setup() {
     bayes.SERV_Export(new HyperParameters().Random(), random(1));
   */
 
-  //CNN cnn = new CNN(21, new int[]{16, 32}, new int[]{256, cs.GetChars().length});
-  
-  CNN cnn = new CNN().Import("./CNN/AnAmazingOne.cnn");
+  //CNN cnn = new CNN(imgSize, new int[]{24, 48}, new int[]{512, cs.GetChars().length});
+  CNN cnn = new CNN().Import("./CNN/TestOverfitting1.cnn");
   cnn.UseSoftMax();
   cnn.useADAM = true;
   
-  
+  /*
   NeuralNetwork nn = new NeuralNetwork(0).Import("./NeuralNetworkSave/AWorkingOne.nn");
   nn.UseSoftMax();
+  */
   
-  ir = new ImageReader(nn);
+  ir = new ImageReader(cnn);
   println("NeuralNetwork");
-  println(ir.nn);
+  println(ir.cnn);
   
   String text = ir.Read(loadImage("./AuxiliarFiles/EasyTest.jpg"));
   println(text);
   
   println("ended");
   
+  if(true) return;
   
-  
-  Matrix[][] sample = session.ds.CreateSample(
-      cs.GetChars(),
-      //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
-      handTrainingDatas,
-      //new String[]{},
-      fontTrainingDatas,
-      6, 1);
-
   Matrix[][] testSample = session.ds.CreateSample(
       cs.GetChars(),
       //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
-      handTestingDatas,
-      //new String[]{},
+      //handTestingDatas,
+      new String[]{},
       fontTestingDatas,
-      2, 1);
-
-  cnn.MiniBatchLearn(sample, 16, 256, 0.001, 0.001, 2, new Matrix[][][]{testSample}, "");
-  cnn.Export("./CNN/AnAmazingOne.cnn");
-  session.AccuracyScore(cnn, testSample, true);
+      6, 1);
+  
+  int numOfIter = 10;
+  for(int iter = 0; iter < numOfIter; iter++) {
+    cl.pln("ITERATION " + str(iter+1) + "/" + str(numOfIter));
+    Matrix[][] sample = session.ds.CreateSample(
+        cs.GetChars(),
+        //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
+        //handTrainingDatas,
+        new String[]{},
+        fontTrainingDatas,
+        8, 1);
+        
+    Matrix[][] trainingSampleForTest = session.ds.CNNSampleASample(sample, 1024);
+  
+    cnn.MiniBatchLearn(sample, 3, 256, 0.001, 0.001, 2, new Matrix[][][]{testSample, trainingSampleForTest}, "");
+    cnn.Export("./CNN/TestOverfitting1.cnn");
+    session.AccuracyScore(cnn, testSample, true);
+  }
 }
 
 int index = 0;

@@ -942,7 +942,7 @@ class CNN {
           );
       }
 
-      if((k+1)%2 != 0 && k != numOfEpoch - 1) continue;
+      //if((k+1)%2 != 0 && k != numOfEpoch - 1) continue;
 
       for(int s = 0; s < testSets.length; s++) {
         float[] score = CompilScore(session.AccuracyScore(this, testSets[s], false));

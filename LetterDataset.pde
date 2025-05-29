@@ -138,6 +138,31 @@ public class LetterDataset {
 
     return new Matrix[][]{ inputs, {outputs} };
   }
+  
+  public Matrix[][] CNNSampleASample(Matrix[][] sample, int size) {
+    int[] indices = new int[sample[0].length];
+    
+    for (int i = 0; i < indices.length; i++) indices[i] = i;
+    
+    int temp = 0;
+    for (int i = 0; i < indices.length; i++) {
+      int j = floor(random(i, indices.length));
+      temp = indices[i];
+      indices[i] = indices[j];
+      indices[j] = temp;
+    }
+    
+    int actualSize = min(size, sample[0].length);
+    Matrix[] sampleInputs = new Matrix[actualSize];
+    Matrix sampleOutputs = new Matrix(sample[1][0].n, actualSize);
+    
+    for(int k = 0; k < actualSize; k++) {
+      sampleInputs[k] = sample[0][indices[k]];
+      sampleOutputs.ColumnFromArray(k, sample[1][0].ColumnToArray(indices[k]));
+    }
+    
+    return new Matrix[][]{sampleInputs, {sampleOutputs}};
+  }
 
   public Matrix[] SampleLining(Matrix[][] sample) {
     if (abortTraining.get()) return new Matrix[0];

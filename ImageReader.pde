@@ -26,6 +26,7 @@ class ImageReader {
       Matrix wordOutput;
       if(this.cnn != null) {
         wordOutput = this.cnn.Predict(entries);
+        session.ds.CNNGetImageFromInputs(entries[0]).save("./AuxiliarFiles/CharactersPicker/Test" + 10000 * random(1) + ".jpg");
       } else {
         Matrix entry = new Matrix(entries[0].n * entries[0].p, entries.length);
         for(int k = 0; k < entries.length; k++)

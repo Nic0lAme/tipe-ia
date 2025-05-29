@@ -21,8 +21,8 @@ public class Session {
   Session(String name, HyperParameters hp) {
     this.hp = hp;
 
-    this.w = 21;
-    this.h = 21;
+    this.w = imgSize;
+    this.h = imgSize;
 
     this.name = name;
     this.characters = cs.GetChars();
