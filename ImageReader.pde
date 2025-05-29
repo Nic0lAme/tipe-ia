@@ -15,6 +15,12 @@ class ImageReader {
     PImage[][] wordsImages = new PImage[0][];
     wordsImages = is.GetWordsImages();
     
+    float[] etalonnedProp = new float[26];
+    if(this.cnn != null) etalonnedProp = cs.GetEtalonnedProp(this.cnn);
+    else Arrays.fill(etalonnedProp, 1);
+    
+    println(etalonnedProp);
+    
     String text = "";
     for(PImage[] w : wordsImages) {
       // Réccupérer la prédiction pour le mot
@@ -55,7 +61,7 @@ class ImageReader {
       //println("EffectiveProb");
       //println(effectiveProb[0]);
       
-      String word = wc.WordAutoCorrection(effectiveProb);
+      String word = wc.WordAutoCorrection(effectiveProb, etalonnedProp);
       
       text+=word;
       text+=" ";

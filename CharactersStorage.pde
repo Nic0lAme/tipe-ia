@@ -115,6 +115,44 @@ class CharactersStorage {
   private void ParseCharFile(String filePath) {
     ParseCharFile(filePath, fullCharacters);
   }
+  
+  //f Permet de trouver les proportions de chaque lettres détectées par un réseau
+  public float[] GetEtalonnedProp(CNN cnn) {
+    Matrix[][] testSample = session.ds.CreateSample(
+      cs.GetChars(),
+      //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
+      handTestingDatas,
+      //new String[]{},
+      fontTestingDatas,
+      2, 1);
+    Matrix output = cnn.Predict(testSample[0]);
+    
+    float[] allProp = new float[output.n];
+    for(int j = 0; j < output.p; j++) {
+      for(int i = 0; i < output.n; i++) allProp[i] += output.Get(i, j) / output.n / output.p;
+    }
+    
+    return GetProb(allProp);
+  }
+  
+  //s
+  public float[] GetEtalonnedProp(NeuralNetwork nn) {
+    Matrix[] testSample = session.ds.SampleLining(session.ds.CreateSample(
+      cs.GetChars(),
+      //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
+      //handTestingDatas,
+      new String[]{},
+      fontTestingDatas,
+      2, 1));
+    Matrix output = nn.Predict(testSample[0]);
+    
+    float[] allProp = new float[output.n];
+    for(int j = 0; j < output.p; j++) {
+      for(int i = 0; i < output.n; i++) allProp[i] += output.Get(i, j) / output.n / output.p;
+    }
+    
+    return GetProb(allProp);
+  }
 
   //f Ajoute tous les caractères présents dans le fichier _filePath_
   // et dans la liste _listChars_

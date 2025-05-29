@@ -1,5 +1,6 @@
 class WordCorrector {
-  char[] charList = new char[]{'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+  char[] charList =           new char[] {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+  float[] letterFrequencies = new float[]{8.173, 0.901, 3.345, 3.669, 16.716, 1.066, 0.866, 0.737, 7.529, 0.613, 0.074, 5.456, 2.968, 7.095, 5.796, 2.521, 1.362, 6.693, 7.948, 7.244, 6.311, 1.838, 0.049, 0.427, 0.128, 0.326};
   float[] letterSpreading = new float[]{0.1, 0.05};
   float fiability = 0; // 0 -> c'est vraiment très mauvais / 1 -> c'est vraiment excellent
   
@@ -27,11 +28,17 @@ class WordCorrector {
     }
   }
   
+  public String WordAutoCorrection(float[][] letterProb) {
+    float[] etalonnedProp = new float[this.charList.length];
+    Arrays.fill(etalonnedProp, 1); 
+    return WordAutoCorrection(letterProb, etalonnedProp);
+  }
+    
   //f Donne le mot le plus probable pour une entrée _letterProb_
   // _letterProb_ contient pour chaque emplacement les probabilités de chaque caractère
   // Simule toutes les manipulations possibles de manière probabiliste
   // Algorithme assez (très) naïf, donc à voir dans la pratique
-  public String WordAutoCorrection(float[][] letterProb) {
+  public String WordAutoCorrection(float[][] letterProb, float[] etalonnedProp) {
     float[][] processedProb = new float[letterProb.length][this.charList.length];
     
     for(int letter = 0; letter < letterProb.length; letter++) {
@@ -42,7 +49,7 @@ class WordCorrector {
       }
       
       for(int k = 0; k < this.charList.length; k++) {
-        processedProb[letter][k] = (letterProb[letter][k] + (1 - this.fiability) / this.charList.length) / sum;
+        processedProb[letter][k] = (letterProb[letter][k] + (1 - this.fiability) / this.charList.length) / sum * (float)Math.pow(letterFrequencies[k] / 100, 1 - this.fiability) / etalonnedProp[k];
       }
     }
     

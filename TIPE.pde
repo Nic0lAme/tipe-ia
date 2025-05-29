@@ -47,7 +47,7 @@ void setup() {
   forwardConvolutionKernel = new ForwardConvolutionKernel();
 
   cs = new CharactersStorage();
-  cs.LoadLettersOnly();
+  cs.LoadFull();
 
   frame = (Frame) ((processing.awt.PSurfaceAWT.SmoothCanvas) surface.getNative()).getFrame();
   frame.setVisible(false); // Cache la fenêtre d'activation java
@@ -92,36 +92,41 @@ void setup() {
   println("NeuralNetwork");
   println(ir.cnn);
   
-  String text = ir.Read(loadImage("./AuxiliarFiles/EasyTest.jpg"));
+  String text = ir.Read(loadImage("./AuxiliarFiles/FullImage.jpg"));
   println(text);
   
   println("ended");
   
-  if(true) return;
+  //if(true) return;
   
   Matrix[][] testSample = session.ds.CreateSample(
       cs.GetChars(),
       //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
-      //handTestingDatas,
-      new String[]{},
+      handTestingDatas,
+      //new String[]{},
       fontTestingDatas,
-      6, 1);
+      2, 1);
+      
+  
   
   int numOfIter = 10;
   for(int iter = 0; iter < numOfIter; iter++) {
     cl.pln("ITERATION " + str(iter+1) + "/" + str(numOfIter));
+    float[] accuracy = CompilScore(session.AccuracyScore(cnn, new Matrix[][][]{testSample}, false));
+    int[] repList = RepList(accuracy, 3, 0.3);
+    
     Matrix[][] sample = session.ds.CreateSample(
         cs.GetChars(),
         //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
-        //handTrainingDatas,
-        new String[]{},
+        handTrainingDatas,
+        //new String[]{},
         fontTrainingDatas,
-        8, 1);
+        repList, 1);
         
     Matrix[][] trainingSampleForTest = session.ds.CNNSampleASample(sample, 1024);
   
-    cnn.MiniBatchLearn(sample, 3, 256, 0.001, 0.001, 2, new Matrix[][][]{testSample, trainingSampleForTest}, "");
-    cnn.Export("./CNN/TestOverfitting1.cnn");
+    cnn.MiniBatchLearn(sample, 4, 256, 0.001, 0.001, 2, new Matrix[][][]{testSample, trainingSampleForTest}, "");
+    cnn.Export("./CNN/TestOverfittingFull2.cnn");
     session.AccuracyScore(cnn, testSample, true);
   }
 }
