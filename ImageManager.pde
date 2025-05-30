@@ -236,7 +236,7 @@ class ImageManager {
       }
     }
 
-    return ImageFromContour(img, contours.get(objectIndex), marge, (float)img.width / img.height);
+    return ImageFromContour(img, contours.get(objectIndex), marge, 1);
   }
 
   //f Retourne une nouvelle image de _img_, découpant le contour _contour_, avec une marge de _marge_ * size pixels, ayant un ratio w/h cible _ratio_
