@@ -33,8 +33,41 @@ class ImageSeparator {
     return allLetters.toArray(new PImage[][]{});
   }
 
+  //f Liste des lettres (pas séparées par mots)
+  public PImage[] GetLettersImages() {
+    ArrayList<PVector[][]> allCoords = GetAllCoords();
+    ArrayList<PImage> letters = new ArrayList<PImage>();
+
+    for (PVector[][] word : allCoords) {
+      for (int i = 0; i < word.length; i++) letters.add(GetImageLetter(word[i]));
+    }
+
+    return letters.toArray(new PImage[]{});
+  }
+
+  public void SaveSeparationLines(String path) {
+    PImage img = originalImage.copy();
+    img.filter(GRAY);
+    img.loadPixels();
+
+    int[][] bwPixels = GetBWPixels(img);
+    bwPixels = BinarizePixels(bwPixels);
+    ArrayList<Integer> lineLevels = GetLineLevels(bwPixels);
+
+    PGraphics pg = createGraphics(originalImage.width, originalImage.height);
+    pg.beginDraw();
+    pg.background(255);
+    pg.image(originalImage, 0, 0);
+    for (Integer l : lineLevels) {
+      pg.stroke(255, 0, 0);
+      pg.line(0, l, originalImage.width, l);
+    }
+    pg.endDraw();
+    pg.save(path);
+  }
+
   //f Renvoie une visualisation du découpage de l'image en lettres
-  public void SaveSeparationPreview(String path, boolean withLetters) {
+  public void SaveSeparationPreview(String path, boolean withWords, boolean withLetters) {
     ArrayList<PVector[][]> allCoords = GetAllCoords();
     PGraphics pg = createGraphics(originalImage.width, originalImage.height);
     pg.beginDraw();
@@ -53,11 +86,13 @@ class ImageSeparator {
         }
       }
 
-      PVector wul = word[0][0], wbr = word[word.length-1][1];
-      pg.stroke(240, 180, 20); pg.line(wul.x, wul.y, wbr.x, wul.y);
-      pg.stroke(20, 240, 180); pg.line(wul.x, wbr.y, wbr.x, wbr.y);
-      pg.stroke(180, 20, 240); pg.line(wul.x, wul.y, wul.x, wbr.y);
-      pg.stroke(120, 120, 180); pg.line(wbr.x, wul.y, wbr.x, wbr.y);
+      if (withWords) {
+        PVector wul = word[0][0], wbr = word[word.length-1][1];
+        pg.stroke(240, 180, 20); pg.line(wul.x, wul.y, wbr.x, wul.y);
+        pg.stroke(20, 240, 180); pg.line(wul.x, wbr.y, wbr.x, wbr.y);
+        pg.stroke(180, 20, 240); pg.line(wul.x, wul.y, wul.x, wbr.y);
+        pg.stroke(120, 120, 180); pg.line(wbr.x, wul.y, wbr.x, wbr.y);
+      }
     }
 
     pg.endDraw();
