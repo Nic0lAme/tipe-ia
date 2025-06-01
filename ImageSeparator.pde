@@ -1,3 +1,5 @@
+import java.util.Stack;
+
 class ImageSeparator {
   final PImage originalImage;
   final int w, h;
@@ -6,7 +8,7 @@ class ImageSeparator {
   final private int greenMask = 0b1111111100000000;
   final private int blueMask = 0b11111111;
 
-  final private int lineThreshold = 5;
+  final private int lineThreshold = 5; // PARAM
 
   public ImageSeparator(PImage img) {
     this.originalImage = img;
@@ -57,7 +59,13 @@ class ImageSeparator {
     PGraphics pg = createGraphics(originalImage.width, originalImage.height);
     pg.beginDraw();
     pg.background(255);
-    pg.image(originalImage, 0, 0);
+    for (int i = 0; i < h; i++) {
+      for (int j = 0; j < w; j++) {
+        img.pixels[j + w*i] = color(bwPixels[i][j]);
+      }
+    }
+    img.updatePixels();
+    pg.image(img, 0, 0);
     for (Integer l : lineLevels) {
       pg.stroke(255, 0, 0);
       pg.line(0, l, originalImage.width, l);
@@ -270,20 +278,94 @@ class ImageSeparator {
   }
 
   //f Transforme les pixels _pxls_ en 2 catégories : pixels noirs et blancs
-  private int[][] BinarizePixels(int[][] pxls, int frac) {
+  private int[][] BinarizePixels(int[][] pxls) {
     int[][] result = new int[pxls.length][pxls[0].length];
-    int threshold = OtsuThreshold(pxls) / frac;
+
+    // for (int i = 0; i < pxls.length; i++) {
+    //   for (int j = 0; j < pxls[0].length; j++) {
+    //     float moy = 0, cpt = 0;
+    //     int pas = 3; // PARAM
+    //     for (int k = max(0, i-pas); k < min(pxls.length, i+pas); k++) {
+    //       for (int l = max(0, j-pas); l < min(pxls[0].length, j+pas); l++) {
+    //         moy += pxls[k][l];
+    //         cpt++;
+    //       }
+    //     }
+    //     result[i][j] = int(moy/cpt);
+    //   }
+    // }
+    //
+    // int threshold = OtsuThreshold(pxls);
+    // for (int i = 0; i < pxls.length; i++) {
+    //   for (int j = 0; j < pxls[0].length; j++) {
+    //     if (result[i][j] > threshold) result[i][j] = 255;
+    //     else result[i][j] = 0;
+    //   }
+    // }
+
+    int threshold = OtsuThreshold(pxls);
     for (int i = 0; i < pxls.length; i++) {
       for (int j = 0; j < pxls[0].length; j++) {
         if (pxls[i][j] > threshold) result[i][j] = 255;
         else result[i][j] = 0;
       }
     }
+
+    result = RemoveSmallBlocks(result);
     return result;
   }
 
-  private int[][] BinarizePixels(int[][] pxls) {
-    return BinarizePixels(pxls, 1);
+  //f Algorithme de flood fill
+  boolean[][] visited = null;
+  private int[][] RemoveSmallBlocks(int[][] pxls) {
+    int[][] result = new int[pxls.length][pxls[0].length];
+    visited = new boolean[pxls.length][pxls[0].length];
+    int minSize = 30; // PARAM
+
+    for (int i = 0; i < h; i++) {
+      for (int j = 0; j < w; j++) {
+        result[i][j] = pxls[i][j];
+      }
+    }
+
+    for (int i = 0; i < h; i++) {
+      for (int j = 0; j < w; j++) {
+        if (pxls[i][j] == 0 && !visited[i][j]) {
+          ArrayList<PVector> flood = FloodFill(new PVector(i, j), pxls);
+          if (flood.size() < minSize) {
+            for (PVector c : flood) result[int(c.x)][int(c.y)] = 255;
+          }
+        }
+      }
+    }
+
+    return result;
+  }
+
+  private ArrayList<PVector> FloodFill(PVector start, int[][] pxls) {
+    Stack<PVector> stack = new Stack<PVector>();
+    ArrayList<PVector> pixels = new ArrayList<PVector>();
+
+    stack.push(start);
+    while (stack.size() != 0) {
+      PVector c = stack.pop();
+
+      if (0 <= c.x && c.x < h && 0 <= c.y && c.y < w) {
+        if (!visited[int(c.x)][int(c.y)] && pxls[int(c.x)][int(c.y)] == 0) {
+          visited[int(c.x)][int(c.y)] = true;
+          pixels.add(c);
+          stack.push(new PVector(c.x+1, c.y));
+          stack.push(new PVector(c.x-1, c.y));
+          stack.push(new PVector(c.x, c.y+1));
+          stack.push(new PVector(c.x, c.y-1));
+          stack.push(new PVector(c.x+1, c.y+1));
+          stack.push(new PVector(c.x-1, c.y-1));
+          stack.push(new PVector(c.x+1, c.y-1));
+          stack.push(new PVector(c.x-1, c.y+1));
+        }
+      }
+    }
+    return pixels;
   }
 
   //f Renvoie une moyenne pondérée des lignes de _bwPiwels_ (2 couleurs)
@@ -319,10 +401,24 @@ class ImageSeparator {
   private ArrayList<Integer> GetLineLevels(int[][] bwPixels) {
     ArrayList<Integer> lineSep = new ArrayList<Integer>();
 
-    // Moyenne (pondérée) des lignes
-    int[] preMeans = GetLineMeans(bwPixels);
+    boolean inText = false;
+    int lastLine = -lineThreshold;
+    for (int i = 0; i < h; i++) {
+      int sum = 0;
+      for (int j = 0; j < w; j++) if (bwPixels[i][j] == 0) sum++;
 
-    lineSep.addAll(ProcessMean(preMeans, floor(0.01*preMeans.length), 20));
+      if (sum >= 5) { // PARAM
+        if (!inText && i - lastLine >= lineThreshold) {
+          lastLine = i;
+          lineSep.add(i);
+        }
+        inText = true;
+      }
+      else if (sum == 0) {
+        inText = false;
+      }
+    }
+    lineSep.add(h-1);
     return lineSep;
   }
 
