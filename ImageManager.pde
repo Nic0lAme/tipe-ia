@@ -215,6 +215,7 @@ class ImageManager {
   //f Rogne l'image (nouvelle image) en détectant les contours de l'objet le plus grand dans _img_, ayant un _cap_ et une marge de _marge_ * size pixels
   PImage AutoCrop(PImage img, float cap, float marge) {
     PImage cImg = img.copy();
+    PImage paddedImg = Padding(cImg, 2, color(255));
     cImg.filter(THRESHOLD, cap / 255);
     ArrayList<ArrayList<PVector>> contours = this.ContourDetection(cImg, img.width / 6);
 
@@ -236,7 +237,18 @@ class ImageManager {
       }
     }
 
-    return ImageFromContour(img, contours.get(objectIndex), marge, 1);
+    return ImageFromContour(paddedImg, contours.get(objectIndex), marge, 1);
+  }
+  
+  //f Rajoute une marge à l'image
+  PImage Padding(PImage img, int padding, color bg) {
+    PImage newImg = createImage(img.width + 2 * padding, img.height + 2 * padding, RGB);
+    newImg.loadPixels();
+    for (int i = 0; i < newImg.pixels.length; i++) newImg.pixels[i] = bg;
+    newImg.updatePixels();
+  
+    newImg.copy(img, 0, 0, img.width, img.height, padding, padding, img.width, img.height);
+    return newImg;
   }
 
   //f Retourne une nouvelle image de _img_, découpant le contour _contour_, avec une marge de _marge_ * size pixels, ayant un ratio w/h cible _ratio_

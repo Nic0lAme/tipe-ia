@@ -1,7 +1,7 @@
 class ImageReader {
   CNN cnn;
   NeuralNetwork nn;
-  boolean saveWordImage = false;
+  boolean saveWordImage = true;
   
   ImageReader(CNN cnn) {
     this.cnn = cnn;
@@ -16,13 +16,18 @@ class ImageReader {
     PImage[][] wordsImages = new PImage[0][];
     wordsImages = is.GetWordsImages();
     
+    /*
     float[] etalonnedProp = new float[26];
     if(this.cnn != null) etalonnedProp = cs.GetEtalonnedProp(this.cnn);
     else Arrays.fill(etalonnedProp, 1);
     
     println(etalonnedProp);
+    */
+    
+    float numberOfLettersAverage = 0;
     
     String text = "";
+    ArrayList<float[][]> wordsEffectiveProb = new ArrayList<float[][]>();
     for(PImage[] w : wordsImages) {
       // Réccupérer la prédiction pour le mot
       Matrix[] entries = new Matrix[w.length];
@@ -61,35 +66,62 @@ class ImageReader {
         
       }
       
-      //println("EffectiveProb");
-      //println(effectiveProb[0]);
-      
-      String word = wc.WordAutoCorrection(effectiveProb, etalonnedProp);
-      
       if(saveWordImage) {
+        float randomName = random(1000);
         for(int i = 0; i < w.length; i++) {
           //SAUVEGARDE DU MOT DANS UN FICHIER A PART
           String prob = str(i);
-          float letterThreshold = 0.1;
+          float letterThreshold = 0.17;
+          
+          int count = 0;
           for(int l = 0; l < effectiveProb[i].length; l++) {
             if(effectiveProb[i][l] < letterThreshold) continue;
             prob += " - " + String.valueOf(wc.charList[l]) + " " + String.format("%.3f", effectiveProb[i][l]);
+            count++;
           }
           
-          w[i].save("./AuxiliarFiles/WordGetter/" + word + "/" + prob + ".jpg");
+          numberOfLettersAverage += (float)count / w.length / wordsImages.length;
+          
+          w[i].save("./AuxiliarFiles/WordGetter/" + str(randomName) + "/Prob " + prob + ".jpg");
           
           if(this.cnn != null) {
-            session.ds.CNNGetImageFromInputs(entries[i]).save("./AuxiliarFiles/WordGetter/" + word + "/" + str(i) + ".jpg");
+            session.ds.CNNGetImageFromInputs(entries[i]).save("./AuxiliarFiles/WordGetter/" + str(randomName) + "/" + str(i) + ".jpg");
           } else {
-            session.ds.GetImageFromInputs(entry, i).save("./AuxiliarFiles/WordGetter/" + word + "/" + str(i) + ".jpg");
+            session.ds.GetImageFromInputs(entry, i).save("./AuxiliarFiles/WordGetter/" + str(randomName) + "/" + str(i) + ".jpg");
           }
         }
       }
+      
+      ArrayList<float[]> wordProb = new ArrayList<float[]>();
+      for(int i = 0; i < effectiveProb.length; i++) {
+        float maxVal = 0; int maxIndex = -1;
+        for(int k = 0; k < allProb[i].length; k++) {
+          if(allProb[i][k] > maxVal) {
+            maxVal = allProb[i][k];
+            maxIndex = k;
+          }
+        }
+        if(maxIndex >= 62 && maxVal > 0.4) { //ie c'est un signe de ponctuation, donc pas pris en compte pour le moment
+          if(wordProb.size() > 0) wordsEffectiveProb.add(wordProb.toArray(new float[0][]));
+          wordProb = new ArrayList<float[]>();
+        } else {
+          wordProb.add(effectiveProb[i]);
+        }
+      }
+      if(wordProb.size() > 0) wordsEffectiveProb.add(wordProb.toArray(new float[0][]));
+    }
+    
+    for(float[][] effectiveProb : wordsEffectiveProb.toArray(new float[0][][])) {
+      //println("EffectiveProb");
+      //println(effectiveProb[0]);
+      
+      String word = wc.WordAutoCorrection(effectiveProb);      
       
       text+=word;
       text+=" ";
     }
     
+    cl.pln("Number of letters average : " + str(numberOfLettersAverage));
     return text;
   }
   

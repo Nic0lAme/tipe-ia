@@ -121,8 +121,8 @@ class CharactersStorage {
     Matrix[][] testSample = session.ds.CreateSample(
       cs.GetChars(),
       //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
-      handTestingDatas,
-      //new String[]{},
+      //handTestingDatas,
+      new String[]{},
       fontTestingDatas,
       2, 1);
     Matrix output = cnn.Predict(testSample[0]);

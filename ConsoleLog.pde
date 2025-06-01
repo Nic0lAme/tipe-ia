@@ -61,12 +61,17 @@ class ConsoleLog {
   
   //f Energistre une nouvelle ligne, correspondant à la liste de flottants _list_
   // Est labelisé à l'aide de _label_
-  void pFloatList(float[] list, String label) {
+  void pList(float[] list, String label) {
     this.p(label, " - [");
     for(int i = 0; i < list.length; i++) {
       this.p(String.format("%.3f", list[i]), i == list.length - 1 ? "" : ", ");
     }
     this.pln("]");
+  }
+  
+  //s
+  void pList(int[] list, String label) {
+    pList(float(list), label);
   }
   
   //f S'assure que le fichier correspondant est mis à jour

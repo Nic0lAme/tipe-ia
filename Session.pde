@@ -157,7 +157,7 @@ public class Session {
 
     float[] score = CompilScore(this.AccuracyScore(this.nn, testSample, true));
     cl.pln("Training Set Score :", Average(score));
-    cl.pFloatList(score, "Accuracy");
+    cl.pList(score, "Accuracy");
 
 
     save("./Representation/" + str(frameCount) + " " + str(Average(score)) + " " + nameOfProcess + ".jpg");

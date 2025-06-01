@@ -1,8 +1,16 @@
+import java.util.*;
+import java.util.stream.*;
+
 class WordCorrector {
   char[] charList =           new char[] {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
   float[] letterFrequencies = new float[]{8.173, 0.901, 3.345, 3.669, 16.716, 1.066, 0.866, 0.737, 7.529, 0.613, 0.074, 5.456, 2.968, 7.095, 5.796, 2.521, 1.362, 6.693, 7.948, 7.244, 6.311, 1.838, 0.049, 0.427, 0.128, 0.326};
   float[] letterSpreading = new float[]{0.1, 0.05};
-  float fiability = 0.9; // 0 -> c'est vraiment très mauvais / 1 -> c'est vraiment excellent
+  float fiability = 1; // 0 -> c'est vraiment très mauvais / 1 -> c'est vraiment excellent
+  
+  float probThreshold = 0.2;
+  int maxNumberOfCandidates = 10;
+  
+  int maxCharDiff = 2;
   
   int[][] words;
   
@@ -28,17 +36,147 @@ class WordCorrector {
     }
   }
   
+  public String IntArrayToString(Integer[] chars) {
+    return IntArrayToString(Arrays.stream(chars).mapToInt(Integer::intValue).toArray());
+  }
+  
+  public String IntArrayToString(int[] chars) {
+    String text = "";
+    for(int i = 0; i < chars.length; i++) {
+      text += charList[chars[i]];
+    }
+    return text;
+  }
+  
   public String WordAutoCorrection(float[][] letterProb) {
+    return WordAutoCorrection(letterProb, probThreshold, 0);
+  }
+  
+  public String WordAutoCorrection(float[][] letterProb, float threshold, int depth) {
+    // Réccupérer les candidates plausibles par lettre
+    HashMap<Integer, Float>[] charCandidates = new HashMap[letterProb.length];
+    int numberOfWordCandidate = 1;
+    for(int letter = 0; letter < letterProb.length; letter++) {
+      charCandidates[letter] = new HashMap<>();
+      for(int i = 0; i < letterProb[letter].length; i++) {
+        if(letterProb[letter][i] < threshold) continue;
+        charCandidates[letter].put(i, letterProb[letter][i]);
+      }
+      numberOfWordCandidate *= charCandidates[letter].values().size();
+      if(charCandidates[letter].size() == 0) charCandidates[letter].put(4, 0.1); //Si ne trouve pas de caractères, part du principe que c'est un e (la lettre la plus fréquente)
+    }
+    
+    println(depth, threshold, numberOfWordCandidate);
+    
+    if(numberOfWordCandidate == 0) {
+      /*
+      if(threshold < 0.025) {
+        cl.pln(this, threshold, "WordAutoCorrection", "Some char isn't available"); Exception e = new Exception(); e.printStackTrace(); return "_";
+      }
+      */
+      
+      // Diminue le threshold jusqu'à qu'on soit bon
+      if(depth < 50) return WordAutoCorrection(letterProb, threshold - 0.004, depth + 1);
+    }
+    
+    if(numberOfWordCandidate > 5 * maxNumberOfCandidates) {
+      // Augmente le threshold jusqu'à qu'on soit bon
+      return WordAutoCorrection(letterProb, threshold + 0.001, depth + 1);
+    }
+    
+    // Réccupérer ainsi les mots bruts plausibles
+    HashMap<Integer[], Float> wordCandidates = new HashMap<>();
+    Backtrack(charCandidates, 0, new ArrayList<>(), 1, wordCandidates);
+    
+    // Les trie par probabilité
+    HashMap<Integer[], Float> sortedCandidates = wordCandidates.entrySet()
+      .stream()
+      .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+      .limit(this.maxNumberOfCandidates)
+      .collect(Collectors.toMap(
+          Map.Entry::getKey,
+          Map.Entry::getValue,
+          (e1, e2) -> e1,
+          LinkedHashMap::new // pour garder l'ordre trié
+    ));
+    
+    int minDistance = Integer.MAX_VALUE;
+    int[] bestWord = new int[0];
+    for(Map.Entry<Integer[], Float> m : sortedCandidates.entrySet()) {
+      int[] candidate = Arrays.stream(m.getKey()).mapToInt(Integer::intValue).toArray();
+      for(int[] word : this.words) {
+        if(abs(word.length - candidate.length) > this.maxCharDiff) continue;
+        int dist = SimpleDistance(candidate, word);
+        if(dist < minDistance) {
+          minDistance = dist;
+          bestWord = word;
+        }
+      }
+    }
+    
+    return IntArrayToString(bestWord);
+  }
+  
+  public int SimpleDistance(int[] w1, int[] w2) {
+    if(w1.length > w2.length) return SimpleDistance(w2, w1); // On a toujours w1 plus petit que w2
+    int n = w1.length; int m = w2.length;
+    if(w1[0] != w2[0] && w1[n - 1] != w2[m - 1]) {
+      print("too different");
+      return Integer.MAX_VALUE;
+    }
+    
+    int distance = Integer.MAX_VALUE;
+    if(m != n) {
+      for(int k = 0; k < m - n; k++) { // Position du départ du trou
+        int kdist = m - n;
+        for(int i = 0; i < k; i++) {
+          if(w1[i] != w2[i]) kdist += 1;
+        }
+        
+        for(int i = k + m - n; i < m; i++) {
+          if(w1[i - m + n] != w2[i]) kdist += 1;
+        }
+        
+        if(kdist < distance) {
+          distance = kdist;
+        }
+      }
+    } else {
+      distance = m-n;
+      for(int i = 0; i < n; i++) {
+        if(w1[i] != w2[i]) distance++;
+      }
+    }
+    
+    return distance;
+  }
+  
+  private void Backtrack(HashMap<Integer, Float>[] input, int index, List<Integer> current, float currentProb, HashMap<Integer[], Float> results) {
+    if(index == input.length) {
+      results.put(current.toArray(new Integer[0]), currentProb);
+      return;
+    }
+    
+    input[index].forEach((k, p) -> {
+      current.add(k);
+      
+      this.Backtrack(input, index + 1, current, currentProb * p, results);
+      
+      current.remove(current.size() - 1);
+    });
+  }
+  
+  public String OLD_WordAutoCorrection(float[][] letterProb) {
     float[] etalonnedProp = new float[this.charList.length];
     Arrays.fill(etalonnedProp, 1); 
-    return WordAutoCorrection(letterProb, etalonnedProp);
+    return OLD_WordAutoCorrection(letterProb, etalonnedProp);
   }
     
   //f Donne le mot le plus probable pour une entrée _letterProb_
   // _letterProb_ contient pour chaque emplacement les probabilités de chaque caractère
   // Simule toutes les manipulations possibles de manière probabiliste
   // Algorithme assez (très) naïf, donc à voir dans la pratique
-  public String WordAutoCorrection(float[][] letterProb, float[] etalonnedProp) {
+  public String OLD_WordAutoCorrection(float[][] letterProb, float[] etalonnedProp) {
     float[][] processedProb = new float[letterProb.length][this.charList.length];
     
     for(int letter = 0; letter < letterProb.length; letter++) {
@@ -49,7 +187,7 @@ class WordCorrector {
       }
       
       for(int k = 0; k < this.charList.length; k++) {
-        processedProb[letter][k] = (letterProb[letter][k] + (1 - this.fiability) / this.charList.length) / sum * (float)Math.pow(letterFrequencies[k] / 100, 1 - this.fiability) / (float)Math.pow(etalonnedProp[k], 1.1);
+        processedProb[letter][k] = (letterProb[letter][k] + (1 - this.fiability) / this.charList.length) / sum / (float)Math.pow(etalonnedProp[k], 1 - this.fiability);
       }
     }
     
@@ -91,7 +229,7 @@ class WordCorrector {
     println(bestProb);
     println(bestWord);
     
-    if(fiability > 0) {
+    if(fiability < 1) {
       for(int[] word : this.words) {
         if(word.length != processedProb.length) continue;
         
