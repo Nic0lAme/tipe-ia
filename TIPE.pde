@@ -22,6 +22,7 @@ final boolean enableDraftingArea = false;
 float rScale = 1; // Scale for the representations (draw)
 float testDerformation = 1;
 Random globalRandom = new Random();
+String globalSketchPath;
 
 int imgSize = 21;
 
@@ -40,6 +41,7 @@ void settings() {
 
 void setup() {
   background(255);
+  globalSketchPath = sketchPath();
   cl = new ConsoleLog("./Log/log1.txt");
 
   matrixMultKernel = new MatrixMultKernel();
@@ -62,6 +64,9 @@ void setup() {
   if (enableDraftingArea) draftingArea = new DraftingArea();
 
   db = new Database("https://tipe-877f6-default-rtdb.europe-west1.firebasedatabase.app/");
+  
+  PImage toScramble = loadImage("./TextFileGetter/output/ll/ll - NicolasMA.jpg");
+  ScrambleVisual sv = new ScrambleVisual(toScramble, 78, 87, 12, 8, "Nicolas l");
 
 
   HyperParameters hp = new HyperParameters();
@@ -78,7 +83,7 @@ void setup() {
     bayes.SERV_Export(new HyperParameters().Random(), random(1));
   */
   
-  cl.pln(wc.SimpleDistance(new int[]{21,8,6,7,19}, new int[]{7,4,6,7,19}));
+  //cl.pln(wc.SimpleDistance(new int[]{21,8,6,7,19}, new int[]{7,4,6,7,19}));
 
   //CNN cnn = new CNN(imgSize, new int[]{32, 64}, new int[]{512, cs.GetChars().length});
   CNN cnn = new CNN().Import("./CNN/TestOverfittingFullFont3.cnn");

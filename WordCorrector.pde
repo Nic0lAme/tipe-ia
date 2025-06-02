@@ -121,7 +121,7 @@ class WordCorrector {
     if(w1.length > w2.length) return SimpleDistance(w2, w1); // On a toujours w1 plus petit que w2
     int n = w1.length; int m = w2.length;
     if(w1[0] != w2[0] && w1[n - 1] != w2[m - 1]) {
-      print("too different");
+      //print("too different");
       return Integer.MAX_VALUE;
     }
     

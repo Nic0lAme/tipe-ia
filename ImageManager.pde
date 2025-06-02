@@ -83,7 +83,7 @@ class ImageManager {
     float zRot = 1;
     float d = 0.1;
     float delta = 0.02;
-    float perlinScale = 1;
+    float perlinScale = 25;
     float scaleScale = 0.5;
 
     PImage scrambledImage = img.copy();
@@ -137,8 +137,8 @@ class ImageManager {
     draftImage = createImage(x, y, RGB);
     draftImage.loadPixels();
     scrambledImage.loadPixels();
-    int dx = floor(d * random(-size * move, size * move));
-    int dy = floor(d * random(-size * move, size * move));
+    int dx = round(d * random(-size * move, size * move));
+    int dy = round(d * random(-size * move, size * move));
     for(int i = 0; i < x; i++) {
       for(int j = 0; j < y; j++) {
         int nx = i + dx; int ny = j + dy;
