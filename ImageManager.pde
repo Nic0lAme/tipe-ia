@@ -105,8 +105,8 @@ class ImageManager {
     float scale = random(1, 1 + scaleScale * move);
     for(int i = 0; i < x; i++) {
       for(int j = 0; j < y; j++) {
-        int nx = floor((i - (float)x/2) * scale + (float)x/2);
-        int ny = floor((j - (float)y/2) * scale + (float)y/2);
+        int nx = round(round((i - (float)x/2) * scale + (float)x/2));
+        int ny = round(round((j - (float)y/2) * scale + (float)y/2));
 
         draftImage.pixels[i + j * x] = (nx < 0 || ny < 0 || nx >= x || ny >= y) ? average : scrambledImage.pixels[nx + ny * x];
       }
@@ -124,8 +124,8 @@ class ImageManager {
         float dx = (i - (float)x/2);
         float dy = (j - (float)y/2);
 
-        int nx = floor(dx * cos(rot) - dy * sin(rot) + (float)x/2);
-        int ny = floor(dx * sin(rot) + dy * cos(rot) + (float)y/2);
+        int nx = round(round(dx * cos(rot) - dy * sin(rot) + (float)x/2));
+        int ny = round(round(dx * sin(rot) + dy * cos(rot) + (float)y/2));
 
         draftImage.pixels[i + j * x] = (nx < 0 || ny < 0 || nx >= x || ny >= y) ? average : scrambledImage.pixels[nx + ny * x];
       }

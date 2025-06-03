@@ -65,12 +65,15 @@ void setup() {
 
   db = new Database("https://tipe-877f6-default-rtdb.europe-west1.firebasedatabase.app/");
   
-  PImage toScramble = loadImage("./TextFileGetter/output/ll/ll - NicolasMA.jpg");
-  ScrambleVisual sv = new ScrambleVisual(toScramble, 78, 87, 12, 8, "Nicolas l");
-
+  /*
+  PImage toScramble = loadImage("./TextFileGetter/output/la/la - MrMollier.jpg");
+  ScrambleVisual sv = new ScrambleVisual(toScramble, 78, 87, 7, 5, "Mollier a");
+  */
 
   HyperParameters hp = new HyperParameters();
   session = new Session("", hp);
+  
+  println(RepList(new float[]{0.87, 0.75, 0.55, 0.63}, 9, 0.3));
   
   /*
   Bayes bayes = new Bayes("RandomONTeste");
@@ -85,8 +88,8 @@ void setup() {
   
   //cl.pln(wc.SimpleDistance(new int[]{21,8,6,7,19}, new int[]{7,4,6,7,19}));
 
-  //CNN cnn = new CNN(imgSize, new int[]{32, 64}, new int[]{512, cs.GetChars().length});
-  CNN cnn = new CNN().Import("./CNN/TestOverfittingFullFont3.cnn");
+  CNN cnn = new CNN(imgSize, new int[]{8, 16}, new int[]{128, cs.GetChars().length});
+  //CNN cnn = new CNN().Import("./CNN/TestOverfittingFullFont3.cnn");
   cnn.UseSoftMax();
   cnn.useADAM = true;
   
@@ -106,6 +109,7 @@ void setup() {
   
   //if(true) return;
   
+  /*
   Matrix[][] testSample = session.ds.CreateSample(
       cs.GetChars(),
       //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
@@ -134,10 +138,11 @@ void setup() {
         
     Matrix[][] trainingSampleForTest = session.ds.CNNSampleASample(sample, 1024);
   
-    cnn.MiniBatchLearn(sample, 1, 128, 0.001, 0.001, 2, new Matrix[][][]{testSample, trainingSampleForTest}, "");
+    cnn.MiniBatchLearn(sample, 3, 128, 0.001, 0.001, 2, new Matrix[][][]{testSample, trainingSampleForTest}, "");
     cnn.Export("./CNN/TestOverfittingFullFont3.cnn");
     session.AccuracyScore(cnn, testSample, true);
   }
+  */
 }
 
 int index = 0;

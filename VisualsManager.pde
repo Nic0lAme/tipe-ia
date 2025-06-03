@@ -8,7 +8,7 @@ class ScrambleVisual extends PApplet {
   PImage baseImg;
   int w, h;
   int numOfCol, numOfLine;
-  int mainMultiplier = 3;
+  int mainMultiplier = 2;
   String name;
   
   PImage[] scrambledImages;
