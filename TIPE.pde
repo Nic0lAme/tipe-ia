@@ -57,7 +57,7 @@ void setup() {
 
   im = new ImageManager();
   graphApplet = new GraphApplet();
-  
+
   wc = new WordCorrector();
   wc.ImportWords();
   
@@ -66,7 +66,7 @@ void setup() {
   if (enableDraftingArea) draftingArea = new DraftingArea();
 
   db = new Database("https://tipe-877f6-default-rtdb.europe-west1.firebasedatabase.app/");
-  
+
   /*
   PImage toScramble = loadImage("./TextFileGetter/output/la/la - MrMollier.jpg");
   ScrambleVisual sv = new ScrambleVisual(toScramble, 78, 87, 7, 5, "Mollier a");
@@ -80,12 +80,12 @@ void setup() {
   //bayes.GaussianProcess(5, 5);
   bayes.RandomFill(5, 5);
   */
-  
+
   /*
   for(int k = 0; k < 10; k++)
     bayes.SERV_Export(new HyperParameters().Random(), random(1));
   */
-  
+
   //cl.pln(wc.SimpleDistance(new int[]{21,8,6,7,19}, new int[]{7,4,6,7,19}));
 
   CNN cnn = new CNN(imgSize, new int[]{16, 32, 32}, new int[]{256, cs.GetChars().length});
@@ -127,7 +127,7 @@ void setup() {
     int[] repList = RepList(accuracy, 3, 0.5);
     
     cl.pList(repList, "Repetitions");
-    
+
     Matrix[][] sample = session.ds.CreateSample(
         cs.GetChars(),
         //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
@@ -135,7 +135,7 @@ void setup() {
         new String[]{},
         fontTrainingDatas,
         repList, 1);
-        
+
     Matrix[][] trainingSampleForTest = session.ds.CNNSampleASample(sample, 1024);
   
     cnn.MiniBatchLearn(sample, 4, 128, 0.001, 0.001, 2, new Matrix[][][]{testSample, trainingSampleForTest}, "");
