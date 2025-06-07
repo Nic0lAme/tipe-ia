@@ -57,14 +57,14 @@ void setup() {
 
   im = new ImageManager();
   graphApplet = new GraphApplet();
-  
+
   wc = new WordCorrector();
   wc.ImportWords();
 
   if (enableDraftingArea) draftingArea = new DraftingArea();
 
   db = new Database("https://tipe-877f6-default-rtdb.europe-west1.firebasedatabase.app/");
-  
+
   /*
   PImage toScramble = loadImage("./TextFileGetter/output/la/la - MrMollier.jpg");
   ScrambleVisual sv = new ScrambleVisual(toScramble, 78, 87, 7, 5, "Mollier a");
@@ -72,43 +72,41 @@ void setup() {
 
   HyperParameters hp = new HyperParameters();
   session = new Session("", hp);
-  
-  println(RepList(new float[]{0.87, 0.75, 0.55, 0.63}, 9, 0.3));
-  
+
   /*
   Bayes bayes = new Bayes("RandomONTeste");
   //bayes.GaussianProcess(5, 5);
   bayes.RandomFill(5, 5);
   */
-  
+
   /*
   for(int k = 0; k < 10; k++)
     bayes.SERV_Export(new HyperParameters().Random(), random(1));
   */
-  
+
   //cl.pln(wc.SimpleDistance(new int[]{21,8,6,7,19}, new int[]{7,4,6,7,19}));
 
-  CNN cnn = new CNN(imgSize, new int[]{8, 16}, new int[]{128, cs.GetChars().length});
-  //CNN cnn = new CNN().Import("./CNN/TestOverfittingFullFont3.cnn");
-  cnn.UseSoftMax();
-  cnn.useADAM = true;
-  
+  // CNN cnn = new CNN(imgSize, new int[]{8, 16}, new int[]{128, cs.GetChars().length});
+  // //CNN cnn = new CNN().Import("./CNN/TestOverfittingFullFont3.cnn");
+  // cnn.UseSoftMax();
+  // cnn.useADAM = true;
+
   /*
   NeuralNetwork nn = new NeuralNetwork(0).Import("./NeuralNetworkSave/AWorkingOne.nn");
   nn.UseSoftMax();
   */
-  
-  ir = new ImageReader(cnn);
-  println("NeuralNetwork");
-  println(ir.cnn);
-  
-  String text = ir.Read(loadImage("./AuxiliarFiles/FullImage.jpg"));
-  println(text);
-  
-  println("ended");
-  
+
+  // ir = new ImageReader(cnn);
+  // println("NeuralNetwork");
+  // println(ir.cnn);
+  //
+  // String text = ir.Read(loadImage("./AuxiliarFiles/FullImage.jpg"));
+  // println(text);
+  //
+  // println("ended");
+
   //if(true) return;
-  
+
   /*
   Matrix[][] testSample = session.ds.CreateSample(
       cs.GetChars(),
@@ -117,17 +115,17 @@ void setup() {
       new String[]{},
       fontTestingDatas,
       2, 1);
-      
-  
-  
+
+
+
   int numOfIter = 16;
   for(int iter = 0; iter < numOfIter; iter++) {
     cl.pln("ITERATION " + str(iter+1) + "/" + str(numOfIter));
     float[] accuracy = CompilScore(session.AccuracyScore(cnn, new Matrix[][][]{testSample}, false));
     int[] repList = RepList(accuracy, 6, 0.7);
-    
+
     cl.pList(repList, "Repetitions");
-    
+
     Matrix[][] sample = session.ds.CreateSample(
         cs.GetChars(),
         //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
@@ -135,9 +133,9 @@ void setup() {
         new String[]{},
         fontTrainingDatas,
         repList, 1);
-        
+
     Matrix[][] trainingSampleForTest = session.ds.CNNSampleASample(sample, 1024);
-  
+
     cnn.MiniBatchLearn(sample, 3, 128, 0.001, 0.001, 2, new Matrix[][][]{testSample, trainingSampleForTest}, "");
     cnn.Export("./CNN/TestOverfittingFullFont3.cnn");
     session.AccuracyScore(cnn, testSample, true);

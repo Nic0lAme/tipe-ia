@@ -232,6 +232,15 @@ class ImageSeparator {
     return bwPixels;
   }
 
+  //s
+  private int OtsuThreshold(ArrayList<Integer> pxls) {
+    int[] in = new int[pxls.size()];
+    for (int i = 0; i < pxls.size(); i++) {
+      in[i] = pxls.get(i);
+    }
+    return OtsuThreshold(in);
+  }
+
   //s Algorithme d'Otsu sur un array 1D
   private int OtsuThreshold(int[] pxls) {
     int[][] pix2D = new int[1][pxls.length];
@@ -245,7 +254,8 @@ class ImageSeparator {
     int imgHeight = pixelArrays.length;
     int imgWidth = pixelArrays[0].length;
     int pixelNumber = imgWidth*imgHeight;
-    int[] intensities = new int[256];
+    int max = 1000;
+    int[] intensities = new int[max];
 
     for (int i = 0; i < imgHeight; i++) {
       for (int j = 0; j < imgWidth; j++) {
@@ -255,15 +265,15 @@ class ImageSeparator {
 
     int bestThreshold = -1;
     float bestVal = -1;
-    for (int threshold = 0; threshold < 256; threshold++) {
+    for (int threshold = 0; threshold < max; threshold++) {
       float w0 = 0, w1 = 0, mu0 = 0, mu1 = 0;
       for (int i = 0; i < threshold; i++) w0 += intensities[i];
-      for (int i = threshold; i < 256; i++) w1 += intensities[i];
+      for (int i = threshold; i < max; i++) w1 += intensities[i];
       w0 /= pixelNumber;
       w1 /= pixelNumber;
 
       for (int i = 0; i < threshold; i++) mu0 += i*intensities[i];
-      for (int i = threshold; i < 256; i++) mu1 += i*intensities[i];
+      for (int i = threshold; i < max; i++) mu1 += i*intensities[i];
       mu0 /= w0;
       mu1 /= w1;
 
@@ -280,28 +290,6 @@ class ImageSeparator {
   //f Transforme les pixels _pxls_ en 2 catégories : pixels noirs et blancs
   private int[][] BinarizePixels(int[][] pxls) {
     int[][] result = new int[pxls.length][pxls[0].length];
-
-    // for (int i = 0; i < pxls.length; i++) {
-    //   for (int j = 0; j < pxls[0].length; j++) {
-    //     float moy = 0, cpt = 0;
-    //     int pas = 3; // PARAM
-    //     for (int k = max(0, i-pas); k < min(pxls.length, i+pas); k++) {
-    //       for (int l = max(0, j-pas); l < min(pxls[0].length, j+pas); l++) {
-    //         moy += pxls[k][l];
-    //         cpt++;
-    //       }
-    //     }
-    //     result[i][j] = int(moy/cpt);
-    //   }
-    // }
-    //
-    // int threshold = OtsuThreshold(pxls);
-    // for (int i = 0; i < pxls.length; i++) {
-    //   for (int j = 0; j < pxls[0].length; j++) {
-    //     if (result[i][j] > threshold) result[i][j] = 255;
-    //     else result[i][j] = 0;
-    //   }
-    // }
 
     int threshold = OtsuThreshold(pxls);
     for (int i = 0; i < pxls.length; i++) {
@@ -371,17 +359,6 @@ class ImageSeparator {
   //f Renvoie une moyenne pondérée des lignes de _bwPiwels_ (2 couleurs)
   // En fait c'est la variance
   private int[] GetLineMeans(int[][] bwPixels) {
-    // int[] means = new int[bwPixels.length];
-    // for (int i = 0; i < bwPixels.length; i++) {
-    //   int blacks = 0;
-    //   for (int j = 0; j < bwPixels[0].length; j++) {
-    //     if (bwPixels[i][j] == 0) blacks++;
-    //   }
-    //   float m = 5*(float)blacks/bwPixels[0].length; // :)
-    //   means[i] = constrain(floor(map(m, 0, 1, 255, 0)), 0, 255);
-    // }
-    // return means;
-
     int[] means = new int[bwPixels.length];
     for (int i = 0; i < bwPixels.length; i++) {
       float moy = 0;
@@ -422,61 +399,6 @@ class ImageSeparator {
     return lineSep;
   }
 
-  // Note: pas doit être impair !
-  private ArrayList<Integer> ProcessMean(int[] preMeans, int pas, int numCat) {
-    ArrayList<Integer> lineSep = new ArrayList<Integer>();
-    int s = preMeans.length;
-
-    // Moyenne glissante pour lisser
-    int[] means = new int[s];
-    for (int i = 0; i < s; i++) {
-      int somme = 0, compteur = 0;
-      for (int k = -pas/2; k <= pas/2; k++) {
-        if (constrain(i+k, 0, s-1) == i+k) {
-          somme += preMeans[i+k];
-          compteur++;
-        }
-      }
-      means[i] = somme/compteur;
-    }
-
-    // Échantillonnage des niveaux de gris
-    int bSize = 255/numCat;
-    for (int i = 0; i < s; i++) {
-      int cat = means[i] / bSize;
-      means[i] = cat * bSize;
-    }
-
-    // Récupère les maximums locaux de couleurs, qui sont les interlignes
-    lineSep.add(0);
-    int phase = 0;
-    Integer lastFirst0 = null;
-    if (means[1] > means[0]) phase = 1;
-    else if (means[1] < means[0]) phase = -1;
-
-    for (int i = 0; i < s-1; i++) {
-      int state = 0;
-      if (means[i+1] > means[i]) state = 1;
-      else if (means[i+1] < means[i]) state = -1;
-
-      if (phase == 1 && state == -1) {
-        if (i - lineSep.get(lineSep.size()-1) > lineThreshold) lineSep.add(i);
-      }
-      if (phase == 0 && state == -1 && lastFirst0 != null) {
-        int c = (i+lastFirst0)/2;
-        if (c - lineSep.get(lineSep.size()-1) > lineThreshold) lineSep.add(c);
-        lastFirst0 = null;
-      }
-
-      if (phase == 1 && state == 0) lastFirst0 = i;
-      phase = state;
-    }
-
-    lineSep.add(s-1);
-    return lineSep;
-  }
-
-  // AMÉLIORABLE C'EST BIEN SI C'EST POSSIBLE QUE
   //f Récupère toutes les coordonnées des colonnes des mots correspondant à
   // l'indice _lineIndex_ de la liste des lignes de séparations _lineSep_
   private ArrayList<Integer> SplitWords(int[][] bwPixels, ArrayList<Integer> lineSep, int lineIndex) {
@@ -484,36 +406,44 @@ class ImageSeparator {
     int down = lineSep.get(lineIndex+1);
     int size = down - up + 1;
 
-    int[] means = new int[bwPixels[0].length];
-    for (int j = 0; j < bwPixels[0].length; j++) {
-      int blacks = 0;
-      for (int i = up; i < down; i++) {
-        if (bwPixels[i][j] == 0) blacks++;
-      }
-      float m = 5*(float)blacks/size;
-      means[j] = constrain(floor(map(m, 0, 1, 255, 0)), 0, 255);
-    }
-
-    ArrayList<Integer> result = ProcessMean(means, 25, 2);
-    ArrayList<Integer> corrected = new ArrayList<Integer>();
-    for (Integer k : result) {
-      if (!HasBlackAround(bwPixels, k, up, down, 3)) corrected.add(k);
-    }
-
-    return corrected;
-  }
-
-  private boolean HasBlackAround(int[][] bwPixels, int k, int up, int down, int s) {
-    int start = max(0, k-s);
-    int end = min(k+s, bwPixels[0].length-1);
-    for (int j = start; j < end; j++) {
-      for (int i = up; i < down; i++) {
-        if (bwPixels[i][j] == 0) return true;
+    ArrayList<Integer> trousSizes = new ArrayList<Integer>();
+    int lastChangement = 0;
+    boolean inNoir = false;
+    boolean firstPassed = false;
+    for (int j = 0; j < w; j++) {
+      if (DetectLetterColumn(bwPixels, j, up, down)) {
+        if (!inNoir) {
+          if (firstPassed) trousSizes.add(j - lastChangement);
+          firstPassed = true;
+          lastChangement = j;
+        }
+        inNoir = true;
+      } else {
+        if (inNoir) lastChangement = j;
+        inNoir = false;
       }
     }
-    return false;
-  }
 
+    ArrayList<Integer> result = new ArrayList<Integer>();
+    int threshold = OtsuThreshold(trousSizes);
+    lastChangement = 0;
+    inNoir = false;
+    for (int j = 0; j < w; j++) {
+      if (DetectLetterColumn(bwPixels, j, up, down)) {
+        if (!inNoir) {
+          if (j - lastChangement >= threshold) result.add(j);
+          lastChangement = j;
+        }
+        inNoir = true;
+      } else {
+        if (inNoir) lastChangement = j;
+        inNoir = false;
+      }
+    }
+    result.add(w-1);
+
+    return result;
+  }
   private ArrayList<PVector[][]> CoordsFromWords(int[][] bwPixels, ArrayList<PVector[]> allWordsCoords) {
     ArrayList<PVector[][]> allCoords = new ArrayList<PVector[][]>();
 
@@ -555,7 +485,7 @@ class ImageSeparator {
     for (int i = up; i < down+1; i++) {
       if (bwPixels[i][col] == 0) {
         compteur++;
-        if (compteur >= 1) return true; // PARAM
+        if (compteur >= 3) return true; // PARAM
       }
     }
     return false;

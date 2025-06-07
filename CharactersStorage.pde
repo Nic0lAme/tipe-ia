@@ -103,7 +103,7 @@ class CharactersStorage {
 
     for (int i = 0; i < allProb.length; i++) {
       for (float[] c : letterCorrespondance.get(i)) {
-        if((int)c[0] >= 26) continue; 
+        if((int)c[0] >= 26) continue;
         ret[(int)c[0]] += allProb[i] * c[1];
       }
     }
@@ -115,7 +115,7 @@ class CharactersStorage {
   private void ParseCharFile(String filePath) {
     ParseCharFile(filePath, fullCharacters);
   }
-  
+
   //f Permet de trouver les proportions de chaque lettres détectées par un réseau
   public float[] GetEtalonnedProp(CNN cnn) {
     Matrix[][] testSample = session.ds.CreateSample(
@@ -126,15 +126,15 @@ class CharactersStorage {
       fontTestingDatas,
       2, 1);
     Matrix output = cnn.Predict(testSample[0]);
-    
+
     float[] allProp = new float[output.n];
     for(int j = 0; j < output.p; j++) {
       for(int i = 0; i < output.n; i++) allProp[i] += output.Get(i, j) / output.n / output.p;
     }
-    
+
     return GetProb(allProp);
   }
-  
+
   //s
   public float[] GetEtalonnedProp(NeuralNetwork nn) {
     Matrix[] testSample = session.ds.SampleLining(session.ds.CreateSample(
@@ -145,12 +145,12 @@ class CharactersStorage {
       fontTestingDatas,
       2, 1));
     Matrix output = nn.Predict(testSample[0]);
-    
+
     float[] allProp = new float[output.n];
     for(int j = 0; j < output.p; j++) {
       for(int i = 0; i < output.n; i++) allProp[i] += output.Get(i, j) / output.n / output.p;
     }
-    
+
     return GetProb(allProp);
   }
 
@@ -167,7 +167,7 @@ class CharactersStorage {
 
       String[] fp = split(parts[0], " ");
       String name = fp[0];
-      println(name);
+      // println(name);
       char d = fp[1].charAt(0);
 
       boolean found = false;
