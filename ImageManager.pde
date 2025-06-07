@@ -606,6 +606,31 @@ class ImageManager {
 
     return new int[]{left, top, right - left, bottom - top};
   }
+  
+  public int[] GetBoundingBox(PImage image) {
+    int minX = image.width;
+    int minY = image.height;
+    int maxX = -1;
+    int maxY = -1;
+    
+    for(int y = 0; y < image.height; y++) {
+      for(int x = 0; x < image.width; x++) {
+        if(brightness(image.get(x,y)) <= 50) { // pixel appartient à l'objet
+          if(x < minX) minX = x;
+          if(x > maxX) maxX = x;
+          if(y < minY) minY = y;
+          if(y > maxY) maxY = y;
+        }
+      }
+    }
+    
+    if(maxX == -1 || maxY == -1) {
+      // Pas de pixel trouvé, objet vide
+      return new int[]{-1, -1, -1, -1};
+    }
+    
+    return new int[]{minX, minY, maxX, maxY};
+  }
 }
 
 /*

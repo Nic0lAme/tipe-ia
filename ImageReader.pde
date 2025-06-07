@@ -3,6 +3,8 @@ class ImageReader {
   NeuralNetwork nn;
   boolean saveWordImage = true;
   
+  float ponctuationThreshold = 0.3;
+  
   ImageReader(CNN cnn) {
     this.cnn = cnn;
   }
@@ -28,7 +30,31 @@ class ImageReader {
     
     String text = "";
     ArrayList<float[][]> wordsEffectiveProb = new ArrayList<float[][]>();
+    
+    ArrayList<Integer> boundingBoxSizesList = new ArrayList<>();
+    
+    int[][] boundingBoxSizes = new int[wordsImages.length][];
+    float averageBoundingBoxSize = 0;
+    for(int i = 0; i < wordsImages.length; i++) {
+      boundingBoxSizes[i] = new int[wordsImages[i].length];
+      for(int j = 0; j < wordsImages[i].length; j++) {
+        int[] boundingBox = im.GetBoundingBox(wordsImages[i][j]);
+        boundingBoxSizes[i][j] = (boundingBox[2] - boundingBox[0])*(boundingBox[3] - boundingBox[1]);
+        boundingBoxSizesList.add(boundingBoxSizes[i][j]);
+        averageBoundingBoxSize += (float)boundingBoxSizes[i][j] / wordsImages[i].length / wordsImages.length;
+        
+        wordsImages[i][j].save("./AuxiliarFiles/BoundingBoxTest/" + str(boundingBoxSizes[i][j]) + " " + str(random(1)) + ".jpg");
+      }
+    }
+    
+    println("Average bounding box :", averageBoundingBoxSize);
+    
+    //SaveIntListAsCSV(boundingBoxSizesList.stream().mapToInt(Integer::intValue).toArray(), "./AuxiliarFiles/BoundingBoxSizeGraph.csv");
+    
+    int wordIndex = -1;
     for(PImage[] w : wordsImages) {
+      wordIndex++;
+      
       // Réccupérer la prédiction pour le mot
       Matrix[] entries = new Matrix[w.length];
       for(int i = 0; i < w.length; i++) {
@@ -82,7 +108,7 @@ class ImageReader {
           
           numberOfLettersAverage += (float)count / w.length / wordsImages.length;
           
-          w[i].save("./AuxiliarFiles/WordGetter/" + str(randomName) + "/Prob " + prob + ".jpg");
+          //w[i].save("./AuxiliarFiles/WordGetter/" + str(randomName) + "/Prob " + prob + ".jpg");
           
           if(this.cnn != null) {
             session.ds.CNNGetImageFromInputs(entries[i]).save("./AuxiliarFiles/WordGetter/" + str(randomName) + "/" + str(i) + ".jpg");
@@ -94,14 +120,7 @@ class ImageReader {
       
       ArrayList<float[]> wordProb = new ArrayList<float[]>();
       for(int i = 0; i < effectiveProb.length; i++) {
-        float maxVal = 0; int maxIndex = -1;
-        for(int k = 0; k < allProb[i].length; k++) {
-          if(allProb[i][k] > maxVal) {
-            maxVal = allProb[i][k];
-            maxIndex = k;
-          }
-        }
-        if(maxIndex >= 62 && maxVal > 0.4) { //ie c'est un signe de ponctuation, donc pas pris en compte pour le moment
+        if(boundingBoxSizes[wordIndex][i] < this.ponctuationThreshold * averageBoundingBoxSize) { //ie c'est un signe de ponctuation, donc pas pris en compte pour le moment
           if(wordProb.size() > 0) wordsEffectiveProb.add(wordProb.toArray(new float[0][]));
           wordProb = new ArrayList<float[]>();
         } else {

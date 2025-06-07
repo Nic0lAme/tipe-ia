@@ -27,12 +27,13 @@ public class Session {
     this.name = name;
     this.characters = cs.GetChars();
 
-    this.sessionHandTrainingDatas = handTrainingDatas;
-    //this.handTrainingDatas = new String[]{};
+    //this.sessionHandTrainingDatas = handTrainingDatas;
+    this.sessionHandTrainingDatas = new String[]{};
     this.sessionFontTrainingDatas = fontTrainingDatas;
-    //this.fontTrainingDatas = new String[]{};
+    //this.sessionFontTrainingDatas = new String[]{};
 
-    this.sessionHandTestingDatas = handTestingDatas;
+    //this.sessionHandTestingDatas = handTestingDatas;
+    this.sessionHandTestingDatas = new String[]{};
     this.sessionFontTestingDatas = fontTestingDatas;
 
     ds = new LetterDataset(5*this.w, 5*this.h);

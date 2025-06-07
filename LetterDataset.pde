@@ -166,6 +166,7 @@ public class LetterDataset {
 
   public Matrix[] SampleLining(Matrix[][] sample) {
     if (abortTraining.get()) return new Matrix[0];
+    if (sample[0].length == 0) return new Matrix[]{new Matrix(0)};
     Matrix inputs = new Matrix(sample[0][0].n * sample[0][0].p, sample[0].length);
     for(int k = 0; k < sample[0].length; k++) {
       for(int i = 0; i < sample[0][k].n; i++)

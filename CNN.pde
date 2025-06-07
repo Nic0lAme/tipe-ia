@@ -15,6 +15,8 @@ class CNN {
   Matrix[][] cFilters;
   Matrix[] cBias;
   int[] cImageSizes;
+  
+  boolean doLogTime = false;
 
   // ADAM Learning Rate Optimization
   boolean useADAM = true;
@@ -419,11 +421,13 @@ class CNN {
     }
 
     int FCLTime = millis();
-
-    println("FORWARD TIME : ", FCLTime - initTime);
-    println("Convolution : ", convTime - initTime);
-    println("Transition : ", transitionTime - convTime);
-    println("FCL : ", FCLTime - transitionTime);
+    
+    if(this.doLogTime) {
+      println("FORWARD TIME : ", FCLTime - initTime);
+      println("Convolution : ", convTime - initTime);
+      println("Transition : ", transitionTime - convTime);
+      println("FCL : ", FCLTime - transitionTime);
+    }
 
     return new Matrix[][][][]{ convVal, masks, new Matrix[][][]{{layerVal}} }; // :) :)
   }
@@ -794,13 +798,15 @@ class CNN {
       }
     }
 
-    println("BACKPROPAGATION TIME : ", backwardTime, BPFCLTime + BPfirstGradTime + BPmaskTime + BPgradTime + BPnextGTime);
-    println("FCL : ", BPFCLTime);
-    println("First Grad : ", BPfirstGradTime);
-    println("Mask : ", BPmaskTime);
-    println("Grad : ", BPgradTime);
-    println("Next Grad : ", BPnextGTime);
-    println("Convolution Time : ", convolutionTime);
+    if(this.doLogTime) {
+      println("BACKPROPAGATION TIME : ", backwardTime, BPFCLTime + BPfirstGradTime + BPmaskTime + BPgradTime + BPnextGTime);
+      println("FCL : ", BPFCLTime);
+      println("First Grad : ", BPfirstGradTime);
+      println("Mask : ", BPmaskTime);
+      println("Grad : ", BPgradTime);
+      println("Next Grad : ", BPnextGTime);
+      println("Convolution Time : ", convolutionTime);
+    }
 
     for(int l = 0; l < this.numLayers - 1; l++) {
       if(!useADAM) {
@@ -865,7 +871,7 @@ class CNN {
 
     int appliedTime = millis();
 
-    println("Forward : " + str(forwardTime) + " | Backward : " + str(backwardTime) + " | Application : " + str(appliedTime - backwardTime - forwardTime - initTime));
+    if(this.doLogTime) println("Forward : " + str(forwardTime) + " | Backward : " + str(backwardTime) + " | Application : " + str(appliedTime - backwardTime - forwardTime - initTime));
 
     //S.Debug();
     float J = this.ComputeLoss(S, Y);
