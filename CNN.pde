@@ -32,8 +32,8 @@ class CNN {
   Matrix[] cADAMbiasSqMoment;
 
   int numOfLearningCall = 0;
-  float b1 = 0.9;
-  float b2 = 0.999;
+  float b1 = 0.85;
+  float b2 = 0.98;
 
 
   float lambda = 0;

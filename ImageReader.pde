@@ -3,7 +3,7 @@ class ImageReader {
   NeuralNetwork nn;
   boolean saveWordImage = true;
   
-  float ponctuationThreshold = 0.3;
+  float ponctuationThreshold = 0.22;
   
   ImageReader(CNN cnn) {
     this.cnn = cnn;
@@ -43,14 +43,15 @@ class ImageReader {
         boundingBoxSizesList.add(boundingBoxSizes[i][j]);
         averageBoundingBoxSize += (float)boundingBoxSizes[i][j] / wordsImages[i].length / wordsImages.length;
         
-        wordsImages[i][j].save("./AuxiliarFiles/BoundingBoxTest/" + str(boundingBoxSizes[i][j]) + " " + str(random(1)) + ".jpg");
+        //wordsImages[i][j].save("./AuxiliarFiles/BoundingBoxTest/" + str(boundingBoxSizes[i][j]) + " " + str(random(1)) + ".jpg");
       }
     }
     
     println("Average bounding box :", averageBoundingBoxSize);
     
-    //SaveIntListAsCSV(boundingBoxSizesList.stream().mapToInt(Integer::intValue).toArray(), "./AuxiliarFiles/BoundingBoxSizeGraph.csv");
+    SaveIntListAsCSV(boundingBoxSizesList.stream().mapToInt(Integer::intValue).toArray(), "./AuxiliarFiles/BoundingBoxSizeGraph.csv");
     
+    ArrayList<String> ponctuationsList = new ArrayList<>();
     int wordIndex = -1;
     for(PImage[] w : wordsImages) {
       wordIndex++;
@@ -108,7 +109,8 @@ class ImageReader {
           
           numberOfLettersAverage += (float)count / w.length / wordsImages.length;
           
-          //w[i].save("./AuxiliarFiles/WordGetter/" + str(randomName) + "/Prob " + prob + ".jpg");
+          println(w.length, w[0].width, w[0].height);
+          w[i].save(globalSketchPath + "/AuxiliarFiles/WordGetter/" + str(randomName) + "/Prob " + prob + ".jpg");
           
           if(this.cnn != null) {
             session.ds.CNNGetImageFromInputs(entries[i]).save("./AuxiliarFiles/WordGetter/" + str(randomName) + "/" + str(i) + ".jpg");
@@ -121,24 +123,36 @@ class ImageReader {
       ArrayList<float[]> wordProb = new ArrayList<float[]>();
       for(int i = 0; i < effectiveProb.length; i++) {
         if(boundingBoxSizes[wordIndex][i] < this.ponctuationThreshold * averageBoundingBoxSize) { //ie c'est un signe de ponctuation, donc pas pris en compte pour le moment
-          if(wordProb.size() > 0) wordsEffectiveProb.add(wordProb.toArray(new float[0][]));
+          if(wordProb.size() > 0) {
+            wordsEffectiveProb.add(wordProb.toArray(new float[0][]));
+            float h = im.MeanHeight(wordsImages[wordIndex][i]);
+            String c = (h < 2 * wordsImages[wordIndex][i].height / 5 ? "'" : (h < 3 * wordsImages[wordIndex][i].height / 5 ? "-" : ", "));
+            ponctuationsList.add(c);
+          }
           wordProb = new ArrayList<float[]>();
         } else {
           wordProb.add(effectiveProb[i]);
         }
       }
-      if(wordProb.size() > 0) wordsEffectiveProb.add(wordProb.toArray(new float[0][]));
+      if(wordProb.size() > 0) {
+        wordsEffectiveProb.add(wordProb.toArray(new float[0][]));
+        ponctuationsList.add(" ");
+      }
     }
     
-    for(float[][] effectiveProb : wordsEffectiveProb.toArray(new float[0][][])) {
+    float[][][] wordsEffectiveProbArray = wordsEffectiveProb.toArray(new float[0][][]);
+    for(int i = 0; i < wordsEffectiveProbArray.length; i++) {
       //println("EffectiveProb");
       //println(effectiveProb[0]);
       
-      String word = wc.WordAutoCorrection(effectiveProb);      
+      String word = wc.OLD_WordAutoCorrection(wordsEffectiveProbArray[i]);      
       
       text+=word;
-      text+=" ";
+      text+=ponctuationsList.get(i);
     }
+    
+    println(wordsEffectiveProbArray.length);
+    println(ponctuationsList.size());
     
     cl.pln("Number of letters average : " + str(numberOfLettersAverage));
     return text;

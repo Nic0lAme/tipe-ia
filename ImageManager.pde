@@ -215,9 +215,9 @@ class ImageManager {
   //f Rogne l'image (nouvelle image) en détectant les contours de l'objet le plus grand dans _img_, ayant un _cap_ et une marge de _marge_ * size pixels
   PImage AutoCrop(PImage img, float cap, float marge) {
     PImage cImg = img.copy();
-    PImage paddedImg = Padding(cImg, 2, color(255));
-    cImg.filter(THRESHOLD, cap / 255);
-    ArrayList<ArrayList<PVector>> contours = this.ContourDetection(cImg, img.width / 6);
+    PImage paddedImg = Padding(cImg, 5, color(255));
+    paddedImg.filter(THRESHOLD, cap / 255);
+    ArrayList<ArrayList<PVector>> contours = this.ContourDetection(paddedImg, img.width / 6);
 
     if(contours.size() == 0) {
       println("Used OLD Autocrop");
@@ -607,15 +607,15 @@ class ImageManager {
     return new int[]{left, top, right - left, bottom - top};
   }
   
-  public int[] GetBoundingBox(PImage image) {
-    int minX = image.width;
-    int minY = image.height;
+  public int[] GetBoundingBox(PImage img) {
+    int minX = img.width;
+    int minY = img.height;
     int maxX = -1;
     int maxY = -1;
     
-    for(int y = 0; y < image.height; y++) {
-      for(int x = 0; x < image.width; x++) {
-        if(brightness(image.get(x,y)) <= 50) { // pixel appartient à l'objet
+    for(int y = 0; y < img.height; y++) {
+      for(int x = 0; x < img.width; x++) {
+        if(brightness(img.get(x,y)) <= 50) { // pixel appartient à l'objet
           if(x < minX) minX = x;
           if(x > maxX) maxX = x;
           if(y < minY) minY = y;
@@ -630,6 +630,20 @@ class ImageManager {
     }
     
     return new int[]{minX, minY, maxX, maxY};
+  }
+  
+  float MeanHeight(PImage img) {
+    ArrayList<Integer> heights = new ArrayList<Integer>();
+    
+    for(int i = 0; i < img.height; i++)
+      for(int j = 0; j < img.width; j++)
+        if(brightness(img.get(j,i)) < 50) heights.add(i);
+        
+    float average = 0;
+    int[] heightsArray = heights.stream().mapToInt(Integer::intValue).toArray();
+    for(int h : heightsArray) average += (float)h / heights.size();
+    
+    return average;
   }
 }
 

@@ -20,8 +20,9 @@ class WordCorrector {
   //f Importe l'ensemble des mots du fichier _scrabble.txt_ dans la variable _this.words_
   public void ImportWords() {
     String[] wordsList = loadStrings("./AuxiliarFiles/scrabble.txt");
+    String[] auxList = loadStrings("./AuxiliarFiles/auxDic.txt");
     
-    this.words = new int[wordsList.length][];
+    this.words = new int[wordsList.length + auxList.length][];
     
     for(int k = 0; k < wordsList.length; k++) {
       String w = wordsList[k].strip();
@@ -33,6 +34,18 @@ class WordCorrector {
       }
       
       this.words[k] = wordRepresentation;
+    }
+    
+    for(int k = 0; k < auxList.length; k++) {
+      String w = auxList[k].strip();
+      int[] wordRepresentation = new int[w.length()];
+      
+      for(int c = 0; c < w.length(); c++) {
+        char character = w.charAt(c);
+        wordRepresentation[c] = character - 'A';
+      }
+      
+      this.words[k + wordsList.length] = wordRepresentation;
     }
   }
   
@@ -117,7 +130,7 @@ class WordCorrector {
     int[] bestWord = new int[0];
     for(Map.Entry<Integer[], Float> m : sortedCandidates.entrySet()) {
       int[] candidate = Arrays.stream(m.getKey()).mapToInt(Integer::intValue).toArray();
-      int[][] evaluation = FindBestWord(candidate, (w1, w2) -> SimpleDistance(w1,w2), this.maxCharDiff);
+      int[][] evaluation = FindBestWord(candidate, (w1, w2) -> LevenshteinDistance(w1,w2), this.maxCharDiff);
       if(evaluation[1][0] < minDistance) {
         minDistance = evaluation[1][0];
         bestWord = evaluation[0];
