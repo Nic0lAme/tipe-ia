@@ -25,7 +25,7 @@ class ImageSeparator {
   public PImage[][] GetWordsImages() {
     ArrayList<PVector[][]> allCoords = GetAllCoords();
     ArrayList<PImage[]> allLetters = new ArrayList<PImage[]>();
-    for (PVector[][] word : allCoords) {
+      for (PVector[][] word : allCoords) {
       PImage[] letterImgs = new PImage[word.length];
       for (int i = 0; i < word.length; i++) {
         letterImgs[i] = GetImageLetter(word[i]);
@@ -440,6 +440,7 @@ class ImageSeparator {
         inNoir = false;
       }
     }
+    // result.add(lastChangement);
     result.add(w-1);
 
     return result;
@@ -455,21 +456,31 @@ class ImageSeparator {
     return allCoords;
   }
 
-  private PVector[][] GetLettersInWord(int[][] bwPixels, PVector wordUl, PVector wordBr) {
+  private PVector[][] GetLettersInWord(int[][] preBwPixels, PVector wordUl, PVector wordBr) {
     ArrayList<PVector[]> result = new ArrayList<PVector[]>();
+    // int[][] bwPixels = HorizontalContract(preBwPixels, wordUl, wordBr);
+    int[][] bwPixels = preBwPixels;
 
     int up = int(wordUl.y);
     int down = int(wordBr.y);
     PVector ul = null, br = null;
 
     for (int j = int(wordUl.x); j < int(wordBr.x); j++) {
-      if (DetectLetterColumn(bwPixels, j, up, down)) {
+      if (FineDetectLetterColumn(bwPixels, j, up, down)) {
         if (ul == null) ul = new PVector(j, up);
       }
       else {
         if (ul != null) {
           br = new PVector(j, down);
-          result.add(new PVector[]{ul, br});
+
+          // Correction des fausses lettres
+          int count = 0;
+          for (int k = int(ul.x); k < int(br.x); k++) {
+            for (int l = int(ul.y); l < int(br.y); l++) {
+              if (bwPixels[l][k] == 0) count++;
+            }
+          }
+          if (count >= 20) result.add(new PVector[]{ul, br}); // PARAM
           ul = br = null;
         }
       }
@@ -489,6 +500,23 @@ class ImageSeparator {
       }
     }
     return false;
+  }
+
+  private boolean FineDetectLetterColumn(int[][] bwPixels, int col, int up, int down) {
+    int compteur = 0;
+    for (int i = up; i < down+1; i++) {
+      if (bwPixels[i][col] == 0) {
+        compteur++;
+        if (compteur >= 1) return true; // PARAM
+      }
+    }
+    return false;
+  }
+
+  private int[][] HorizontalContract(int[][] bwPixels, PVector wordUl, PVector wordBr) {
+    int[][] result = new int[bwPixels.length][bwPixels[0].length];
+    // TODO
+    return result;
   }
 
   //f Découpe la lettre aux coordonnées _coords_ dans l'image originale
