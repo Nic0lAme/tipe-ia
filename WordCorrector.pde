@@ -10,7 +10,8 @@ class WordCorrector {
   float probThreshold = 0.2;
   int maxNumberOfCandidates = 30;
   
-  int maxCharDiff = 1;
+  int maxCharDiff = 2;
+  int maxDist = 4;
   
   int[][] words;
   
@@ -130,7 +131,7 @@ class WordCorrector {
     int[] bestWord = new int[0];
     for(Map.Entry<Integer[], Float> m : sortedCandidates.entrySet()) {
       int[] candidate = Arrays.stream(m.getKey()).mapToInt(Integer::intValue).toArray();
-      int[][] evaluation = FindBestWord(candidate, (w1, w2) -> LevenshteinDistance(w1,w2), this.maxCharDiff);
+      int[][] evaluation = FindBestWord(candidate, (w1, w2) -> LevenshteinDistance(w1,w2), this.maxCharDiff, this.maxDist);
       if(evaluation[1][0] < minDistance) {
         minDistance = evaluation[1][0];
         bestWord = evaluation[0];
@@ -140,14 +141,14 @@ class WordCorrector {
     return IntArrayToString(bestWord);
   }
   
-  public int[][] FindBestWord(int[] candidate, DistanceFunction distFunc, int maxGap) {
-    int minDistance = Integer.MAX_VALUE;
-    int[] bestWord = new int[0];
+  public int[][] FindBestWord(int[] candidate, DistanceFunction distFunc, int maxGap, int maxDistance) {
+    int minDistance = maxDistance;
+    int[] bestWord = candidate;
     
     for(int[] word : this.words) {
       if(abs(word.length - candidate.length) > maxGap) continue;
       int dist = distFunc.apply(candidate, word);
-      if(dist < minDistance) {
+      if(dist <= minDistance) {
         minDistance = dist;
         bestWord = word;
       }
@@ -347,7 +348,7 @@ class WordCorrector {
       int initTime = millis();
       
       for(int i = 0; i < numOfWord; i++) {
-        int[] word = FindBestWord(corruptedWordList[i], f, this.maxCharDiff)[0];
+        int[] word = FindBestWord(corruptedWordList[i], f, this.maxCharDiff, this.maxDist)[0];
         if(Arrays.equals(word, wordList[i])) numOfRight += 1;
       }
       

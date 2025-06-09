@@ -117,13 +117,13 @@ void setup() {
       //handTestingDatas,
       new String[]{},
       fontTestingDatas,
-      2, 1);
+      3, 0.7);
   
   int numOfIter = 6;
   for(int iter = 0; iter < numOfIter; iter++) {
     cl.pln("ITERATION " + str(iter+1) + "/" + str(numOfIter));
     float[] accuracy = CompilScore(session.AccuracyScore(cnn, new Matrix[][][]{testSample}, true));
-    int[] repList = RepList(accuracy, 8, 0.95);
+    int[] repList = RepList(accuracy, 8, 0.9);
     
     cl.pList(repList, "Repetitions");
     
@@ -133,11 +133,11 @@ void setup() {
         //handTrainingDatas,
         new String[]{},
         fontTrainingDatas,
-        repList, 1);
+        repList, 0.7);
         
     Matrix[][] trainingSampleForTest = session.ds.CNNSampleASample(sample, 1024);
   
-    cnn.MiniBatchLearn(sample, 5, 128, 0.001, 0.001, 2, new Matrix[][][]{testSample, trainingSampleForTest}, "");
+    cnn.MiniBatchLearn(sample, 3, 128, 0.001, 0.001, 2, new Matrix[][][]{testSample, trainingSampleForTest}, "");
     cnn.Export("./CNN/22x22_32_64_LettersOnly.cnn");
     //session.AccuracyScore(nn, testSample, true);
   }
