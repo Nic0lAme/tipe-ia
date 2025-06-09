@@ -8,9 +8,9 @@ class WordCorrector {
   float fiability = 1; // 0 -> c'est vraiment très mauvais / 1 -> c'est vraiment excellent
   
   float probThreshold = 0.2;
-  int maxNumberOfCandidates = 10;
+  int maxNumberOfCandidates = 30;
   
-  int maxCharDiff = 2;
+  int maxCharDiff = 1;
   
   int[][] words;
   

@@ -3,7 +3,7 @@ class ImageReader {
   NeuralNetwork nn;
   boolean saveWordImage = true;
   
-  float ponctuationThreshold = 0.22;
+  float ponctuationThreshold = 0.25;
   
   ImageReader(CNN cnn) {
     this.cnn = cnn;
@@ -109,7 +109,7 @@ class ImageReader {
           
           numberOfLettersAverage += (float)count / w.length / wordsImages.length;
           
-          println(w.length, w[0].width, w[0].height);
+          //println(w.length, w[0].width, w[0].height);
           w[i].save(globalSketchPath + "/AuxiliarFiles/WordGetter/" + str(randomName) + "/Prob " + prob + ".jpg");
           
           if(this.cnn != null) {
@@ -145,7 +145,7 @@ class ImageReader {
       //println("EffectiveProb");
       //println(effectiveProb[0]);
       
-      String word = wc.OLD_WordAutoCorrection(wordsEffectiveProbArray[i]);      
+      String word = wc.WordAutoCorrection(wordsEffectiveProbArray[i]);      
       
       text+=word;
       text+=ponctuationsList.get(i);

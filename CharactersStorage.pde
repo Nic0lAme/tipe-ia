@@ -24,7 +24,9 @@ String[] fontPolicies = new String[] {
   "Arial", "Bahnschrift", "Eras Demi ITC", "Lucida Handwriting Italique", "DejaVu Serif",
   "Fira Code Retina Moyen", "Consolas", "Lucida Handwriting Italique", "Playwrite IT Moderna", "Just Another Hand",
   "Liberation Serif", "Calibri", "Book Antiqua", "Gabriola", "Noto Serif",
-  "Baskerville Old Face", "Garamond", "Palatino Linotype", "Georgia", "Tahoma"
+  "Baskerville Old Face", "Garamond", "Palatino Linotype", "Georgia", "Tahoma",
+  "Elephant", "Corbel", "Pristina", "Rockwell", "Cooper Black",
+  "Trebuchet MS", "Bell MT", "Perpetua", "Times New Roman", "Franklin Gothic Book"
 };
 
 
@@ -49,7 +51,9 @@ String[] handTrainingDatas = new String[] {
 String[] fontTrainingDatas = new String[]{
   "Arial", "Bahnschrift", "Eras Demi ITC", "Lucida Handwriting Italique", "DejaVu Serif",
   "Fira Code Retina Moyen", "Consolas", "Lucida Handwriting Italique", "Playwrite IT Moderna", "Just Another Hand",
-  "Baskerville Old Face", "Garamond", "Palatino Linotype", "Georgia", "Tahoma"
+  "Baskerville Old Face", "Garamond", "Palatino Linotype", "Georgia", "Tahoma",
+  "Elephant", "Corbel", "Pristina", "Rockwell", "Cooper Black",
+  "Trebuchet MS", "Bell MT", "Perpetua", "Times New Roman", "Franklin Gothic Book"
 };
 //String[] fontTrainingDatas = new String[]{};
 

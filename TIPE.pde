@@ -100,15 +100,15 @@ void setup() {
   
   
   ir = new ImageReader(cnn);
-  WholeTextTestVisual wttv = new WholeTextTestVisual(500, "Arial", 36);
+  //WholeTextTestVisual wttv = new WholeTextTestVisual(100, "Arial", 36);
   println("NeuralNetwork");
   println(ir.cnn);
   
-  //String text = ir.Read(loadImage("./AuxiliarFiles/FullImage.jpg"));
-  //println(text);
+  String text = ir.Read(loadImage("./AuxiliarFiles/FullImage.jpg"));
+  println(text);
   
   
-  if(true) return;
+  //if(true) return;
   
   
   Matrix[][] testSample = session.ds.CreateSample(
@@ -123,7 +123,7 @@ void setup() {
   for(int iter = 0; iter < numOfIter; iter++) {
     cl.pln("ITERATION " + str(iter+1) + "/" + str(numOfIter));
     float[] accuracy = CompilScore(session.AccuracyScore(cnn, new Matrix[][][]{testSample}, true));
-    int[] repList = RepList(accuracy, 6, 0.95);
+    int[] repList = RepList(accuracy, 8, 0.95);
     
     cl.pList(repList, "Repetitions");
     
@@ -137,7 +137,7 @@ void setup() {
         
     Matrix[][] trainingSampleForTest = session.ds.CNNSampleASample(sample, 1024);
   
-    cnn.MiniBatchLearn(sample, 4, 128, 0.001, 0.001, 2, new Matrix[][][]{testSample, trainingSampleForTest}, "");
+    cnn.MiniBatchLearn(sample, 5, 128, 0.001, 0.001, 2, new Matrix[][][]{testSample, trainingSampleForTest}, "");
     cnn.Export("./CNN/22x22_32_64_LettersOnly.cnn");
     //session.AccuracyScore(nn, testSample, true);
   }

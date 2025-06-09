@@ -214,10 +214,20 @@ class ImageManager {
 
   //f Rogne l'image (nouvelle image) en détectant les contours de l'objet le plus grand dans _img_, ayant un _cap_ et une marge de _marge_ * size pixels
   PImage AutoCrop(PImage img, float cap, float marge) {
+    String randomName = str(random(1000));
+    
     PImage cImg = img.copy();
+    //cImg.save(globalSketchPath + "/AuxiliarFiles/Crop/" + randomName + "/1.jpg");
+    
     PImage paddedImg = Padding(cImg, 5, color(255));
-    paddedImg.filter(THRESHOLD, cap / 255);
-    ArrayList<ArrayList<PVector>> contours = this.ContourDetection(paddedImg, img.width / 6);
+    //paddedImg.save(globalSketchPath + "/AuxiliarFiles/Crop/" + randomName + "/2.jpg");
+    
+    PImage thresholdPaddedImg = this.BlackAndWhite(paddedImg.copy(), cap/255);
+    //thresholdPaddedImg.save(globalSketchPath + "/AuxiliarFiles/Crop/" + randomName + "/3.jpg");
+
+
+    ArrayList<ArrayList<PVector>> contours = this.ContourDetection(thresholdPaddedImg, 1);
+    //ImageWithContours(thresholdPaddedImg, contours).save(globalSketchPath + "/AuxiliarFiles/Crop/" + randomName + "/4.tiff");
 
     if(contours.size() == 0) {
       println("Used OLD Autocrop");
@@ -236,6 +246,8 @@ class ImageManager {
         objectIndex = k;
       }
     }
+    
+    //ImageFromContour(paddedImg, contours.get(objectIndex), marge, 1).save(globalSketchPath + "/AuxiliarFiles/Crop/" + randomName + "/5.jpg");
 
     return ImageFromContour(paddedImg, contours.get(objectIndex), marge, 1);
   }
@@ -442,21 +454,23 @@ class ImageManager {
   // https://www.imageprocessingplace.com/downloads_V3/root_downloads/tutorials/contour_tracing_Abeer_George_Ghuneim/ray.html
   ArrayList<ArrayList<PVector>> ContourDetection(PImage img, int minSize) {
     ArrayList<ArrayList<PVector>> contours = new ArrayList<ArrayList<PVector>>(); // Oui, je sais ce que tu penses...
-    ArrayList<PVector> visited = new ArrayList<PVector>();
+    HashSet<String> visited = new HashSet<>();
 
     PVector[] dirs = new PVector[]{new PVector(1, 0), new PVector(1, 1), new PVector(0, 1), new PVector(-1, 1), new PVector(-1, 0), new PVector(-1, -1), new PVector(0, -1), new PVector(1, -1)};
 
     img.loadPixels();
     for(int j = 0; j < img.height; j++) {
       for(int i = 0; i < img.width; i++) {
-        if(img.pixels[i + j*img.width] == -16777216 && (i == 0 || img.pixels[i + j*img.width - 1] != -16777216) && !visited.contains(new PVector(i, j))) {
+        String keyVisited = i + "," + j;
+        if(img.pixels[i + j*img.width] == -16777216 && (i == 0 || img.pixels[i + j*img.width - 1] != -16777216) && !visited.contains(keyVisited)) {
           ArrayList<PVector> contour = new ArrayList<PVector>();
           int x = i; int y = j;
-          int dir = 0;
+          int dir = 4;
 
           cw:
           while(true) {
             contour.add(new PVector(x, y));
+            visited.add(x + "," + y);
 
             for(int k = 0; k <= 8; k++) {
               if(k==8) break cw; //Le pixel est isolé
@@ -481,7 +495,6 @@ class ImageManager {
 
           if(contour.size() > minSize) {
             contours.add(contour);
-            visited.addAll(contour);
           }
         }
       }
@@ -605,6 +618,16 @@ class ImageManager {
     }
 
     return new int[]{left, top, right - left, bottom - top};
+  }
+  
+  public PImage ImageWithContours(PImage img, ArrayList<ArrayList<PVector>> contours) {
+    PImage newImg = img.copy();
+    
+    for(ArrayList<PVector> contour : contours)
+      for(PVector p : contour)
+        newImg.set((int)p.x, (int)p.y, color(0,255,0));
+        
+    return newImg;
   }
   
   public int[] GetBoundingBox(PImage img) {
