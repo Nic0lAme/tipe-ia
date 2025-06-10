@@ -111,10 +111,11 @@ class ImageSeparator {
 
       if (withWords) {
         PVector wul = word[0][0], wbr = word[word.length-1][1];
-        pg.stroke(240, 180, 20); pg.line(wul.x, wul.y, wbr.x, wul.y);
-        pg.stroke(20, 240, 180); pg.line(wul.x, wbr.y, wbr.x, wbr.y);
-        pg.stroke(180, 20, 240); pg.line(wul.x, wul.y, wul.x, wbr.y);
-        pg.stroke(120, 120, 180); pg.line(wbr.x, wul.y, wbr.x, wbr.y);
+        int off = 0;
+        pg.stroke(240, 180, 20); pg.line(wul.x-off, wul.y-off, wbr.x+off, wul.y-off);
+        pg.stroke(20, 240, 180); pg.line(wul.x-off, wbr.y+off, wbr.x+off, wbr.y+off);
+        pg.stroke(180, 20, 240); pg.line(wul.x-off, wul.y-off, wul.x-off, wbr.y+off);
+        pg.stroke(120, 120, 180); pg.line(wbr.x+off, wul.y-off, wbr.x+off, wbr.y+off);
       }
     }
 
@@ -172,7 +173,8 @@ class ImageSeparator {
         }
       }
     }
-
+    // println(trousSizes.size());
+    // println(RemoveExtreme(trousSizes).size());
     return OtsuThreshold(RemoveExtreme(trousSizes));
   }
 
@@ -182,7 +184,7 @@ class ImageSeparator {
     sorted.sort((a,b) -> a.compareTo(b));
 
     ArrayList<Integer> result = new ArrayList<Integer>();
-    int maxIndex = sorted.size() - (sorted.size()/10);
+    int maxIndex = sorted.size() - (sorted.size()/50); // PARAM
     for (int i = 0; i < maxIndex; i++) {
       result.add(sorted.get(i));
     }
