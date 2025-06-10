@@ -47,6 +47,21 @@ class ImageSeparator {
     return letters.toArray(new PImage[]{});
   }
 
+  public float[][][] GetWordCoords() {
+    ArrayList<PVector[][]> allCoords = GetAllCoords();
+    float[][][] result = new float[allCoords.size()][][]; // Mot - Lettre - 4 coordonnées
+
+    for (int i = 0; i < allCoords.size(); i++) {
+      PVector[][] word = allCoords.get(i);
+      result[i] = new float[word.length][];
+      for (int j = 0; j < word.length; j++) {
+        result[i][j] = new float[]{word[j][0].x, word[j][0].y, word[j][1].x, word[j][1].y};
+      }
+    }
+
+    return result;
+  }
+
   public void SaveSeparationLines(String path) {
     PImage img = originalImage.copy();
     img.filter(GRAY);
