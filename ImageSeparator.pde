@@ -119,8 +119,9 @@ class ImageSeparator {
     ArrayList<Integer> lineLevels = GetLineLevels(bwPixels);
 
     ArrayList<PVector[]> allWordsCoords = new ArrayList<PVector[]>();
+    int threshold = GetWordSepThreshold(bwPixels, lineLevels);
     for (int i = 0; i < lineLevels.size()-1; i++) {
-      ArrayList<Integer> colLevels = SplitWords(bwPixels, lineLevels, i);
+      ArrayList<Integer> colLevels = SplitWords(bwPixels, lineLevels, i, threshold);
       PVector ul = new PVector(0, lineLevels.get(i)), br = new PVector(0, lineLevels.get(i+1));
       for (int j = 0; j < colLevels.size()-1; j++) {
         ul.x = colLevels.get(j);
@@ -130,6 +131,33 @@ class ImageSeparator {
     }
 
     return CoordsFromWords(bwPixels, allWordsCoords);
+  }
+
+  private int GetWordSepThreshold(int[][] bwPixels, ArrayList<Integer> lineSep) {
+    ArrayList<Integer> trousSizes = new ArrayList<Integer>();
+
+    for (int i = 0; i < lineSep.size() - 1; i++) {
+      int up = lineSep.get(i);
+      int down = lineSep.get(i+1);
+      int size = down - up + 1;
+      int lastChangement = 0;
+      boolean inNoir = false;
+      boolean firstPassed = false;
+      for (int j = 0; j < w; j++) {
+        if (DetectLetterColumn(bwPixels, j, up, down)) {
+          if (!inNoir) {
+            if (firstPassed) trousSizes.add(j - lastChangement);
+            firstPassed = true;
+            lastChangement = j;
+          }
+          inNoir = true;
+        } else {
+          if (inNoir) lastChangement = j;
+          inNoir = false;
+        }
+      }
+    }
+    return OtsuThreshold(trousSizes);
   }
 
   //f Trouve le meilleur angle possible pour orienter le texte correctement.
@@ -401,33 +429,14 @@ class ImageSeparator {
 
   //f Récupère toutes les coordonnées des colonnes des mots correspondant à
   // l'indice _lineIndex_ de la liste des lignes de séparations _lineSep_
-  private ArrayList<Integer> SplitWords(int[][] bwPixels, ArrayList<Integer> lineSep, int lineIndex) {
+  private ArrayList<Integer> SplitWords(int[][] bwPixels, ArrayList<Integer> lineSep, int lineIndex, int threshold) {
     int up = lineSep.get(lineIndex);
     int down = lineSep.get(lineIndex+1);
     int size = down - up + 1;
 
-    ArrayList<Integer> trousSizes = new ArrayList<Integer>();
+    ArrayList<Integer> result = new ArrayList<Integer>();
     int lastChangement = 0;
     boolean inNoir = false;
-    boolean firstPassed = false;
-    for (int j = 0; j < w; j++) {
-      if (DetectLetterColumn(bwPixels, j, up, down)) {
-        if (!inNoir) {
-          if (firstPassed) trousSizes.add(j - lastChangement);
-          firstPassed = true;
-          lastChangement = j;
-        }
-        inNoir = true;
-      } else {
-        if (inNoir) lastChangement = j;
-        inNoir = false;
-      }
-    }
-
-    ArrayList<Integer> result = new ArrayList<Integer>();
-    int threshold = OtsuThreshold(trousSizes);
-    lastChangement = 0;
-    inNoir = false;
     for (int j = 0; j < w; j++) {
       if (DetectLetterColumn(bwPixels, j, up, down)) {
         if (!inNoir) {
