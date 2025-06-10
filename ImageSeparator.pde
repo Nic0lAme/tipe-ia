@@ -157,7 +157,21 @@ class ImageSeparator {
         }
       }
     }
-    return OtsuThreshold(trousSizes);
+
+    return OtsuThreshold(RemoveExtreme(trousSizes));
+  }
+
+  ArrayList<Integer> RemoveExtreme(ArrayList<Integer> in) {
+    ArrayList<Integer> sorted = new ArrayList<Integer>();
+    for (Integer i : in) sorted.add(i);
+    sorted.sort((a,b) -> a.compareTo(b));
+
+    ArrayList<Integer> result = new ArrayList<Integer>();
+    int maxIndex = sorted.size() - (sorted.size()/10);
+    for (int i = 0; i < maxIndex; i++) {
+      result.add(sorted.get(i));
+    }
+    return result;
   }
 
   //f Trouve le meilleur angle possible pour orienter le texte correctement.
