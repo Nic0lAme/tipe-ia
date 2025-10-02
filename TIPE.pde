@@ -98,19 +98,30 @@ void setup() {
     bayes.SERV_Export(new HyperParameters().Random(), random(1));
   */
 
-  //CNN cnn = new CNN(28, new int[]{4, 8}, new int[]{64, cs.GetChars().length});
-  // CNN cnn = new CNN().Import("./CNN/Test21.cnn");
-  // cnn.UseSoftMax();
-  // cnn.useADAM = true;
-  //
-  /*
-  Matrix[][] sample = session.ds.CreateSample(
-      cs.GetChars(),
-      //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
-      handTrainingDatas,
-      //new String[]{},
-      fontTrainingDatas,
-      1, 1);
+  //cl.pln(wc.SimpleDistance(new int[]{21,8,6,7,19}, new int[]{7,4,6,7,19}));
+
+  CNN cnn = new CNN(imgSize, new int[]{32, 64}, new int[]{128, cs.GetChars().length});
+  CNN cnn = new CNN().Import("./CNN/22x22_32_64_LettersOnly.cnn");
+  cnn.UseSoftMax();
+  cnn.useADAM = true;
+
+
+  //NeuralNetwork nn = new NeuralNetwork(0).Import("./NeuralNetworkSave/RepListTest025.nn");
+  NeuralNetwork nn = new NeuralNetwork(imgSize * imgSize, 256, 128, 128, cs.GetChars().length);
+  nn.UseSoftMax();
+
+
+  ir = new ImageReader(cnn);
+  //WholeTextTestVisual wttv = new WholeTextTestVisual(100, "Arial", 36);
+  println("NeuralNetwork");
+  println(ir.cnn);
+
+  String text = ir.Read(loadImage("./AuxiliarFiles/FullImage.jpg"));
+  println(text);
+
+
+  //if(true) return;
+
 
   Matrix[][] testSample = session.ds.CreateSample(
       cs.GetChars(),

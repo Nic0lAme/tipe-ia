@@ -221,6 +221,37 @@ class WordCorrector {
     return prevRow[w2.length];
   }
   
+  public int LevenshteinDistance(String w1, String w2) {
+    return this.LevenshteinDistance(w1.toCharArray(), w2.toCharArray());
+  }
+  
+  public int LevenshteinDistance(char[] w1, char[] w2) {
+    if(w1.length < w2.length) return LevenshteinDistance(w2, w1);
+    int[] prevRow = new int[w2.length + 1];
+    int[] currentRow = new int[w2.length + 1];
+    
+    for(int j = 0; j < w2.length + 1; j++) {
+      prevRow[j] = j;
+    }
+    
+    for(int i = 1; i < w1.length + 1; i++) {
+      currentRow[0] = i;
+      for(int j = 1; j < w2.length + 1; j++) {
+        currentRow[j] = Math.min(
+          Math.min(prevRow[j] + 1,                     // Insertion
+          currentRow[j-1] + 1),                // Deletion
+          prevRow[j-1] + (w1[i - 1] != w2[j - 1] ? 1 : 0)   // Substitution   
+        );
+      }
+      
+      int[] temp = prevRow;
+      prevRow = currentRow;
+      currentRow = temp;
+    }
+    
+    return prevRow[w2.length];
+  }
+  
   private void Backtrack(HashMap<Integer, Float>[] input, int index, List<Integer> current, float currentProb, HashMap<Integer[], Float> results) {
     if(index == input.length) {
       results.put(current.toArray(new Integer[0]), currentProb);
