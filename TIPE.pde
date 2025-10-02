@@ -98,59 +98,10 @@ void setup() {
 
   //cl.pln(wc.SimpleDistance(new int[]{21,8,6,7,19}, new int[]{7,4,6,7,19}));
 
-  CNN cnn = new CNN(imgSize, new int[]{32, 64}, new int[]{128, cs.GetChars().length});
-  CNN cnn = new CNN().Import("./CNN/22x22_32_64_LettersOnly.cnn");
-  cnn.UseSoftMax();
-  cnn.useADAM = true;
-
-
-  //NeuralNetwork nn = new NeuralNetwork(0).Import("./NeuralNetworkSave/RepListTest025.nn");
-  NeuralNetwork nn = new NeuralNetwork(imgSize * imgSize, 256, 128, 128, cs.GetChars().length);
-  nn.UseSoftMax();
-
-
-  ir = new ImageReader(cnn);
-  //WholeTextTestVisual wttv = new WholeTextTestVisual(100, "Arial", 36);
-  println("NeuralNetwork");
-  println(ir.cnn);
-
-  String text = ir.Read(loadImage("./AuxiliarFiles/FullImage.jpg"));
-  println(text);
-
-
-  //if(true) return;
-
-
-  Matrix[][] testSample = session.ds.CreateSample(
-      cs.GetChars(),
-      //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
-      //handTestingDatas,
-      new String[]{},
-      fontTestingDatas,
-      3, 0.7);
-
-  int numOfIter = 6;
-  for(int iter = 0; iter < numOfIter; iter++) {
-    cl.pln("ITERATION " + str(iter+1) + "/" + str(numOfIter));
-    float[] accuracy = CompilScore(session.AccuracyScore(cnn, new Matrix[][][]{testSample}, true));
-    int[] repList = RepList(accuracy, 8, 0.9);
-
-    cl.pList(repList, "Repetitions");
-
-    Matrix[][] sample = session.ds.CreateSample(
-        cs.GetChars(),
-        //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
-        //handTrainingDatas,
-        new String[]{},
-        fontTrainingDatas,
-        repList, 0.7);
-
-    Matrix[][] trainingSampleForTest = session.ds.CNNSampleASample(sample, 1024);
-
-    cnn.MiniBatchLearn(sample, 3, 128, 0.001, 0.001, 2, new Matrix[][][]{testSample, trainingSampleForTest}, "");
-    cnn.Export("./CNN/22x22_32_64_LettersOnly.cnn");
-    //session.AccuracyScore(nn, testSample, true);
-  }
+  // Tester tester = new Tester((NeuralNetwork) null);
+  // tester.GenerateText();
+  // ImageSeparator is = new ImageSeparator(loadImage("test.png"));
+  // is.SaveSeparationPreview("test1.png", true, true);
 }
 
 int index = 0;
