@@ -9,6 +9,7 @@ WordCorrector wc;
 Database db;
 Session session;
 CharactersStorage cs;
+ImageReader ir;
 
 // KERNEL CLASSES
 MatrixMultKernel matrixMultKernel;
@@ -21,6 +22,9 @@ final boolean enableDraftingArea = false;
 float rScale = 1; // Scale for the representations (draw)
 float testDerformation = 1;
 Random globalRandom = new Random();
+String globalSketchPath;
+
+int imgSize = 22;
 
 // Nombre de threads pour les différentes tâches
 final int numThreadsDataset = 16; // Création des datasets
@@ -39,6 +43,7 @@ void settings() {
 
 void setup() {
   background(255);
+  globalSketchPath = sketchPath();
   cl = new ConsoleLog("./Log/log1.txt");
 
   matrixMultKernel = new MatrixMultKernel();
@@ -55,57 +60,99 @@ void setup() {
   im = new ImageManager();
   graphApplet = new GraphApplet();
 
-  /*
   wc = new WordCorrector();
   wc.ImportWords();
-  */
+
+  //wc.CompareFunctions(new DistanceFunction[]{(w1, w2) -> wc.SimpleDistance(w1, w2), (w1, w2) -> wc.LevenshteinDistance(w1, w2)}, 1000, 0.15, 0.05);
 
   if (enableDraftingArea) draftingArea = new DraftingArea();
 
   db = new Database("https://tipe-877f6-default-rtdb.europe-west1.firebasedatabase.app/");
 
+  /*
+  PImage toScramble = loadImage("./TextFileGetter/output/la/la - MrMollier.jpg");
+  ScrambleVisual sv = new ScrambleVisual(toScramble, 78, 87, 7, 5, "Mollier a");
+  */
 
   HyperParameters hp = new HyperParameters();
   session = new Session("", hp);
 
-  // Bayes bayes = new Bayes("RandomONTeste");
-  // bayes.GaussianProcess(5, 5);
-  // bayes.RandomFill(5, 5);
+  // ImageSeparator is1 = new ImageSeparator(loadImage("AuxiliarFiles/FullImage.jpg"));
+  // ImageSeparator is2 = new ImageSeparator(loadImage("AuxiliarFiles/OtherTest.jpg"));
+  // ImageSeparator is3 = new ImageSeparator(loadImage("AuxiliarFiles/TheLastOne.jpg"));
+  // ImageSeparator is4 = new ImageSeparator(loadImage("TextFileGetter/output/Message/Message - MrChauvet.jpg"));
+  // is1.SaveSeparationPreview("test1.png", true, true);
+  // is2.SaveSeparationPreview("test2.png", true, true);
+  // is3.SaveSeparationPreview("test3.png", true, true);
+  // is4.SaveSeparationPreview("test4.png", true, true);
+  // exit();
 
-  testSample = session.ds.GetMNISTDataset("AuxiliarFiles/MNIST/Train.csv");
+  /*
+  Bayes bayes = new Bayes("RandomONTeste");
+  //bayes.GaussianProcess(5, 5);
+  bayes.RandomFill(5, 5);
+  */
 
   /*
   for(int k = 0; k < 10; k++)
     bayes.SERV_Export(new HyperParameters().Random(), random(1));
   */
 
-  //CNN cnn = new CNN(28, new int[]{4, 8}, new int[]{64, cs.GetChars().length});
-  // CNN cnn = new CNN().Import("./CNN/Test21.cnn");
-  // cnn.UseSoftMax();
-  // cnn.useADAM = true;
-  //
-  /*
-  Matrix[][] sample = session.ds.CreateSample(
-      cs.GetChars(),
-      //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
-      handTrainingDatas,
-      //new String[]{},
-      fontTrainingDatas,
-      1, 1);
+  //cl.pln(wc.SimpleDistance(new int[]{21,8,6,7,19}, new int[]{7,4,6,7,19}));
+
+  CNN cnn = new CNN(imgSize, new int[]{32, 64}, new int[]{128, cs.GetChars().length});
+  CNN cnn = new CNN().Import("./CNN/22x22_32_64_LettersOnly.cnn");
+  cnn.UseSoftMax();
+  cnn.useADAM = true;
+
+
+  //NeuralNetwork nn = new NeuralNetwork(0).Import("./NeuralNetworkSave/RepListTest025.nn");
+  NeuralNetwork nn = new NeuralNetwork(imgSize * imgSize, 256, 128, 128, cs.GetChars().length);
+  nn.UseSoftMax();
+
+
+  ir = new ImageReader(cnn);
+  //WholeTextTestVisual wttv = new WholeTextTestVisual(100, "Arial", 36);
+  println("NeuralNetwork");
+  println(ir.cnn);
+
+  String text = ir.Read(loadImage("./AuxiliarFiles/FullImage.jpg"));
+  println(text);
+
+
+  //if(true) return;
+
 
   Matrix[][] testSample = session.ds.CreateSample(
       cs.GetChars(),
       //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
-      handTestingDatas,
-      //new String[]{},
+      //handTestingDatas,
+      new String[]{},
       fontTestingDatas,
-      1, 1);
+      3, 0.7);
 
-  cnn.MiniBatchLearn(sample, 8, 256, 0.001, 0.001, 2, new Matrix[][][]{testSample}, "");
-  cnn.Export("./CNN/Test21.cnn");
-  session.AccuracyScore(cnn, testSample, true);
-  */
+  int numOfIter = 6;
+  for(int iter = 0; iter < numOfIter; iter++) {
+    cl.pln("ITERATION " + str(iter+1) + "/" + str(numOfIter));
+    float[] accuracy = CompilScore(session.AccuracyScore(cnn, new Matrix[][][]{testSample}, true));
+    int[] repList = RepList(accuracy, 8, 0.9);
 
+    cl.pList(repList, "Repetitions");
+
+    Matrix[][] sample = session.ds.CreateSample(
+        cs.GetChars(),
+        //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
+        //handTrainingDatas,
+        new String[]{},
+        fontTrainingDatas,
+        repList, 0.7);
+
+    Matrix[][] trainingSampleForTest = session.ds.CNNSampleASample(sample, 1024);
+
+    cnn.MiniBatchLearn(sample, 3, 128, 0.001, 0.001, 2, new Matrix[][][]{testSample, trainingSampleForTest}, "");
+    cnn.Export("./CNN/22x22_32_64_LettersOnly.cnn");
+    //session.AccuracyScore(nn, testSample, true);
+  }
 }
 
 int index = 0;
@@ -179,4 +226,14 @@ float Average(float[] list) {
 
 String RemainingTime(int startTime, int step, int totalStep) {
   return String.format("%9.3f", (float)(millis() - startTime) / 1000 * (totalStep - step) / step);
+}
+
+void SaveIntListAsCSV(int[] list, String filename) {
+  String line = "";
+  for(int i = 0; i < list.length; i++) {
+    line += list[i];
+    if (i < list.length - 1) line += ",";
+  }
+
+  saveStrings(filename, new String[]{line});
 }

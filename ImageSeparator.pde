@@ -1,3 +1,5 @@
+import java.util.Stack;
+
 class ImageSeparator {
   final PImage originalImage;
   final int w, h;
@@ -6,7 +8,7 @@ class ImageSeparator {
   final private int greenMask = 0b1111111100000000;
   final private int blueMask = 0b11111111;
 
-  final private int lineThreshold = 5;
+  final private int lineThreshold = 5; // PARAM
 
   public ImageSeparator(PImage img) {
     this.originalImage = img;
@@ -20,21 +22,75 @@ class ImageSeparator {
   // y avoir que du texte sur l'image, et écrit en ligne. Ne marche pas pour
   // les textes écrits en italique.
   // Note : L'image doit être bien orientée (voir GetRotatedImage)
-  public ArrayList<PImage[]> GetWordsImages() {
+  public PImage[][] GetWordsImages() {
     ArrayList<PVector[][]> allCoords = GetAllCoords();
     ArrayList<PImage[]> allLetters = new ArrayList<PImage[]>();
-    for (PVector[][] word : allCoords) {
+      for (PVector[][] word : allCoords) {
       PImage[] letterImgs = new PImage[word.length];
       for (int i = 0; i < word.length; i++) {
         letterImgs[i] = GetImageLetter(word[i]);
       }
       allLetters.add(letterImgs);
     }
-    return allLetters;
+    return allLetters.toArray(new PImage[][]{});
+  }
+
+  //f Liste des lettres (pas séparées par mots)
+  public PImage[] GetLettersImages() {
+    ArrayList<PVector[][]> allCoords = GetAllCoords();
+    ArrayList<PImage> letters = new ArrayList<PImage>();
+
+    for (PVector[][] word : allCoords) {
+      for (int i = 0; i < word.length; i++) letters.add(GetImageLetter(word[i]));
+    }
+
+    return letters.toArray(new PImage[]{});
+  }
+
+  public float[][][] GetWordCoords() {
+    ArrayList<PVector[][]> allCoords = GetAllCoords();
+    float[][][] result = new float[allCoords.size()][][]; // Mot - Lettre - 4 coordonnées
+
+    for (int i = 0; i < allCoords.size(); i++) {
+      PVector[][] word = allCoords.get(i);
+      result[i] = new float[word.length][];
+      for (int j = 0; j < word.length; j++) {
+        result[i][j] = new float[]{word[j][0].x, word[j][0].y, word[j][1].x, word[j][1].y};
+      }
+    }
+
+    return result;
+  }
+
+  public void SaveSeparationLines(String path) {
+    PImage img = originalImage.copy();
+    img.filter(GRAY);
+    img.loadPixels();
+
+    int[][] bwPixels = GetBWPixels(img);
+    bwPixels = BinarizePixels(bwPixels);
+    ArrayList<Integer> lineLevels = GetLineLevels(bwPixels);
+
+    PGraphics pg = createGraphics(originalImage.width, originalImage.height);
+    pg.beginDraw();
+    pg.background(255);
+    for (int i = 0; i < h; i++) {
+      for (int j = 0; j < w; j++) {
+        img.pixels[j + w*i] = color(bwPixels[i][j]);
+      }
+    }
+    img.updatePixels();
+    pg.image(img, 0, 0);
+    for (Integer l : lineLevels) {
+      pg.stroke(255, 0, 0);
+      pg.line(0, l, originalImage.width, l);
+    }
+    pg.endDraw();
+    pg.save(path);
   }
 
   //f Renvoie une visualisation du découpage de l'image en lettres
-  public void SaveSeparationPreview(String path, boolean withLetters) {
+  public void SaveSeparationPreview(String path, boolean withWords, boolean withLetters) {
     ArrayList<PVector[][]> allCoords = GetAllCoords();
     PGraphics pg = createGraphics(originalImage.width, originalImage.height);
     pg.beginDraw();
@@ -46,18 +102,21 @@ class ImageSeparator {
       if (withLetters) {
         for (PVector[] coords : word) {
           PVector ul = coords[0], br = coords[1];
-          pg.stroke(10, 50, 240, 255); pg.line(ul.x, ul.y, br.x, ul.y);
-          pg.stroke(10, 50, 240, 255); pg.line(ul.x, br.y, br.x, br.y);
-          pg.stroke(10, 50, 240, 255); pg.line(ul.x, ul.y, ul.x, br.y);
-          pg.stroke(10, 50, 240, 255); pg.line(br.x, ul.y, br.x, br.y);
+          pg.stroke(0, 0, 255, 255); pg.line(ul.x, ul.y, br.x, ul.y);
+          pg.stroke(0, 0, 255, 255); pg.line(ul.x, br.y, br.x, br.y);
+          pg.stroke(0, 0, 255, 255); pg.line(ul.x, ul.y, ul.x, br.y);
+          pg.stroke(0, 0, 255, 255); pg.line(br.x, ul.y, br.x, br.y);
         }
       }
 
-      PVector wul = word[0][0], wbr = word[word.length-1][1];
-      pg.stroke(240, 180, 20); pg.line(wul.x, wul.y, wbr.x, wul.y);
-      pg.stroke(20, 240, 180); pg.line(wul.x, wbr.y, wbr.x, wbr.y);
-      pg.stroke(180, 20, 240); pg.line(wul.x, wul.y, wul.x, wbr.y);
-      pg.stroke(120, 120, 180); pg.line(wbr.x, wul.y, wbr.x, wbr.y);
+      if (withWords) {
+        PVector wul = word[0][0], wbr = word[word.length-1][1];
+        int off = 2;
+        pg.stroke(255, 0, 0); pg.line(wul.x-off, wul.y-off, wbr.x+off, wul.y-off);
+        pg.stroke(255, 0, 0); pg.line(wul.x-off, wbr.y+off, wbr.x+off, wbr.y+off);
+        pg.stroke(255, 0, 0); pg.line(wul.x-off, wul.y-off, wul.x-off, wbr.y+off);
+        pg.stroke(255, 0, 0); pg.line(wbr.x+off, wul.y-off, wbr.x+off, wbr.y+off);
+      }
     }
 
     pg.endDraw();
@@ -76,8 +135,9 @@ class ImageSeparator {
     ArrayList<Integer> lineLevels = GetLineLevels(bwPixels);
 
     ArrayList<PVector[]> allWordsCoords = new ArrayList<PVector[]>();
+    int threshold = GetWordSepThreshold(bwPixels, lineLevels);
     for (int i = 0; i < lineLevels.size()-1; i++) {
-      ArrayList<Integer> colLevels = SplitWords(bwPixels, lineLevels, i);
+      ArrayList<Integer> colLevels = SplitWords(bwPixels, lineLevels, i, threshold);
       PVector ul = new PVector(0, lineLevels.get(i)), br = new PVector(0, lineLevels.get(i+1));
       for (int j = 0; j < colLevels.size()-1; j++) {
         ul.x = colLevels.get(j);
@@ -87,6 +147,48 @@ class ImageSeparator {
     }
 
     return CoordsFromWords(bwPixels, allWordsCoords);
+  }
+
+  private int GetWordSepThreshold(int[][] bwPixels, ArrayList<Integer> lineSep) {
+    ArrayList<Integer> trousSizes = new ArrayList<Integer>();
+
+    for (int i = 0; i < lineSep.size() - 1; i++) {
+      int up = lineSep.get(i);
+      int down = lineSep.get(i+1);
+      int size = down - up + 1;
+      int lastChangement = 0;
+      boolean inNoir = false;
+      boolean firstPassed = false;
+      for (int j = 0; j < w; j++) {
+        if (DetectLetterColumn(bwPixels, j, up, down)) {
+          if (!inNoir) {
+            if (firstPassed) trousSizes.add(j - lastChangement);
+            firstPassed = true;
+            lastChangement = j;
+          }
+          inNoir = true;
+        } else {
+          if (inNoir) lastChangement = j;
+          inNoir = false;
+        }
+      }
+    }
+    // println(trousSizes.size());
+    // println(RemoveExtreme(trousSizes).size());
+    return OtsuThreshold(RemoveExtreme(trousSizes));
+  }
+
+  ArrayList<Integer> RemoveExtreme(ArrayList<Integer> in) {
+    ArrayList<Integer> sorted = new ArrayList<Integer>();
+    for (Integer i : in) sorted.add(i);
+    sorted.sort((a,b) -> a.compareTo(b));
+
+    ArrayList<Integer> result = new ArrayList<Integer>();
+    int maxIndex = sorted.size() - (sorted.size()/50); // PARAM
+    for (int i = 0; i < maxIndex; i++) {
+      result.add(sorted.get(i));
+    }
+    return result;
   }
 
   //f Trouve le meilleur angle possible pour orienter le texte correctement.
@@ -189,6 +291,15 @@ class ImageSeparator {
     return bwPixels;
   }
 
+  //s
+  private int OtsuThreshold(ArrayList<Integer> pxls) {
+    int[] in = new int[pxls.size()];
+    for (int i = 0; i < pxls.size(); i++) {
+      in[i] = pxls.get(i);
+    }
+    return OtsuThreshold(in);
+  }
+
   //s Algorithme d'Otsu sur un array 1D
   private int OtsuThreshold(int[] pxls) {
     int[][] pix2D = new int[1][pxls.length];
@@ -202,7 +313,8 @@ class ImageSeparator {
     int imgHeight = pixelArrays.length;
     int imgWidth = pixelArrays[0].length;
     int pixelNumber = imgWidth*imgHeight;
-    int[] intensities = new int[256];
+    int max = 1000;
+    int[] intensities = new int[max];
 
     for (int i = 0; i < imgHeight; i++) {
       for (int j = 0; j < imgWidth; j++) {
@@ -212,15 +324,15 @@ class ImageSeparator {
 
     int bestThreshold = -1;
     float bestVal = -1;
-    for (int threshold = 0; threshold < 256; threshold++) {
+    for (int threshold = 0; threshold < max; threshold++) {
       float w0 = 0, w1 = 0, mu0 = 0, mu1 = 0;
       for (int i = 0; i < threshold; i++) w0 += intensities[i];
-      for (int i = threshold; i < 256; i++) w1 += intensities[i];
+      for (int i = threshold; i < max; i++) w1 += intensities[i];
       w0 /= pixelNumber;
       w1 /= pixelNumber;
 
       for (int i = 0; i < threshold; i++) mu0 += i*intensities[i];
-      for (int i = threshold; i < 256; i++) mu1 += i*intensities[i];
+      for (int i = threshold; i < max; i++) mu1 += i*intensities[i];
       mu0 /= w0;
       mu1 /= w1;
 
@@ -235,36 +347,77 @@ class ImageSeparator {
   }
 
   //f Transforme les pixels _pxls_ en 2 catégories : pixels noirs et blancs
-  private int[][] BinarizePixels(int[][] pxls, int frac) {
+  private int[][] BinarizePixels(int[][] pxls) {
     int[][] result = new int[pxls.length][pxls[0].length];
-    int threshold = OtsuThreshold(pxls) / frac;
+
+    int threshold = OtsuThreshold(pxls);
     for (int i = 0; i < pxls.length; i++) {
       for (int j = 0; j < pxls[0].length; j++) {
         if (pxls[i][j] > threshold) result[i][j] = 255;
         else result[i][j] = 0;
       }
     }
+
+    result = RemoveSmallBlocks(result);
     return result;
   }
 
-  private int[][] BinarizePixels(int[][] pxls) {
-    return BinarizePixels(pxls, 1);
+  //f Algorithme de flood fill
+  boolean[][] visited = null;
+  private int[][] RemoveSmallBlocks(int[][] pxls) {
+    int[][] result = new int[pxls.length][pxls[0].length];
+    visited = new boolean[pxls.length][pxls[0].length];
+    int minSize = 30; // PARAM
+
+    for (int i = 0; i < h; i++) {
+      for (int j = 0; j < w; j++) {
+        result[i][j] = pxls[i][j];
+      }
+    }
+
+    for (int i = 0; i < h; i++) {
+      for (int j = 0; j < w; j++) {
+        if (pxls[i][j] == 0 && !visited[i][j]) {
+          ArrayList<PVector> flood = FloodFill(new PVector(i, j), pxls);
+          if (flood.size() < minSize) {
+            for (PVector c : flood) result[int(c.x)][int(c.y)] = 255;
+          }
+        }
+      }
+    }
+
+    return result;
+  }
+
+  private ArrayList<PVector> FloodFill(PVector start, int[][] pxls) {
+    Stack<PVector> stack = new Stack<PVector>();
+    ArrayList<PVector> pixels = new ArrayList<PVector>();
+
+    stack.push(start);
+    while (stack.size() != 0) {
+      PVector c = stack.pop();
+
+      if (0 <= c.x && c.x < h && 0 <= c.y && c.y < w) {
+        if (!visited[int(c.x)][int(c.y)] && pxls[int(c.x)][int(c.y)] == 0) {
+          visited[int(c.x)][int(c.y)] = true;
+          pixels.add(c);
+          stack.push(new PVector(c.x+1, c.y));
+          stack.push(new PVector(c.x-1, c.y));
+          stack.push(new PVector(c.x, c.y+1));
+          stack.push(new PVector(c.x, c.y-1));
+          stack.push(new PVector(c.x+1, c.y+1));
+          stack.push(new PVector(c.x-1, c.y-1));
+          stack.push(new PVector(c.x+1, c.y-1));
+          stack.push(new PVector(c.x-1, c.y+1));
+        }
+      }
+    }
+    return pixels;
   }
 
   //f Renvoie une moyenne pondérée des lignes de _bwPiwels_ (2 couleurs)
   // En fait c'est la variance
   private int[] GetLineMeans(int[][] bwPixels) {
-    // int[] means = new int[bwPixels.length];
-    // for (int i = 0; i < bwPixels.length; i++) {
-    //   int blacks = 0;
-    //   for (int j = 0; j < bwPixels[0].length; j++) {
-    //     if (bwPixels[i][j] == 0) blacks++;
-    //   }
-    //   float m = 5*(float)blacks/bwPixels[0].length; // :)
-    //   means[i] = constrain(floor(map(m, 0, 1, 255, 0)), 0, 255);
-    // }
-    // return means;
-
     int[] means = new int[bwPixels.length];
     for (int i = 0; i < bwPixels.length; i++) {
       float moy = 0;
@@ -284,105 +437,54 @@ class ImageSeparator {
   private ArrayList<Integer> GetLineLevels(int[][] bwPixels) {
     ArrayList<Integer> lineSep = new ArrayList<Integer>();
 
-    // Moyenne (pondérée) des lignes
-    int[] preMeans = GetLineMeans(bwPixels);
+    boolean inText = false;
+    int lastLine = -lineThreshold;
+    for (int i = 0; i < h; i++) {
+      int sum = 0;
+      for (int j = 0; j < w; j++) if (bwPixels[i][j] == 0) sum++;
 
-    lineSep.addAll(ProcessMean(preMeans, floor(0.01*preMeans.length), 20));
-    return lineSep;
-  }
-
-  // Note: pas doit être impair !
-  private ArrayList<Integer> ProcessMean(int[] preMeans, int pas, int numCat) {
-    ArrayList<Integer> lineSep = new ArrayList<Integer>();
-    int s = preMeans.length;
-
-    // Moyenne glissante pour lisser
-    int[] means = new int[s];
-    for (int i = 0; i < s; i++) {
-      int somme = 0, compteur = 0;
-      for (int k = -pas/2; k <= pas/2; k++) {
-        if (constrain(i+k, 0, s-1) == i+k) {
-          somme += preMeans[i+k];
-          compteur++;
+      if (sum >= 5) { // PARAM
+        if (!inText && i - lastLine >= lineThreshold) {
+          lastLine = i;
+          lineSep.add(i);
         }
+        inText = true;
       }
-      means[i] = somme/compteur;
-    }
-
-    // Échantillonnage des niveaux de gris
-    int bSize = 255/numCat;
-    for (int i = 0; i < s; i++) {
-      int cat = means[i] / bSize;
-      means[i] = cat * bSize;
-    }
-
-    // Récupère les maximums locaux de couleurs, qui sont les interlignes
-    lineSep.add(0);
-    int phase = 0;
-    Integer lastFirst0 = null;
-    if (means[1] > means[0]) phase = 1;
-    else if (means[1] < means[0]) phase = -1;
-
-    for (int i = 0; i < s-1; i++) {
-      int state = 0;
-      if (means[i+1] > means[i]) state = 1;
-      else if (means[i+1] < means[i]) state = -1;
-
-      if (phase == 1 && state == -1) {
-        if (i - lineSep.get(lineSep.size()-1) > lineThreshold) lineSep.add(i);
+      else if (sum == 0) {
+        inText = false;
       }
-      if (phase == 0 && state == -1 && lastFirst0 != null) {
-        int c = (i+lastFirst0)/2;
-        if (c - lineSep.get(lineSep.size()-1) > lineThreshold) lineSep.add(c);
-        lastFirst0 = null;
-      }
-
-      if (phase == 1 && state == 0) lastFirst0 = i;
-      phase = state;
     }
-
-    lineSep.add(s-1);
+    lineSep.add(h-1);
     return lineSep;
   }
 
-  // AMÉLIORABLE C'EST BIEN SI C'EST POSSIBLE QUE
   //f Récupère toutes les coordonnées des colonnes des mots correspondant à
   // l'indice _lineIndex_ de la liste des lignes de séparations _lineSep_
-  private ArrayList<Integer> SplitWords(int[][] bwPixels, ArrayList<Integer> lineSep, int lineIndex) {
+  private ArrayList<Integer> SplitWords(int[][] bwPixels, ArrayList<Integer> lineSep, int lineIndex, int threshold) {
     int up = lineSep.get(lineIndex);
     int down = lineSep.get(lineIndex+1);
     int size = down - up + 1;
 
-    int[] means = new int[bwPixels[0].length];
-    for (int j = 0; j < bwPixels[0].length; j++) {
-      int blacks = 0;
-      for (int i = up; i < down; i++) {
-        if (bwPixels[i][j] == 0) blacks++;
-      }
-      float m = 5*(float)blacks/size;
-      means[j] = constrain(floor(map(m, 0, 1, 255, 0)), 0, 255);
-    }
-
-    ArrayList<Integer> result = ProcessMean(means, 25, 2);
-    ArrayList<Integer> corrected = new ArrayList<Integer>();
-    for (Integer k : result) {
-      if (!HasBlackAround(bwPixels, k, up, down, 3)) corrected.add(k);
-    }
-
-    return corrected;
-  }
-
-  private boolean HasBlackAround(int[][] bwPixels, int k, int up, int down, int s) {
-    int start = max(0, k-s);
-    int end = min(k+s, bwPixels[0].length-1);
-    for (int j = start; j < end; j++) {
-      for (int i = up; i < down; i++) {
-        if (bwPixels[i][j] == 0) return true;
+    ArrayList<Integer> result = new ArrayList<Integer>();
+    int lastChangement = 0;
+    boolean inNoir = false;
+    for (int j = 0; j < w; j++) {
+      if (DetectLetterColumn(bwPixels, j, up, down)) {
+        if (!inNoir) {
+          if (j - lastChangement >= threshold) result.add(j);
+          lastChangement = j;
+        }
+        inNoir = true;
+      } else {
+        if (inNoir) lastChangement = j;
+        inNoir = false;
       }
     }
-    return false;
-  }
+    // result.add(lastChangement);
+    result.add(w-1);
 
+    return result;
+  }
   private ArrayList<PVector[][]> CoordsFromWords(int[][] bwPixels, ArrayList<PVector[]> allWordsCoords) {
     ArrayList<PVector[][]> allCoords = new ArrayList<PVector[][]>();
 
@@ -394,21 +496,31 @@ class ImageSeparator {
     return allCoords;
   }
 
-  private PVector[][] GetLettersInWord(int[][] bwPixels, PVector wordUl, PVector wordBr) {
+  private PVector[][] GetLettersInWord(int[][] preBwPixels, PVector wordUl, PVector wordBr) {
     ArrayList<PVector[]> result = new ArrayList<PVector[]>();
+    // int[][] bwPixels = HorizontalContract(preBwPixels, wordUl, wordBr);
+    int[][] bwPixels = preBwPixels;
 
     int up = int(wordUl.y);
     int down = int(wordBr.y);
     PVector ul = null, br = null;
 
     for (int j = int(wordUl.x); j < int(wordBr.x); j++) {
-      if (DetectLetterColumn(bwPixels, j, up, down)) {
+      if (FineDetectLetterColumn(bwPixels, j, up, down)) {
         if (ul == null) ul = new PVector(j, up);
       }
       else {
         if (ul != null) {
           br = new PVector(j, down);
-          result.add(new PVector[]{ul, br});
+
+          // Correction des fausses lettres
+          int count = 0;
+          for (int k = int(ul.x); k < int(br.x); k++) {
+            for (int l = int(ul.y); l < int(br.y); l++) {
+              if (bwPixels[l][k] == 0) count++;
+            }
+          }
+          if (count >= 20) result.add(new PVector[]{ul, br}); // PARAM
           ul = br = null;
         }
       }
@@ -424,10 +536,27 @@ class ImageSeparator {
     for (int i = up; i < down+1; i++) {
       if (bwPixels[i][col] == 0) {
         compteur++;
+        if (compteur >= 3) return true; // PARAM
+      }
+    }
+    return false;
+  }
+
+  private boolean FineDetectLetterColumn(int[][] bwPixels, int col, int up, int down) {
+    int compteur = 0;
+    for (int i = up; i < down+1; i++) {
+      if (bwPixels[i][col] == 0) {
+        compteur++;
         if (compteur >= 1) return true; // PARAM
       }
     }
     return false;
+  }
+
+  private int[][] HorizontalContract(int[][] bwPixels, PVector wordUl, PVector wordBr) {
+    int[][] result = new int[bwPixels.length][bwPixels[0].length];
+    // TODO
+    return result;
   }
 
   //f Découpe la lettre aux coordonnées _coords_ dans l'image originale

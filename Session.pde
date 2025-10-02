@@ -21,18 +21,19 @@ public class Session {
   Session(String name, HyperParameters hp) {
     this.hp = hp;
 
-    this.w = 28;
-    this.h = 28;
+    this.w = imgSize;
+    this.h = imgSize;
 
     this.name = name;
     this.characters = cs.GetChars();
 
-    this.sessionHandTrainingDatas = handTrainingDatas;
-    //this.handTrainingDatas = new String[]{};
+    //this.sessionHandTrainingDatas = handTrainingDatas;
+    this.sessionHandTrainingDatas = new String[]{};
     this.sessionFontTrainingDatas = fontTrainingDatas;
-    //this.fontTrainingDatas = new String[]{};
+    //this.sessionFontTrainingDatas = new String[]{};
 
-    this.sessionHandTestingDatas = handTestingDatas;
+    //this.sessionHandTestingDatas = handTestingDatas;
+    this.sessionHandTestingDatas = new String[]{};
     this.sessionFontTestingDatas = fontTestingDatas;
 
     ds = new LetterDataset(5*this.w, 5*this.h);
@@ -157,7 +158,7 @@ public class Session {
 
     float[] score = CompilScore(this.AccuracyScore(this.nn, testSample, true));
     cl.pln("Training Set Score :", Average(score));
-    cl.pFloatList(score, "Accuracy");
+    cl.pList(score, "Accuracy");
 
 
     save("./Representation/" + str(frameCount) + " " + str(Average(score)) + " " + nameOfProcess + ".jpg");
@@ -364,7 +365,7 @@ public class Session {
   Matrix ImgPP(PImage img) { // Images post-processing
     PImage PPImage = im.Gray(img);
     PPImage = im.Contrast(PPImage, 0.02);
-    PPImage = im.AutoCrop(PPImage, 128, 0.12);
+    PPImage = im.AutoCrop(PPImage, 128, 0.03);
     PPImage = im.TargetRatio(PPImage, 1);
     //PPImage = im.Contrast(PPImage, 0.02); // If there is a dark patch in the center
 

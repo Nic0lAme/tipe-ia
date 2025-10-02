@@ -80,10 +80,10 @@ class ImageManager {
   // -> ayant une déformation de facteur _deformation_.
   // L'image est enregistré dans ./ScrambledImage enregistré si _save_
   PImage ScrambleImage(PImage img, boolean save, float move, float blur, float density, float perlin, float deformation) {
-    float zRot = 2;
+    float zRot = 1;
     float d = 0.1;
     float delta = 0.02;
-    float perlinScale = 1;
+    float perlinScale = 25;
     float scaleScale = 0.5;
 
     PImage scrambledImage = img.copy();
@@ -105,8 +105,8 @@ class ImageManager {
     float scale = random(1, 1 + scaleScale * move);
     for(int i = 0; i < x; i++) {
       for(int j = 0; j < y; j++) {
-        int nx = floor((i - (float)x/2) * scale + (float)x/2);
-        int ny = floor((j - (float)y/2) * scale + (float)y/2);
+        int nx = round(round((i - (float)x/2) * scale + (float)x/2));
+        int ny = round(round((j - (float)y/2) * scale + (float)y/2));
 
         draftImage.pixels[i + j * x] = (nx < 0 || ny < 0 || nx >= x || ny >= y) ? average : scrambledImage.pixels[nx + ny * x];
       }
@@ -124,8 +124,8 @@ class ImageManager {
         float dx = (i - (float)x/2);
         float dy = (j - (float)y/2);
 
-        int nx = floor(dx * cos(rot) - dy * sin(rot) + (float)x/2);
-        int ny = floor(dx * sin(rot) + dy * cos(rot) + (float)y/2);
+        int nx = round(round(dx * cos(rot) - dy * sin(rot) + (float)x/2));
+        int ny = round(round(dx * sin(rot) + dy * cos(rot) + (float)y/2));
 
         draftImage.pixels[i + j * x] = (nx < 0 || ny < 0 || nx >= x || ny >= y) ? average : scrambledImage.pixels[nx + ny * x];
       }
@@ -137,8 +137,8 @@ class ImageManager {
     draftImage = createImage(x, y, RGB);
     draftImage.loadPixels();
     scrambledImage.loadPixels();
-    int dx = floor(d * random(-size * move, size * move));
-    int dy = floor(d * random(-size * move, size * move));
+    int dx = round(d * random(-size * move, size * move));
+    int dy = round(d * random(-size * move, size * move));
     for(int i = 0; i < x; i++) {
       for(int j = 0; j < y; j++) {
         int nx = i + dx; int ny = j + dy;
@@ -214,9 +214,20 @@ class ImageManager {
 
   //f Rogne l'image (nouvelle image) en détectant les contours de l'objet le plus grand dans _img_, ayant un _cap_ et une marge de _marge_ * size pixels
   PImage AutoCrop(PImage img, float cap, float marge) {
+    String randomName = str(random(1000));
+    
     PImage cImg = img.copy();
-    cImg.filter(THRESHOLD, cap / 255);
-    ArrayList<ArrayList<PVector>> contours = this.ContourDetection(cImg, img.width / 6);
+    //cImg.save(globalSketchPath + "/AuxiliarFiles/Crop/" + randomName + "/1.jpg");
+    
+    PImage paddedImg = Padding(cImg, 5, color(255));
+    //paddedImg.save(globalSketchPath + "/AuxiliarFiles/Crop/" + randomName + "/2.jpg");
+    
+    PImage thresholdPaddedImg = this.BlackAndWhite(paddedImg.copy(), cap/255);
+    //thresholdPaddedImg.save(globalSketchPath + "/AuxiliarFiles/Crop/" + randomName + "/3.jpg");
+
+
+    ArrayList<ArrayList<PVector>> contours = this.ContourDetection(thresholdPaddedImg, 1);
+    //ImageWithContours(thresholdPaddedImg, contours).save(globalSketchPath + "/AuxiliarFiles/Crop/" + randomName + "/4.tiff");
 
     if(contours.size() == 0) {
       println("Used OLD Autocrop");
@@ -235,8 +246,21 @@ class ImageManager {
         objectIndex = k;
       }
     }
+    
+    //ImageFromContour(paddedImg, contours.get(objectIndex), marge, 1).save(globalSketchPath + "/AuxiliarFiles/Crop/" + randomName + "/5.jpg");
 
-    return ImageFromContour(img, contours.get(objectIndex), marge, (float)img.width / img.height);
+    return ImageFromContour(paddedImg, contours.get(objectIndex), marge, 1);
+  }
+  
+  //f Rajoute une marge à l'image
+  PImage Padding(PImage img, int padding, color bg) {
+    PImage newImg = createImage(img.width + 2 * padding, img.height + 2 * padding, RGB);
+    newImg.loadPixels();
+    for (int i = 0; i < newImg.pixels.length; i++) newImg.pixels[i] = bg;
+    newImg.updatePixels();
+  
+    newImg.copy(img, 0, 0, img.width, img.height, padding, padding, img.width, img.height);
+    return newImg;
   }
 
   //f Retourne une nouvelle image de _img_, découpant le contour _contour_, avec une marge de _marge_ * size pixels, ayant un ratio w/h cible _ratio_
@@ -369,7 +393,7 @@ class ImageManager {
   
   PImage TargetRatio(PImage img, float targetRatio) {
     int top = 0, left = 0;
-    int bottom = img.height - 1, right = img.width - 1;
+    int bottom = img.height, right = img.width;
     
     while((right - left) / (bottom - top) > targetRatio * 1.1) { // Tolérance du ratio à 10%
       bottom += 1;
@@ -385,12 +409,14 @@ class ImageManager {
     for(int x = left; x < right + 1; x++) {
       for(int y = top; y < bottom + 1; y++) {
         if(x < 0 || x >= img.width || y < 0 || y >= img.height) {
-          returnedImg.set(x + left, y + top, 255);
+          returnedImg.set(x - left, y - top, img.get(0,0));
           continue;
         }
-        returnedImg.set(x+left, y+top, img.get(x+left, y+top));
+        returnedImg.set(x - left, y - top, img.get(x, y));
       }
     }
+    
+    returnedImg.save("AuxiliarFiles/Test/img" + frameCount + ".png");
     
     return returnedImg;
   }
@@ -428,21 +454,23 @@ class ImageManager {
   // https://www.imageprocessingplace.com/downloads_V3/root_downloads/tutorials/contour_tracing_Abeer_George_Ghuneim/ray.html
   ArrayList<ArrayList<PVector>> ContourDetection(PImage img, int minSize) {
     ArrayList<ArrayList<PVector>> contours = new ArrayList<ArrayList<PVector>>(); // Oui, je sais ce que tu penses...
-    ArrayList<PVector> visited = new ArrayList<PVector>();
+    HashSet<String> visited = new HashSet<>();
 
     PVector[] dirs = new PVector[]{new PVector(1, 0), new PVector(1, 1), new PVector(0, 1), new PVector(-1, 1), new PVector(-1, 0), new PVector(-1, -1), new PVector(0, -1), new PVector(1, -1)};
 
     img.loadPixels();
     for(int j = 0; j < img.height; j++) {
       for(int i = 0; i < img.width; i++) {
-        if(img.pixels[i + j*img.width] == -16777216 && (i == 0 || img.pixels[i + j*img.width - 1] != -16777216) && !visited.contains(new PVector(i, j))) {
+        String keyVisited = i + "," + j;
+        if(img.pixels[i + j*img.width] == -16777216 && (i == 0 || img.pixels[i + j*img.width - 1] != -16777216) && !visited.contains(keyVisited)) {
           ArrayList<PVector> contour = new ArrayList<PVector>();
           int x = i; int y = j;
-          int dir = 0;
+          int dir = 4;
 
           cw:
           while(true) {
             contour.add(new PVector(x, y));
+            visited.add(x + "," + y);
 
             for(int k = 0; k <= 8; k++) {
               if(k==8) break cw; //Le pixel est isolé
@@ -467,7 +495,6 @@ class ImageManager {
 
           if(contour.size() > minSize) {
             contours.add(contour);
-            visited.addAll(contour);
           }
         }
       }
@@ -591,6 +618,55 @@ class ImageManager {
     }
 
     return new int[]{left, top, right - left, bottom - top};
+  }
+  
+  public PImage ImageWithContours(PImage img, ArrayList<ArrayList<PVector>> contours) {
+    PImage newImg = img.copy();
+    
+    for(ArrayList<PVector> contour : contours)
+      for(PVector p : contour)
+        newImg.set((int)p.x, (int)p.y, color(0,255,0));
+        
+    return newImg;
+  }
+  
+  public int[] GetBoundingBox(PImage img) {
+    int minX = img.width;
+    int minY = img.height;
+    int maxX = -1;
+    int maxY = -1;
+    
+    for(int y = 0; y < img.height; y++) {
+      for(int x = 0; x < img.width; x++) {
+        if(brightness(img.get(x,y)) <= 50) { // pixel appartient à l'objet
+          if(x < minX) minX = x;
+          if(x > maxX) maxX = x;
+          if(y < minY) minY = y;
+          if(y > maxY) maxY = y;
+        }
+      }
+    }
+    
+    if(maxX == -1 || maxY == -1) {
+      // Pas de pixel trouvé, objet vide
+      return new int[]{-1, -1, -1, -1};
+    }
+    
+    return new int[]{minX, minY, maxX, maxY};
+  }
+  
+  float MeanHeight(PImage img) {
+    ArrayList<Integer> heights = new ArrayList<Integer>();
+    
+    for(int i = 0; i < img.height; i++)
+      for(int j = 0; j < img.width; j++)
+        if(brightness(img.get(j,i)) < 50) heights.add(i);
+        
+    float average = 0;
+    int[] heightsArray = heights.stream().mapToInt(Integer::intValue).toArray();
+    for(int h : heightsArray) average += (float)h / heights.size();
+    
+    return average;
   }
 }
 

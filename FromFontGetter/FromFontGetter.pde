@@ -33,7 +33,7 @@ class Letter {
 
 int w = 156;
 int h = 175;
-String fontName = "Lucida Handwriting Italique";
+String fontName = "Franklin Gothic Book";
 int size = 90;
   
 void settings() {

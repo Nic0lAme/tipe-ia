@@ -450,6 +450,7 @@ class Matrix {
   }
 
   public Matrix Concat(Matrix[] mats) {
+    if(mats.length == 0) return new Matrix(0);
     for(int i = 1; i < mats.length; i++) {
       if(mats[i].n != mats[0].n) { cl.pln(mats[0], mats[i], "Concat"); Exception e = new Exception(); e.printStackTrace(); return mats[0]; }
     }

@@ -23,7 +23,10 @@ String[] handPolicies = new String[] {
 String[] fontPolicies = new String[] {
   "Arial", "Bahnschrift", "Eras Demi ITC", "Lucida Handwriting Italique", "DejaVu Serif",
   "Fira Code Retina Moyen", "Consolas", "Lucida Handwriting Italique", "Playwrite IT Moderna", "Just Another Hand",
-  "Liberation Serif", "Calibri", "Book Antiqua", "Gabriola", "Noto Serif"
+  "Liberation Serif", "Calibri", "Book Antiqua", "Gabriola", "Noto Serif",
+  "Baskerville Old Face", "Garamond", "Palatino Linotype", "Georgia", "Tahoma",
+  "Elephant", "Corbel", "Pristina", "Rockwell", "Cooper Black",
+  "Trebuchet MS", "Bell MT", "Perpetua", "Times New Roman", "Franklin Gothic Book"
 };
 
 
@@ -47,7 +50,10 @@ String[] handTrainingDatas = new String[] {
 //String[] handTrainingDatas = new String[]{};
 String[] fontTrainingDatas = new String[]{
   "Arial", "Bahnschrift", "Eras Demi ITC", "Lucida Handwriting Italique", "DejaVu Serif",
-  "Fira Code Retina Moyen", "Consolas", "Lucida Handwriting Italique", "Playwrite IT Moderna", "Just Another Hand"
+  "Fira Code Retina Moyen", "Consolas", "Lucida Handwriting Italique", "Playwrite IT Moderna", "Just Another Hand",
+  "Baskerville Old Face", "Garamond", "Palatino Linotype", "Georgia", "Tahoma",
+  "Elephant", "Corbel", "Pristina", "Rockwell", "Cooper Black",
+  "Trebuchet MS", "Bell MT", "Perpetua", "Times New Roman", "Franklin Gothic Book"
 };
 //String[] fontTrainingDatas = new String[]{};
 
@@ -100,7 +106,10 @@ class CharactersStorage {
     float[] ret = new float[26]; // TODO: 26 ? On considère pas les chiffres ?
 
     for (int i = 0; i < allProb.length; i++) {
-      for (float[] c : letterCorrespondance.get(i)) ret[(int)c[0]] += allProb[i] * c[1];
+      for (float[] c : letterCorrespondance.get(i)) {
+        if((int)c[0] >= 26) continue;
+        ret[(int)c[0]] += allProb[i] * c[1];
+      }
     }
 
     return ret;
@@ -109,6 +118,44 @@ class CharactersStorage {
   //s Tous les caractères sont ajoutés
   private void ParseCharFile(String filePath) {
     ParseCharFile(filePath, fullCharacters);
+  }
+
+  //f Permet de trouver les proportions de chaque lettres détectées par un réseau
+  public float[] GetEtalonnedProp(CNN cnn) {
+    Matrix[][] testSample = session.ds.CreateSample(
+      cs.GetChars(),
+      //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
+      //handTestingDatas,
+      new String[]{},
+      fontTestingDatas,
+      2, 1);
+    Matrix output = cnn.Predict(testSample[0]);
+
+    float[] allProp = new float[output.n];
+    for(int j = 0; j < output.p; j++) {
+      for(int i = 0; i < output.n; i++) allProp[i] += output.Get(i, j) / output.n / output.p;
+    }
+
+    return GetProb(allProp);
+  }
+
+  //s
+  public float[] GetEtalonnedProp(NeuralNetwork nn) {
+    Matrix[] testSample = session.ds.SampleLining(session.ds.CreateSample(
+      cs.GetChars(),
+      //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
+      //handTestingDatas,
+      new String[]{},
+      fontTestingDatas,
+      2, 1));
+    Matrix output = nn.Predict(testSample[0]);
+
+    float[] allProp = new float[output.n];
+    for(int j = 0; j < output.p; j++) {
+      for(int i = 0; i < output.n; i++) allProp[i] += output.Get(i, j) / output.n / output.p;
+    }
+
+    return GetProb(allProp);
   }
 
   //f Ajoute tous les caractères présents dans le fichier _filePath_

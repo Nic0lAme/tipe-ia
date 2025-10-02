@@ -8,7 +8,7 @@ class NeuralNetwork {
   Matrix[] weights; // Poids des liaisons (pour un indice i, liaisons entre couche i et couche i+1)
   Matrix[] bias; // Biais (pour un indice i, biais entre couche i et i+1)
 
-  float lambda = 0.0000001;
+  float lambda = 0.00001;
 
   boolean useSoftMax = false; // Détermine l'utilisation de la fonction softmax sur la dernière couche du réseau
 
@@ -54,28 +54,24 @@ class NeuralNetwork {
    for (int i = 0; i < sizes.length; i++) layers[i] = int(sizes[i]);
 
    Init();
-
-   int cpt = 1;
-   for (int i = 0; i < weights.length; i++) {
-     String[] weightMatrixString = new String[weights[i].n];
-     for (int k = 0; k < weights[i].n; k++) {
-       weightMatrixString[k] = input[cpt];
-       cpt++;
-     }
-     weights[i].LoadString(weightMatrixString);
-   }
-
-   for (int i = 0; i < bias.length; i++) {
-     String[] biasMatrixString = new String[bias[i].n];
-     for (int k = 0; k < bias[i].n; k++) {
-       biasMatrixString[k] = input[cpt];
-       cpt++;
-     }
-     bias[i].LoadString(biasMatrixString);
-   }
-
+   
+   int i = Load1DParam(weights, input, 1);
+   Load1DParam(bias, input, i);
    return this;
   }
+  
+  private int Load1DParam(Matrix[] param, String[] output, int begin) {
+    int nextLine = begin;
+    for (int k = 0; k < param.length; k++) {
+      int endOfMatrix = nextLine + Integer.valueOf(split(output[nextLine], ",")[2]) - 1;
+      String[] matrixArray = new String[endOfMatrix - nextLine + 1];
+      for (int i = 0; i < matrixArray.length; i++) matrixArray[i] = output[nextLine + i];
+      param[k].LoadString(matrixArray);
+      nextLine = endOfMatrix + 1;
+    }
+    return nextLine;
+  }
+
 
   //f Sauvegarde les paramètres du réseau de neurones dans _name_
   public void Export(String name) {
@@ -126,7 +122,7 @@ class NeuralNetwork {
 
   //f Calcule la sortie correspondant à l'entrée _in_, de la couche _from_ à la couche _from+1_
   private Matrix CalcLayer(int from, Matrix in) {
-    Matrix result = weights[from].Mult(in);
+    Matrix result = weights[from].GPUMult(in);
 
     result.Add(bias[from], 1, true);
 
@@ -168,7 +164,8 @@ class NeuralNetwork {
 
     //dJ/dZl
     Matrix a = activations[this.numLayers-1].C();
-    Matrix gradient = a.C().Add(expectedOutput, -1).HProduct(a.C().Add(a.C().HProduct(a), -1));
+    Matrix gradient = a.C().Add(expectedOutput, -1);
+    if(!this.useSoftMax) gradient = gradient.HProduct(a.C().Add(a.C().HProduct(a), -1));
 
     Matrix[] weightGrad = new Matrix[this.numLayers - 1];
     Matrix[] biasGrad = new Matrix[this.numLayers - 1];
@@ -181,7 +178,7 @@ class NeuralNetwork {
       }
 
       //dJ/dWl = dJ/dZl * dZl/dWl
-      weightGrad[l] = gradient.Mult(activations[l].T()).Scale(1/ (float)max(1, expectedOutput.p));
+      weightGrad[l] = gradient.GPUMult(activations[l].T()).Scale(1/ (float)max(1, expectedOutput.p));
       if(weightGrad[l].HasNAN()) {
         println("IN WEIGHTGRAD");
         System.exit(-1);
@@ -361,7 +358,10 @@ class NeuralNetwork {
 
   public float MiniBatchLearn(Matrix[] data, int numOfEpoch, int batchSize, float minLR, float maxLR, int period, Matrix[][] testSets, String label) {
     cl.pln("Mini Batch Gradient Descent " + label + " - " + numOfEpoch + " Epochs - " + batchSize + " Batch Size - " + String.format("%9.3E", maxLR) + " LR");
+    
+    if (abortTraining.get()) return 0;
 
+    
     float lossAverage = 0;
 
     int startTime = millis();

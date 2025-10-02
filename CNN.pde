@@ -15,6 +15,8 @@ class CNN {
   Matrix[][] cFilters;
   Matrix[] cBias;
   int[] cImageSizes;
+  
+  boolean doLogTime = false;
 
   // ADAM Learning Rate Optimization
   boolean useADAM = true;
@@ -30,8 +32,8 @@ class CNN {
   Matrix[] cADAMbiasSqMoment;
 
   int numOfLearningCall = 0;
-  float b1 = 0.9;
-  float b2 = 0.999;
+  float b1 = 0.85;
+  float b2 = 0.98;
 
 
   float lambda = 0;
@@ -419,11 +421,13 @@ class CNN {
     }
 
     int FCLTime = millis();
-
-    println("FORWARD TIME : ", FCLTime - initTime);
-    println("Convolution : ", convTime - initTime);
-    println("Transition : ", transitionTime - convTime);
-    println("FCL : ", FCLTime - transitionTime);
+    
+    if(this.doLogTime) {
+      println("FORWARD TIME : ", FCLTime - initTime);
+      println("Convolution : ", convTime - initTime);
+      println("Transition : ", transitionTime - convTime);
+      println("FCL : ", FCLTime - transitionTime);
+    }
 
     return new Matrix[][][][]{ convVal, masks, new Matrix[][][]{{layerVal}} }; // :) :)
   }
@@ -465,7 +469,8 @@ class CNN {
 
     //dJ/dZl
     Matrix a = activations[this.numLayers-1].C();
-    Matrix gradient = a.C().Add(expectedOutput, -1).HProduct(a.C().HProduct(a.C().AddScal(-1.0).Scale(-1.0)));
+    Matrix gradient = a.C().Add(expectedOutput, -1);
+    if(!this.useSoftMax) gradient = gradient.HProduct(a.C().HProduct(a.C().AddScal(-1.0).Scale(-1.0)));
     a = null;
 
     Matrix[] weightGrad = new Matrix[this.numLayers - 1];
@@ -655,7 +660,7 @@ class CNN {
     Matrix[] cBiasGrad = new Matrix[this.cFilters.length];
 
     // Sans multithreading, back propagation classique
-    if (numThreadsLearning <= 1) {
+    if (true || numThreadsLearning <= 1) {
       int startKTime = millis();
       Matrix[][][][] activations = ForwardPropagation(X, true);
       forwardTime += (float)(millis() - startKTime);
@@ -793,13 +798,15 @@ class CNN {
       }
     }
 
-    println("BACKPROPAGATION TIME : ", backwardTime, BPFCLTime + BPfirstGradTime + BPmaskTime + BPgradTime + BPnextGTime);
-    println("FCL : ", BPFCLTime);
-    println("First Grad : ", BPfirstGradTime);
-    println("Mask : ", BPmaskTime);
-    println("Grad : ", BPgradTime);
-    println("Next Grad : ", BPnextGTime);
-    println("Convolution Time : ", convolutionTime);
+    if(this.doLogTime) {
+      println("BACKPROPAGATION TIME : ", backwardTime, BPFCLTime + BPfirstGradTime + BPmaskTime + BPgradTime + BPnextGTime);
+      println("FCL : ", BPFCLTime);
+      println("First Grad : ", BPfirstGradTime);
+      println("Mask : ", BPmaskTime);
+      println("Grad : ", BPgradTime);
+      println("Next Grad : ", BPnextGTime);
+      println("Convolution Time : ", convolutionTime);
+    }
 
     for(int l = 0; l < this.numLayers - 1; l++) {
       if(!useADAM) {
@@ -864,7 +871,7 @@ class CNN {
 
     int appliedTime = millis();
 
-    println("Forward : " + str(forwardTime) + " | Backward : " + str(backwardTime) + " | Application : " + str(appliedTime - backwardTime - forwardTime - initTime));
+    if(this.doLogTime) println("Forward : " + str(forwardTime) + " | Backward : " + str(backwardTime) + " | Application : " + str(appliedTime - backwardTime - forwardTime - initTime));
 
     //S.Debug();
     float J = this.ComputeLoss(S, Y);
@@ -905,6 +912,9 @@ class CNN {
     cl.pln("Mini Batch Gradient Descent " + label + " - " + numOfEpoch + " Epochs - " + batchSize + " Batch Size - " + String.format("%9.3E", maxLR) + " LR");
 
     float lossAverage = 0;
+    
+    if (abortTraining.get()) return 0;
+
 
     int startTime = millis();
     int numOfBatches = ceil(data[0].length / batchSize);
@@ -938,7 +948,7 @@ class CNN {
           );
       }
 
-      if((k+1)%2 != 0 && k != numOfEpoch - 1) continue;
+      //if((k+1)%2 != 0 && k != numOfEpoch - 1) continue;
 
       for(int s = 0; s < testSets.length; s++) {
         float[] score = CompilScore(session.AccuracyScore(this, testSets[s], false));

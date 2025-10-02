@@ -1,7 +1,17 @@
+import java.util.*;
+import java.util.stream.*;
+
 class WordCorrector {
-  char[] charList = new char[]{'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+  char[] charList =           new char[] {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+  float[] letterFrequencies = new float[]{8.173, 0.901, 3.345, 3.669, 16.716, 1.066, 0.866, 0.737, 7.529, 0.613, 0.074, 5.456, 2.968, 7.095, 5.796, 2.521, 1.362, 6.693, 7.948, 7.244, 6.311, 1.838, 0.049, 0.427, 0.128, 0.326};
   float[] letterSpreading = new float[]{0.1, 0.05};
-  float fiability = 0.9; // 0 -> c'est vraiment très mauvais / 1 -> c'est vraiment excellent
+  float fiability = 1; // 0 -> c'est vraiment très mauvais / 1 -> c'est vraiment excellent
+  
+  float probThreshold = 0.2;
+  int maxNumberOfCandidates = 30;
+  
+  int maxCharDiff = 2;
+  int maxDist = 4;
   
   int[][] words;
   
@@ -11,8 +21,9 @@ class WordCorrector {
   //f Importe l'ensemble des mots du fichier _scrabble.txt_ dans la variable _this.words_
   public void ImportWords() {
     String[] wordsList = loadStrings("./AuxiliarFiles/scrabble.txt");
+    String[] auxList = loadStrings("./AuxiliarFiles/auxDic.txt");
     
-    this.words = new int[wordsList.length][];
+    this.words = new int[wordsList.length + auxList.length][];
     
     for(int k = 0; k < wordsList.length; k++) {
       String w = wordsList[k].strip();
@@ -24,6 +35,18 @@ class WordCorrector {
       }
       
       this.words[k] = wordRepresentation;
+    }
+    
+    for(int k = 0; k < auxList.length; k++) {
+      String w = auxList[k].strip();
+      int[] wordRepresentation = new int[w.length()];
+      
+      for(int c = 0; c < w.length(); c++) {
+        char character = w.charAt(c);
+        wordRepresentation[c] = character - 'A';
+      }
+      
+      this.words[k + wordsList.length] = wordRepresentation;
     }
   }
   
@@ -254,7 +277,7 @@ class WordCorrector {
   // _letterProb_ contient pour chaque emplacement les probabilités de chaque caractère
   // Simule toutes les manipulations possibles de manière probabiliste
   // Algorithme assez (très) naïf, donc à voir dans la pratique
-  public String WordAutoCorrection(float[][] letterProb) {
+  public String OLD_WordAutoCorrection(float[][] letterProb, float[] etalonnedProp) {
     float[][] processedProb = new float[letterProb.length][this.charList.length];
     
     for(int letter = 0; letter < letterProb.length; letter++) {
@@ -265,9 +288,11 @@ class WordCorrector {
       }
       
       for(int k = 0; k < this.charList.length; k++) {
-        processedProb[letter][k] = (letterProb[letter][k] + (1 - this.fiability) / this.charList.length) / sum;
+        processedProb[letter][k] = (letterProb[letter][k] + (1 - this.fiability) / this.charList.length) / sum / (float)Math.pow(etalonnedProp[k], 1 - this.fiability);
       }
     }
+    
+    //println(letterProb[0]);
     
     /*
     // Simule l'insertion / la délétion de lettre
@@ -281,20 +306,43 @@ class WordCorrector {
     }
     */
     
-    int[] bestWord = words[0];
-    float bestProb = 0;
     
-    for(int[] word : this.words) {
-      if(word.length != processedProb.length) continue;
-      
-      float prob = 1;
-      for(int letter = 0; letter < word.length; letter++) {
-        prob *= processedProb[letter][word[letter]];
+    
+    int[] bestWord = new int[processedProb.length];
+    float bestProb = 1;
+    
+    float maxProb = 0;
+    int maxChar = 0;
+    for(int letter = 0; letter < processedProb.length; letter++) {
+      maxProb = 0;
+      for(int k = 0; k < this.charList.length; k++) {
+        if(processedProb[letter][k] < maxProb) continue;
+        maxProb = processedProb[letter][k];
+        maxChar = k;
       }
       
-      if(prob > bestProb) {
-        bestProb = prob;
-        bestWord = word;
+      bestWord[letter] = maxChar;
+      bestProb *= maxProb;
+    }
+    
+    bestProb /= Math.pow(10, processedProb.length);
+    
+    println(bestProb);
+    println(bestWord);
+    
+    if(fiability < 1) {
+      for(int[] word : this.words) {
+        if(word.length != processedProb.length) continue;
+        
+        float prob = 1;
+        for(int letter = 0; letter < word.length; letter++) {
+          prob *= processedProb[letter][word[letter]];
+        }
+        
+        if(prob > bestProb) {
+          bestProb = prob;
+          bestWord = word;
+        }
       }
     }
     
@@ -304,4 +352,45 @@ class WordCorrector {
     cl.pln(ret, "\twith prob", String.format("%9.3e", bestProb));
     return ret;
   }
+  
+  public int[] CorruptWord(int[] word, float substitutionProb, float insertDelProb) {
+    List<Integer> corruptedWord = new ArrayList<>();
+    for(int c : word) {
+      if(random(1) < insertDelProb / 2) continue; // Deletion
+      if(random(1) < insertDelProb / 2) corruptedWord.add((int)random(0, 25.999)); // Insertion
+      corruptedWord.add(random(1) < substitutionProb ? (int)random(0, 25.999) : c); // Substitution
+    }
+    if(random(1) < insertDelProb / 2) corruptedWord.add((int)random(0, 25.999)); // Insertion
+    
+    return corruptedWord.stream().mapToInt(Integer::intValue).toArray();
+  }
+  
+  public void CompareFunctions(DistanceFunction[] functions, int numOfWord, float substitutionProb, float insertDelProb) {
+    int[][] wordList = new int[numOfWord][];
+    int[][] corruptedWordList = new int[numOfWord][];
+    
+    for(int i = 0; i < numOfWord; i++) {
+      wordList[i] = this.words[int(random(this.words.length))];
+      corruptedWordList[i] = this.CorruptWord(wordList[i], substitutionProb, insertDelProb);
+    }
+    
+    for(DistanceFunction f : functions) {
+      int numOfRight = 0;
+      int initTime = millis();
+      
+      for(int i = 0; i < numOfWord; i++) {
+        int[] word = FindBestWord(corruptedWordList[i], f, this.maxCharDiff, this.maxDist)[0];
+        if(Arrays.equals(word, wordList[i])) numOfRight += 1;
+      }
+      
+      println("Bonnes réponses :", numOfRight, " - Temps :", (float)(millis() - initTime) / 1000);
+    }
+  }
+  
+}
+
+
+@FunctionalInterface
+interface DistanceFunction {
+  int apply(int[] a, int[] b);
 }
