@@ -43,7 +43,7 @@ class Tester {
     println(distance);
   }
 
-  public PImage GenerateText() {
+  public void GenerateText() {
     PFont font = createFont("Georgia", fontSize);
     PGraphics pg = createGraphics(w, h);
     pg.beginDraw();
@@ -83,7 +83,7 @@ class Tester {
     String text = "";
     for (int i = 0; i < wordList.size(); i++) {
       if (i != 0) text += " ";
-      text += IntArrayToString(wordList.get(i));
+      text += wc.IntArrayToString(wordList.get(i));
     }
     lastGeneratedImage = pg.get();
     lastGeneratedText = text;

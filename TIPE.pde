@@ -99,7 +99,7 @@ void setup() {
   */
 
   //cl.pln(wc.SimpleDistance(new int[]{21,8,6,7,19}, new int[]{7,4,6,7,19}));
-
+  /*
   CNN cnn = new CNN(imgSize, new int[]{32, 64}, new int[]{128, cs.GetChars().length});
   CNN cnn = new CNN().Import("./CNN/22x22_32_64_LettersOnly.cnn");
   cnn.UseSoftMax();
@@ -136,9 +136,9 @@ void setup() {
   session.AccuracyScore(cnn, testSample, true);
   */
 
-  Tester tester = new Tester((NeuralNetwork) null);
-  ImageSeparator is = new ImageSeparator(loadImage("test.png"));
-  is.SaveSeparationPreview("test1.png", true, true);
+  // Tester tester = new Tester((NeuralNetwork) null);
+  // ImageSeparator is = new ImageSeparator(loadImage("test.png"));
+  // is.SaveSeparationPreview("test1.png", true, true);
 }
 
 int index = 0;
