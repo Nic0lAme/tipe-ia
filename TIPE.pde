@@ -125,10 +125,9 @@ void setup() {
   session.AccuracyScore(cnn, testSample, true);
   */
 
-  // Tester tester = new Tester((NeuralNetwork) null);
-  // tester.GenerateText();
-  // ImageSeparator is = new ImageSeparator(loadImage("test.png"));
-  // is.SaveSeparationPreview("test1.png", true, true);
+  Tester tester = new Tester((NeuralNetwork) null);
+  ImageSeparator is = new ImageSeparator(loadImage("test.png"));
+  is.SaveSeparationPreview("test1.png", true, true);
 }
 
 int index = 0;

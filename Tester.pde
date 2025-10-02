@@ -39,7 +39,7 @@ class Tester {
     String result = ir.Read(lastGeneratedImage, withCorrection);
 
     // Évalue la performance
-    int distance = wc.LevenshteinDistance(text, result);
+    int distance = wc.LevenshteinDistance(lastGeneratedText, result);
     println(distance);
   }
 
@@ -80,12 +80,12 @@ class Tester {
     }
 
     // pg.save("./test.png");
-    String text;
+    String text = "";
     for (int i = 0; i < wordList.size(); i++) {
       if (i != 0) text += " ";
       text += IntArrayToString(wordList.get(i));
     }
     lastGeneratedImage = pg.get();
-    lastGeneratedText = text:
+    lastGeneratedText = text;
   }
 }
