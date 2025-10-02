@@ -34,6 +34,8 @@ final int numThreadsLearning = 1; // Apprentissage (si 1, pas de parallélisatio
 final AtomicBoolean stopLearning = new AtomicBoolean(false);
 final AtomicBoolean abortTraining = new AtomicBoolean(false); // Note : Annule aussi toute construction de dataset
 
+Matrix[][] testSample;
+
 void settings() {
   size(floor(28 * rScale * 26), floor(28 * rScale * numOfTestSample), JAVA2D); // For Global Test
   //size(119, 180, P2D); // For Direct Test
@@ -96,7 +98,32 @@ void setup() {
     bayes.SERV_Export(new HyperParameters().Random(), random(1));
   */
 
-  //cl.pln(wc.SimpleDistance(new int[]{21,8,6,7,19}, new int[]{7,4,6,7,19}));
+  //CNN cnn = new CNN(28, new int[]{4, 8}, new int[]{64, cs.GetChars().length});
+  // CNN cnn = new CNN().Import("./CNN/Test21.cnn");
+  // cnn.UseSoftMax();
+  // cnn.useADAM = true;
+  //
+  /*
+  Matrix[][] sample = session.ds.CreateSample(
+      cs.GetChars(),
+      //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
+      handTrainingDatas,
+      //new String[]{},
+      fontTrainingDatas,
+      1, 1);
+
+  Matrix[][] testSample = session.ds.CreateSample(
+      cs.GetChars(),
+      //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
+      handTestingDatas,
+      //new String[]{},
+      fontTestingDatas,
+      1, 1);
+
+  cnn.MiniBatchLearn(sample, 8, 256, 0.001, 0.001, 2, new Matrix[][][]{testSample}, "");
+  cnn.Export("./CNN/Test21.cnn");
+  session.AccuracyScore(cnn, testSample, true);
+  */
 
   // Tester tester = new Tester((NeuralNetwork) null);
   // tester.GenerateText();
