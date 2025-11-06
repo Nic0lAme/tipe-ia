@@ -84,6 +84,13 @@ class CharactersStorage {
     letterCorrespondance = new ArrayList<float[][]>();
   }
 
+  PFont GetRandomTrainingFont(int fontSize) {
+    int numOfFonts = fontTestingDatas.length;
+    int randomIndex = random(1) * numOfFonts;
+
+    return createFont(fontTestingDatas[randomIndex], fontSize);
+  }
+
   //f Ajoute le caractère dont le fichier est _name_, associé au caractère _d_, qui sera associé pour l'alphabet par _correspondance_
   // Dans _correspondance_, on a la liste des couple de lettres ressemblantes, avec la part de ressemblance
   // _Exemple : correspondance = {{8, 0.3}, {11, 0.3}}) pour le 1, qui ressemble au i et au l_
