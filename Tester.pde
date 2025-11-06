@@ -13,8 +13,6 @@ class Tester {
   private PImage lastGeneratedImage;
   private String lastGeneratedText;
 
-  private final boolean withCorrection = true;
-
   public Tester(NeuralNetwork nn) {
     this.nn = nn;
     this.cnn = null;
@@ -27,9 +25,11 @@ class Tester {
     isNN = false;
   }
 
-  public int RunOneTest() {
+  public int RunOneTest(boolean withCorrection) {
     // Génère un texte
     GenerateText();
+
+    int initTime = millis();
 
     // Déchiffre le texte
     ImageReader ir;
@@ -38,13 +38,39 @@ class Tester {
 
     String result = ir.Read(lastGeneratedImage, withCorrection);
 
+    int endTime = millis();
+    //println("Time :", endTime - initTime);
+
     // Évalue la performance
     int distance = wc.LevenshteinDistance(lastGeneratedText, result);
-    return distance;
+    return new Results(distance, endTime - initTime);
+  }
+
+  public void RunNTest(int n, boolean withCorrection) {
+    if(n==0) return {cl.pln(this, "RunNTest", "n == 0"); Exception e = new Exception(); e.printStackTrace(); return -1;}
+    float totalDistance = 0; float totalTime = 0;
+
+    for(int i = 0; i < n; i++) {
+      float effectiveNumOfChar = GenerateText();
+
+      int initTime = millis();
+
+      ImageReader ir;
+      if (isNN) ir = new ImageReader(nn);
+      else ir = new ImageReader(cnn);
+
+      String result = ir.Read(lastGeneratedImage, withCorrection);
+
+      totalTime += millis() - initTime;
+
+      totalDistance += 1 - wc.LevenshteinDistance(lastGeneratedText, result) / effectiveNumOfChar;
+    }
+
+    return new Results(totalDistance / n, totalTime / n);
   }
 
   public void GenerateText() {
-    PFont font = createFont("Georgia", fontSize);
+    PFont font = cs.GetRandomTrainingFont(fontSize);
     PGraphics pg = createGraphics(w, h);
     pg.beginDraw();
     pg.background(255);
@@ -87,5 +113,24 @@ class Tester {
     }
     lastGeneratedImage = pg.get();
     lastGeneratedText = text;
+
+    return numOfCharInList;
+  }
+}
+
+
+class Results {
+
+  float distance;
+  float time;
+
+  Results(float d, float t) {
+    this.distance = d;
+    this.time = t;
+  }
+
+  @Override
+  public String toString() {
+    return "Distance : " + String.format("%7.2f", this.distance) + " | Time : " + String.format("%7.2f", this.time) ;
   }
 }
