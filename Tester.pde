@@ -3,7 +3,7 @@ class Tester {
   private final CNN cnn;
   private final boolean isNN;
 
-  private final float textSize = 500;
+  public final float textSize = 500;
   private final float fontSize = 50;
   private final float maxCharPerLine = 75;
   private final int w = round((fontSize * maxCharPerLine) / 1.2);
@@ -27,7 +27,7 @@ class Tester {
     isNN = false;
   }
 
-  public void RunOneTest() {
+  public int RunOneTest() {
     // Génère un texte
     GenerateText();
 
@@ -40,7 +40,7 @@ class Tester {
 
     // Évalue la performance
     int distance = wc.LevenshteinDistance(lastGeneratedText, result);
-    println(distance);
+    return distance;
   }
 
   public void GenerateText() {
