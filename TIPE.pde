@@ -139,6 +139,52 @@ void setup() {
   // Tester tester = new Tester((NeuralNetwork) null);
   // ImageSeparator is = new ImageSeparator(loadImage("test.png"));
   // is.SaveSeparationPreview("test1.png", true, true);
+
+  NeuralNetwork nn = new NeuralNetwork(imgSize*imgSize, 256, 128, cs.GetChars().length);
+  nn.UseSoftMax();
+  Tester tester = new Tester(nn);
+  Matrix[] testSample = session.ds.SampleLining(session.ds.CreateSample(
+      cs.GetChars(),
+      //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
+      //handTestingDatas,
+      new String[]{},
+      fontTestingDatas,
+      6, 1));
+
+  int numOfIter = 1; // 10
+  for(int iter = 0; iter < numOfIter; iter++) {
+    cl.pln("ITERATION " + str(iter+1) + "/" + str(numOfIter));
+    Matrix[] sample = session.ds.SampleLining(session.ds.CreateSample(
+        cs.GetChars(),
+        //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
+        //handTrainingDatas,
+        new String[]{},
+        fontTrainingDatas,
+        8, 1));
+
+    nn.MiniBatchLearn(sample, 5, 64, 3.5, 3, 2, new Matrix[][]{testSample, sample}, "");
+
+    session.AccuracyScore(nn, testSample, true);
+    float[] accuracyTest = CompilScore(session.AccuracyScore(nn, testSample, true));
+    float averageTestingAccuracy = Average(accuracyTest);
+
+    Matrix[] shuffledSample = new Matrix(0).ShuffleCol(sample);
+    float[] accuracyTrain = CompilScore(session.AccuracyScore(nn, shuffledSample, false));
+    float averageTrainingAccuracy = Average(accuracyTrain);
+
+    graphApplet.AddTestResult(averageTrainingAccuracy, averageTestingAccuracy);
+    String tr = String.format("%.2f",averageTrainingAccuracy*100);
+    String ts = String.format("%.2f",averageTestingAccuracy*100);
+
+    // Results r = tester.RunNTest(10);
+    // println("[RÉSULTAT DU TEST] : Score = " + r.time);
+    // println("[RÉSULTAT DU TEST] : Distance = " + r.score);
+  }
+
+  // Results r = tester.RunNTest(10, true);
+  // println("[RÉSULTAT DU TEST] : Temps = " + r.time);
+  // println("[RÉSULTAT DU TEST] : Score = " + r.score);
+  // tester.SaveTest();
 }
 
 int index = 0;

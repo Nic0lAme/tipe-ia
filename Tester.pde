@@ -25,9 +25,42 @@ class Tester {
     isNN = false;
   }
 
-  public int RunOneTest(boolean withCorrection) {
+  public Results SaveTest() {
     // Génère un texte
-    GenerateText();
+    int numOfCharInList = GenerateText();
+
+    int initTime = millis();
+
+    // Déchiffre le texte
+    ImageReader ir;
+    if (isNN) ir = new ImageReader(nn);
+    else ir = new ImageReader(cnn);
+
+    String resultCorr = ir.Read(lastGeneratedImage, true);
+    String resultWithoutCorr = ir.Read(lastGeneratedImage, false);
+
+    int endTime = millis();
+    //println("Time :", endTime - initTime);
+
+    // Évalue la performance
+    int distanceCorr = wc.LevenshteinDistance(lastGeneratedText, resultCorr);
+    float scoreCorr = 1 - ((float)distanceCorr/numOfCharInList);
+
+    lastGeneratedImage.save("TestSaveImg.png");
+    saveStrings("TestSaveText.txt", split(lastGeneratedText, " "));
+    saveStrings("TestSaveResultCorr.txt", split(resultCorr, " "));
+    saveStrings("TestSaveResultSansCorr.txt", split(resultWithoutCorr, " "));
+
+    return new Results(scoreCorr, endTime - initTime);
+  }
+
+  public Results RunOneTest(boolean withCorrection) {
+    return RunOneTest(withCorrection, false);
+  }
+
+  public Results RunOneTest(boolean withCorrection, boolean withSave) {
+    // Génère un texte
+    int numOfCharInList = GenerateText();
 
     int initTime = millis();
 
@@ -43,15 +76,21 @@ class Tester {
 
     // Évalue la performance
     int distance = wc.LevenshteinDistance(lastGeneratedText, result);
-    return new Results(distance, endTime - initTime);
+    float score = 1 - ((float)distance/numOfCharInList);
+
+    lastGeneratedImage.save("TestSaveImg.png");
+    saveStrings("TestSaveText.txt", split(lastGeneratedText, " "));
+    saveStrings("TestSaveResult.txt", split(result, " "));
+
+    return new Results(score, endTime - initTime);
   }
 
-  public void RunNTest(int n, boolean withCorrection) {
-    if(n==0) return {cl.pln(this, "RunNTest", "n == 0"); Exception e = new Exception(); e.printStackTrace(); return -1;}
-    float totalDistance = 0; float totalTime = 0;
+  public Results RunNTest(int n, boolean withCorrection) {
+    if(n==0) { cl.pln(this, "RunNTest", "n == 0"); Exception e = new Exception(); e.printStackTrace(); return new Results(-1, -1); }
+    float totalScore = 0; float totalTime = 0;
 
     for(int i = 0; i < n; i++) {
-      float effectiveNumOfChar = GenerateText();
+      int numOfCharInList = GenerateText();
 
       int initTime = millis();
 
@@ -63,13 +102,13 @@ class Tester {
 
       totalTime += millis() - initTime;
 
-      totalDistance += 1 - wc.LevenshteinDistance(lastGeneratedText, result) / effectiveNumOfChar;
+      totalScore += 1 - ((float)wc.LevenshteinDistance(lastGeneratedText, result) / numOfCharInList);
     }
 
-    return new Results(totalDistance / n, totalTime / n);
+    return new Results(totalScore / n, totalTime / n);
   }
 
-  public void GenerateText() {
+  public int GenerateText() {
     PFont font = cs.GetRandomTrainingFont(fontSize);
     PGraphics pg = createGraphics(w, h);
     pg.beginDraw();
@@ -121,16 +160,16 @@ class Tester {
 
 class Results {
 
-  float distance;
+  float score;
   float time;
 
-  Results(float d, float t) {
-    this.distance = d;
+  Results(float s, float t) {
+    this.score = s;
     this.time = t;
   }
 
   @Override
   public String toString() {
-    return "Distance : " + String.format("%7.2f", this.distance) + " | Time : " + String.format("%7.2f", this.time) ;
+    return "Score : " + String.format("%8.2f", this.score) + " | Time : " + String.format("%8.2f", this.time) ;
   }
 }

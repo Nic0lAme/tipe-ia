@@ -84,9 +84,9 @@ class CharactersStorage {
     letterCorrespondance = new ArrayList<float[][]>();
   }
 
-  PFont GetRandomTrainingFont(int fontSize) {
+  PFont GetRandomTrainingFont(float fontSize) {
     int numOfFonts = fontTestingDatas.length;
-    int randomIndex = random(1) * numOfFonts;
+    int randomIndex = (int)(random(1) * numOfFonts);
 
     return createFont(fontTestingDatas[randomIndex], fontSize);
   }
