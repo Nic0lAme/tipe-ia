@@ -3,21 +3,36 @@ class ImageReader {
   NeuralNetwork nn;
   boolean saveWordImage = true;
 
+  // Seuil de taille pour considérer qu'un caractère est de la ponctuation
   float ponctuationThreshold = 0.25;
 
+  //c Prend en entrée un réseau CNN
+  // Permet d'utiliser le réseau passé en argument pour lire des textes,
+  // avec ou sans correction.
   ImageReader(CNN cnn) {
     this.cnn = cnn;
   }
 
+  //b Prend en entrée un réseau simple à la place
   ImageReader(NeuralNetwork nn) {
     this.nn = nn;
   }
 
+  //f La correction est activée par défaut
   public String Read(PImage img) {
     return Read(img, true);
   }
 
+  //f Renvoie une chaine de caractères correspondant au texte sur l'_img_
+  // _withCorrection_ indique si l'on souhaite utiliser la correction automatique ou non
+  // Fonctionne selon les étapes suivantes :
+  // -> Récupération des mots et des lettres individuellement avec ImageSeparator
+  // -> Reconnaissance de la ponctuation
+  // -> Reconnaissance des lettres
+  // -> Correction avec dictionnaire
   public String Read(PImage img, boolean withCorrection) {
+
+    // Etape 1 : Récupère les mots et les lettres comme images
     ImageSeparator is = new ImageSeparator(img);
     PImage[][] wordsImages = new PImage[0][];
     wordsImages = is.GetWordsImages();
@@ -30,15 +45,16 @@ class ImageReader {
     println(etalonnedProp);
     */
 
+    // On stocke la taille moyenne des lettres pour trouver les caractères correspondant
+    // à de la ponctuation. Par exemple, les points sont plus petits, et sont donc facilement
+    // détectables.
     float numberOfLettersAverage = 0;
-
     String text = "";
     ArrayList<float[][]> wordsEffectiveProb = new ArrayList<float[][]>();
-
     ArrayList<Integer> boundingBoxSizesList = new ArrayList<>();
-
     int[][] boundingBoxSizes = new int[wordsImages.length][];
     float averageBoundingBoxSize = 0;
+
     for(int i = 0; i < wordsImages.length; i++) {
       boundingBoxSizes[i] = new int[wordsImages[i].length];
       for(int j = 0; j < wordsImages[i].length; j++) {
@@ -46,15 +62,15 @@ class ImageReader {
         boundingBoxSizes[i][j] = (boundingBox[2] - boundingBox[0])*(boundingBox[3] - boundingBox[1]);
         boundingBoxSizesList.add(boundingBoxSizes[i][j]);
         averageBoundingBoxSize += (float)boundingBoxSizes[i][j] / wordsImages[i].length / wordsImages.length;
-
         //wordsImages[i][j].save("./AuxiliarFiles/BoundingBoxTest/" + str(boundingBoxSizes[i][j]) + " " + str(random(1)) + ".jpg");
       }
     }
-
     println("Average bounding box :", averageBoundingBoxSize);
-
     SaveIntListAsCSV(boundingBoxSizesList.stream().mapToInt(Integer::intValue).toArray(), "./AuxiliarFiles/BoundingBoxSizeGraph.csv");
 
+    // Reconnaissance des lettres et des mots par le réseau
+    // Pour chaque lettre, on obtient ainsi une liste de probabilités
+    // (ex : A -> 1%, B -> 90%, C -> 5%, ...)
     ArrayList<String> ponctuationsList = new ArrayList<>();
     int wordIndex = -1;
     for(PImage[] w : wordsImages) {
@@ -82,7 +98,7 @@ class ImageReader {
         //wordOutput.Debug();
       }
 
-      // Réccupérer les listes de probabilités
+      // Récupère les listes de probabilités
       float[][] allProb = new float[w.length][];
       for(int i = 0; i < w.length; i++) {
         allProb[i] = wordOutput.ColumnToArray(i);
@@ -91,16 +107,20 @@ class ImageReader {
       //println("AllProb");
       //println(allProb[0]);
 
+      // Effective prob contient la liste des caractères corrigés par ressemblance
+      // Par exemple, un A peut ressembler à un 4, les probabilités sont donc ajustées
+      // en conséquence
       float[][] effectiveProb = new float[w.length][];
       for(int i = 0; i < w.length; i++) {
         effectiveProb[i] = cs.GetProb(allProb[i]);
-
       }
 
+      // Si le paramètre est activé, sauvegarde des images des mots
+      // Utile pour déboguer
       if(saveWordImage) {
         float randomName = random(1000);
         for(int i = 0; i < w.length; i++) {
-          //SAUVEGARDE DU MOT DANS UN FICHIER A PART
+          // Sauvegarde du mot dans un fichier à part
           String prob = str(i);
           float letterThreshold = 0.17;
 
@@ -124,6 +144,8 @@ class ImageReader {
         }
       }
 
+      // Liste des probabilités pour chaque mots
+      // Utile pour la correction
       ArrayList<float[]> wordProb = new ArrayList<float[]>();
       for(int i = 0; i < effectiveProb.length; i++) {
         if(boundingBoxSizes[wordIndex][i] < this.ponctuationThreshold * averageBoundingBoxSize) { //ie c'est un signe de ponctuation, donc pas pris en compte pour le moment
@@ -144,6 +166,7 @@ class ImageReader {
       }
     }
 
+    // Corrige le texte à partir d'un dictionnaire et des probabilités calculées
     float[][][] wordsEffectiveProbArray = wordsEffectiveProb.toArray(new float[0][][]);
     for(int i = 0; i < wordsEffectiveProbArray.length; i++) {
       //println("EffectiveProb");

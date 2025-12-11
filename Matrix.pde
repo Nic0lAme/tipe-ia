@@ -78,7 +78,7 @@ class Matrix {
         if (compteur >= 5) { compteur = 0; output.add(buffer); buffer = ""; }
       }
       if (i != this.n) buffer += ";";
-      if(doLog) cl.pln("\t" + (i + 1) + "/" + this.n + "\t Time remaining " + RemainingTime(startTime, i+1, this.n));
+      if(doLog) cl.pln("\t" + (i + 1) + "/" + this.n + "\t Temps restant " + RemainingTime(startTime, i+1, this.n));
     }
     if (!buffer.equals("")) output.add(buffer);
 

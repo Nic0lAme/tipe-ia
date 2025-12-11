@@ -368,7 +368,7 @@ class NeuralNetwork {
     int numOfBatches = floor(data[0].p / batchSize);
     for (int k = 0; k < numOfEpoch; k++) {
       float learningRate = CyclicalLearningRate(k, minLR, maxLR, period);
-      cl.pln("(" + label + ") \tEpoch " + (k+1) + "/" + numOfEpoch + "\t Learning Rate : " + String.format("%6.4f", learningRate));
+      cl.pln("(" + label + ") \tEpoch " + (k+1) + "/" + numOfEpoch + "\t Taux d'apprentissage : " + String.format("%6.4f", learningRate));
 
       for (int i = 0; i < data[0].p-1; i++) {
         int j = floor(random(i, data[0].p));
@@ -390,7 +390,7 @@ class NeuralNetwork {
         if (i % (numOfBatches / 4) == 0)
           cl.pln("\t Epoch " + String.format("%05d",k+1) +
             " Batch " + String.format("%05d",i+1) + " : " + String.format("%9.3E",l) +
-            "\t Time remaining " + RemainingTime(startTime, k * numOfBatches + i + 1, numOfBatches * numOfEpoch)
+            "\t Temps restant " + RemainingTime(startTime, k * numOfBatches + i + 1, numOfBatches * numOfEpoch)
           );
       }
 

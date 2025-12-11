@@ -215,7 +215,7 @@ class HyperParameters {
       if (i < this.layerSize.length - 1) str += ", ";
     }
     
-    str += "] Learning Rate from " + String.format("%8.5f", this.minLR) + " to " + String.format("%8.5f", this.maxLR) +
+    str += "] Taux d'apprentissage from " + String.format("%8.5f", this.minLR) + " to " + String.format("%8.5f", this.maxLR) +
       " | Period " + str(this.period) +
       " | Batch Size " + str(this.batchSize) +
       " | Lambda " + String.format("%9.3E", this.lambda);

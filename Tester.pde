@@ -13,22 +13,31 @@ class Tester {
   private PImage lastGeneratedImage;
   private String lastGeneratedText;
 
+  //c Classe qui contient toutes les fonctions de test
+  // pour la reconnaissance d'image
   public Tester(NeuralNetwork nn) {
     this.nn = nn;
     this.cnn = null;
     isNN = true;
   }
 
+  //b Peut prendre également un CNN en paramètre pour le test
   public Tester(CNN cnn) {
     this. nn = null;
     this.cnn = cnn;
     isNN = false;
   }
 
+  //f Efffectue un test de reconnaissance d'image et renvoie les résultats
+  // Le test s'effectue de la façon suivante, avec ou sans correction activée:
+  // -> Création d'un texte aléatoire
+  // -> Déchiffrage du texte
+  // -> Évaluation de la performance (voir le calcul de score)
   public Results SaveTest() {
-    // Génère un texte
+    // Génère un texte aléatoire
     int numOfCharInList = GenerateText();
 
+    // On démarre le "chronomètre"
     int initTime = millis();
 
     // Déchiffre le texte
@@ -43,6 +52,8 @@ class Tester {
     //println("Time :", endTime - initTime);
 
     // Évalue la performance
+    // Le score est d'autant plus haut que la distance d'édition du texte reconnu au
+    // texte à reconnaître est petite
     int distanceCorr = wc.LevenshteinDistance(lastGeneratedText, resultCorr);
     float scoreCorr = 1 - ((float)distanceCorr/numOfCharInList);
 
@@ -54,11 +65,8 @@ class Tester {
     return new Results(scoreCorr, endTime - initTime);
   }
 
+  //f Lance un test, avec ou sans correction
   public Results RunOneTest(boolean withCorrection) {
-    return RunOneTest(withCorrection, false);
-  }
-
-  public Results RunOneTest(boolean withCorrection, boolean withSave) {
     // Génère un texte
     int numOfCharInList = GenerateText();
 
@@ -85,6 +93,7 @@ class Tester {
     return new Results(score, endTime - initTime);
   }
 
+  // Lance plusieurs tests à la suite, et renvoie la moyenne des résultats
   public Results RunNTest(int n, boolean withCorrection) {
     if(n==0) { cl.pln(this, "RunNTest", "n == 0"); Exception e = new Exception(); e.printStackTrace(); return new Results(-1, -1); }
     float totalScore = 0; float totalTime = 0;
@@ -108,6 +117,9 @@ class Tester {
     return new Results(totalScore / n, totalTime / n);
   }
 
+  // Génère une image de texte aléatoire à partir des mots du dictionnaire
+  // L'image créée est stockée dans lastGeneratedImage, et le texte solution
+  // dans lastGeneratedText. La fonction renvoie le nombre de caractères du texte
   public int GenerateText() {
     PFont font = cs.GetRandomTrainingFont(fontSize);
     PGraphics pg = createGraphics(w, h);
@@ -157,11 +169,10 @@ class Tester {
   }
 }
 
-
+// Cette classe permet de stocker les résultats d'un test effectué par Tester
 class Results {
-
-  float score;
-  float time;
+  float score; // Un score de réussite pour la reconnaissance d'image
+  float time; // Temps mis par l'algorithme pour réaliser la reconnaissance
 
   Results(float s, float t) {
     this.score = s;

@@ -298,6 +298,6 @@ public synchronized void AddToRes(ArrayList<Matrix[]> res, Matrix[] toAdd, int s
   res.add(toAdd);
 
   if(res.size() % (sampleSize / 10) == 0) {
-    cl.pln(String.format("%5.3f", (float)res.size() / sampleSize), "Time Remaining :", RemainingTime(startTime, res.size(), sampleSize));
+    cl.pln(String.format("%5.3f", (float)res.size() / sampleSize), "Temps restant :", RemainingTime(startTime, res.size(), sampleSize));
   }
 }
