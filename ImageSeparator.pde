@@ -102,20 +102,20 @@ class ImageSeparator {
       if (withLetters) {
         for (PVector[] coords : word) {
           PVector ul = coords[0], br = coords[1];
-          pg.stroke(10, 50, 240, 255); pg.line(ul.x, ul.y, br.x, ul.y);
-          pg.stroke(10, 50, 240, 255); pg.line(ul.x, br.y, br.x, br.y);
-          pg.stroke(10, 50, 240, 255); pg.line(ul.x, ul.y, ul.x, br.y);
-          pg.stroke(10, 50, 240, 255); pg.line(br.x, ul.y, br.x, br.y);
+          pg.stroke(0, 0, 255, 255); pg.line(ul.x, ul.y, br.x, ul.y);
+          pg.stroke(0, 0, 255, 255); pg.line(ul.x, br.y, br.x, br.y);
+          pg.stroke(0, 0, 255, 255); pg.line(ul.x, ul.y, ul.x, br.y);
+          pg.stroke(0, 0, 255, 255); pg.line(br.x, ul.y, br.x, br.y);
         }
       }
 
       if (withWords) {
         PVector wul = word[0][0], wbr = word[word.length-1][1];
-        int off = 0;
-        pg.stroke(240, 180, 20); pg.line(wul.x-off, wul.y-off, wbr.x+off, wul.y-off);
-        pg.stroke(20, 240, 180); pg.line(wul.x-off, wbr.y+off, wbr.x+off, wbr.y+off);
-        pg.stroke(180, 20, 240); pg.line(wul.x-off, wul.y-off, wul.x-off, wbr.y+off);
-        pg.stroke(120, 120, 180); pg.line(wbr.x+off, wul.y-off, wbr.x+off, wbr.y+off);
+        int off = 2;
+        pg.stroke(255, 0, 0); pg.line(wul.x-off, wul.y-off, wbr.x+off, wul.y-off);
+        pg.stroke(255, 0, 0); pg.line(wul.x-off, wbr.y+off, wbr.x+off, wbr.y+off);
+        pg.stroke(255, 0, 0); pg.line(wul.x-off, wul.y-off, wul.x-off, wbr.y+off);
+        pg.stroke(255, 0, 0); pg.line(wbr.x+off, wul.y-off, wbr.x+off, wbr.y+off);
       }
     }
 

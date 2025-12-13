@@ -4,32 +4,32 @@ class ScrambleVisual extends PApplet {
   final float density = 0.1;
   final float perlin = 0.5;
   final float deformation = 0.08;
-  
+
   PImage baseImg;
   int w, h;
   int numOfCol, numOfLine;
   int mainMultiplier = 2;
   String name;
-  
+
   PImage[] scrambledImages;
-  
+
   ScrambleVisual(PImage img, int w, int h, int col, int line, String name) {
     super();
-    
+
     this.baseImg = img;
     this.w = w;
     this.h = h;
     this.numOfCol = col;
     this.numOfLine = line;
     this.name = name;
-    
+
     PApplet.runSketch(new String[] {this.getClass().getSimpleName() + " | " + this.name}, this);
   }
-    
+
   void settings() {
     size(this.w * this.numOfCol, this.h * (this.numOfLine + mainMultiplier + 1));
   }
-  
+
   void setup() {
     this.scrambledImages = new PImage[this.numOfCol * this.numOfLine];
     for(int k = 0; k < this.numOfCol * this.numOfLine; k++) {
@@ -42,20 +42,20 @@ class ScrambleVisual extends PApplet {
         );
     }
   }
-  
+
   void draw() {
     background(255);
-    
+
     fill(0);
     noStroke();
     rect(this.width / 2 - this.w * (this.mainMultiplier + 0.5) / 2, this.h * 0.25, this.w * (this.mainMultiplier+0.5), this.h * (this.mainMultiplier+0.5));
     image(this.baseImg, this.width / 2 - this.w * this.mainMultiplier / 2, this.h / 2, this.w * this.mainMultiplier, this.h * this.mainMultiplier);
-    
+
     rect(0, (this.mainMultiplier + 1) * this.h, this.width, this.height);
     for(int i = 0; i < this.numOfCol; i++)
       for(int j = 0; j < this.numOfLine;j++)
         image(this.scrambledImages[i * this.numOfLine + j], i * this.w + 1, (j + this.mainMultiplier + 1) * this.h + 1);
-        
+
     if(this.frameCount == 1) {
       this.saveFrame(globalSketchPath + "/Visuals/" + this.name + ".jpg");
     }
@@ -68,39 +68,39 @@ class WholeTextTestVisual extends PApplet {
   int fontSize;
   int w; int h;
   int marge;
-  
+
   int maxCharPerLine;
-  
+
   PFont font;
-  
+
   WholeTextTestVisual(int numOfChar, String fontName, int fontSize) {
     super();
-    
+
     this.numOfChar = numOfChar;
-    
+
     this.fontName = fontName;
     this.fontSize = fontSize;
-    
+
     this.marge = 3 * this.fontSize;
     this.w = 800;
-    
+
     this.maxCharPerLine = round(this.w / this.fontSize * 1.2);
     this.h = this.fontSize * 2 * (this.numOfChar / maxCharPerLine + 2);
-    
+
     PApplet.runSketch(new String[] {this.getClass().getSimpleName() + " | " + this.fontName + " | " + str(this.numOfChar)}, this);
   }
-    
+
   void settings() {
     size(this.w + 2 * this.marge, this.h + 2 * this.marge);
   }
-  
+
   void setup() {
     this.font = createFont(this.fontName, this.fontSize);
   }
-  
+
   void draw() {
     background(255);
-    
+
     ArrayList<int[]> wordList = new ArrayList<>();
     int numOfCharInList = 0;
     while(numOfCharInList < this.numOfChar) {
@@ -108,35 +108,35 @@ class WholeTextTestVisual extends PApplet {
       wordList.add(newWord);
       numOfCharInList += newWord.length;
     }
-    
+
     int wordIndex = 0;
     int lineIndex = 0;
     while(wordIndex < wordList.size()) {
       int charCounter = 0;
-      
+
       String line = "";
       while(charCounter < this.maxCharPerLine && wordIndex < wordList.size()) {
         int[] word = wordList.get(wordIndex);
         charCounter += word.length;
-        
+
         line += wc.IntArrayToString(word);
         line += " ";
-        
+
         wordIndex++;
       }
-      
+
       textFont(this.font);
       fill(0);
       text(line, this.marge, this.marge + lineIndex * 2 * this.fontSize);
-      
+
       lineIndex++;
     }
-    
+
     ImageSeparator is = new ImageSeparator(this.get());
     is.SaveSeparationPreview("./AuxiliarFiles/TEST1.jpg", true, true);
     String text = ir.Read(this.get());
     println(text);
-    
+
     delay(30000);
   }
 }

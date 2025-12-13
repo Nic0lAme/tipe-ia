@@ -177,6 +177,33 @@ public class LetterDataset {
     return new Matrix[]{inputs, sample[1][0]};
   }
 
+  //f
+  public Matrix[][] GetMNISTDataset(String path) {
+    cl.pln(path + " load begin :(");
+    Table table = loadTable(path);
+    cl.pln(path + " load end :)");
+
+    int imgSize = 28;
+    int n = table.getRowCount();
+    Matrix[] inputs = new Matrix[n];
+    Matrix outputs = new Matrix(10, n);
+    int k = 0;
+    for (TableRow tr : table.rows()) {
+      int size = tr.getColumnCount() - 1;
+
+      float[] line = new float[size];
+      for (int i = 1; i < size+1; i++) line[i-1] = map(tr.getFloat(i), 0, 255, 1, 0);
+      inputs[k] = new Matrix(imgSize).FromArray(line);
+
+      float[] col = new float[10];
+      col[tr.getInt(0)] = 1;
+      outputs.ColumnFromArray(k, col);
+      k++;
+    }
+
+    return new Matrix[][]{ inputs, {outputs} };
+  }
+
   //s Les paramètres de brouillage sont ceux de la classe
   public PImage[] GetRandomCouple(int xw, int xh) {
     return GetRandomCouple(xw, xh, this.move, this.blur, this.density, this.perlin, this.deformation);
@@ -271,6 +298,6 @@ public synchronized void AddToRes(ArrayList<Matrix[]> res, Matrix[] toAdd, int s
   res.add(toAdd);
 
   if(res.size() % (sampleSize / 10) == 0) {
-    cl.pln(String.format("%5.3f", (float)res.size() / sampleSize), "Time Remaining :", RemainingTime(startTime, res.size(), sampleSize));
+    cl.pln(String.format("%5.3f", (float)res.size() / sampleSize), "Temps restant :", RemainingTime(startTime, res.size(), sampleSize));
   }
 }

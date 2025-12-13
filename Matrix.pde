@@ -78,7 +78,7 @@ class Matrix {
         if (compteur >= 5) { compteur = 0; output.add(buffer); buffer = ""; }
       }
       if (i != this.n) buffer += ";";
-      if(doLog) cl.pln("\t" + (i + 1) + "/" + this.n + "\t Time remaining " + RemainingTime(startTime, i+1, this.n));
+      if(doLog) cl.pln("\t" + (i + 1) + "/" + this.n + "\t Temps restant " + RemainingTime(startTime, i+1, this.n));
     }
     if (!buffer.equals("")) output.add(buffer);
 
@@ -130,9 +130,16 @@ class Matrix {
     return this;
   }
 
+  //s Copie les valeurs du tableau 1D _val_ dans la matice _this_
+  Matrix FromArray(float[] vals) {
+    if (this.n*this.p != vals.length) { cl.pln(this, "FromArray", "Wrong size 1D array"); Exception e = new Exception(); e.printStackTrace(); return this; }
+    for (int i = 0; i < n*p; i++) values[i] = vals[i];
+    return this;
+  }
+
   //f Copie les valeurs du tableau 2D _val_ dans la matice _this_
   Matrix FromArray(float[][] val) {
-    if (val.length != n || val[0].length != p) { cl.pln(this, "FromArray", "Wrong size array"); Exception e = new Exception(); e.printStackTrace(); return this; }
+    if (val.length != n || val[0].length != p) { cl.pln(this, "FromArray", "Wrong size 2D array"); Exception e = new Exception(); e.printStackTrace(); return this; }
     for (int i = 0; i < n; i++)
       for (int j = 0; j < p; j++)
         this.values[i * this.p + j] = val[i][j];

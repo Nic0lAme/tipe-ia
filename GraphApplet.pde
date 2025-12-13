@@ -711,6 +711,7 @@ class GraphApplet extends JFrame {
   }
 }
 
+// Graphique pour afficher l'évolution du la perte pendant l'entrainement
 public class LearnGraph {
   final private JFreeChart chart;
   final private XYSeries series, average;
@@ -730,6 +731,7 @@ public class LearnGraph {
   private final int avgPeriod = 30;
   private double somme = 0;
 
+  //c Constructeur, spécifie le nom des axes
   public LearnGraph(String abscisses, String ordonnees) {
     ordonnesName = ordonnees;
 
@@ -770,38 +772,46 @@ public class LearnGraph {
     jpanel.add(panel, BorderLayout.CENTER);
   }
 
+  //f Passe en échelle log ou échelle linéaire
   public void SwitchOrdAxis() {
     if (isLog) chart.getXYPlot().setRangeAxis(linAxis);
     else chart.getXYPlot().setRangeAxis(logAxis);
     isLog = !isLog;
   }
 
+  //f Renvoie si l'axe des ordonnées est en échelle log ou non
   public boolean IsLogAxis() {
     return isLog;
   }
 
+  //f Règle l'épaisseur de la police d'écriture
   public void SetStrokeWeight(float sw) {
     strokeWeight = sw;
     chart.getXYPlot().getRenderer().setSeriesStroke(DATA_INDEX, new BasicStroke(strokeWeight));
     chart.getXYPlot().getRenderer().setSeriesStroke(AVG_INDEX, new BasicStroke(strokeWeight));
   }
 
+  //f Renvoie si la courbe "moyenne glissante" est affichée ou non
   public boolean IsAvgShowed() {
     return chart.getXYPlot().getRenderer().isSeriesVisible(AVG_INDEX);
   }
 
+  //f Affiche (ou cache) la courbe "moyenne glissante"
   public void ToggleAvg() {
     chart.getXYPlot().getRenderer().setSeriesVisible(AVG_INDEX, !IsAvgShowed());
   }
 
+  //f Renvoie si la courbe "données brutes" est affichée ou non
   public boolean IsDataShowed() {
     return chart.getXYPlot().getRenderer().isSeriesVisible(DATA_INDEX);
   }
 
+  //f Affiche (ou cache) la courbe "données brutes"
   public void ToggleData() {
     chart.getXYPlot().getRenderer().setSeriesVisible(DATA_INDEX, !IsDataShowed());
   }
 
+  //f Efface et réinitialise le graphique
   public void Clear() {
     series.clear();
     average.clear();
@@ -810,6 +820,8 @@ public class LearnGraph {
     chart.getXYPlot().clearAnnotations();
   }
 
+  //f Ajoute sur le graphique une étiquette avec les résultats sur les
+  // données d'entrainement / de test
   public void AddTestResult(double trainSet, double testSet) {
     int x = (series.getItemCount() == 0 ? 0 : series.getX(series.getItemCount()-1).intValue());
     double y = avgDatas.size() < avgPeriod
@@ -824,11 +836,13 @@ public class LearnGraph {
     chart.getXYPlot().addAnnotation(result);
   }
 
+  //f Ajoute une valeur au graphique (en incrémentant de 1 l'abscisse)
   public void Add(double y) {
     if (series.getItemCount() == 0) Add(1, y);
     else Add(series.getMaxX() + 1, y);
   }
 
+  //f Ajoute une valeur (x, y) au graphique
   public void Add(double x, double y) {
     series.add(x, y);
 
@@ -839,6 +853,7 @@ public class LearnGraph {
     if (avgDatas.size() == avgPeriod) average.add(x, somme/avgPeriod);
   }
 
+  //f Renvoie le "panel" correspondant au graphique
   public JPanel GetPanel() {
     return jpanel;
   }

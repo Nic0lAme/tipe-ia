@@ -35,6 +35,8 @@ boolean doGPUMult = true;
 final AtomicBoolean stopLearning = new AtomicBoolean(false);
 final AtomicBoolean abortTraining = new AtomicBoolean(false); // Note : Annule aussi toute construction de dataset
 
+Matrix[][] testSample;
+
 void settings() {
   size(floor(28 * rScale * 26), floor(28 * rScale * numOfTestSample), JAVA2D); // For Global Test
   //size(119, 180, P2D); // For Direct Test
@@ -129,18 +131,38 @@ void setup() {
   Matrix[][] testSample = session.ds.CreateSample(
       cs.GetChars(),
       //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
+      handTestingDatas,
+      //new String[]{},
+      fontTestingDatas,
+      1, 1);
+
+  cnn.MiniBatchLearn(sample, 8, 256, 0.001, 0.001, 2, new Matrix[][][]{testSample}, "");
+  cnn.Export("./CNN/Test21.cnn");
+  session.AccuracyScore(cnn, testSample, true);
+  */
+
+  // Tester tester = new Tester((NeuralNetwork) null);
+  // ImageSeparator is = new ImageSeparator(loadImage("test.png"));
+  // is.SaveSeparationPreview("test1.png", true, true);
+
+  NeuralNetwork nn = new NeuralNetwork(imgSize*imgSize, 256, 128, cs.GetChars().length);
+  nn.UseSoftMax();
+  Tester tester = new Tester(nn);
+  Matrix[] testSample = session.ds.SampleLining(session.ds.CreateSample(
+      cs.GetChars(),
+      //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
       //handTestingDatas,
       new String[]{},
       fontTestingDatas,
-      3, 1);
+      3, 1));
       
-    Matrix[][] testSampleForTrain = session.ds.CreateSample(
+    Matrix[][] testSampleForTrain = session.ds.SampleLining(session.ds.CreateSample(
       cs.GetChars(),
       //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
       //handTestingDatas,
       new String[]{},
       fontTrainingDatas,
-      3, 1);
+      3, 1));
   
   int globalInitTime = millis();
   int numOfIter = 4;
@@ -161,26 +183,42 @@ void setup() {
     
     cl.pList(repList, "Repetitions");
 
-    Matrix[][] sample = session.ds.CreateSample(
+    Matrix[][] sample = session.ds.SampleLining(session.ds.CreateSample(
         cs.GetChars(),
         //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
         //handTrainingDatas,
         new String[]{},
         fontTrainingDatas,
-        repList, 1);
+        8, 1));
 
-    //Matrix[][] trainingSampleForTest = session.ds.CNNSampleASample(sample, 2048);
+    nn.MiniBatchLearn(sample, 5, 64, 3.5, 3, 2, new Matrix[][]{testSample, sample}, "");
 
-    cnn.MiniBatchLearn(sample, 3, 128, 0.001, 0.001, 4, new Matrix[][][]{testSample, testSampleForTrain}, "");
-    cnn.Export("./CNN/NormalCNN.cnn");
-    //session.AccuracyScore(nn, testSample, true);
+    session.AccuracyScore(nn, testSample, true);
+    float[] accuracyTest = CompilScore(session.AccuracyScore(nn, testSample, true));
+    float averageTestingAccuracy = Average(accuracyTest);
+
+    Matrix[] shuffledSample = new Matrix(0).ShuffleCol(sample);
+    float[] accuracyTrain = CompilScore(session.AccuracyScore(nn, shuffledSample, false));
+    float averageTrainingAccuracy = Average(accuracyTrain);
+
+    graphApplet.AddTestResult(averageTrainingAccuracy, averageTestingAccuracy);
+    String tr = String.format("%.2f",averageTrainingAccuracy*100);
+    String ts = String.format("%.2f",averageTestingAccuracy*100);
+
+    // Results r = tester.RunNTest(10);
+    // println("[RÉSULTAT DU TEST] : Score = " + r.time);
+    // println("[RÉSULTAT DU TEST] : Distance = " + r.score);
   }
+
   int[] intVar = new int[varianceArray.length];
   for(int i = 0; i < varianceArray.length; i++)
     intVar[i] = (int)(varianceArray[i] * 1000);
   SaveIntListAsCSV(intVar, "./AuxiliarFiles/Variances.csv");
-  
-  cl.pln("Global time " + str((millis() - globalInitTime) / 1000));
+
+  // Results r = tester.RunNTest(10, true);
+  // println("[RÉSULTAT DU TEST] : Temps = " + r.time);
+  // println("[RÉSULTAT DU TEST] : Score = " + r.score);
+  // tester.SaveTest();
 }
 
 int index = 0;

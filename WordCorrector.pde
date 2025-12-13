@@ -2,10 +2,18 @@ import java.util.*;
 import java.util.stream.*;
 
 class WordCorrector {
-  char[] charList =           new char[] {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+  char[] charList = new char[] {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+  
+  // Fréquence des différents caracteres dans la langue française
+  // Source : Laboratoire CLLE-ERRS (Université de Toulouse)
+  // Les lettres accentués ont été accumulé
+  // Exemple : pour le a, a : 7.636%, à : 0.486%, â : 0.051%
   float[] letterFrequencies = new float[]{8.173, 0.901, 3.345, 3.669, 16.716, 1.066, 0.866, 0.737, 7.529, 0.613, 0.074, 5.456, 2.968, 7.095, 5.796, 2.521, 1.362, 6.693, 7.948, 7.244, 6.311, 1.838, 0.049, 0.427, 0.128, 0.326};
   float[] letterSpreading = new float[]{0.1, 0.05};
-  float fiability = 1; // 0 -> c'est vraiment très mauvais / 1 -> c'est vraiment excellent
+  
+  // Modifie l'importance de la correction
+  // 0.1 -> énormément de correction / 1 -> pas de correction
+  float fiability = 1; 
   
   float probThreshold = 0.2;
   int maxNumberOfCandidates = 30;
@@ -50,10 +58,12 @@ class WordCorrector {
     }
   }
   
+  //s Prend une Integer[] _chars_ (généralement obtenue à partir d'une ArrayList<Integer>)
   public String IntArrayToString(Integer[] chars) {
     return IntArrayToString(Arrays.stream(chars).mapToInt(Integer::intValue).toArray());
   }
   
+  //f Réccupère un mot String à partir de leur liste d'indice _chars_
   public String IntArrayToString(int[] chars) {
     String text = "";
     for(int i = 0; i < chars.length; i++) {
@@ -62,6 +72,7 @@ class WordCorrector {
     return text;
   }
   
+  //f Renvoie à partir d'un mot _word_ la liste int[] des indices associés
   public int[] StringToIntArray(String word) {
     int[] ret = new int[word.length()];
     int index = -1;
@@ -73,10 +84,15 @@ class WordCorrector {
     return ret;
   }
   
+  //s On utilise la _probThreshold_ par défaut (0.2) et on commence par une profondeur d'appel de 0
   public String WordAutoCorrection(float[][] letterProb) {
     return WordAutoCorrection(letterProb, probThreshold, 0);
   }
   
+  //f Correction automatique du mot à partir du dictionnaire
+  // On applique ceci aux probabilités de chaque caractère dans _letterProb_
+  // On considère qu'un caractère est envisageable si sa probabilité est supérieure à _threshold_
+  // _Depth_ permet de contrôler la profondeur de la pile d'appel 
   public String WordAutoCorrection(float[][] letterProb, float threshold, int depth) {
     // Réccupérer les candidates plausibles par lettre
     HashMap<Integer, Float>[] charCandidates = new HashMap[letterProb.length];
@@ -88,7 +104,9 @@ class WordCorrector {
         charCandidates[letter].put(i, letterProb[letter][i]);
       }
       numberOfWordCandidate *= charCandidates[letter].values().size();
-      if(charCandidates[letter].size() == 0) charCandidates[letter].put(4, 0.1); //Si ne trouve pas de caractères, part du principe que c'est un e (la lettre la plus fréquente)
+
+      //Si ne trouve pas de caractères, part du principe que c'est un e (la lettre la plus fréquente)
+      if(charCandidates[letter].size() == 0) charCandidates[letter].put(4, 0.1);
     }
     
     //println(depth, threshold, numberOfWordCandidate);
@@ -101,10 +119,11 @@ class WordCorrector {
       */
       
       // Diminue le threshold jusqu'à qu'on soit bon
+      // On augmente la variable depth pour arrêter au bout d'une certaine taille de pile d'appels
       if(depth < 50) return WordAutoCorrection(letterProb, threshold - 0.004, depth + 1);
     }
     
-    if(abs(numberOfWordCandidate) > 5 * maxNumberOfCandidates) {
+    if(abs(numberOfWordCandidate) > 5 * maxNumberOfCandidates && depth < 50) {
       // Augmente le threshold jusqu'à qu'on soit bon
       return WordAutoCorrection(letterProb, threshold + 0.001, depth + 1);
     }
@@ -221,6 +240,37 @@ class WordCorrector {
     return prevRow[w2.length];
   }
   
+  public int LevenshteinDistance(String w1, String w2) {
+    return this.LevenshteinDistance(w1.toCharArray(), w2.toCharArray());
+  }
+  
+  public int LevenshteinDistance(char[] w1, char[] w2) {
+    if(w1.length < w2.length) return LevenshteinDistance(w2, w1);
+    int[] prevRow = new int[w2.length + 1];
+    int[] currentRow = new int[w2.length + 1];
+    
+    for(int j = 0; j < w2.length + 1; j++) {
+      prevRow[j] = j;
+    }
+    
+    for(int i = 1; i < w1.length + 1; i++) {
+      currentRow[0] = i;
+      for(int j = 1; j < w2.length + 1; j++) {
+        currentRow[j] = Math.min(
+          Math.min(prevRow[j] + 1,                     // Insertion
+          currentRow[j-1] + 1),                // Deletion
+          prevRow[j-1] + (w1[i - 1] != w2[j - 1] ? 1 : 0)   // Substitution   
+        );
+      }
+      
+      int[] temp = prevRow;
+      prevRow = currentRow;
+      currentRow = temp;
+    }
+    
+    return prevRow[w2.length];
+  }
+  
   private void Backtrack(HashMap<Integer, Float>[] input, int index, List<Integer> current, float currentProb, HashMap<Integer[], Float> results) {
     if(index == input.length) {
       results.put(current.toArray(new Integer[0]), currentProb);
@@ -256,6 +306,7 @@ class WordCorrector {
         sum += letterProb[letter][k];
       }
       
+      // Détermine les proportions corrigées, en fonction du paramètre _this.fiability_
       for(int k = 0; k < this.charList.length; k++) {
         processedProb[letter][k] = (letterProb[letter][k] + (1 - this.fiability) / this.charList.length) / sum / (float)Math.pow(etalonnedProp[k], 1 - this.fiability);
       }
@@ -296,8 +347,8 @@ class WordCorrector {
     
     bestProb /= Math.pow(10, processedProb.length);
     
-    println(bestProb);
-    println(bestWord);
+    // println(bestProb);
+    // println(bestWord);
     
     if(fiability < 1) {
       for(int[] word : this.words) {

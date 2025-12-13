@@ -1,7 +1,8 @@
 /////////////////////////////////////////////////////////////////
 
-int numOfTestSample = 30; // This is just for the tests, not the training
+int numOfTestSample = 30; // Juste pour les tests, pas pour les entrainements
 
+// Toutes les polices à la main
 String[] handPolicies = new String[] {
   "AntoineME", "NicolasMA", "LenaME", "TheoLA", "ElioKE", "AkramBE", "IVALUA1", "IVALUA2", "SamuelJE", "QuentinGU",
   "TaoPO","GuillaumeLI","YacoutGA", "LoicRA", "MaximeMB", "NathanLU", "LubinDE", "MatheoLB", "SachaAD", "MatisBR",
@@ -20,6 +21,7 @@ String[] handPolicies = new String[] {
   "MPSIB00022", "MPSIB00023", "MPSIB00024", "MPSIB00025", "MPSIB00026"
 };
 
+// Toutes les polices d'ordinateurs
 String[] fontPolicies = new String[] {
   "Arial", "Bahnschrift", "Eras Demi ITC", "Lucida Handwriting Italique", "DejaVu Serif",
   "Fira Code Retina Moyen", "Consolas", "Lucida Handwriting Italique", "Playwrite IT Moderna", "Just Another Hand",
@@ -29,7 +31,7 @@ String[] fontPolicies = new String[] {
   "Trebuchet MS", "Bell MT", "Perpetua", "Times New Roman", "Franklin Gothic Book"
 };
 
-
+// Polices à la main pour l'entrainement
 String[] handTrainingDatas = new String[] {
   "AntoineME", "NicolasMA", "LenaME", "TheoLA", "ElioKE", "AkramBE", "IVALUA1", "IVALUA2", "SamuelJE", "QuentinGU",
   "TaoPO","GuillaumeLI","YacoutGA", "LoicRA", "MaximeMB", "NathanLU", "LubinDE", "MatheoLB", "SachaAD", "MatisBR",
@@ -47,7 +49,7 @@ String[] handTrainingDatas = new String[] {
   "MPSIB00022", "MPSIB00023", "MPSIB00024", "MPSIB00025", "MPSIB00026"
 };
 
-//String[] handTrainingDatas = new String[]{};
+// Polices d'ordinateur pour l'entrainement
 String[] fontTrainingDatas = new String[]{
   "Arial", "Bahnschrift", "Eras Demi ITC", "Lucida Handwriting Italique", "DejaVu Serif",
   "Fira Code Retina Moyen", "Consolas", "Lucida Handwriting Italique", "Playwrite IT Moderna", "Just Another Hand",
@@ -55,8 +57,8 @@ String[] fontTrainingDatas = new String[]{
   "Elephant", "Corbel", "Pristina", "Rockwell", "Cooper Black",
   "Trebuchet MS", "Bell MT", "Perpetua", "Times New Roman", "Franklin Gothic Book"
 };
-//String[] fontTrainingDatas = new String[]{};
 
+// Polices pour les tests
 String[] handTestingDatas = new String[]{"MrMollier", "MrChauvet", "SachaBE", "IrinaRU", "NoematheoBLB", "BCPST00072", "BCPST00073", "BCPST00074", "BCPST00075", "BCPST00076"};
 String[] fontTestingDatas = new String[]{"Liberation Serif", "Calibri", "Book Antiqua", "Gabriola", "Noto Serif"};
 
@@ -65,7 +67,7 @@ String[] fontTestingDatas = new String[]{"Liberation Serif", "Calibri", "Book An
 class CharactersStorage {
   final String characterFilePath = "AuxiliarFiles/characters.txt";
 
-  // À ne pas modifier (ou alors, vérifier que les fonctions de Load marchent correctement)
+  // (ne pas modifier) Ensemble des noms des caractères à réccupérer dans les fichiers
   private final String[] fullCharacters = new String[]{
     "uA","uB","uC","uD","uE","uF","uG","uH","uI","uJ","uK","uL","uM","uN","uO","uP","uQ","uR","uS","uT","uU","uV","uW","uX","uY","uZ",
     "la","lb","lc","ld","le","lf","lg","lh","li","lj","lk","ll","lm","ln","lo","lp","lq","lr","ls","lt","lu","lv","lw","lx","ly","lz",
@@ -84,6 +86,14 @@ class CharactersStorage {
     letterCorrespondance = new ArrayList<float[][]>();
   }
 
+  //f Permet de réccupérer une des polices d'entrainements aléatoirement
+  PFont GetRandomTrainingFont(float fontSize) {
+    int numOfFonts = fontTestingDatas.length;
+    int randomIndex = (int)(random(1) * numOfFonts);
+
+    return createFont(fontTestingDatas[randomIndex], fontSize);
+  }
+
   //f Ajoute le caractère dont le fichier est _name_, associé au caractère _d_, qui sera associé pour l'alphabet par _correspondance_
   // Dans _correspondance_, on a la liste des couple de lettres ressemblantes, avec la part de ressemblance
   // _Exemple : correspondance = {{8, 0.3}, {11, 0.3}}) pour le 1, qui ressemble au i et au l_
@@ -93,17 +103,20 @@ class CharactersStorage {
     letterCorrespondance.add(correspondance);
   }
 
+  //f Réccupère la liste des caractère considérés par le programme
   public String[] GetChars() {
     return usedChars.toArray(new String[usedChars.size()]);
   }
 
+  //f Réccupère le nombre de caractères considérés par le programme
   public int NumChars() {
     return usedChars.size();
   }
 
   //f Permet d'obtenir les probabilités pour chacune des 26 lettres à partir de la sortie du réseau _allProb_
+  // En fonction 
   float[] GetProb(float[] allProb) {
-    float[] ret = new float[26]; // TODO: 26 ? On considère pas les chiffres ?
+    float[] ret = new float[26];
 
     for (int i = 0; i < allProb.length; i++) {
       for (float[] c : letterCorrespondance.get(i)) {
@@ -120,7 +133,7 @@ class CharactersStorage {
     ParseCharFile(filePath, fullCharacters);
   }
 
-  //f Permet de trouver les proportions de chaque lettres détectées par un réseau
+  //f Permet de trouver les proportions de chaque lettres détectées par un réseau selon leurs ressemblance
   public float[] GetEtalonnedProp(CNN cnn) {
     Matrix[][] testSample = session.ds.CreateSample(
       cs.GetChars(),
@@ -204,6 +217,7 @@ class CharactersStorage {
     return 0;
   }
 
+  //f Charger les chiffres
   public void LoadNumbersOnly() {
     String[] allowed = new String[10];
     int start = FindIndex("0");
@@ -211,24 +225,28 @@ class CharactersStorage {
     ParseCharFile(characterFilePath, allowed);
   }
 
+  //f Charger les lettres majuscules
   public void LoadMajOnly() {
     String[] allowed = new String[26];
     for (int i = 0; i < 26; i++) allowed[i] = fullCharacters[i];
     ParseCharFile(characterFilePath, allowed);
   }
 
+  //f Charger toutes les lettres
   public void LoadLettersOnly() {
     String[] allowed = new String[52];
     for (int i = 0; i < 52; i++) allowed[i] = fullCharacters[i];
     ParseCharFile(characterFilePath, allowed);
   }
 
+  //f Charger toutes les lettres et chiffres
   public void LoadLettersAndNumbers() {
     String[] allowed = new String[62];
     for (int i = 0; i < 62; i++) allowed[i] = fullCharacters[i];
     ParseCharFile(characterFilePath, allowed);
   }
 
+  //f Charger toutes les lettres, les chiffres et les caractères spéciaux
   public void LoadFull() {
     ParseCharFile(characterFilePath);
   }

@@ -605,8 +605,8 @@
 	- >Entraine le réseau _this.nn_  
 	_phaseNumber_ est le nombre de phase de test (création de nouveaux dataset)  
 	_epochPerSet_ est le nombre d'epoch à chaque phase  
-	_startMinLR_, _endMinLR_, _startMaxLR_ et _endMaxLR_ permettent de définir l'évolution du learning rate  
-	_period_ désigne la période de changement du learning rate entre haut et bas  
+	_startMinLR_, _endMinLR_, _startMaxLR_ et _endMaxLR_ permettent de définir l'évolution du taux d'apprentissage  
+	_period_ désigne la période de changement du taux d'apprentissage entre haut et bas  
 	_batchSize_ représente la taille des batchs (taille des découpes d'échantillons à chaque epoch)  
 	_startDef_ et _endDef_ correspondent à l'évolution du taux de déformation  
 	_rep_ est le nombre de répétition de chaque échantillon  
