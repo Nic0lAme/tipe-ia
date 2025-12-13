@@ -1,3 +1,14 @@
+/////////////////////////////////////////////////////////////////
+
+// NeuralNetwork
+
+// Cette classe décrit un modèle de réseau de neurones, ainsi
+// que les fonctions permettant de l'entrainer suivant le principe
+// de rétropropagation.
+// L'algorithme complet d'entrainement est décrit dans _MiniBatchLearn_
+
+/////////////////////////////////////////////////////////////////
+
 class NeuralNetwork {
   // Couches
   int numLayers; // Nombre de couches
@@ -29,8 +40,14 @@ class NeuralNetwork {
     Init();
   }
 
-  public void UseSoftMax() { this.useSoftMax = true; } // Lorsque SoftMax est utilisé, il est nécessaire d'avoir des sorties qui s'additionnent à 1
+  //f Utilise le softmax en sortie
+  // Note : Lorsque SoftMax est utilisé, il est nécessaire d'avoir des sorties
+  // qui s'additionnent à 1
+  public void UseSoftMax() {
+    this.useSoftMax = true;
+  }
 
+  //f Initialisation de tous les paramètres du réseau
   private void Init() {
     entrySize = layers[0];
     outputSize = layers[numLayers-1];
@@ -54,12 +71,13 @@ class NeuralNetwork {
    for (int i = 0; i < sizes.length; i++) layers[i] = int(sizes[i]);
 
    Init();
-   
+
    int i = Load1DParam(weights, input, 1);
    Load1DParam(bias, input, i);
    return this;
   }
-  
+
+  //f Fonction utile pour l'import de réseaux de neurones (voir Import)
   private int Load1DParam(Matrix[] param, String[] output, int begin) {
     int nextLine = begin;
     for (int k = 0; k < param.length; k++) {
@@ -71,7 +89,6 @@ class NeuralNetwork {
     }
     return nextLine;
   }
-
 
   //f Sauvegarde les paramètres du réseau de neurones dans _name_
   public void Export(String name) {
@@ -102,8 +119,9 @@ class NeuralNetwork {
     return ForwardPropagation(entry)[this.numLayers - 1];
   }
 
-  //f Prend la matrice _entry_ en entrée, et renvoie un tableau des valeurs de chaque couche
-  // _entry.p_ correspond au nombre d'entrées données simultanément
+  //f Effectue une propagation vers l'avant (éventuellement sur plusieurs données d'entrées)
+  // Prend la matrice _entry_ en entrée, et renvoie un tableau des valeurs de chaque couche
+  // Le nombre d'entrées données simultanément est _entry.p_
   public Matrix[] ForwardPropagation(Matrix entry) {
     if (entry.n != entrySize) {
       println(entry.n, entrySize);
@@ -121,6 +139,8 @@ class NeuralNetwork {
   }
 
   //f Calcule la sortie correspondant à l'entrée _in_, de la couche _from_ à la couche _from+1_
+  // Les parties avec _hasNan_ permettent de vérifier qu'une des erreurs qui s'est produite,
+  // et que nous avons corrigée depuis, ne se produit plus. C'est une sécurité.
   private Matrix CalcLayer(int from, Matrix in) {
     Matrix result = weights[from].GPUMult(in);
 
@@ -158,8 +178,8 @@ class NeuralNetwork {
   }
 
   //f Effectue la rétropropagation du réseau de neurones
-  // On prend en entrée les valeurs d'_activations_ des layers
-  // On donne les valeurs attendues dans _expectedOutput_
+  // On prend en entrée les valeurs d'_activations_ des couches ainsi
+  // que les valeurs attendues (dans _expectedOutput_)
   public Matrix[][] BackPropagation(Matrix[] activations, Matrix expectedOutput) {
 
     //dJ/dZl
@@ -225,6 +245,10 @@ class NeuralNetwork {
 
   //f Effectue une étape d'apprentissage, ayant pour entrée _X_ et pour sortie _Y_
   // Le taux d'apprentissage est _learning\_rate_
+  // - La version dans multithreading est plus lisible, pour comprendre le principe.
+  // - La version avec multithreading fonctionne de la même façon, mais les batchs sont
+  // divisés en "sous-batchs" sur lesquels le réseau s'entraine en parallèle. Les résultats
+  // sont ensuite moyennés pour actualiser le réseau.
   public float Learn(Matrix X, Matrix Y, float learning_rate) {
     // Gradients des poids ([0]) et des biais([1]) pour chaque couche l ([][l])
     Matrix[][] gradients = new Matrix[2][this.numLayers-1];
@@ -239,7 +263,7 @@ class NeuralNetwork {
       gradients = BackPropagation(activations, Y);
     }
 
-    // Avec multithreading : le batch est divisé en numThreadsLearning sous-batchs, la
+    // Avec multithreading : le batch est divisé en _numThreadsLearning_ sous-batchs, la
     // back propagation est effectuée sur chaque sous-batchs, et les résultats sont moyennés
     else {
       ArrayList<Callable<Object>> tasks = new ArrayList<Callable<Object>>();
@@ -247,7 +271,6 @@ class NeuralNetwork {
       final Matrix[] answers = Y.Split(numThreadsLearning);
 
       // Gradients calculés, par sous-batch et par couche
-      // TODO: remplacer les arraylist par des arrays pour éviter erreurs et conversions
       ArrayList<Matrix[]> weightsGradients = new ArrayList<Matrix[]>(numThreadsLearning);
       ArrayList<Matrix[]> biasGradients = new ArrayList<Matrix[]>(numThreadsLearning);
       final Matrix[] partialS = new Matrix[numThreadsLearning];
@@ -256,9 +279,9 @@ class NeuralNetwork {
       for (int i = 0; i < numThreadsLearning; i++) {
         final int index = i;
 
-        // Tâche d'apprentissage : backpropagation sur un sous-batch, et les données
+        // Tâche d'apprentissage : rétropropagation sur un sous-batch, et les données
         // sont stockées dans les tableaux weightsGradients, biasGradients et partialS
-        // Le thread i remplit les cases i des tableaux (quand ce sera des tableaux)
+        // -> Le thread i remplit les cases i des tableaux
         class LearningTask implements Callable<Object> {
           public Object call() {
             Matrix[] activations = ForwardPropagation(trainingData[index]);
@@ -281,7 +304,7 @@ class NeuralNetwork {
       try {
         List<Future<Object>> executorsAns = executor.invokeAll(tasks);
       } catch (InterruptedException e) {
-        cl.pln("NeuralNetwork, Learn : Erreur critique, bonne chance pour la suite");
+        cl.pln("NeuralNetwork, Learn : Erreur (dans la parallélisation)");
       }
 
       // Recombine les données pour former les gradients et l'activation de la dernière couche
@@ -300,12 +323,18 @@ class NeuralNetwork {
       S = new Matrix(0).Concat(partialS);
     }
 
+    // Permet d'interrompre l'entrainement, puis de le reprendre dans la suite
+    // -> controlable depuis l'interface graphique
     synchronized (stopLearning) {
       if (stopLearning.get()) {
-        try { println("Learning stopped"); stopLearning.wait(); println("Le retour");}
+        try { println("Apprentissage interrompu"); stopLearning.wait(); println("Reprise de l'apprentissage");}
         catch (Exception e) { e.printStackTrace(); }
       }
     }
+
+    // Actualise les poids et biais
+    // (la partie avec _hasNaN_ sert à vérifier qu'une des erreurs qui s'est produite,
+    // et que nous avons corrigée depuis, ne se produit plus. Il s'agit d'une sécurité)
     boolean hasNaN = false;
     for(int l = 0; l < this.numLayers - 1; l++) {
       this.weights[l].Add(gradients[0][l], -learning_rate);
@@ -314,6 +343,7 @@ class NeuralNetwork {
       if(weights[l].HasNAN() || bias[l].HasNAN()) hasNaN = true;
     }
 
+    // Calcule la perte (loss) et la retourne
     float J = this.ComputeLoss(S, Y);
 
     /*
@@ -348,6 +378,7 @@ class NeuralNetwork {
     return J;
   }
 
+  // Diverses surchages, pour alléger le code par endroits
   public float MiniBatchLearn(Matrix[] data, int numOfEpoch, int batchSize, float lr) {
     return MiniBatchLearn(data, numOfEpoch, batchSize, lr, lr, 1);
   }
@@ -356,37 +387,60 @@ class NeuralNetwork {
     return MiniBatchLearn(data, numOfEpoch, batchSize, minLR, maxLR, period, new Matrix[][]{data}, "");
   }
 
+  //f Algorithme principal pour l'entrainement (entrainement par "mini batchs")
+  // Le principe de fonctionnement est le suivant :
+  // - On divise le jeu de donnés (_data_) en plusieurs "batchs" de
+  //   plus petite taille (_batchSize_).
+  // - Sur chacun de ces "batchs" de données, on entraine le réseau de neurones
+  // - On répète ces deux étapes _numOfEpoch_ fois
+  // Le taux d'apprentissage varie entre _minLR_ et _maxLR_ (voir les commentaires dans le
+  // code pour le détail).
+  // Pendant l'algorithme, des tests sont effectués sur le jeu de données _testSets_
+  // Pour reconnaitre l'appel dans la console, on utilise (optionnel) la chaine
+  // de caractères _label_
   public float MiniBatchLearn(Matrix[] data, int numOfEpoch, int batchSize, float minLR, float maxLR, int period, Matrix[][] testSets, String label) {
     cl.pln("Mini Batch Gradient Descent " + label + " - " + numOfEpoch + " Epochs - " + batchSize + " Batch Size - " + String.format("%9.3E", maxLR) + " LR");
-    
+
+    // Arrete l'algorithme si cela a été demandé sur l'interface
     if (abortTraining.get()) return 0;
 
-    
-    float lossAverage = 0;
+    float lossAverage = 0; // Moyenne de la perte
 
-    int startTime = millis();
-    int numOfBatches = floor(data[0].p / batchSize);
+    int startTime = millis(); // Démarre le "chronomètre"
+    int numOfBatches = floor(data[0].p / batchSize); // Nombre de "batchs" sur lesquels s'entrainer
+
+    // Algorithme répété pour chaque "époch"
     for (int k = 0; k < numOfEpoch; k++) {
+
+      // Le taux d'apprentissage varie selon l'époch (voir CyclicalLearningRate
+      // pour les détails)
       float learningRate = CyclicalLearningRate(k, minLR, maxLR, period);
       cl.pln("(" + label + ") \tEpoch " + (k+1) + "/" + numOfEpoch + "\t Taux d'apprentissage : " + String.format("%6.4f", learningRate));
 
+      // Mélange les données
       for (int i = 0; i < data[0].p-1; i++) {
         int j = floor(random(i, data[0].p));
         data[0].ComutCol(i, j);
         data[1].ComutCol(i, j);
       }
 
+      // Moyenne de la perte
       lossAverage = 0;
 
       for (int i = 0; i < numOfBatches; i++) {
+        // Récupère les données du "batch" numéro i
         Matrix batch = data[0].GetCol(i*batchSize, i*batchSize + batchSize - 1);
         Matrix batchAns = data[1].GetCol(i*batchSize, i*batchSize + batchSize - 1);
+
+        // Apprentissage sur ce "batch"
         float l = this.Learn(batch, batchAns, learningRate);
         lossAverage += l / numOfBatches;
-        graphApplet.AddValue(l);
+        graphApplet.AddValue(l); // Affiche la valeur sur l'interface graphique
 
+        // Arrete l'algorithme si cela a été demandé sur l'interface
         if (abortTraining.get()) return lossAverage;
 
+        // Informations sur la console
         if (i % (numOfBatches / 4) == 0)
           cl.pln("\t Epoch " + String.format("%05d",k+1) +
             " Batch " + String.format("%05d",i+1) + " : " + String.format("%9.3E",l) +
@@ -394,6 +448,7 @@ class NeuralNetwork {
           );
       }
 
+      // Informations sur la console (avec les données de test)
       if((k+1)%6 != 0 && k != numOfEpoch - 1) continue;
 
       for(int s = 0; s < testSets.length; s++) {
@@ -417,11 +472,14 @@ class NeuralNetwork {
   }
 }
 
+//f Fonction sigmoide, il s'agit de la fonction d'activation que nous avons choisie
 float sigmoid(float x) {
   return 1/(1+exp(-x));
 }
 
-// En gros ça fait un blinker de period min suivi de period max
+//f Renvoie un taux d'apprentissage, alternant entre _min_ (_period_ fois)
+// et _max_ (_period_ fois)
+// _iter_ est le numéro de l'itération
 float CyclicalLearningRate(int iter, float min, float max, int period) {
   if(iter%period + 1 <= period/2) return max;
   return min;
