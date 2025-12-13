@@ -1,9 +1,9 @@
 class ImageReader {
   CNN cnn;
   NeuralNetwork nn;
-  boolean saveWordImage = true;
+  boolean saveWordImage = false;
 
-  float ponctuationThreshold = 0.25;
+  float ponctuationThreshold = 0.24;
 
   ImageReader(CNN cnn) {
     this.cnn = cnn;
@@ -36,6 +36,11 @@ class ImageReader {
     ArrayList<float[][]> wordsEffectiveProb = new ArrayList<float[][]>();
 
     ArrayList<Integer> boundingBoxSizesList = new ArrayList<>();
+    
+    int totalNumOfChar = 0;
+    for(int i = 0; i < wordsImages.length; i++)
+      for(int j = 0; j < wordsImages[i].length; j++)
+        totalNumOfChar++;
 
     int[][] boundingBoxSizes = new int[wordsImages.length][];
     float averageBoundingBoxSize = 0;
@@ -45,7 +50,7 @@ class ImageReader {
         int[] boundingBox = im.GetBoundingBox(wordsImages[i][j]);
         boundingBoxSizes[i][j] = (boundingBox[2] - boundingBox[0])*(boundingBox[3] - boundingBox[1]);
         boundingBoxSizesList.add(boundingBoxSizes[i][j]);
-        averageBoundingBoxSize += (float)boundingBoxSizes[i][j] / wordsImages[i].length / wordsImages.length;
+        averageBoundingBoxSize += (float)boundingBoxSizes[i][j] / totalNumOfChar;
 
         //wordsImages[i][j].save("./AuxiliarFiles/BoundingBoxTest/" + str(boundingBoxSizes[i][j]) + " " + str(random(1)) + ".jpg");
       }
@@ -123,6 +128,10 @@ class ImageReader {
           }
         }
       }
+      
+      float meanWordHeight = 0;
+      for(int i = 0; i < effectiveProb.length; i++)
+        meanWordHeight += (float)im.MeanHeight(wordsImages[wordIndex][i]) / effectiveProb.length;
 
       ArrayList<float[]> wordProb = new ArrayList<float[]>();
       for(int i = 0; i < effectiveProb.length; i++) {
@@ -130,7 +139,7 @@ class ImageReader {
           if(wordProb.size() > 0) {
             wordsEffectiveProb.add(wordProb.toArray(new float[0][]));
             float h = im.MeanHeight(wordsImages[wordIndex][i]);
-            String c = (h < 2 * wordsImages[wordIndex][i].height / 5 ? "'" : (h < 3 * wordsImages[wordIndex][i].height / 5 ? "-" : ", "));
+            String c = (h < 4 * meanWordHeight / 5 ? "'" : (h < meanWordHeight ? "-" : ", "));
             ponctuationsList.add(c);
           }
           wordProb = new ArrayList<float[]>();

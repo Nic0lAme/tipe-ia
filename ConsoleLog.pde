@@ -33,6 +33,7 @@ class ConsoleLog {
     }
     
     output.println();
+    output.flush();
     graphApplet.console.append("\n");
   }
   

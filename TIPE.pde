@@ -29,6 +29,7 @@ int imgSize = 22;
 // Nombre de threads pour les différentes tâches
 final int numThreadsDataset = 16; // Création des datasets
 final int numThreadsLearning = 1; // Apprentissage (si 1, pas de parallélisation)
+boolean doGPUMult = true;
 
 // Attention, à ne pas modifier n'importe comment sous peine de conséquences
 final AtomicBoolean stopLearning = new AtomicBoolean(false);
@@ -49,7 +50,7 @@ void setup() {
   forwardConvolutionKernel = new ForwardConvolutionKernel();
 
   cs = new CharactersStorage();
-  cs.LoadLettersOnly();
+  cs.LoadFull();
 
   frame = (Frame) ((processing.awt.PSurfaceAWT.SmoothCanvas) surface.getNative()).getFrame();
   frame.setVisible(false); // Cache la fenêtre d'activation java
@@ -98,28 +99,32 @@ void setup() {
 
   //cl.pln(wc.SimpleDistance(new int[]{21,8,6,7,19}, new int[]{7,4,6,7,19}));
 
-  CNN cnn = new CNN(imgSize, new int[]{32, 64}, new int[]{128, cs.GetChars().length});
+  //CNN cnn = new CNN(imgSize, new int[]{32, 64}, new int[]{256, cs.GetChars().length});
   CNN cnn = new CNN().Import("./CNN/22x22_32_64_LettersOnly.cnn");
   cnn.UseSoftMax();
   cnn.useADAM = true;
 
 
-  //NeuralNetwork nn = new NeuralNetwork(0).Import("./NeuralNetworkSave/RepListTest025.nn");
+  //NeuralNetwork nn = new NeuralNetwork(0).Import("./NeuralNetworkSave/RepListTest000.nn");
   NeuralNetwork nn = new NeuralNetwork(imgSize * imgSize, 256, 128, 128, cs.GetChars().length);
   nn.UseSoftMax();
+  
+  
+    ir = new ImageReader(cnn);
+    //WholeTextTestVisual wttv = new WholeTextTestVisual(100, "Arial", 36);
+    println("NeuralNetwork");
+    println(ir.cnn);
+    
+    String text = ir.Read(loadImage("./AuxiliarFiles/FullImage.jpg"), true);
+    println(text);
+  
+  
+  if(true) return;
 
-
-  ir = new ImageReader(cnn);
-  //WholeTextTestVisual wttv = new WholeTextTestVisual(100, "Arial", 36);
-  println("NeuralNetwork");
-  println(ir.cnn);
-
-  String text = ir.Read(loadImage("./AuxiliarFiles/FullImage.jpg"));
-  println(text);
-
-
-  //if(true) return;
-
+  
+  
+  
+  
 
   Matrix[][] testSample = session.ds.CreateSample(
       cs.GetChars(),
@@ -127,14 +132,33 @@ void setup() {
       //handTestingDatas,
       new String[]{},
       fontTestingDatas,
-      3, 0.7);
-
-  int numOfIter = 6;
+      3, 1);
+      
+    Matrix[][] testSampleForTrain = session.ds.CreateSample(
+      cs.GetChars(),
+      //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
+      //handTestingDatas,
+      new String[]{},
+      fontTrainingDatas,
+      3, 1);
+  
+  int globalInitTime = millis();
+  int numOfIter = 4;
+  
+  double[] varianceArray = new double[numOfIter];
+  
   for(int iter = 0; iter < numOfIter; iter++) {
     cl.pln("ITERATION " + str(iter+1) + "/" + str(numOfIter));
     float[] accuracy = CompilScore(session.AccuracyScore(cnn, new Matrix[][][]{testSample}, true));
-    int[] repList = RepList(accuracy, 8, 0.9);
-
+    int[] repList = RepList(accuracy, 5, 0.9);
+    
+    int[] intAcc = new int[accuracy.length];
+    for(int i = 0; i < accuracy.length; i++)
+      intAcc[i] = (int)(accuracy[i] * 1000);
+    SaveIntListAsCSV(intAcc, "./AuxiliarFiles/Accuracies.csv");
+    varianceArray[iter] = StandardDeviation(accuracy);
+    cl.pln(varianceArray[iter]);
+    
     cl.pList(repList, "Repetitions");
 
     Matrix[][] sample = session.ds.CreateSample(
@@ -143,14 +167,20 @@ void setup() {
         //handTrainingDatas,
         new String[]{},
         fontTrainingDatas,
-        repList, 0.7);
+        repList, 1);
 
-    Matrix[][] trainingSampleForTest = session.ds.CNNSampleASample(sample, 1024);
+    //Matrix[][] trainingSampleForTest = session.ds.CNNSampleASample(sample, 2048);
 
-    cnn.MiniBatchLearn(sample, 3, 128, 0.001, 0.001, 2, new Matrix[][][]{testSample, trainingSampleForTest}, "");
-    cnn.Export("./CNN/22x22_32_64_LettersOnly.cnn");
+    cnn.MiniBatchLearn(sample, 3, 128, 0.001, 0.001, 4, new Matrix[][][]{testSample, testSampleForTrain}, "");
+    cnn.Export("./CNN/NormalCNN.cnn");
     //session.AccuracyScore(nn, testSample, true);
   }
+  int[] intVar = new int[varianceArray.length];
+  for(int i = 0; i < varianceArray.length; i++)
+    intVar[i] = (int)(varianceArray[i] * 1000);
+  SaveIntListAsCSV(intVar, "./AuxiliarFiles/Variances.csv");
+  
+  cl.pln("Global time " + str((millis() - globalInitTime) / 1000));
 }
 
 int index = 0;
@@ -234,4 +264,27 @@ void SaveIntListAsCSV(int[] list, String filename) {
   }
 
   saveStrings(filename, new String[]{line});
+}
+
+
+double Variance(float[] a) {
+    int n = a.length;
+    
+    float sum = 0;
+    for (int i = 0; i < n; i++)
+        sum += a[i];
+    double mean = (double)sum / 
+                  (double)n;
+
+    // Compute sum squared 
+    // differences with mean.
+    double sqDiff = 0;
+    for (int i = 0; i < n; i++) 
+        sqDiff += (a[i] - mean) * 
+                  (a[i] - mean);
+    return sqDiff / n;
+}
+
+double StandardDeviation(float[] arr) {
+    return sqrt((float)Variance(arr));
 }

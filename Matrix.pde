@@ -486,6 +486,8 @@ class Matrix {
   }
 
   Matrix GPUMult(Matrix m) {
+    if(!doGPUMult) return this.Mult(m);
+    
     int initTime = millis();
 
     float[] A = this.values;
