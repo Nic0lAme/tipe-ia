@@ -362,12 +362,11 @@ public class Session {
     return score;
   }
 
-  Matrix ImgPP(PImage img) { // Images post-processing
+  Matrix ImgPP(PImage img) { // "Post-processing" d'une image
     PImage PPImage = im.Gray(img);
     PPImage = im.Contrast(PPImage, 0.02);
     PPImage = im.AutoCrop(PPImage, 128, 0.03);
     PPImage = im.TargetRatio(PPImage, 1);
-    //PPImage = im.Contrast(PPImage, 0.02); // If there is a dark patch in the center
 
     im.Resize(PPImage, this.w, this.h);
     PPImage.loadPixels();

@@ -102,123 +102,124 @@ void setup() {
   //cl.pln(wc.SimpleDistance(new int[]{21,8,6,7,19}, new int[]{7,4,6,7,19}));
 
   //CNN cnn = new CNN(imgSize, new int[]{32, 64}, new int[]{256, cs.GetChars().length});
-  CNN cnn = new CNN().Import("./CNN/22x22_32_64_LettersOnly.cnn");
-  cnn.UseSoftMax();
-  cnn.useADAM = true;
 
+  /////////////////////////////////////////////////////////////////
 
-  //NeuralNetwork nn = new NeuralNetwork(0).Import("./NeuralNetworkSave/RepListTest000.nn");
-  NeuralNetwork nn = new NeuralNetwork(imgSize * imgSize, 256, 128, 128, cs.GetChars().length);
-  nn.UseSoftMax();
-  
-  
-    ir = new ImageReader(cnn);
-    //WholeTextTestVisual wttv = new WholeTextTestVisual(100, "Arial", 36);
-    println("NeuralNetwork");
-    println(ir.cnn);
-    
-    String text = ir.Read(loadImage("./AuxiliarFiles/FullImage.jpg"), true);
-    println(text);
-  
-  
-  if(true) return;
+  // Ça ne compilait plus depuis ton dernier commit j'ai l'impression
 
-  
-  
-  
-  
+  /////////////////////////////////////////////////////////////////
 
-  Matrix[][] testSample = session.ds.CreateSample(
-      cs.GetChars(),
-      //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
-      handTestingDatas,
-      //new String[]{},
-      fontTestingDatas,
-      1, 1);
-
-  cnn.MiniBatchLearn(sample, 8, 256, 0.001, 0.001, 2, new Matrix[][][]{testSample}, "");
-  cnn.Export("./CNN/Test21.cnn");
-  session.AccuracyScore(cnn, testSample, true);
-  */
-
-  // Tester tester = new Tester((NeuralNetwork) null);
-  // ImageSeparator is = new ImageSeparator(loadImage("test.png"));
-  // is.SaveSeparationPreview("test1.png", true, true);
-
-  NeuralNetwork nn = new NeuralNetwork(imgSize*imgSize, 256, 128, cs.GetChars().length);
-  nn.UseSoftMax();
-  Tester tester = new Tester(nn);
-  Matrix[] testSample = session.ds.SampleLining(session.ds.CreateSample(
-      cs.GetChars(),
-      //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
-      //handTestingDatas,
-      new String[]{},
-      fontTestingDatas,
-      3, 1));
-      
-    Matrix[][] testSampleForTrain = session.ds.SampleLining(session.ds.CreateSample(
-      cs.GetChars(),
-      //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
-      //handTestingDatas,
-      new String[]{},
-      fontTrainingDatas,
-      3, 1));
-  
-  int globalInitTime = millis();
-  int numOfIter = 4;
-  
-  double[] varianceArray = new double[numOfIter];
-  
-  for(int iter = 0; iter < numOfIter; iter++) {
-    cl.pln("ITERATION " + str(iter+1) + "/" + str(numOfIter));
-    float[] accuracy = CompilScore(session.AccuracyScore(cnn, new Matrix[][][]{testSample}, true));
-    int[] repList = RepList(accuracy, 5, 0.9);
-    
-    int[] intAcc = new int[accuracy.length];
-    for(int i = 0; i < accuracy.length; i++)
-      intAcc[i] = (int)(accuracy[i] * 1000);
-    SaveIntListAsCSV(intAcc, "./AuxiliarFiles/Accuracies.csv");
-    varianceArray[iter] = StandardDeviation(accuracy);
-    cl.pln(varianceArray[iter]);
-    
-    cl.pList(repList, "Repetitions");
-
-    Matrix[][] sample = session.ds.SampleLining(session.ds.CreateSample(
-        cs.GetChars(),
-        //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
-        //handTrainingDatas,
-        new String[]{},
-        fontTrainingDatas,
-        8, 1));
-
-    nn.MiniBatchLearn(sample, 5, 64, 3.5, 3, 2, new Matrix[][]{testSample, sample}, "");
-
-    session.AccuracyScore(nn, testSample, true);
-    float[] accuracyTest = CompilScore(session.AccuracyScore(nn, testSample, true));
-    float averageTestingAccuracy = Average(accuracyTest);
-
-    Matrix[] shuffledSample = new Matrix(0).ShuffleCol(sample);
-    float[] accuracyTrain = CompilScore(session.AccuracyScore(nn, shuffledSample, false));
-    float averageTrainingAccuracy = Average(accuracyTrain);
-
-    graphApplet.AddTestResult(averageTrainingAccuracy, averageTestingAccuracy);
-    String tr = String.format("%.2f",averageTrainingAccuracy*100);
-    String ts = String.format("%.2f",averageTestingAccuracy*100);
-
-    // Results r = tester.RunNTest(10);
-    // println("[RÉSULTAT DU TEST] : Score = " + r.time);
-    // println("[RÉSULTAT DU TEST] : Distance = " + r.score);
-  }
-
-  int[] intVar = new int[varianceArray.length];
-  for(int i = 0; i < varianceArray.length; i++)
-    intVar[i] = (int)(varianceArray[i] * 1000);
-  SaveIntListAsCSV(intVar, "./AuxiliarFiles/Variances.csv");
-
-  // Results r = tester.RunNTest(10, true);
-  // println("[RÉSULTAT DU TEST] : Temps = " + r.time);
-  // println("[RÉSULTAT DU TEST] : Score = " + r.score);
-  // tester.SaveTest();
+  // CNN cnn = new CNN().Import("./CNN/22x22_32_64_LettersOnly.cnn");
+  // cnn.UseSoftMax();
+  // cnn.useADAM = true;
+  //
+  //
+  // //NeuralNetwork nn = new NeuralNetwork(0).Import("./NeuralNetworkSave/RepListTest000.nn");
+  // NeuralNetwork nn = new NeuralNetwork(imgSize * imgSize, 256, 128, 128, cs.GetChars().length);
+  // nn.UseSoftMax();
+  //
+  //
+  // ir = new ImageReader(cnn);
+  // //WholeTextTestVisual wttv = new WholeTextTestVisual(100, "Arial", 36);
+  // println("NeuralNetwork");
+  // println(ir.cnn);
+  //
+  // String text = ir.Read(loadImage("./AuxiliarFiles/FullImage.jpg"), true);
+  // println(text);
+  //
+  //
+  // if(true) return;
+  //
+  // Matrix[][] testSample = session.ds.CreateSample(
+  //     cs.GetChars(),
+  //     //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
+  //     handTestingDatas,
+  //     //new String[]{},
+  //     fontTestingDatas,
+  //     1, 1);
+  //
+  // cnn.MiniBatchLearn(sample, 8, 256, 0.001, 0.001, 2, new Matrix[][][]{testSample}, "");
+  // cnn.Export("./CNN/Test21.cnn");
+  // session.AccuracyScore(cnn, testSample, true);
+  //
+  // // Tester tester = new Tester((NeuralNetwork) null);
+  // // ImageSeparator is = new ImageSeparator(loadImage("test.png"));
+  // // is.SaveSeparationPreview("test1.png", true, true);
+  //
+  // NeuralNetwork nn = new NeuralNetwork(imgSize*imgSize, 256, 128, cs.GetChars().length);
+  // nn.UseSoftMax();
+  // Tester tester = new Tester(nn);
+  // Matrix[] testSample = session.ds.SampleLining(session.ds.CreateSample(
+  //     cs.GetChars(),
+  //     //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
+  //     //handTestingDatas,
+  //     new String[]{},
+  //     fontTestingDatas,
+  //     3, 1));
+  //
+  //   Matrix[][] testSampleForTrain = session.ds.SampleLining(session.ds.CreateSample(
+  //     cs.GetChars(),
+  //     //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
+  //     //handTestingDatas,
+  //     new String[]{},
+  //     fontTrainingDatas,
+  //     3, 1));
+  //
+  // int globalInitTime = millis();
+  // int numOfIter = 4;
+  //
+  // double[] varianceArray = new double[numOfIter];
+  //
+  // for(int iter = 0; iter < numOfIter; iter++) {
+  //   cl.pln("ITERATION " + str(iter+1) + "/" + str(numOfIter));
+  //   float[] accuracy = CompilScore(session.AccuracyScore(cnn, new Matrix[][][]{testSample}, true));
+  //   int[] repList = RepList(accuracy, 5, 0.9);
+  //
+  //   int[] intAcc = new int[accuracy.length];
+  //   for(int i = 0; i < accuracy.length; i++)
+  //     intAcc[i] = (int)(accuracy[i] * 1000);
+  //   SaveIntListAsCSV(intAcc, "./AuxiliarFiles/Accuracies.csv");
+  //   varianceArray[iter] = StandardDeviation(accuracy);
+  //   cl.pln(varianceArray[iter]);
+  //
+  //   cl.pList(repList, "Repetitions");
+  //
+  //   Matrix[][] sample = session.ds.SampleLining(session.ds.CreateSample(
+  //       cs.GetChars(),
+  //       //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
+  //       //handTrainingDatas,
+  //       new String[]{},
+  //       fontTrainingDatas,
+  //       8, 1));
+  //
+  //   nn.MiniBatchLearn(sample, 5, 64, 3.5, 3, 2, new Matrix[][]{testSample, sample}, "");
+  //
+  //   session.AccuracyScore(nn, testSample, true);
+  //   float[] accuracyTest = CompilScore(session.AccuracyScore(nn, testSample, true));
+  //   float averageTestingAccuracy = Average(accuracyTest);
+  //
+  //   Matrix[] shuffledSample = new Matrix(0).ShuffleCol(sample);
+  //   float[] accuracyTrain = CompilScore(session.AccuracyScore(nn, shuffledSample, false));
+  //   float averageTrainingAccuracy = Average(accuracyTrain);
+  //
+  //   graphApplet.AddTestResult(averageTrainingAccuracy, averageTestingAccuracy);
+  //   String tr = String.format("%.2f",averageTrainingAccuracy*100);
+  //   String ts = String.format("%.2f",averageTestingAccuracy*100);
+  //
+  //   // Results r = tester.RunNTest(10);
+  //   // println("[RÉSULTAT DU TEST] : Score = " + r.time);
+  //   // println("[RÉSULTAT DU TEST] : Distance = " + r.score);
+  // }
+  //
+  // int[] intVar = new int[varianceArray.length];
+  // for(int i = 0; i < varianceArray.length; i++)
+  //   intVar[i] = (int)(varianceArray[i] * 1000);
+  // SaveIntListAsCSV(intVar, "./AuxiliarFiles/Variances.csv");
+  //
+  // // Results r = tester.RunNTest(10, true);
+  // // println("[RÉSULTAT DU TEST] : Temps = " + r.time);
+  // // println("[RÉSULTAT DU TEST] : Score = " + r.score);
+  // // tester.SaveTest();
 }
 
 int index = 0;
@@ -307,18 +308,18 @@ void SaveIntListAsCSV(int[] list, String filename) {
 
 double Variance(float[] a) {
     int n = a.length;
-    
+
     float sum = 0;
     for (int i = 0; i < n; i++)
         sum += a[i];
-    double mean = (double)sum / 
+    double mean = (double)sum /
                   (double)n;
 
-    // Compute sum squared 
+    // Compute sum squared
     // differences with mean.
     double sqDiff = 0;
-    for (int i = 0; i < n; i++) 
-        sqDiff += (a[i] - mean) * 
+    for (int i = 0; i < n; i++)
+        sqDiff += (a[i] - mean) *
                   (a[i] - mean);
     return sqDiff / n;
 }

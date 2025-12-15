@@ -1,3 +1,24 @@
+/////////////////////////////////////////////////////////////////
+
+// LetterDataset
+
+// Classe utilitaire pour fournir les données de test et
+// d'entrainement.
+// Lorsque l'on crée un jeu de données, on récupère les images
+// intactes des caractères, et on les déforme en appliquant divers
+// transformations (translation, flou, "perlin noise", déformation
+// élastique, bruitage aléatoire).
+// Après ces transformations, on convertit ces images en données
+// exploitables par le réseau : une image est codée par un vecteur
+// colonne qui est la liste des intensités des pixels, et un jeu de
+// données est une matrice qui a pour colonnes ces vecteurs. On renvoie
+// également une autre matrice avec les réponses attendues pour chaque
+// image. Le type est donc Matrix[][], un "couple" de deux matrices.
+// Un jeu de données peut être exporté / importé pour éviter d'être
+// regénérer à chaque fois
+
+/////////////////////////////////////////////////////////////////
+
 import java.util.Arrays;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.Executors;
@@ -8,11 +29,12 @@ import java.util.concurrent.ExecutionException;
 
 public class LetterDataset {
   final int wData, hData;
-  final float move = 0.12;
-  final float blur = 0.02;
-  final float density = 0.1;
-  final float perlin = 0.2;
-  final float deformation = 0.06;
+
+  final float move = 0.12; // Translation
+  final float blur = 0.02; // Flou
+  final float density = 0.1; // Densité de pixels bruités
+  final float perlin = 0.2; // "Perlin noise"
+  final float deformation = 0.06; // Déformation élastique
 
   //c Créateur de dataset
   // Zone de travail définie par _wData_ * _hData_
@@ -21,12 +43,12 @@ public class LetterDataset {
     this.hData = hData;
   }
 
-  //s On fixe le nombre de répétitions des caractères identiquement à _rep_. On fixe la _deformationRate_ à 1
+  //s On fixe le nombre de répétitions des caractères à _rep_. On fixe la _deformationRate_ à 1
   public Matrix[][] CreateSample(String[] characters, String[] hwSources, String[] fSources, int rep) {
     return this.CreateSample(characters, hwSources, fSources, rep, 1);
   }
 
-  //s On fixe le nombre de répétitions des caractères identiquement à _rep_
+  //s On fixe le nombre de répétitions des caractères à _rep_
   public Matrix[][] CreateSample(String[] characters, String[] hwSources, String[] fSources, int rep, float deformationRate) {
     int[] repList = new int[characters.length];
     Arrays.fill(repList, rep);
@@ -34,22 +56,23 @@ public class LetterDataset {
     return this.CreateSample(characters, hwSources, fSources, repList, deformationRate);
   }
 
-  //s _deformationrate_ à 1
+  //s On fixe _deformationrate_ à 1
   public Matrix[][] CreateSample(String[] characters, String[] hwSources, String[] fSources, int[] repList) {
     return this.CreateSample(characters, hwSources, fSources, repList, 1);
   }
 
   //f Renvoie un couple entrée / sortie d'images pour le réseau
-  // _characters_ correspond à la liste des caractères dont on créera un dataset
-  // _hwSources_ et _fSources_ correspondent aux noms respectivement des écritures à la main et des polices utilisées
-  // _repList_ correspond au nombre de répétition de chaque caractère respectivement, par échantillon initial
-  // _deformationRate_ correspond au taux de déformation utilisé
+  // -> _characters_ correspond à la liste des caractères dont on créera un dataset
+  // -> _hwSources_ et _fSources_ correspondent aux noms respectivement des écritures à la main et des polices utilisées
+  // -> _repList_ correspond au nombre de répétition de chaque caractère respectivement, par échantillon initial
+  // -> _deformationRate_ correspond au taux de déformation utilisé
+  // Pour accélérer cette génération d'image, on parallélise le processus
   public Matrix[][] CreateSample(String[] characters, String[] hwSources, String[] fSources, int[] repList, float deformationRate) {
     int repSum = 0;
     for(int k = 0; k < repList.length; k++) repSum += repList[k];
 
-    int nbChar = characters.length;
-    int nbSources = hwSources.length + fSources.length;
+    int nbChar = characters.length; // Nombre de caractère distincs
+    int nbSources = hwSources.length + fSources.length; // Nombre de sources dont l'écriture est utilisée
     int sampleSize = nbSources * repSum;
 
     cl.pln("Creating Dataset of size " + sampleSize + "...");
@@ -62,18 +85,24 @@ public class LetterDataset {
 
     int index = 0;
 
+    // Objets pour paralléliser le traitement des images
     ExecutorService executor = Executors.newFixedThreadPool(numThreadsDataset);
     ArrayList<Callable<Object>> tasks = new ArrayList<Callable<Object>>();
     ArrayList<Matrix[]> results = new ArrayList();
 
+    // Pour chaque caractère
     for (int c1 = 0; c1 < nbChar; c1++) {
+      // Pour chaque répétition demandée pour ce caractère
       for (int k1 = 0; k1 < repList[c1]; k1++) {
+        // Pour chaque élément de la base de données qui représente ce caractère
         for (int s1 = 0; s1 < nbSources; s1++) {
+
           final int c = c1;
           final int s = s1;
           final int idx = index;
           index++;
 
+          // Tache associée au triplet (c1, k1, s1)
           class ScramblingTask implements Callable<Object> {
             public Object call() {
               // Termine en avance si une demande d'arrêt a été faite
@@ -84,9 +113,9 @@ public class LetterDataset {
                 ? "./TextFileGetter/output/" + characters[c] + "/" + characters[c] + " - " + hwSources[s] + ".jpg"
                 : "./FromFontGetter/output/" + characters[c] + "/" + characters[c] + " - " + fSources[s - hwSources.length] + ".jpg";
               PImage original = loadImage(path);
-              PImage img = im.ScrambleImage(im.Resize(original, wData, hData), move * deformationRate, blur * deformationRate, density * deformationRate, perlin * deformationRate, deformation * deformationRate);
 
-              //cl.pln(idx);
+              // Modifie cette image
+              PImage img = im.ScrambleImage(im.Resize(original, wData, hData), move * deformationRate, blur * deformationRate, density * deformationRate, perlin * deformationRate, deformation * deformationRate);
 
               // Récupère les pixels et les normalise
               Matrix imgPixels = session.ImgPP(img);
@@ -97,28 +126,28 @@ public class LetterDataset {
               r[0] = imgPixels;
               r[1] = new Matrix(nbChar, 1).ColumnFromArray(0, answerArray);
 
+              // En cas de demande de pause depuis l'interface
               synchronized (stopLearning) {
                 if (stopLearning.get()) {
-                  try { println("Dataset creation stopped"); stopLearning.wait(); println("Le retour");}
+                  try { println("Création de données interrompue"); stopLearning.wait(); println("Création de données reprise");}
                   catch (Exception e) { e.printStackTrace(); }
                 }
               }
 
+              // Ajoute l'image à _results_
               AddToRes(results, r, sampleSize, startTime);
               return this;
             }
           }
 
+          // Ajoute la tache à la liste des taches à effectuer
           tasks.add(new ScramblingTask());
-
         }
-        // System.gc();
       }
-      //cl.pln(characters[c], "\t(" + repList[c] + ")", "\t Remaining Time :", RemainingTime(startTime, c+1, nbChar));
     }
-    //cl.pln();
 
-    // Actualise les matrices entrées / sorties en regroupant les données
+    // On lance les taches en parallèle, et on actualise les
+    // matrices entrées / sorties en regroupant les données
     try {
       List<Future<Object>> answers = executor.invokeAll(tasks);
       int k = 0;
@@ -128,22 +157,22 @@ public class LetterDataset {
         k++;
       }
     } catch (InterruptedException e) {
-      cl.pln("LetterDataset, CreateSample : Erreur critique, bonne chance pour la suite");
+      cl.pln("LetterDataset, CreateSample : Erreur (dans la parallélisation)");
     }
-    //inputs.ColumnFromArray(numColonne, imgPixels);
-    //outputs.Set(c, numColonne, 1);
 
-    if (abortTraining.get()) cl.pln("Dataset creation aborted");
-    else cl.pln("Created - Total time", String.format("%9.3f",(float)(millis() - startTime) / 1000));
+    if (abortTraining.get()) cl.pln("Création de données arrêtée");
+    else cl.pln("Données terminées - Temps total", String.format("%9.3f",(float)(millis() - startTime) / 1000));
 
+    // Renvoie les résultats sous forme d'un couple [entrées, sorties attendues]
     return new Matrix[][]{ inputs, {outputs} };
   }
-  
+
+  //f TODO Commentaire
   public Matrix[][] CNNSampleASample(Matrix[][] sample, int size) {
     int[] indices = new int[sample[0].length];
-    
+
     for (int i = 0; i < indices.length; i++) indices[i] = i;
-    
+
     int temp = 0;
     for (int i = 0; i < indices.length; i++) {
       int j = floor(random(i, indices.length));
@@ -151,19 +180,20 @@ public class LetterDataset {
       indices[i] = indices[j];
       indices[j] = temp;
     }
-    
+
     int actualSize = min(size, sample[0].length);
     Matrix[] sampleInputs = new Matrix[actualSize];
     Matrix sampleOutputs = new Matrix(sample[1][0].n, actualSize);
-    
+
     for(int k = 0; k < actualSize; k++) {
       sampleInputs[k] = sample[0][indices[k]];
       sampleOutputs.ColumnFromArray(k, sample[1][0].ColumnToArray(indices[k]));
     }
-    
+
     return new Matrix[][]{sampleInputs, {sampleOutputs}};
   }
 
+  //f TODO Commentaire
   public Matrix[] SampleLining(Matrix[][] sample) {
     if (abortTraining.get()) return new Matrix[0];
     if (sample[0].length == 0) return new Matrix[]{new Matrix(0)};
@@ -177,11 +207,12 @@ public class LetterDataset {
     return new Matrix[]{inputs, sample[1][0]};
   }
 
-  //f
+  //f Récupère le jeu de données MNIST et le renvoie sous
+  // le format décrit précédemment
   public Matrix[][] GetMNISTDataset(String path) {
-    cl.pln(path + " load begin :(");
+    cl.pln(path + " : Démarrage de l'import");
     Table table = loadTable(path);
-    cl.pln(path + " load end :)");
+    cl.pln(path + " : Import terminé");
 
     int imgSize = 28;
     int n = table.getRowCount();
@@ -250,7 +281,8 @@ public class LetterDataset {
     return img;
   }
 
-  //f Exporte le dataset _data_ dans le fichier _name_
+  //f Exporte le jeu de données _data_ dans le fichier _name_
+  // (pour éviter d'avoir à regénérer des données à chaque fois)
   public void Export(Matrix[] data, String name) {
     ArrayList<String> output = new ArrayList<String>();
 
@@ -258,17 +290,17 @@ public class LetterDataset {
 
     String[] inputSave = data[0].SaveToString(true);
     for (String s : inputSave) output.add(s);
-    cl.pln("Inputs exported");
+    cl.pln("Entrées exportées");
 
     String[] outputSave = data[1].SaveToString(true);
     for (String s : outputSave) output.add(s);
-    cl.pln("Outputs exported");
+    cl.pln("Sorties exportées");
 
-    String[] writedOutput = new String[output.size()];
-    saveStrings(name, output.toArray(writedOutput));
+    String[] writenOutput = new String[output.size()];
+    saveStrings(name, output.toArray(writenOutput));
   }
 
-  //f Importe un dataset à partir du fichier _name_
+  //f Importe un jeu de données à partir du fichier _name_
   public Matrix[] Import(String name) {
     String[] input = loadStrings(name);
     String[] sizes = split(input[0], ',');
@@ -294,6 +326,9 @@ public class LetterDataset {
   }
 }
 
+//f Ajoute les resultats d'un traitement d'image à _res_
+// Cette fonction est à part car les différents "threads" doivent y avoir accès
+// sans créer de conflits
 public synchronized void AddToRes(ArrayList<Matrix[]> res, Matrix[] toAdd, int sampleSize, int startTime) {
   res.add(toAdd);
 
