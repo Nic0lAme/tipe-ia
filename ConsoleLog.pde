@@ -1,3 +1,14 @@
+/////////////////////////////////////////////////////
+
+// ConsoleLog
+
+/*
+  Classe utilitaire pour gérer l'affichage et l'enregistrement des logs
+  Les logs sont affichés dans la console Processing, dans l'interface graphique Swing et sont enregistrés dans un fichier texte
+*/
+
+////////////////////////////////////////////////////
+
 class ConsoleLog {
   String name;
   PrintWriter output;
@@ -9,7 +20,7 @@ class ConsoleLog {
     output = createWriter(name);
   }
   
-  //f Energistre une nouvelle ligne (saut de ligne)
+  //f Enregistre une nouvelle ligne (saut de ligne)
   // Equivalent au *println()*
   void pln(Object... o) {
     println(o);

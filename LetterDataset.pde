@@ -167,7 +167,8 @@ public class LetterDataset {
     return new Matrix[][]{ inputs, {outputs} };
   }
 
-  //f TODO Commentaire
+  //f Renvoit une sous-échantillon aléatoire de taille _size_ du jeu de données _sample_ (échantillonnage sans remise)
+  // Les jeux de données doivent être adapté au CNN (Matrix[][], avec Matrix[0] liste d'image d'entrée, Matrix[1][0] la matrice de sortie attendue)
   public Matrix[][] CNNSampleASample(Matrix[][] sample, int size) {
     int[] indices = new int[sample[0].length];
 
@@ -193,7 +194,8 @@ public class LetterDataset {
     return new Matrix[][]{sampleInputs, {sampleOutputs}};
   }
 
-  //f TODO Commentaire
+  //f Prend un jeu de données CNN (Matrix[][] avec Matrix[0] liste d'images d'entrée, Matrix[1][0] la matrice de sortie attendue)
+  // Renvoie un jeu de données "classique" (Matrix[] avec Matrix[0] la matrice d'entrée, Matrix[1] la matrice de sortie attendue)
   public Matrix[] SampleLining(Matrix[][] sample) {
     if (abortTraining.get()) return new Matrix[0];
     if (sample[0].length == 0) return new Matrix[]{new Matrix(0)};

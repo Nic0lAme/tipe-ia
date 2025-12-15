@@ -1,6 +1,18 @@
 import java.util.*;
 import java.util.stream.*;
 
+//////////////////////////////////////////////////////////
+
+//WordCorrector
+/*
+  Classe permettant de corriger des mots à partir d'un dictionnaire déterminée (en l'occurence, celui du scrabble)
+  Utilise des algorithmes de distances entre chaînes de caractères et de correction probabiliste à partir des fréquences de lettres dans la langue française
+  On teste notamment la distance de Levenshtein et une distance simple basée sur le nombre de caractères différents, tiré du papier d'IBM Japonais sur la correction d'ocr
+  Permet aussi de simuler des erreurs sur des mots afin d'exécuter des tests sur cette correctiona
+*/
+
+/////////////////////////////////////////////////////////
+
 class WordCorrector {
   char[] charList = new char[] {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
   
@@ -160,6 +172,9 @@ class WordCorrector {
     return IntArrayToString(bestWord);
   }
   
+
+  //f Trouve le mot le plus proche de _candidate_ dans le dictionnaire en utilisant la fonction de distance _distFunc_ (Levenshtein ou SimpleDistance)
+  // Ne considère que les mots dont la différence de longueur est inférieure à _maxGap_ et dont la distance est inférieure à _maxDistance_
   public int[][] FindBestWord(int[] candidate, DistanceFunction distFunc, int maxGap, int maxDistance) {
     int minDistance = maxDistance;
     int[] bestWord = candidate;
@@ -176,6 +191,8 @@ class WordCorrector {
     return new int[][]{bestWord, {minDistance}};
   }
   
+  //f Calcule la distance simple entre deux mots _w1_ et _w2_
+  // Basée sur le papier d'IBM Japon de 1990 sur la correction d'ocr, tiré de Pattern Recognition
   public int SimpleDistance(int[] w1, int[] w2) {
     if(w1.length > w2.length) return SimpleDistance(w2, w1); // On a toujours w1 plus petit que w2
     int n = w1.length; int m = w2.length;
@@ -213,6 +230,7 @@ class WordCorrector {
     return distance;
   }
   
+  //f Calcule la distance de Levenshtein entre deux mots _w1_ et _w2_ (de types int[])
   public int LevenshteinDistance(int[] w1, int[] w2) {
     if(w1.length < w2.length) return LevenshteinDistance(w2, w1);
     int[] prevRow = new int[w2.length + 1];
@@ -240,10 +258,13 @@ class WordCorrector {
     return prevRow[w2.length];
   }
   
+  //s Mots _w1_ et _w2_ sous format String
   public int LevenshteinDistance(String w1, String w2) {
     return this.LevenshteinDistance(w1.toCharArray(), w2.toCharArray());
   }
   
+  //s Mots _w1_ et _w2_ sous format char[]
+  // Cette version ne revient pas à l'encodage int de la session active, c'est pourquoi elle est redondante avec la version int[]
   public int LevenshteinDistance(char[] w1, char[] w2) {
     if(w1.length < w2.length) return LevenshteinDistance(w2, w1);
     int[] prevRow = new int[w2.length + 1];
@@ -271,6 +292,12 @@ class WordCorrector {
     return prevRow[w2.length];
   }
   
+  //f Fonction de backtrack pour générer toutes les combinaisons possibles de mots à partir des caractères plausibles
+  // -> _input_ contient pour chaque position les caractères plausibles et leur probabilité
+  // -> _index_ est l'index courant dans l'input
+  // -> _current_ est la liste des caractères choisis jusqu'à présent pour les indices [|0, index - 1|]
+  // -> _currentProb_ est la probabilité courante du mot formé par _current_ pour les indices [|0, index - 1|]
+  // -> _results_ est la map finale des mots possibles et de leur probabilité
   private void Backtrack(HashMap<Integer, Float>[] input, int index, List<Integer> current, float currentProb, HashMap<Integer[], Float> results) {
     if(index == input.length) {
       results.put(current.toArray(new Integer[0]), currentProb);
@@ -286,6 +313,7 @@ class WordCorrector {
     });
   }
   
+  //s Utilise des proportions uniformes pour chaque lettre (ne considère pas la fréquence des lettres)
   public String OLD_WordAutoCorrection(float[][] letterProb) {
     float[] etalonnedProp = new float[this.charList.length];
     Arrays.fill(etalonnedProp, 1); 
@@ -295,7 +323,7 @@ class WordCorrector {
   //f Donne le mot le plus probable pour une entrée _letterProb_
   // _letterProb_ contient pour chaque emplacement les probabilités de chaque caractère
   // Simule toutes les manipulations possibles de manière probabiliste
-  // Algorithme assez (très) naïf, donc à voir dans la pratique
+  // Premier version de l'algorithme assez (très) naïf
   public String OLD_WordAutoCorrection(float[][] letterProb, float[] etalonnedProp) {
     float[][] processedProb = new float[letterProb.length][this.charList.length];
     
@@ -372,7 +400,12 @@ class WordCorrector {
     cl.pln(ret, "\twith prob", String.format("%9.3e", bestProb));
     return ret;
   }
+
+  //////////////////////// FONCTIONS DE TESTS //////////////////////////////
   
+  //f Corrompt un mot _word_ en appliquant des substitutions, insertions et délétions de caractères
+  // La probabilité de substitution est donnée par _substitutionProb_
+  // La probabilité d'insertion ou de délétion est donnée par _insertDelProb_
   public int[] CorruptWord(int[] word, float substitutionProb, float insertDelProb) {
     List<Integer> corruptedWord = new ArrayList<>();
     for(int c : word) {
@@ -385,6 +418,9 @@ class WordCorrector {
     return corruptedWord.stream().mapToInt(Integer::intValue).toArray();
   }
   
+  //f Compare différentes fonctions de distance _functions_ sur un nombre _numOfWord_ de mots corrompus
+  // La probabilité de substitution est donnée par _substitutionProb_
+  // La probabilité d'insertion ou de délétion est donnée par _insertDelProb_
   public void CompareFunctions(DistanceFunction[] functions, int numOfWord, float substitutionProb, float insertDelProb) {
     int[][] wordList = new int[numOfWord][];
     int[][] corruptedWordList = new int[numOfWord][];
@@ -410,6 +446,7 @@ class WordCorrector {
 }
 
 
+//Permet l'utilisation de fonctions de distances personnalisées en paramètre, du type des fonctions lambda
 @FunctionalInterface
 interface DistanceFunction {
   int apply(int[] a, int[] b);
