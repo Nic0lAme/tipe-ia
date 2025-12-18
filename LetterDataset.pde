@@ -8,14 +8,24 @@
 // intactes des caractères, et on les déforme en appliquant divers
 // transformations (translation, flou, "perlin noise", déformation
 // élastique, bruitage aléatoire).
+
 // Après ces transformations, on convertit ces images en données
-// exploitables par le réseau : une image est codée par un vecteur
-// colonne qui est la liste des intensités des pixels, et un jeu de
-// données est une matrice qui a pour colonnes ces vecteurs. On renvoie
-// également une autre matrice avec les réponses attendues pour chaque
-// image. Le type est donc Matrix[][], un "couple" de deux matrices.
-// Un jeu de données peut être exporté / importé pour éviter d'être
-// regénérer à chaque fois
+// exploitables par le réseau avec le format suivant :
+
+// Pour un réseau standard :
+// Une image est codée par un vecteur colonne qui est la liste des intensités
+// des pixels, et un jeu de données est une matrice qui a pour colonnes ces
+// vecteurs. On renvoie également une autre matrice avec les réponses
+// attendues pour chaque image. Le type est donc Matrix[][], un "couple"
+// de deux matrices. Un jeu de données peut être exporté / importé pour éviter
+// d'être regénérer à chaque fois
+
+// Pour un réseau de convolution (CNN) :
+// On renvoie le type Matrix[][].
+// Matrix[0] est une liste de matrices ou chaque matrice représente une image
+// (en deux dimensions, on conserve la position des pixels)
+// Matrix[1][0] est la matrice où chaque colonne correspond à chaque entrée
+// (de la même façon qu'un réseau standard)
 
 /////////////////////////////////////////////////////////////////
 
@@ -75,7 +85,7 @@ public class LetterDataset {
     int nbSources = hwSources.length + fSources.length; // Nombre de sources dont l'écriture est utilisée
     int sampleSize = nbSources * repSum;
 
-    cl.pln("Creating Dataset of size " + sampleSize + "...");
+    cl.pln("Création d'un jeu de données de taille " + sampleSize + "...");
 
     Matrix[] inputs = new Matrix[sampleSize];
     Matrix outputs = new Matrix(nbChar, sampleSize);
@@ -163,11 +173,11 @@ public class LetterDataset {
     if (abortTraining.get()) cl.pln("Création de données arrêtée");
     else cl.pln("Données terminées - Temps total", String.format("%9.3f",(float)(millis() - startTime) / 1000));
 
-    // Renvoie les résultats sous forme d'un couple [entrées, sorties attendues]
+    // Renvoie les résultats
     return new Matrix[][]{ inputs, {outputs} };
   }
 
-  //f Renvoit une sous-échantillon aléatoire de taille _size_ du jeu de données _sample_ (échantillonnage sans remise)
+  //f Renvoie une sous-échantillon aléatoire de taille _size_ du jeu de données _sample_ (échantillonnage sans remise)
   // Les jeux de données doivent être adapté au CNN (Matrix[][], avec Matrix[0] liste d'image d'entrée, Matrix[1][0] la matrice de sortie attendue)
   public Matrix[][] CNNSampleASample(Matrix[][] sample, int size) {
     int[] indices = new int[sample[0].length];
