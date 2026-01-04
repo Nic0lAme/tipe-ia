@@ -16,7 +16,7 @@
 // Une image est codée par un vecteur colonne qui est la liste des intensités
 // des pixels, et un jeu de données est une matrice qui a pour colonnes ces
 // vecteurs. On renvoie également une autre matrice avec les réponses
-// attendues pour chaque image. Le type est donc Matrix[][], un "couple"
+// attendues pour chaque image. Le type est donc Matrix[], un "couple" (liste)
 // de deux matrices. Un jeu de données peut être exporté / importé pour éviter
 // d'être regénérer à chaque fois
 
