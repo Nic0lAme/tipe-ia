@@ -8,7 +8,8 @@ class ScrambleVisual extends PApplet {
   PImage baseImg;
   int w, h;
   int numOfCol, numOfLine;
-  int mainMultiplier = 2;
+  int mainMultiplier = 1;
+  int totalMultiplier = 4;
   String name;
 
   PImage[] scrambledImages;
@@ -27,7 +28,8 @@ class ScrambleVisual extends PApplet {
   }
 
   void settings() {
-    size(this.w * this.numOfCol, this.h * (this.numOfLine + mainMultiplier + 1));
+    size(this.w * this.numOfCol * this.totalMultiplier, this.h * (this.numOfLine + 1) * this.totalMultiplier + this.mainMultiplier * this.baseImg.height);
+    noSmooth();
   }
 
   void setup() {
@@ -40,7 +42,7 @@ class ScrambleVisual extends PApplet {
           this.h - 2
           )
         );
-    }
+    }  
   }
 
   void draw() {
@@ -48,13 +50,13 @@ class ScrambleVisual extends PApplet {
 
     fill(0);
     noStroke();
-    rect(this.width / 2 - this.w * (this.mainMultiplier + 0.5) / 2, this.h * 0.25, this.w * (this.mainMultiplier+0.5), this.h * (this.mainMultiplier+0.5));
-    image(this.baseImg, this.width / 2 - this.w * this.mainMultiplier / 2, this.h / 2, this.w * this.mainMultiplier, this.h * this.mainMultiplier);
+    rect(this.width / 2 - this.baseImg.width * (this.mainMultiplier + 0.5) / 2, this.baseImg.height * 0.25, this.baseImg.width * (this.mainMultiplier+0.5), this.baseImg.height * (this.mainMultiplier+0.5));
+    image(this.baseImg, this.width / 2 - this.baseImg.width * this.mainMultiplier / 2, this.baseImg.height * this.mainMultiplier / 2, this.baseImg.width * this.mainMultiplier, this.baseImg.height * this.mainMultiplier);
 
-    rect(0, (this.mainMultiplier + 1) * this.h, this.width, this.height);
+    rect(0, (this.mainMultiplier + 1) * this.baseImg.height, this.width, this.height);
     for(int i = 0; i < this.numOfCol; i++)
       for(int j = 0; j < this.numOfLine;j++)
-        image(this.scrambledImages[i * this.numOfLine + j], i * this.w + 1, (j + this.mainMultiplier + 1) * this.h + 1);
+        image(this.scrambledImages[i * this.numOfLine + j], i * this.w * this.totalMultiplier + 1, (j + 1) * this.h * this.totalMultiplier + this.baseImg.height * this.mainMultiplier, this.w * this.totalMultiplier, this.h * this.totalMultiplier);
 
     if(this.frameCount == 1) {
       this.saveFrame(globalSketchPath + "/Visuals/" + this.name + ".jpg");

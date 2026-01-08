@@ -142,12 +142,12 @@ class Bayes {
   //f Kernel
   // Calcule la "covariance" entre _hp1_ et _hp2_
   public float Kernel(HyperParameters hp1, HyperParameters hp2) {
-    float k = 0;
+    float norm = 0;
     float[] list1 = hp1.ToArray();
     float[] list2 = hp2.ToArray();
     for(int i = 0; i < list1.length; i++)
-      k += Math.exp(- 0.5 * Math.pow((list2[i] - list1[i]) / h, 2)) / (h * Math.sqrt(2 * Math.PI));
-    return k / list1.length;
+      norm += list2[i] - list1[i];
+    return (float)(Math.exp(- 0.5 * Math.pow(norm / h, 2)) / (h * Math.sqrt(2 * Math.PI)));
   }
 
   //f Cherche le candidat ayant potentiellement le meilleur résultat
