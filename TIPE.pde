@@ -27,7 +27,7 @@ String globalSketchPath;
 int imgSize = 22;
 
 // Nombre de threads pour les différentes tâches
-final int numThreadsDataset = 16; // Création des datasets
+final int numThreadsDataset = 12; // Création des datasets
 final int numThreadsLearning = 1; // Apprentissage (si 1, pas de parallélisation)
 boolean doGPUMult = true;
 
@@ -71,12 +71,62 @@ void setup() {
   db = new Database("https://tipe-877f6-default-rtdb.europe-west1.firebasedatabase.app/");
 
   /*
-  PImage toScramble = loadImage("./TextFileGetter/output/la/la - MrMollier.jpg");
-  ScrambleVisual sv = new ScrambleVisual(toScramble, 78, 87, 7, 5, "Mollier a");
+  PImage toScramble = loadImage("./TextFileGetter/output/uG/uG - NicolasMA.jpg");
+  ScrambleVisual sv = new ScrambleVisual(toScramble, 28, 28, 7, 5, "NicolasMA G");
   */
+  
 
   HyperParameters hp = new HyperParameters();
   session = new Session("", hp);
+  
+  /* COMPARAISON VITESSE NN AVEC ET SANS MULTITHREADS
+  Matrix[][] testSample = session.ds.CreateSample(
+       cs.GetChars(),
+       //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
+       handTestingDatas,
+       //new String[]{},
+       fontTestingDatas,
+       8, 1);
+       
+  CNN cnn = new CNN(imgSize, new int[]{16, 32}, new int[]{256, cs.GetChars().length});
+  cnn.UseSoftMax();
+  cnn.useADAM = true;
+  
+  int initTime = millis();
+  
+  cnn.MiniBatchLearn(testSample,  8, 256, 0.001, 0.001, 2, new Matrix[][][]{testSample}, "");
+  
+  println("Total time :", millis() - initTime);
+  */
+  
+
+  /* COMPARAISON VITESSE DE CALCUL CPU & GPU
+  
+  int totalNormalTime = 0;
+  int totalGPUTime = 0;
+  int N = 10000;
+  int W = 128;
+  int H = 128;
+  for(int i = 0; i < N; i++) {
+    Matrix a = new Matrix(W, H).Random();
+    Matrix b = new Matrix(W, H).Random();
+    
+    int initTime = millis();
+    a.Mult(b);
+    totalNormalTime += millis() - initTime;
+    
+    initTime = millis();
+    a.GPUMult(b);
+    totalGPUTime += millis() - initTime;
+    
+    println(i, "Normal : ", totalNormalTime / (i+1));
+    println(i, "GPU : ", totalGPUTime / (i+1));
+  }
+  
+  println(totalNormalTime);
+  println(totalGPUTime);
+  
+  */
 
   // ImageSeparator is1 = new ImageSeparator(loadImage("AuxiliarFiles/FullImage.jpg"));
   // ImageSeparator is2 = new ImageSeparator(loadImage("AuxiliarFiles/OtherTest.jpg"));

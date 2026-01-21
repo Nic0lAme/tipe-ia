@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import LogNorm
 import numpy as np
 import random
+import time
 
 
 def CNDF(x):
@@ -52,7 +53,8 @@ def find_candidate(xs, ys, h, fBest, numOfCandidate):
 
     for cIdx in range(numOfCandidate):
         # Paramètres candidats aléatoires
-        p = random_candidate(candidate_dim, canvas_size)
+        # p = random_candidate(candidate_dim, canvas_size)
+        p = [random.random() * (xmax - xmin) + xmin, random.random() * (ymax - ymin) + ymin]
         params.append(p)
 
         # K*
@@ -68,11 +70,11 @@ def find_candidate(xs, ys, h, fBest, numOfCandidate):
         # Moyenne et variance prédictives
         mu = (Kstar.T @ K_inv @ Y)[0, 0]
         sigma2 = Kstarstar - (Kstar.T @ K_inv @ Kstar)[0, 0]
-        sigma = math.sqrt(max(sigma2, 0.0))  # sécurité numérique
+        sigma = math.sqrt(max(sigma2, 0.0))
 
         # Expected Improvement
-        Z = (fBest - mu) / sigma if sigma > 0 else 0.0
-        EIs[cIdx] = (fBest - mu) * CNDF(Z) + beta * sigma * NDF(Z)
+        Zn = (fBest - mu) / sigma if sigma > 0 else 0.0
+        EIs[cIdx] = (fBest - mu) * CNDF(Zn) + beta * sigma * NDF(Zn)
         # NB : le commentaire "peut-être qu'il y a un moins" reste valable
 
     # Recherche du maximum
@@ -84,14 +86,16 @@ def find_candidate(xs, ys, h, fBest, numOfCandidate):
     return params[maxIdx]
 
 
-def draw_EI(xs, ys, h, fBest, step, out_dir):
+def draw_EI(xs, ys, h, fBest, step, out_dir, doLog = False):
     import os
     os.makedirs(out_dir, exist_ok=True)
 
-    grid = 100
-    x = np.linspace(-canvas_size, canvas_size, grid)
-    y = np.linspace(-canvas_size, canvas_size, grid)
+    grid = 150
+    x = np.linspace(xmin, xmax, grid)
+    y = np.linspace(ymin, ymax, grid)
+    
     X, Y = np.meshgrid(x, y)
+    Z = f(X, Y)
 
     EI = np.zeros_like(X)
 
@@ -125,11 +129,11 @@ def draw_EI(xs, ys, h, fBest, step, out_dir):
             # Moyenne et variance prédictives
             mu = (Kstar.T @ K_inv @ Yei)[0, 0]
             sigma2 = Kstarstar - (Kstar.T @ K_inv @ Kstar)[0, 0]
-            sigma = math.sqrt(max(sigma2, 0.0))  # sécurité numérique
+            sigma = math.sqrt(max(sigma2, 0.0))
 
             # Expected Improvement
-            Z = (fBest - mu) / sigma if sigma > 0 else 0.0
-            EI[i, j] = (fBest - mu) * CNDF(Z) + beta * sigma * NDF(Z)
+            Zn = (fBest - mu) / sigma if sigma > 0 else 0.0
+            EI[i, j] = (fBest - mu) * CNDF(Zn) + beta * sigma * NDF(Zn)
             # NB : le commentaire "peut-être qu'il y a un moins" reste valable
 
     EI = np.nan_to_num(EI, nan=0.0, posinf=0.0, neginf=0.0)
@@ -139,15 +143,27 @@ def draw_EI(xs, ys, h, fBest, step, out_dir):
     cmap.set_bad(color="black")
 
     plt.figure(figsize=(8, 6))
-    plt.contourf(
+
+    if doLog and Z.min() > 0:
+        plt.contourf(X, Y, Z, levels=50, norm = LogNorm(vmin = Z.min(), vmax = Z.max()), cmap="viridis", alpha = 0.9)
+    else:
+        plt.contourf(X, Y, Z, levels=50, cmap="viridis", alpha = 0.9)
+
+
+    plt.contour(
         X, Y, EI_pos,
-        levels=50,
-        cmap=cmap
+        levels=10,
+        cmap=cmap,
+        linewidths=1.5,
+        norm = LogNorm()
     )
+
+
+    """
     cbar = plt.colorbar(label="Expected Improvement")
     cbar.formatter.set_useOffset(False)
     cbar.update_ticks()
-
+    """
 
     xs_vals = np.array(xs)
     plt.scatter(
@@ -195,8 +211,8 @@ def draw_EI(xs, ys, h, fBest, step, out_dir):
 
     plt.xlabel("x")
     plt.ylabel("y")
-    plt.title(f"Carte de l'Expected Improvement - itération {step}")
-    #plt.legend()
+    plt.title(f"Fonction et Ligne d'EI - itération {step}")
+    plt.legend()
 
     plt.savefig(f"{out_dir}/ei_{step:03d}.png", dpi = 150, bbox_inches="tight")
     plt.close()
@@ -204,16 +220,19 @@ def draw_EI(xs, ys, h, fBest, step, out_dir):
 
 
 
-def process(f, numOfCandidate, random_iter, calc_iter):
+def process(f, numOfCandidate, random_iter, calc_iter, do_draw_EI):
     xs = []
     ys = []
     bs = []
+
+    folder = time.time()
 
     fBest = None
 
     # Initialise avec un certain nombre de candidats aléatoires
     for _ in range(random_iter):
-        p = random_candidate(candidate_dim, canvas_size)
+        #p = random_candidate(candidate_dim, canvas_size)
+        p = [random.random() * (xmax - xmin) + xmin, random.random() * (ymax - ymin) + ymin]
         xs.append(p)
 
         res = f(p)
@@ -238,7 +257,7 @@ def process(f, numOfCandidate, random_iter, calc_iter):
 
         ys.append(res)
 
-        draw_EI(xs, ys, h, fBest, step, "./EIDraws")
+        if do_draw_EI: draw_EI(xs, ys, h, fBest, step, f"./EIDraws/{folder}")
 
 
     xs_vals = np.array(xs)
@@ -264,6 +283,17 @@ def process(f, numOfCandidate, random_iter, calc_iter):
     """
 
     return fBest
+
+
+def expected_min_quantile(Z, n, eps = 1e-2):
+    flat = Z.flatten()
+    mean = np.quantile(flat, 1.0 / (n+1))
+
+    m = max(20, int((2.0 / n) * len(flat)))
+    small = np.sort(flat)[:m]
+
+    std_est = np.std(small) / np.sqrt(n)
+    return mean, std_est
 
 
 #https://benchmarkfcns.info/doc/himmelblaufcn.html
@@ -319,21 +349,37 @@ def evaluate2D(t, f):
 
 
 candidate_dim = 2
-canvas_size = 2
-h = 0.25 * canvas_size
+canvas_size = 7.5
+h = 0.2 * canvas_size
 beta = 1 #Paramètre réglant la dose d'exploration (< 1 -> exploitation, > 1 -> exploration)
 jitter = 1e-6 #Correpond à du bruit de lecture, permet de ne pas avoir de déterminant nul
 
-f = goldstein_price
+f = branin
 
-x = np.linspace(-canvas_size, canvas_size, 300)
-y = np.linspace(-canvas_size, canvas_size, 300)
+xmin, xmax = -5, 10
+ymin, ymax = 0, 15
+
+x = np.linspace(xmin, xmax, 1000)
+y = np.linspace(ymin, ymax, 1000)
 X, Y = np.meshgrid(x, y)
 Z = f(X, Y)
 
-process(lambda t: evaluate2D(t, f), 10000, 1, 79)
 
-process(lambda t: evaluate2D(t, f), 10000, 80, 0)
+
+N = 20
+sum = 0
+for i in range(N):
+    val = process(lambda t: evaluate2D(t, f), 2500, 5, 75, i < 10)
+    print(i, val)
+    sum += val
+
+print("Average Best with Bayes :", sum / N)
+
+
+#process(lambda t: evaluate2D(t, f), 2500, 5, 75, True)
+
+#process(lambda t: evaluate2D(t, f), 10000, 80, 0)
+print("Average Best with Monte-Carlo", expected_min_quantile(Z, 80))
 
 
 
