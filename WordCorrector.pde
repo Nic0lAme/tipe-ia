@@ -430,6 +430,12 @@ class WordCorrector {
       corruptedWordList[i] = this.CorruptWord(wordList[i], substitutionProb, insertDelProb);
     }
     
+    int numOfRightWithoutCorr = 0;
+    for(int i = 0; i < numOfWord; i++) {
+      if(Arrays.equals(corruptedWordList[i], wordList[i])) numOfRightWithoutCorr += 1;
+    }
+    println("Bonnes réponses sans correction :", numOfRightWithoutCorr, " - Proportion :", (float)numOfRightWithoutCorr/numOfWord);
+    
     for(DistanceFunction f : functions) {
       int numOfRight = 0;
       int initTime = millis();
@@ -439,7 +445,7 @@ class WordCorrector {
         if(Arrays.equals(word, wordList[i])) numOfRight += 1;
       }
       
-      println("Bonnes réponses :", numOfRight, " - Temps :", (float)(millis() - initTime) / 1000);
+      println("Bonnes réponses :", numOfRight, " - Proportion :", (float)numOfRight/numOfWord, " - Temps :", (float)(millis() - initTime) / 1000);
     }
   }
   

@@ -27,14 +27,14 @@ public class Session {
     this.name = name;
     this.characters = cs.GetChars();
 
-    //this.sessionHandTrainingDatas = handTrainingDatas;
+    //this.sessionHandTrainingDatas = BCPSTPolicies;
     this.sessionHandTrainingDatas = new String[]{};
-    this.sessionFontTrainingDatas = fontTrainingDatas;
+    this.sessionFontTrainingDatas = new String[]{"Elephant"};
     //this.sessionFontTrainingDatas = new String[]{};
 
     //this.sessionHandTestingDatas = handTestingDatas;
-    this.sessionHandTestingDatas = new String[]{};
-    this.sessionFontTestingDatas = fontTestingDatas;
+    this.sessionHandTestingDatas = new String[]{"NicolasMA"};
+    this.sessionFontTestingDatas = new String[]{"Charter"};;
 
     ds = new LetterDataset(5*this.w, 5*this.h);
   }
@@ -360,6 +360,56 @@ public class Session {
     }
 
     return score;
+  }
+  
+  void TestDifferentSources(NeuralNetwork nn, String[] characters, String[] hwSources, String[] fSources, int rep, float deformationRate, String exportFile) {
+    int numOfSources = hwSources.length + fSources.length;
+    Matrix[][] linedSamples = new Matrix[numOfSources][];
+    for(int i = 0; i < numOfSources; i++) {
+      String[] hwSource = (i < hwSources.length) ? new String[]{hwSources[i]} : new String[]{};
+      String[] fSource = (i < fSources.length) ? new String[]{fSources[i - hwSources.length]} : new String[]{};
+      Matrix[][] sample = ds.CreateSample(characters, hwSource, fSource, rep, deformationRate);
+      linedSamples[i] = ds.SampleLining(sample);
+    }
+  
+    float[][] accuracyLists = session.AccuracyScore(nn, linedSamples, false);
+    float[] accuracies = new float[numOfSources];
+    
+    for(int i = 0; i < numOfSources; i++) {
+      accuracies[i] = Average(accuracyLists[i]);
+    }
+    
+    Integer[] indices = new Integer[accuracies.length];
+    for(int i = 0; i < indices.length; i++) {
+      indices[i] = i;
+    }
+    
+    //Tri par insertion
+    for(int i = 1; i < indices.length; i++) {
+      int j = i-1;
+      int idx = indices[i];
+      float value = accuracies[idx];
+      while(j >= 0 && accuracies[indices[j]] < value) {
+        indices[j+1] = indices[j];
+        j -= 1;
+      }
+      indices[j+1] = idx;
+    }
+    
+    for(int i = 0; i < indices.length; i++) {
+      int idx = indices[i];
+      String sourceName = (idx < hwSources.length) ? hwSources[idx] : fSources[idx - hwSources.length];
+      println(i + 1, " - Source: ", sourceName, " | Accuracy: ", accuracies[idx] * 100, "%");
+    }
+  
+    String[] csvLines = new String[accuracies.length + 1];
+    csvLines[0] = "Source;Accuracy";
+    for(int i = 0; i < accuracies.length; i++) {
+      int idx = indices[i];
+      String sourceName = (idx < hwSources.length) ? hwSources[idx] : fSources[idx - hwSources.length];
+      csvLines[i + 1] = sourceName + ";" + str(accuracies[idx]);
+    }
+    saveStrings(exportFile, csvLines);
   }
 
   Matrix ImgPP(PImage img) { // "Post-processing" d'une image

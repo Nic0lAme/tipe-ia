@@ -9,22 +9,29 @@ class Bayes {
 
   float fBest;
 
-  float h = 2;
+  float[] h;
   int numOfCandidate = 32768;
   float overfittingImportance = 0.3;
 
-  int trainingRep = 1;
-  int testingRep = 1;
+  int trainingRep = 12;
+  int testingRep = 5;
+  
+  boolean doCNNBayes = false;
+  boolean[] parametersForNN;
 
   private boolean isLoaded = false;
   public int etalonnedTime = 0;
   final private LetterDataset ds = new LetterDataset(5*session.w, 5*session.h);
-  Matrix[][] globalTrainingData, globalTestingData;
+  Matrix[][] globalCNNTrainingData, globalCNNTestingData;
+  Matrix[] globalTrainingData, globalTestingData;
 
   //c
   Bayes(String n) {
     this.name = n;
     this.filePath = sketchPath() + "/Bayes/" + n + ".by";
+    
+    h = new HyperParameters().GetH();
+    parametersForNN = new HyperParameters().ParametersForNN();
 
 	/*
     File f = dataFile(filePath);
@@ -39,16 +46,22 @@ class Bayes {
   //f Charge les images (test et train) à utiliser pendant l'optimisation
   private void LoadImageData() {
     int startTime = millis();
-    globalTrainingData = ds.CreateSample(
+    globalCNNTrainingData = ds.CreateSample(
         cs.GetChars(),
-        handTrainingDatas,
+        //handTrainingDatas,
+        new String[]{},
         fontTrainingDatas,
         trainingRep, 1);
-    globalTestingData = ds.CreateSample(
+    globalCNNTestingData = ds.CreateSample(
         cs.GetChars(),
-        handTestingDatas,
+        //handTestingDatas,
+        new String[]{},
         fontTestingDatas,
         testingRep, 1);
+    
+    globalTrainingData = ds.SampleLining(this.globalCNNTrainingData);
+    globalTestingData = ds.SampleLining(this.globalCNNTestingData);
+        
     isLoaded = true;
     etalonnedTime = millis() - startTime;
   }
@@ -111,11 +124,12 @@ class Bayes {
   }
 
   //f Exporte l'hyperparamètre _hp_, associé à son score _score_
-  public void SERV_Export(HyperParameters hp, float score) {
+  public void SERV_Export(HyperParameters hp, float loss, float acc) {
     JSONObject output = new JSONObject();
 
     output.setJSONObject("HyperParameters", hp.toJSON());
-    output.setFloat("Score", (float)score);
+    output.setFloat("Score", (float)loss);
+    output.setFloat("Accuracy", (float)acc);
 
     db.PostData("Bayes/" + this.name, output);
   }
@@ -138,29 +152,118 @@ class Bayes {
 
     return this;
   }
+  
+  //f Trouver le meilleur résultat
+  public HyperParameters SERV_GetBest() {
+    JSONArray candidates = db.GetData("Bayes/" + this.name);
+    if(candidates.size() == 0) return null;
+    
+    HyperParameters bestAccParams = new HyperParameters();
+    HyperParameters bestLossParams = new HyperParameters();
+    float bestAcc = 0;
+    float bestLoss = 1000;
+    float averageLoss = 0;
+    float averageAcc = 0;
+
+    for(int k = 0; k < candidates.size(); k++) {
+      JSONObject obj = candidates.getJSONObject(k);
+      
+      float acc = (float)obj.getFloat("Accuracy");
+      float loss = (float)obj.getFloat("Score");
+      
+      averageLoss += loss;
+      averageAcc += acc;
+      
+      if(acc > bestAcc) {
+        bestAcc = acc;
+        bestAccParams = new HyperParameters().FromJSON(obj.getJSONObject("HyperParameters"));
+      }
+      
+      if(loss < bestLoss) {
+        bestLoss = loss;
+        bestLossParams = new HyperParameters().FromJSON(obj.getJSONObject("HyperParameters"));
+      }
+    }
+
+    averageAcc /= candidates.size();
+    averageLoss /= candidates.size();
+    
+    cl.pln("Best Loss " + String.format("%6.3f", bestLoss) + " | Best Accuracy " + String.format("%6.3f", bestAcc));
+    cl.pln("Average Loss " + String.format("%6.3f", averageLoss) + " | Average Accuracy " + String.format("%6.3f", averageAcc));
+    
+    println("Best Accuracy Parameters");
+    println(bestAccParams);
+    
+    println("Best Loss Parameters");
+    println(bestLossParams);
+
+    return bestLossParams;
+  }
 
   //f Kernel
   // Calcule la "covariance" entre _hp1_ et _hp2_
   public float Kernel(HyperParameters hp1, HyperParameters hp2) {
+    float penalty = 0.5;
+    float cPenalty = 0.5;
+    
     float norm = 0;
     float[] list1 = hp1.ToArray();
     float[] list2 = hp2.ToArray();
-    for(int i = 0; i < list1.length; i++)
-      norm += list2[i] - list1[i];
-    return (float)(Math.exp(- 0.5 * Math.pow(norm / h, 2)) / (h * Math.sqrt(2 * Math.PI)));
+    for(int i = 0; i < 7; i++)
+      if(this.doCNNBayes || this.parametersForNN[i]) norm += Math.pow((list2[i] - list1[i]) / this.h[i], 2);
+      
+    //Pénalité à appliquer pour les différences de couches
+    int minLayers = Math.min(hp1.layerSize.length, hp2.layerSize.length);
+    int maxLayers = Math.max(hp1.layerSize.length, hp2.layerSize.length);
+    
+    for(int k = 0; k < minLayers; k++) {
+        float logSize1 = (float)Math.log(hp1.layerSize[k]);
+        float logSize2 = (float)Math.log(hp2.layerSize[k]);
+        norm += (float)Math.pow((logSize2 - logSize1) / this.h[7+k],2);
+    }
+    norm += (float)Math.pow((maxLayers - minLayers) * penalty, 2);
+    
+    if(!this.doCNNBayes) return (float)Math.exp(- 0.5 * norm);
+    
+    int cMinLayers = Math.min(hp1.cNumFilters.length, hp2.cNumFilters.length);
+    int cMaxLayers = Math.max(hp1.cNumFilters.length, hp2.cNumFilters.length);
+    
+    for(int k = 0; k < cMinLayers; k++) {
+        float logSize1 = (float)Math.log(hp1.cNumFilters[k]);
+        float logSize2 = (float)Math.log(hp2.cNumFilters[k]);
+        norm += (float)Math.pow((logSize2 - logSize1) / this.h[7 + hp1.maxNumberOfLayers +k], 2);
+    }
+    norm += (float)Math.pow((cMaxLayers - cMinLayers) * cPenalty, 2);
+    
+    return (float)Math.exp(- 0.5 * norm);
   }
 
   //f Cherche le candidat ayant potentiellement le meilleur résultat
   public HyperParameters FindCandidate() {
+    //Normaliser Y
+    float meanY = 0;
+    for (float y : ys) meanY += y;
+    meanY /= ys.size();
+    
+    float stdY = 0;
+    for (float y : ys) stdY += (y - meanY) * (y - meanY);
+    stdY = (float)Math.sqrt(stdY / Math.max(ys.size() - 1, 1));
+    if (stdY < 1e-6) stdY = 1.0f;
+    
+    float fBest_norm = (fBest - meanY) / stdY;
+    
     Matrix K = new Matrix(xs.size());
+    float noise = 0.01;
+    
     for(int i = 0; i < xs.size(); i++)
       for(int j = 0; j < xs.size(); j++)
-        K.Set(i, j, Kernel(xs.get(i), xs.get(j)));
+        // On rajoute du bruit d'observation pour limiter le risque d'avoir une matrice non inversible (ou peu de déterminant très faible)
+        K.Set(i, j, Kernel(xs.get(i), xs.get(j)) + (i == j ? noise : 0));
 
     Matrix KInv = K.Inversed();
 
     Matrix Y = new Matrix(this.ys.size(), 1);
-    for(int i = 0; i < this.ys.size(); i++) Y.Set(i, 0, this.ys.get(i));
+    for(int i = 0; i < this.ys.size(); i++) Y.Set(i, 0, (this.ys.get(i) - meanY) / stdY);
 
     HyperParameters[] params = new HyperParameters[numOfCandidate];
     float[] EIs = new float[numOfCandidate];
@@ -170,13 +273,25 @@ class Bayes {
 
       Matrix Kstar = new Matrix(xs.size(), 1);
       for(int i = 0; i < xs.size(); i++) Kstar.Set(i, 0, Kernel(params[cIdx], xs.get(i)));
-      float Kstarstar = Kernel(params[cIdx], params[cIdx]);
+      float Kstarstar = Kernel(params[cIdx], params[cIdx]) + noise;
+
 
       float mu = Kstar.T().Mult(KInv).Mult(Y).Get(0,0);
       float sigma = sqrt(Kstarstar - Kstar.T().Mult(KInv).Mult(Kstar).Get(0,0));
-
-      float Z = (fBest - mu) / sigma;
-      EIs[cIdx] = (fBest - mu) * CNDF(Z) + sigma * NDF(Z); // Peut-être qu'il y a un moins
+      
+      if(sigma > 0) {
+        float Z = (fBest_norm - mu) / sigma;
+        EIs[cIdx] = (fBest_norm - mu) * CNDF(Z) + sigma * NDF(Z);
+      } else {
+        EIs[cIdx] = 0;
+      }
+      
+      /*
+      System.out.printf("Cand %d: Kstar max=%.6f, min=%.6f, mu=%.6f, sigma=%.6f, EI=%.6f%n",
+                 cIdx, 
+                 max(Kstar.ColumnToArray(0)), min(Kstar.ColumnToArray(0)), 
+                 mu, sigma, EIs[cIdx]);
+                 */
     }
 
     float max = EIs[0];
@@ -196,7 +311,7 @@ class Bayes {
   //f Ajoute _numSamples_ données à la database (pour initialiser Bayes)
   // On limite le temps de recherche par hyperparamètres à un multiple _numOfEtalon_
   // du temps de création des datasets
-  public void RandomFill(int numSamples, int numOfEtalon) {
+  public void RandomFill(int numSamples, float numOfEtalon) {
     if (!isLoaded) LoadImageData();
     cl.pln("Bayes random fill start - Time per candidate : " + String.format("%7.3f", (float)(numOfEtalon * this.etalonnedTime) / 1000));
 
@@ -206,14 +321,16 @@ class Bayes {
       HyperParameters hp = new HyperParameters().Random();
       cl.pln(hp.toString());
 
-      float loss = Evaluate(hp, globalTrainingData, globalTestingData, numOfEtalon * this.etalonnedTime);
+      float[] scores = Evaluate(hp, globalTrainingData, globalTestingData, globalCNNTrainingData, globalCNNTestingData, numOfEtalon * this.etalonnedTime);
+      float loss = scores[0];
+      float acc = scores[1];
       xs.add(hp);
       ys.add(loss);
 
-      cl.pln("Score", String.format("%7.3f", loss));
+      cl.pln("Loss", String.format("%7.3f", loss), "| Accuracy :", String.format("%7.3f", acc));
 
 
-      this.SERV_Export(hp, loss);
+      this.SERV_Export(hp, loss, acc);
     }
 
     cl.pln("Bayes random fill end");
@@ -223,7 +340,7 @@ class Bayes {
   // Effectué _iter_ fois
   // On limite le temps de recherche par candidat à un multiple _numOfEtalon_
   // du temps de création des datasets
-  public float GaussianProcess(int iter, int numOfEtalon) {
+  public float GaussianProcess(int iter, float numOfEtalon) {
     if (!isLoaded) LoadImageData();
 
     cl.pln("Bayes gaussian process start - Time per candidate : " + String.format("%7.3f", (float)(numOfEtalon * this.etalonnedTime) / 1000));
@@ -238,15 +355,17 @@ class Bayes {
 
       cl.pln(candidate.toString());
 
-      float loss = Evaluate(candidate, globalTrainingData, globalTestingData, numOfEtalon * this.etalonnedTime);
+      float[] scores = Evaluate(candidate, globalTrainingData, globalTestingData, globalCNNTrainingData, globalCNNTestingData, numOfEtalon * this.etalonnedTime);
+      float loss = scores[0];
+      float acc = scores[1];
 
-      cl.pln("Score", String.format("%7.3f", loss));
+      cl.pln("Loss", String.format("%7.3f", loss), "| Accuracy :", String.format("%7.3f", acc));
 
       xs.add(candidate);
       ys.add(loss);
 
       MinLoss();
-      this.SERV_Export(candidate, loss);
+      this.SERV_Export(candidate, loss, acc);
     }
 
     cl.pln("Bayes gaussian process end");
@@ -269,7 +388,7 @@ class Bayes {
   }
 
   //f Permet d'évaluer la force d'une combinaison d'hyperparamètres
-  public float Evaluate(HyperParameters hp, Matrix[][] trainSet, Matrix[][] testSet, int time) {
+  public float[] Evaluate(HyperParameters hp, Matrix[] trainSet, Matrix[] testSet, Matrix[][] trainCNNSet, Matrix[][] testCNNSet, float time) {
     int startTime = millis();
 
     int[] layers = new int[hp.layerSize.length + 2];
@@ -277,12 +396,16 @@ class Bayes {
     for(int k = 0; k < hp.layerSize.length; k++) layers[k+1] = hp.layerSize[k];
     layers[hp.layerSize.length + 1] = cs.NumChars();
     
-    CNN nn = new CNN(session.w, hp.cNumFilters, layers);
+    CNN cnn = new CNN(session.w, hp.cNumFilters, layers);
+    cnn.lambda = hp.lambda * hp.batchSize;
+    cnn.UseSoftMax();
+    cnn.useADAM = true;
+    cnn.b1 = hp.b1;
+    cnn.b2 = hp.b2;
+    
+    NeuralNetwork nn = new NeuralNetwork(layers);
     nn.lambda = hp.lambda * hp.batchSize;
     nn.UseSoftMax();
-    nn.useADAM = true;
-    nn.b1 = hp.b1;
-    nn.b2 = hp.b2;
 
     graphApplet.ClearGraph();
 
@@ -292,22 +415,35 @@ class Bayes {
     int iterNum = 0;
     while (millis() < startTime + time) {
       float lr = CyclicalLearningRate(iterNum, hp.minLR, hp.maxLR, hp.period);
-      trainLoss = nn.MiniBatchLearn(trainSet, 1, hp.batchSize, lr, lr, 1, new Matrix[0][][], String.format("%05d", iterNum + 1));
+      if(this.doCNNBayes) {
+        trainLoss = cnn.MiniBatchLearn(trainCNNSet, 1, hp.batchSize, lr, lr, 1, new Matrix[0][][], String.format("%05d", iterNum + 1));
+      } else {
+        trainLoss = nn.MiniBatchLearn(trainSet, 1, hp.batchSize, lr, lr, 1, new Matrix[0][], String.format("%05d", iterNum + 1));
+      }
 
       cl.pln("Candidate Remaining Time", String.format("%7.3f", (float)(time - millis() + startTime) / 1000));
 
       iterNum++;
     }
-
-    testLoss = nn.ComputeLoss(nn.Predict(testSet[0]), testSet[1][0]);
-
-    float accuracy = Average(session.AccuracyScore(nn, testSet, false));
+    
+    
+    float accuracy = 0;
+    
+    if(this.doCNNBayes) {
+      testLoss = cnn.ComputeLoss(cnn.Predict(testCNNSet[0]), testCNNSet[1][0]);
+      trainLoss = cnn.ComputeLoss(cnn.Predict(trainCNNSet[0]), trainCNNSet[1][0]);
+      accuracy = Average(session.AccuracyScore(cnn, testCNNSet, false));
+    } else {
+      testLoss = nn.ComputeLoss(nn.Predict(testSet[0]), testSet[1]);
+      trainLoss = nn.ComputeLoss(nn.Predict(trainSet[0]), trainSet[1]);
+      accuracy = Average(session.AccuracyScore(nn, testSet, false));
+    }
+    
 
     cl.pln("Training loss", String.format("%8.6f", trainLoss), "\t|\tTesting loss", String.format("%8.6f", testLoss));
     cl.pln("Accuracy", String.format("%6.4f", accuracy));
 
-    // Puissance pour éviter d'avoir un écart en log, permettant d'augmenter l'écart type ie l'exploration
-    return testLoss  * pow(testLoss / trainLoss, overfittingImportance) / accuracy / 100;
+    return new float[]{testLoss, accuracy};
   }
 
   //f Piqué sur un site mais on n'a pas enregistré lequel

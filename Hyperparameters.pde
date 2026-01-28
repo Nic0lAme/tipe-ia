@@ -1,5 +1,5 @@
 class HyperParameters {
-  int maxNumberOfLayers = 8;
+  int maxNumberOfLayers = 5;
   int maxNumberOfCLayers = 3;
   
   int[] layerSize;
@@ -15,8 +15,8 @@ class HyperParameters {
   
   //f Tire des hyperparamètres aléatoirement
   HyperParameters Random() {
-    maxLR = LogRandom(0.0001, 0.1);
-    minLR = LogRandom(0.000001, 0.01);
+    maxLR = LogRandom(0.001, 1);
+    minLR = LogRandom(0.0001, 0.1);
     lambda = LogRandom(0.0000001, 0.1);
     period = (int)constrain(PoissonRandom(6), 1, 100);
     batchSize = (int)LogRandom(8, 256);
@@ -30,7 +30,7 @@ class HyperParameters {
     
     int numberOfCLayer = (int)round(UniRandom(0, maxNumberOfCLayers));
     cNumFilters = new int[numberOfCLayer];
-    for(int k = 0; k < numberOfCLayer; k++) cNumFilters[k] = (int)LogRandom(4, 1024);
+    for(int k = 0; k < numberOfCLayer; k++) cNumFilters[k] = (int)LogRandom(4, 128);
     
     return this;
   }
@@ -91,17 +91,49 @@ class HyperParameters {
     return x / (x+y);
   }
   
+  float[] GetH() {
+    float[] ret = new float[numOfHyperParameters];
+    ret[0] = 2; //minLR entre -4 et -1
+    ret[1] = 2; //maxLR entre -3 et 0
+    ret[2] = 7; //lambda entre -7 et -1
+    ret[3] = 8; //period, échelle de longueur de 6
+    ret[4] = 1.8; //batchSize entre ~0.8 et ~2.4
+    ret[5] = 0.01; //b1
+    ret[6] = 0.01; //b2
+    for(int k = 0; k < maxNumberOfLayers; k++) ret[7+k] = 1.4; //layerSize entre ~1.2 et ~3
+    for(int k = 0; k < maxNumberOfCLayers; k++) ret[7+maxNumberOfLayers+k] = 1; //cNumOfFilters entre ~0.5 et ~2.2
+    
+    return ret;
+  }
+  
+  
+  boolean[] ParametersForNN() {
+    boolean[] ret = new boolean[numOfHyperParameters];
+    ret[0] = true;
+    ret[1] = true;
+    ret[2] = true;
+    ret[3] = true;
+    ret[4] = true;
+    ret[5] = false;
+    ret[6] = false;
+    for(int k = 0; k < maxNumberOfLayers; k++) ret[7+k] = true;
+    for(int k = 0; k < maxNumberOfCLayers; k++) ret[7+maxNumberOfLayers+k] = false;
+    
+    return ret;
+  }
+  
+  
   float[] ToArray() {
     float[] ret = new float[numOfHyperParameters];
-    ret[0] = this.minLR;
-    ret[1] = this.maxLR;
-    ret[2] = this.lambda;
+    ret[0] = (float)Math.log(this.minLR);
+    ret[1] = (float)Math.log(this.maxLR);
+    ret[2] = (float)Math.log(this.lambda);
     ret[3] = this.period;
-    ret[4] = this.batchSize;
+    ret[4] = (float)Math.log(this.batchSize);
     ret[5] = this.b1;
     ret[6] = this.b2;
-    for(int k = 0; k < layerSize.length; k++) ret[7+k] = this.layerSize[k];
-    for(int k = 0; k < cNumFilters.length; k++) ret[7+maxNumberOfLayers+k] = this.cNumFilters[k];
+    for(int k = 0; k < layerSize.length; k++) ret[7+k] = (float)Math.log(this.layerSize[k]);
+    for(int k = 0; k < cNumFilters.length; k++) ret[7+maxNumberOfLayers+k] = (float)Math.log(this.cNumFilters[k]);
     
     return ret;
   }
@@ -118,7 +150,7 @@ class HyperParameters {
     
     ArrayList<Integer> layerList = new ArrayList<Integer>();
     for(int k = 0; k < maxNumberOfLayers; k++) {
-      if(array[k+7] != 0) layerList.add((int)array[k+5]);
+      if(array[k+7] != 0) layerList.add((int)array[k+7]);
       else break;
     }
     

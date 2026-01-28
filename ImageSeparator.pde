@@ -9,6 +9,8 @@ class ImageSeparator {
   final private int blueMask = 0b11111111;
 
   final private int lineThreshold = 5; // PARAM
+  final private int letterColumnGap = 2; // PARAM
+  final private float wordSeperationFactor = 0.9; //PARAM
 
   public ImageSeparator(PImage img) {
     this.originalImage = img;
@@ -98,7 +100,6 @@ class ImageSeparator {
     pg.image(originalImage, 0, 0);
 
     for (PVector[][] word : allCoords) {
-
       if (withLetters) {
         for (PVector[] coords : word) {
           PVector ul = coords[0], br = coords[1];
@@ -175,7 +176,7 @@ class ImageSeparator {
     }
     // println(trousSizes.size());
     // println(RemoveExtreme(trousSizes).size());
-    return OtsuThreshold(RemoveExtreme(trousSizes));
+    return (int)(this.wordSeperationFactor * OtsuThreshold(RemoveExtreme(trousSizes)));
   }
 
   ArrayList<Integer> RemoveExtreme(ArrayList<Integer> in) {
@@ -490,7 +491,8 @@ class ImageSeparator {
 
     for (PVector[] v : allWordsCoords) {
       PVector ul = v[0], br = v[1];
-      allCoords.add(GetLettersInWord(bwPixels, ul, br));
+      PVector[][] lettersInWord = GetLettersInWord(bwPixels, ul, br);
+      if(lettersInWord.length > 0) allCoords.add(lettersInWord);
     }
 
     return allCoords;
@@ -536,7 +538,7 @@ class ImageSeparator {
     for (int i = up; i < down+1; i++) {
       if (bwPixels[i][col] == 0) {
         compteur++;
-        if (compteur >= 3) return true; // PARAM
+        if (compteur >= this.letterColumnGap) return true; // PARAM
       }
     }
     return false;

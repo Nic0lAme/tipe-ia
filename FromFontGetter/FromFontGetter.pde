@@ -33,7 +33,15 @@ class Letter {
 
 int w = 156;
 int h = 175;
-String fontName = "Franklin Gothic Book";
+/*
+String[] fontNames = new String[]{
+  "Roboto Regular", "Noto Sans Regular", "Open Sans Regular", "Lato Regular", "Montserrat Regular", "Source Sans 3 Regular", "Source Code Pro Regular", "Raleway Regular",
+  "Oswald Regular", "Ubuntu Regular", "TheAntiquaBTrial-W5Plain"
+  
+  , "Source Sans 3 Regular", "Source Code Pro Regular", "Raleway Regular"
+};*/
+
+String[] fontNames = new String[]{"Raleway Regular"};
 int size = 90;
   
 void settings() {
@@ -124,15 +132,21 @@ void setup() {
   
   println(Arrays.asList(PFont.list()));
   
-  if(!Arrays.asList(PFont.list()).contains(fontName)) {
-    println("The font is not available");
-    exit();
-    return;
+  for(String fontName : fontNames) {
+    /*
+    if(!Arrays.asList(PFont.list()).contains(fontName)) {
+      println(fontName, "The font is not available");
+      //exit();
+      //return;
+      continue;
+    }
+    */
+    
+    PFont font = createFont(fontName, size);
+    
+    for (Letter l : letters)
+      l.Save(w, h, font, fontName);
   }
-  PFont font = createFont(fontName, size);
-  
-  for (Letter l : letters)
-    l.Save(w, h, font, fontName);
     
   exit();
 }

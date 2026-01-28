@@ -21,6 +21,24 @@ String[] handPolicies = new String[] {
   "MPSIB00022", "MPSIB00023", "MPSIB00024", "MPSIB00025", "MPSIB00026"
 };
 
+String[] BCPSTPolicies = new String[] {
+  "BCPST00004", "BCPST00005", "BCPST00006", "BCPST00007", "BCPST00008", "BCPST00009", "BCPST00010", "BCPST00011", "BCPST00012", "BCPST00013",
+  "BCPST00014", "BCPST00015", "BCPST00016", "BCPST00017", "BCPST00018", "BCPST00019", "BCPST00020", "BCPST00021", "BCPST00022", "BCPST00023",
+  "BCPST00024", "BCPST00025", "BCPST00026", "BCPST00027", "BCPST00028", "BCPST00029", "BCPST00030", "BCPST00031", "BCPST00032", "BCPST00033",
+  "BCPST00034", "BCPST00035", "BCPST00036", "BCPST00037", "BCPST00038", "BCPST00039", "BCPST00040", "BCPST00041", "BCPST00042", "BCPST00043",
+  "BCPST00044", "BCPST00045", "BCPST00046", "BCPST00047", "BCPST00048", "BCPST00049", "BCPST00050", "BCPST00051", "BCPST00052", "BCPST00053",
+  "BCPST00054", "BCPST00055", "BCPST00056", "BCPST00057", "BCPST00058", "BCPST00059", "BCPST00060", "BCPST00061", "BCPST00062", "BCPST00063",
+  "BCPST00064", "BCPST00065", "BCPST00066", "BCPST00067", "BCPST00068", "BCPST00069", "BCPST00070", "BCPST00071", "BCPST00072", "BCPST00073",
+  "BCPST00074", "BCPST00075", "BCPST00076", "BCPST00077", "BCPST00078", "BCPST00079", "BCPST00080", "BCPST00081", "BCPST00000", "BCPST00001",
+  "BCPST00002", "BCPST00003"
+};
+
+String[] MPSIPolicies = new String[] {
+  "AntoineME", "NicolasMA", "LenaME", "TheoLA", "ElioKE", "AkramBE", "SamuelJE", "QuentinGU", "MatteoPR", "NoematheoBLB",
+  "TaoPO", "GuillaumeLI","YacoutGA", "LoicRA", "MaximeMB", "NathanLU", "LubinDE", "MatheoLB", "SachaAD", "MatisBR",
+  "ArthurLO", "RomaneFI", "ThelioLA", "YanisIH", "MrMollier", "MrChauvet", "SachaBE", "IrinaRU",
+};
+
 // Toutes les polices d'ordinateurs
 String[] fontPolicies = new String[] {
   "Arial", "Bahnschrift", "Eras Demi ITC", "Lucida Handwriting Italique", "DejaVu Serif",
@@ -29,6 +47,13 @@ String[] fontPolicies = new String[] {
   "Baskerville Old Face", "Garamond", "Palatino Linotype", "Georgia", "Tahoma",
   "Elephant", "Corbel", "Pristina", "Rockwell", "Cooper Black",
   "Trebuchet MS", "Bell MT", "Perpetua", "Times New Roman", "Franklin Gothic Book"
+};
+
+String[] mostPopularPolicies = new String[]{
+  "Roboto Regular", "Noto Sans Regular", "Open Sans Regular", "Lato Regular", "Montserrat Regular",
+  "Source Sans 3 Regular", "Source Code Pro Regular", "Raleway Regular", "Charter", "Helvetica",
+  "Oswald Regular", "PT Sans", "Noto Serif", "Ubuntu Regular", "Times New Roman",
+  "Arial", "Calibri", "Cambria", "Tahoma", "Verdana"
 };
 
 // Polices à la main pour l'entrainement
@@ -56,6 +81,18 @@ String[] fontTrainingDatas = new String[]{
   "Baskerville Old Face", "Garamond", "Palatino Linotype", "Georgia", "Tahoma",
   "Elephant", "Corbel", "Pristina", "Rockwell", "Cooper Black",
   "Trebuchet MS", "Bell MT", "Perpetua", "Times New Roman", "Franklin Gothic Book"
+};
+
+String[] biggerFontTrainingDatas = new String[]{
+  "Arial", "Bahnschrift", "Eras Demi ITC", "Lucida Handwriting Italique", "DejaVu Serif",
+  "Fira Code Retina Moyen", "Consolas", "Lucida Handwriting Italique", "Playwrite IT Moderna", "Just Another Hand",
+  "Baskerville Old Face", "Garamond", "Palatino Linotype", "Georgia", "Tahoma",
+  "Elephant", "Corbel", "Pristina", "Rockwell", "Cooper Black",
+  "Trebuchet MS", "Bell MT", "Perpetua", "Times New Roman", "Franklin Gothic Book",
+  "Roboto Regular", "Noto Sans Regular", "Open Sans Regular", "Lato Regular", "Montserrat Regular",
+  "Source Sans 3 Regular", "Source Code Pro Regular", "Raleway Regular", "Charter", "Helvetica",
+  "Oswald Regular", "PT Sans", "Noto Serif", "Ubuntu Regular", "Times New Roman",
+  "Arial", "Calibri", "Cambria", "Tahoma", "Verdana"
 };
 
 // Polices pour les tests

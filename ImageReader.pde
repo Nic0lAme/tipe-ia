@@ -3,7 +3,7 @@ class ImageReader {
   NeuralNetwork nn;
   boolean saveWordImage = false;
 
-  float ponctuationThreshold = 0.24;
+  float ponctuationThreshold = 0;
 
   //c Prend en entrée un réseau CNN
   // Permet d'utiliser le réseau passé en argument pour lire des textes,
@@ -35,6 +35,7 @@ class ImageReader {
     ImageSeparator is = new ImageSeparator(img);
     PImage[][] wordsImages = new PImage[0][];
     wordsImages = is.GetWordsImages();
+    
 
     /*
     float[] etalonnedProp = new float[26];
@@ -64,9 +65,12 @@ class ImageReader {
       boundingBoxSizes[i] = new int[wordsImages[i].length];
       for(int j = 0; j < wordsImages[i].length; j++) {
         int[] boundingBox = im.GetBoundingBox(wordsImages[i][j]);
+        //println(boundingBox);
         boundingBoxSizes[i][j] = (boundingBox[2] - boundingBox[0])*(boundingBox[3] - boundingBox[1]);
         boundingBoxSizesList.add(boundingBoxSizes[i][j]);
         averageBoundingBoxSize += (float)boundingBoxSizes[i][j] / totalNumOfChar;
+        
+        //if(boundingBoxSizes[i][j] != 0) println(boundingBoxSizes[i][j]);
 
         //wordsImages[i][j].save("./AuxiliarFiles/BoundingBoxTest/" + str(boundingBoxSizes[i][j]) + " " + str(random(1)) + ".jpg");
       }
