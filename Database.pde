@@ -11,13 +11,13 @@ import java.security.cert.X509Certificate;
 
 class Database {
   String databaseLink;
-  
+
   //c _link_ correspond au lien de la realtime database
-  Database(String link) { 
+  Database(String link) {
     this.databaseLink = link;
     DisableSSLVerification();
   }
-  
+
   public void DisableSSLVerification() {
     try {
       TrustManager[] trustAllCerts = new TrustManager[]{
@@ -44,7 +44,7 @@ class Database {
       e.printStackTrace();
     }
   }
-  
+
   //f Réccupère le contenu des _data_ dans la base de donnée, dans la section _fileName_
   public JSONArray GetData(String fileName) {
     try {
@@ -63,23 +63,23 @@ class Database {
       while ((output = br.readLine()) != null) {
         sb.append(output);
       }
-      
+
       JSONObject jsonObject = parseJSONObject(sb.toString());
-      
+
       JSONArray outputJSON = new JSONArray();
       for(Object k : jsonObject.keys()) {
         outputJSON.append(jsonObject.getJSONObject(k.toString()).getJSONObject("data"));
       }
-      
+
       conn.disconnect();
-      
+
       return outputJSON;
     } catch (Exception e) {
       e.printStackTrace();
       return new JSONArray();
     }
   }
-   
+
   //f Ajoute à la base de donnée, dans la section _fileName_, le String _data_
   public void PostData(String fileName, JSONObject data) {
     try {
@@ -108,11 +108,11 @@ class Database {
       e.printStackTrace();
     }
   }
-  
+
   //f Ajoute à la base de donnée, dans la section _fileName_, le String _data_
   public void DeleteData(String fileName) {
     try {
-      // URL pour lire tous les posts sous le nœud "posts"
+      // URL pour lire tous les posts sous le noeud "posts"
       URL url = new URL(this.databaseLink + fileName + ".json");
       HttpURLConnection conn = (HttpURLConnection) url.openConnection();
       conn.setDoOutput(true);
@@ -127,5 +127,5 @@ class Database {
       e.printStackTrace();
     }
   }
-  
+
 }

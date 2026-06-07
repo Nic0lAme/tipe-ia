@@ -98,7 +98,7 @@ class ImageManager {
 
     color average = color(255);
 
-    // SCALE
+    // CHANGEMENT D'ECHELLE
     PImage draftImage = createImage(x, y, RGB);
     draftImage.loadPixels();
     scrambledImage.loadPixels();
@@ -114,7 +114,7 @@ class ImageManager {
     draftImage.updatePixels();
     scrambledImage = draftImage;
 
-    // ROTATE
+    // ROTATION
     draftImage = createImage(x, y, RGB);
     draftImage.loadPixels();
     scrambledImage.loadPixels();
@@ -133,7 +133,7 @@ class ImageManager {
     draftImage.updatePixels();
     scrambledImage = draftImage;
 
-    // TRANSLATE
+    // TRANSLATION
     draftImage = createImage(x, y, RGB);
     draftImage.loadPixels();
     scrambledImage.loadPixels();
@@ -215,13 +215,13 @@ class ImageManager {
   //f Rogne l'image (nouvelle image) en détectant les contours de l'objet le plus grand dans _img_, ayant un _cap_ et une marge de _marge_ * size pixels
   PImage AutoCrop(PImage img, float cap, float marge) {
     String randomName = str(random(1000));
-    
+
     PImage cImg = img.copy();
     //cImg.save(globalSketchPath + "/AuxiliarFiles/Crop/" + randomName + "/1.jpg");
-    
+
     PImage paddedImg = Padding(cImg, 5, color(255));
     //paddedImg.save(globalSketchPath + "/AuxiliarFiles/Crop/" + randomName + "/2.jpg");
-    
+
     PImage thresholdPaddedImg = this.BlackAndWhite(paddedImg.copy(), cap/255);
     //thresholdPaddedImg.save(globalSketchPath + "/AuxiliarFiles/Crop/" + randomName + "/3.jpg");
 
@@ -246,19 +246,19 @@ class ImageManager {
         objectIndex = k;
       }
     }
-    
+
     //ImageFromContour(paddedImg, contours.get(objectIndex), marge, 1).save(globalSketchPath + "/AuxiliarFiles/Crop/" + randomName + "/5.jpg");
 
     return ImageFromContour(paddedImg, contours.get(objectIndex), marge, 1);
   }
-  
+
   //f Rajoute une marge à l'image
   PImage Padding(PImage img, int padding, color bg) {
     PImage newImg = createImage(img.width + 2 * padding, img.height + 2 * padding, RGB);
     newImg.loadPixels();
     for (int i = 0; i < newImg.pixels.length; i++) newImg.pixels[i] = bg;
     newImg.updatePixels();
-  
+
     newImg.copy(img, 0, 0, img.width, img.height, padding, padding, img.width, img.height);
     return newImg;
   }
@@ -277,7 +277,7 @@ class ImageManager {
 
     if(top == bottom || right == left) return img; //En vrai c'est que l'image n'est pas centré, mais on renvoit qqc
 
-    //Equilibrer le ratio width/height
+    // Equilibrer le ratio width/height
     while((float)(right - left) / (bottom - top) > ratio * 1.2) { // Tolérance du ratio à 40%
       bottom = constrain(bottom + 1, 0, img.height - 1);
       top = constrain(top - 1, 0, img.height - 1);
@@ -376,7 +376,7 @@ class ImageManager {
 
     if(top == bottom || right == left) return img; //En vrai c'est que l'image n'est pas centré, mais on renvoit qqc
 
-    //Equilibrer le ratio width/height
+    // Equilibrer le ratio width/height
     float ratio = img.width / img.height;
     while((right - left) / (bottom - top) > ratio * 1.1) { // Tolérance du ratio à 20%
       bottom = constrain(bottom + 1, 0, img.height - 1);
@@ -390,11 +390,11 @@ class ImageManager {
 
     return img.get(left, top, right - left, bottom - top);
   }
-  
+
   PImage TargetRatio(PImage img, float targetRatio) {
     int top = 0, left = 0;
     int bottom = img.height, right = img.width;
-    
+
     while((right - left) / (bottom - top) > targetRatio * 1.1) { // Tolérance du ratio à 10%
       bottom += 1;
       top -= 1;
@@ -404,7 +404,7 @@ class ImageManager {
       right += 1;
       left -= 1;
     }
-    
+
     PImage returnedImg = createImage(right - left + 1, bottom - top + 1, RGB);
     for(int x = left; x < right + 1; x++) {
       for(int y = top; y < bottom + 1; y++) {
@@ -415,9 +415,9 @@ class ImageManager {
         returnedImg.set(x - left, y - top, img.get(x, y));
       }
     }
-    
+
     returnedImg.save("AuxiliarFiles/Test/img" + frameCount + ".png");
-    
+
     return returnedImg;
   }
 
@@ -619,23 +619,23 @@ class ImageManager {
 
     return new int[]{left, top, right - left, bottom - top};
   }
-  
+
   public PImage ImageWithContours(PImage img, ArrayList<ArrayList<PVector>> contours) {
     PImage newImg = img.copy();
-    
+
     for(ArrayList<PVector> contour : contours)
       for(PVector p : contour)
         newImg.set((int)p.x, (int)p.y, color(0,255,0));
-        
+
     return newImg;
   }
-  
+
   public int[] GetBoundingBox(PImage img) {
     int minX = img.width;
     int minY = img.height;
     int maxX = -1;
     int maxY = -1;
-    
+
     for(int y = 0; y < img.height; y++) {
       for(int x = 0; x < img.width; x++) {
         if(brightness(img.get(x,y)) <= 50) { // pixel appartient à l'objet
@@ -646,26 +646,26 @@ class ImageManager {
         }
       }
     }
-    
+
     if(maxX == -1 || maxY == -1) {
       // Pas de pixel trouvé, objet vide
       return new int[]{-1, -1, -1, -1};
     }
-    
+
     return new int[]{minX, minY, maxX, maxY};
   }
-  
+
   float MeanHeight(PImage img) {
     ArrayList<Integer> heights = new ArrayList<Integer>();
-    
+
     for(int i = 0; i < img.height; i++)
       for(int j = 0; j < img.width; j++)
         if(brightness(img.get(j,i)) < 50) heights.add(i);
-        
+
     float average = 0;
     int[] heightsArray = heights.stream().mapToInt(Integer::intValue).toArray();
     for(int h : heightsArray) average += (float)h / heights.size();
-    
+
     return average;
   }
 }

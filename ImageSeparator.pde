@@ -10,7 +10,7 @@ class ImageSeparator {
 
   final private int lineThreshold = 5; // PARAM
   final private int letterColumnGap = 2; // PARAM
-  final private float wordSeperationFactor = 0.9; //PARAM
+  final private float wordSeperationFactor = 1; //PARAM
 
   public ImageSeparator(PImage img) {
     this.originalImage = img;
@@ -368,7 +368,7 @@ class ImageSeparator {
   private int[][] RemoveSmallBlocks(int[][] pxls) {
     int[][] result = new int[pxls.length][pxls[0].length];
     visited = new boolean[pxls.length][pxls[0].length];
-    int minSize = 30; // PARAM
+    int minSize = 75; // PARAM
 
     for (int i = 0; i < h; i++) {
       for (int j = 0; j < w; j++) {

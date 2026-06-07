@@ -1,5 +1,6 @@
-// Volé d'un github
-// https://gist.github.com/alksily/7a85a1898e65c936f861ee93516e397d
+// Générateur de bruit puisque celui de Processing ne
+// fonctionnait pas bien dans notre projet
+// Source : https://gist.github.com/alksily/7a85a1898e65c936f861ee93516e397d
 
 import java.util.Random;
 
@@ -50,11 +51,11 @@ public class NoiseGenerator {
     }
 
   }
-  
+
   public void setSeed(double seed) {
     this.seed = seed;
   }
-  
+
   public double getSeed() {
     return this.seed;
   }

@@ -15,7 +15,7 @@ class Bayes {
 
   int trainingRep = 12;
   int testingRep = 5;
-  
+
   boolean doCNNBayes = false;
   boolean[] parametersForNN;
 
@@ -29,7 +29,7 @@ class Bayes {
   Bayes(String n) {
     this.name = n;
     this.filePath = sketchPath() + "/Bayes/" + n + ".by";
-    
+
     h = new HyperParameters().GetH();
     parametersForNN = new HyperParameters().ParametersForNN();
 
@@ -58,10 +58,10 @@ class Bayes {
         new String[]{},
         fontTestingDatas,
         testingRep, 1);
-    
+
     globalTrainingData = ds.SampleLining(this.globalCNNTrainingData);
     globalTestingData = ds.SampleLining(this.globalCNNTestingData);
-        
+
     isLoaded = true;
     etalonnedTime = millis() - startTime;
   }
@@ -152,12 +152,12 @@ class Bayes {
 
     return this;
   }
-  
+
   //f Trouver le meilleur résultat
   public HyperParameters SERV_GetBest() {
     JSONArray candidates = db.GetData("Bayes/" + this.name);
     if(candidates.size() == 0) return null;
-    
+
     HyperParameters bestAccParams = new HyperParameters();
     HyperParameters bestLossParams = new HyperParameters();
     float bestAcc = 0;
@@ -167,18 +167,18 @@ class Bayes {
 
     for(int k = 0; k < candidates.size(); k++) {
       JSONObject obj = candidates.getJSONObject(k);
-      
+
       float acc = (float)obj.getFloat("Accuracy");
       float loss = (float)obj.getFloat("Score");
-      
+
       averageLoss += loss;
       averageAcc += acc;
-      
+
       if(acc > bestAcc) {
         bestAcc = acc;
         bestAccParams = new HyperParameters().FromJSON(obj.getJSONObject("HyperParameters"));
       }
-      
+
       if(loss < bestLoss) {
         bestLoss = loss;
         bestLossParams = new HyperParameters().FromJSON(obj.getJSONObject("HyperParameters"));
@@ -187,13 +187,13 @@ class Bayes {
 
     averageAcc /= candidates.size();
     averageLoss /= candidates.size();
-    
+
     cl.pln("Best Loss " + String.format("%6.3f", bestLoss) + " | Best Accuracy " + String.format("%6.3f", bestAcc));
     cl.pln("Average Loss " + String.format("%6.3f", averageLoss) + " | Average Accuracy " + String.format("%6.3f", averageAcc));
-    
+
     println("Best Accuracy Parameters");
     println(bestAccParams);
-    
+
     println("Best Loss Parameters");
     println(bestLossParams);
 
@@ -205,36 +205,36 @@ class Bayes {
   public float Kernel(HyperParameters hp1, HyperParameters hp2) {
     float penalty = 0.5;
     float cPenalty = 0.5;
-    
+
     float norm = 0;
     float[] list1 = hp1.ToArray();
     float[] list2 = hp2.ToArray();
     for(int i = 0; i < 7; i++)
       if(this.doCNNBayes || this.parametersForNN[i]) norm += Math.pow((list2[i] - list1[i]) / this.h[i], 2);
-      
+
     //Pénalité à appliquer pour les différences de couches
     int minLayers = Math.min(hp1.layerSize.length, hp2.layerSize.length);
     int maxLayers = Math.max(hp1.layerSize.length, hp2.layerSize.length);
-    
+
     for(int k = 0; k < minLayers; k++) {
         float logSize1 = (float)Math.log(hp1.layerSize[k]);
         float logSize2 = (float)Math.log(hp2.layerSize[k]);
         norm += (float)Math.pow((logSize2 - logSize1) / this.h[7+k],2);
     }
     norm += (float)Math.pow((maxLayers - minLayers) * penalty, 2);
-    
+
     if(!this.doCNNBayes) return (float)Math.exp(- 0.5 * norm);
-    
+
     int cMinLayers = Math.min(hp1.cNumFilters.length, hp2.cNumFilters.length);
     int cMaxLayers = Math.max(hp1.cNumFilters.length, hp2.cNumFilters.length);
-    
+
     for(int k = 0; k < cMinLayers; k++) {
         float logSize1 = (float)Math.log(hp1.cNumFilters[k]);
         float logSize2 = (float)Math.log(hp2.cNumFilters[k]);
         norm += (float)Math.pow((logSize2 - logSize1) / this.h[7 + hp1.maxNumberOfLayers +k], 2);
     }
     norm += (float)Math.pow((cMaxLayers - cMinLayers) * cPenalty, 2);
-    
+
     return (float)Math.exp(- 0.5 * norm);
   }
 
@@ -244,17 +244,17 @@ class Bayes {
     float meanY = 0;
     for (float y : ys) meanY += y;
     meanY /= ys.size();
-    
+
     float stdY = 0;
     for (float y : ys) stdY += (y - meanY) * (y - meanY);
     stdY = (float)Math.sqrt(stdY / Math.max(ys.size() - 1, 1));
     if (stdY < 1e-6) stdY = 1.0f;
-    
+
     float fBest_norm = (fBest - meanY) / stdY;
-    
+
     Matrix K = new Matrix(xs.size());
     float noise = 0.01;
-    
+
     for(int i = 0; i < xs.size(); i++)
       for(int j = 0; j < xs.size(); j++)
         // On rajoute du bruit d'observation pour limiter le risque d'avoir une matrice non inversible (ou peu de déterminant très faible)
@@ -278,18 +278,18 @@ class Bayes {
 
       float mu = Kstar.T().Mult(KInv).Mult(Y).Get(0,0);
       float sigma = sqrt(Kstarstar - Kstar.T().Mult(KInv).Mult(Kstar).Get(0,0));
-      
+
       if(sigma > 0) {
         float Z = (fBest_norm - mu) / sigma;
         EIs[cIdx] = (fBest_norm - mu) * CNDF(Z) + sigma * NDF(Z);
       } else {
         EIs[cIdx] = 0;
       }
-      
+
       /*
       System.out.printf("Cand %d: Kstar max=%.6f, min=%.6f, mu=%.6f, sigma=%.6f, EI=%.6f%n",
-                 cIdx, 
-                 max(Kstar.ColumnToArray(0)), min(Kstar.ColumnToArray(0)), 
+                 cIdx,
+                 max(Kstar.ColumnToArray(0)), min(Kstar.ColumnToArray(0)),
                  mu, sigma, EIs[cIdx]);
                  */
     }
@@ -395,14 +395,14 @@ class Bayes {
     layers[0] = session.w * session.h;
     for(int k = 0; k < hp.layerSize.length; k++) layers[k+1] = hp.layerSize[k];
     layers[hp.layerSize.length + 1] = cs.NumChars();
-    
+
     CNN cnn = new CNN(session.w, hp.cNumFilters, layers);
     cnn.lambda = hp.lambda * hp.batchSize;
     cnn.UseSoftMax();
     cnn.useADAM = true;
     cnn.b1 = hp.b1;
     cnn.b2 = hp.b2;
-    
+
     NeuralNetwork nn = new NeuralNetwork(layers);
     nn.lambda = hp.lambda * hp.batchSize;
     nn.UseSoftMax();
@@ -425,10 +425,10 @@ class Bayes {
 
       iterNum++;
     }
-    
-    
+
+
     float accuracy = 0;
-    
+
     if(this.doCNNBayes) {
       testLoss = cnn.ComputeLoss(cnn.Predict(testCNNSet[0]), testCNNSet[1][0]);
       trainLoss = cnn.ComputeLoss(cnn.Predict(trainCNNSet[0]), trainCNNSet[1][0]);
@@ -438,7 +438,7 @@ class Bayes {
       trainLoss = nn.ComputeLoss(nn.Predict(trainSet[0]), trainSet[1]);
       accuracy = Average(session.AccuracyScore(nn, testSet, false));
     }
-    
+
 
     cl.pln("Training loss", String.format("%8.6f", trainLoss), "\t|\tTesting loss", String.format("%8.6f", testLoss));
     cl.pln("Accuracy", String.format("%6.4f", accuracy));

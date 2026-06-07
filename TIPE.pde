@@ -11,7 +11,6 @@ Session session;
 CharactersStorage cs;
 ImageReader ir;
 
-// KERNEL CLASSES
 MatrixMultKernel matrixMultKernel;
 NextGradKernel nextGradKernel;
 ForwardConvolutionKernel forwardConvolutionKernel;
@@ -19,7 +18,7 @@ ForwardConvolutionKernel forwardConvolutionKernel;
 int convolutionTime = 0;
 int numOfHyperParameters = 18;
 final boolean enableDraftingArea = false;
-float rScale = 1; // Scale for the representations (draw)
+float rScale = 1; // Échelle pour la représentation graphique
 float testDerformation = 1;
 Random globalRandom = new Random();
 String globalSketchPath;
@@ -31,18 +30,19 @@ final int numThreadsDataset = 12; // Création des datasets
 final int numThreadsLearning = 1; // Apprentissage (si 1, pas de parallélisation)
 boolean doGPUMult = true;
 
-// Attention, à ne pas modifier n'importe comment sous peine de conséquences
+// Attention, à ne pas modifier n'importe comment
 final AtomicBoolean stopLearning = new AtomicBoolean(false);
 final AtomicBoolean abortTraining = new AtomicBoolean(false); // Note : Annule aussi toute construction de dataset
 
 Matrix[][] testSample;
 
 void settings() {
-  size(floor(28 * rScale * 26), floor(28 * rScale * numOfTestSample), JAVA2D); // For Global Test
-  //size(119, 180, P2D); // For Direct Test
+  size(floor(28 * rScale * 26), floor(28 * rScale * numOfTestSample), JAVA2D); // Pour le test global
+  //size(119, 180, P2D); // Pour le test en direct
 }
 
 void setup() {
+  // Fonctions pour initialiser les différentes parties
   background(255);
   globalSketchPath = sketchPath();
   cl = new ConsoleLog("./Log/log1.txt");
@@ -64,216 +64,71 @@ void setup() {
   wc = new WordCorrector();
   wc.ImportWords();
 
-  //wc.CompareFunctions(new DistanceFunction[]{(w1, w2) -> wc.SimpleDistance(w1, w2), (w1, w2) -> wc.LevenshteinDistance(w1, w2)}, 1000, 0.15, 0.05);
-
   if (enableDraftingArea) draftingArea = new DraftingArea();
 
   db = new Database("https://tipe-877f6-default-rtdb.europe-west1.firebasedatabase.app/");
+  HyperParameters hp = new HyperParameters();
+  session = new Session("", hp);
 
   /*
   PImage toScramble = loadImage("./TextFileGetter/output/uG/uG - NicolasMA.jpg");
   ScrambleVisual sv = new ScrambleVisual(toScramble, 28, 28, 7, 5, "NicolasMA G");
   */
-  
 
-  HyperParameters hp = new HyperParameters();
-  session = new Session("", hp);
-  
-  /* COMPARAISON VITESSE NN AVEC ET SANS MULTITHREADS
-  Matrix[][] testSample = session.ds.CreateSample(
-       cs.GetChars(),
-       //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
-       handTestingDatas,
-       //new String[]{},
-       fontTestingDatas,
-       8, 1);
-       
-  CNN cnn = new CNN(imgSize, new int[]{16, 32}, new int[]{256, cs.GetChars().length});
-  cnn.UseSoftMax();
-  cnn.useADAM = true;
-  
-  int initTime = millis();
-  
-  cnn.MiniBatchLearn(testSample,  8, 256, 0.001, 0.001, 2, new Matrix[][][]{testSample}, "");
-  
-  println("Total time :", millis() - initTime);
-  */
-  
-
-  /* COMPARAISON VITESSE DE CALCUL CPU & GPU
-  
-  int totalNormalTime = 0;
-  int totalGPUTime = 0;
-  int N = 10000;
-  int W = 128;
-  int H = 128;
-  for(int i = 0; i < N; i++) {
-    Matrix a = new Matrix(W, H).Random();
-    Matrix b = new Matrix(W, H).Random();
-    
-    int initTime = millis();
-    a.Mult(b);
-    totalNormalTime += millis() - initTime;
-    
-    initTime = millis();
-    a.GPUMult(b);
-    totalGPUTime += millis() - initTime;
-    
-    println(i, "Normal : ", totalNormalTime / (i+1));
-    println(i, "GPU : ", totalGPUTime / (i+1));
-  }
-  
-  println(totalNormalTime);
-  println(totalGPUTime);
-  
-  */
-
-  // ImageSeparator is1 = new ImageSeparator(loadImage("AuxiliarFiles/FullImage.jpg"));
-  // ImageSeparator is2 = new ImageSeparator(loadImage("AuxiliarFiles/OtherTest.jpg"));
-  // ImageSeparator is3 = new ImageSeparator(loadImage("AuxiliarFiles/TheLastOne.jpg"));
-  // ImageSeparator is4 = new ImageSeparator(loadImage("TextFileGetter/output/Message/Message - MrChauvet.jpg"));
-  // is1.SaveSeparationPreview("test1.png", true, true);
-  // is2.SaveSeparationPreview("test2.png", true, true);
-  // is3.SaveSeparationPreview("test3.png", true, true);
-  // is4.SaveSeparationPreview("test4.png", true, true);
+  // Exemple de code pour séparer les lettres au sein d'une image
+  // ImageSeparator is = new ImageSeparator(loadImage("imgage.png"));
+  // is.SaveSeparationPreview("visualisation.png", true, true);
   // exit();
 
-  /*
-  Bayes bayes = new Bayes("RandomONTeste");
-  //bayes.GaussianProcess(5, 5);
-  bayes.RandomFill(5, 5);
-  */
+  // Exemple de code pour entrainer un réseau de neurones
+  NeuralNetwork nn = new NeuralNetwork(imgSize*imgSize, 95, 85, cs.GetChars().length);
+  nn.UseSoftMax();
+  Matrix[] testSample = session.ds.SampleLining(session.ds.CreateSample(
+      cs.GetChars(),
+      //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
+      // handTestingDatas,
+      new String[]{},
+      fontTestingDatas,
+      2, 1));
 
-  /*
-  for(int k = 0; k < 10; k++)
-    bayes.SERV_Export(new HyperParameters().Random(), random(1));
-  */
 
-  //cl.pln(wc.SimpleDistance(new int[]{21,8,6,7,19}, new int[]{7,4,6,7,19}));
+  int numOfIter = 10;
+  String tr = "", ts = "";
+  for(int iter = 0; iter < numOfIter; iter++) {
+    cl.pln("ITERATION " + str(iter+1) + "/" + str(numOfIter));
+    float[] accuracy = CompilScore(session.AccuracyScore(nn, new Matrix[][]{testSample}, false));
+    int[] repList = RepList(accuracy, 2, 0.2);
 
-  //CNN cnn = new CNN(imgSize, new int[]{32, 64}, new int[]{256, cs.GetChars().length});
+    Matrix[] sample = session.ds.SampleLining(session.ds.CreateSample(
+        cs.GetChars(),
+        //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
+        // handTrainingDatas,
+        new String[]{},
+        biggerFontTrainingDatas,
+        repList, 2));
 
-  /////////////////////////////////////////////////////////////////
+    nn.MiniBatchLearn(sample, 2, 150, 5, 5, 12, new Matrix[][]{testSample, sample}, "");
 
-  // Ça ne compilait plus depuis ton dernier commit j'ai l'impression
+    float[] accuracyTest = CompilScore(session.AccuracyScore(nn, testSample, false));
+    float averageTestingAccuracy = Average(accuracyTest);
 
-  /////////////////////////////////////////////////////////////////
+    Matrix[] shuffledSample = new Matrix(0).ShuffleCol(sample);
+    float[] accuracyTrain = CompilScore(session.AccuracyScore(nn, shuffledSample, false));
+    float averageTrainingAccuracy = Average(accuracyTrain);
 
-  // CNN cnn = new CNN().Import("./CNN/22x22_32_64_LettersOnly.cnn");
-  // cnn.UseSoftMax();
-  // cnn.useADAM = true;
-  //
-  //
-  // //NeuralNetwork nn = new NeuralNetwork(0).Import("./NeuralNetworkSave/RepListTest000.nn");
-  // NeuralNetwork nn = new NeuralNetwork(imgSize * imgSize, 256, 128, 128, cs.GetChars().length);
-  // nn.UseSoftMax();
-  //
-  //
-  // ir = new ImageReader(cnn);
-  // //WholeTextTestVisual wttv = new WholeTextTestVisual(100, "Arial", 36);
-  // println("NeuralNetwork");
-  // println(ir.cnn);
-  //
-  // String text = ir.Read(loadImage("./AuxiliarFiles/FullImage.jpg"), true);
-  // println(text);
-  //
-  //
-  // if(true) return;
-  //
-  // Matrix[][] testSample = session.ds.CreateSample(
-  //     cs.GetChars(),
-  //     //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
-  //     handTestingDatas,
-  //     //new String[]{},
-  //     fontTestingDatas,
-  //     1, 1);
-  //
-  // cnn.MiniBatchLearn(sample, 8, 256, 0.001, 0.001, 2, new Matrix[][][]{testSample}, "");
-  // cnn.Export("./CNN/Test21.cnn");
-  // session.AccuracyScore(cnn, testSample, true);
-  //
-  // // Tester tester = new Tester((NeuralNetwork) null);
-  // // ImageSeparator is = new ImageSeparator(loadImage("test.png"));
-  // // is.SaveSeparationPreview("test1.png", true, true);
-  //
-  // NeuralNetwork nn = new NeuralNetwork(imgSize*imgSize, 256, 128, cs.GetChars().length);
-  // nn.UseSoftMax();
-  // Tester tester = new Tester(nn);
-  // Matrix[] testSample = session.ds.SampleLining(session.ds.CreateSample(
-  //     cs.GetChars(),
-  //     //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
-  //     //handTestingDatas,
-  //     new String[]{},
-  //     fontTestingDatas,
-  //     3, 1));
-  //
-  //   Matrix[][] testSampleForTrain = session.ds.SampleLining(session.ds.CreateSample(
-  //     cs.GetChars(),
-  //     //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
-  //     //handTestingDatas,
-  //     new String[]{},
-  //     fontTrainingDatas,
-  //     3, 1));
-  //
-  // int globalInitTime = millis();
-  // int numOfIter = 4;
-  //
-  // double[] varianceArray = new double[numOfIter];
-  //
-  // for(int iter = 0; iter < numOfIter; iter++) {
-  //   cl.pln("ITERATION " + str(iter+1) + "/" + str(numOfIter));
-  //   float[] accuracy = CompilScore(session.AccuracyScore(cnn, new Matrix[][][]{testSample}, true));
-  //   int[] repList = RepList(accuracy, 5, 0.9);
-  //
-  //   int[] intAcc = new int[accuracy.length];
-  //   for(int i = 0; i < accuracy.length; i++)
-  //     intAcc[i] = (int)(accuracy[i] * 1000);
-  //   SaveIntListAsCSV(intAcc, "./AuxiliarFiles/Accuracies.csv");
-  //   varianceArray[iter] = StandardDeviation(accuracy);
-  //   cl.pln(varianceArray[iter]);
-  //
-  //   cl.pList(repList, "Repetitions");
-  //
-  //   Matrix[][] sample = session.ds.SampleLining(session.ds.CreateSample(
-  //       cs.GetChars(),
-  //       //new String[]{"NicolasMA", "AntoineME", "LenaME", "IrinaRU", "TheoLA"},
-  //       //handTrainingDatas,
-  //       new String[]{},
-  //       fontTrainingDatas,
-  //       8, 1));
-  //
-  //   nn.MiniBatchLearn(sample, 5, 64, 3.5, 3, 2, new Matrix[][]{testSample, sample}, "");
-  //
-  //   session.AccuracyScore(nn, testSample, true);
-  //   float[] accuracyTest = CompilScore(session.AccuracyScore(nn, testSample, true));
-  //   float averageTestingAccuracy = Average(accuracyTest);
-  //
-  //   Matrix[] shuffledSample = new Matrix(0).ShuffleCol(sample);
-  //   float[] accuracyTrain = CompilScore(session.AccuracyScore(nn, shuffledSample, false));
-  //   float averageTrainingAccuracy = Average(accuracyTrain);
-  //
-  //   graphApplet.AddTestResult(averageTrainingAccuracy, averageTestingAccuracy);
-  //   String tr = String.format("%.2f",averageTrainingAccuracy*100);
-  //   String ts = String.format("%.2f",averageTestingAccuracy*100);
-  //
-  //   // Results r = tester.RunNTest(10);
-  //   // println("[RÉSULTAT DU TEST] : Score = " + r.time);
-  //   // println("[RÉSULTAT DU TEST] : Distance = " + r.score);
-  // }
-  //
-  // int[] intVar = new int[varianceArray.length];
-  // for(int i = 0; i < varianceArray.length; i++)
-  //   intVar[i] = (int)(varianceArray[i] * 1000);
-  // SaveIntListAsCSV(intVar, "./AuxiliarFiles/Variances.csv");
-  //
-  // // Results r = tester.RunNTest(10, true);
-  // // println("[RÉSULTAT DU TEST] : Temps = " + r.time);
-  // // println("[RÉSULTAT DU TEST] : Score = " + r.score);
-  // // tester.SaveTest();
+    graphApplet.AddTestResult(averageTrainingAccuracy, averageTestingAccuracy);
+    tr = String.format("%.2f",averageTrainingAccuracy*100);
+    ts = String.format("%.2f",averageTestingAccuracy*100);
+
+    try {
+      Thread.sleep(2000);
+    } catch (Exception e) {
+    }
+  }
 }
 
 int index = 0;
-boolean testImages = false;
+boolean testImages = true;
 boolean directTest = false;
 
 void draw() {
@@ -286,9 +141,9 @@ void SetMainSession(Session newSession) {
   graphApplet.SetNetworkName(session.nn.toString());
 }
 
-// TOOL
+// Outils divers
 
-// return a list of the repetition needed depending on the performance for each characters
+// Renvoie une liste de repetitions pour chaque caractères en fonction de la performance précédente
 int[] RepList(float[] score, int baseRep, float minProp) {
   float[] logScore = new float[score.length];
   for(int k = 0; k < score.length; k++) logScore[k] = -log(0.9 * (score[k] - 1) + 1);
@@ -365,8 +220,6 @@ double Variance(float[] a) {
     double mean = (double)sum /
                   (double)n;
 
-    // Compute sum squared
-    // differences with mean.
     double sqDiff = 0;
     for (int i = 0; i < n; i++)
         sqDiff += (a[i] - mean) *

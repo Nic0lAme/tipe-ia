@@ -151,7 +151,7 @@ class CharactersStorage {
   }
 
   //f Permet d'obtenir les probabilités pour chacune des 26 lettres à partir de la sortie du réseau _allProb_
-  // En fonction 
+  // En fonction
   float[] GetProb(float[] allProb) {
     float[] ret = new float[26];
 

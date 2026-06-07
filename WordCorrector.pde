@@ -5,9 +5,9 @@ import java.util.stream.*;
 
 //WordCorrector
 /*
-  Classe permettant de corriger des mots à partir d'un dictionnaire déterminée (en l'occurence, celui du scrabble)
+  Classe permettant de corriger des mots à partir d'un dictionnaire déterminé (en l'occurence, celui du scrabble)
   Utilise des algorithmes de distances entre chaînes de caractères et de correction probabiliste à partir des fréquences de lettres dans la langue française
-  On teste notamment la distance de Levenshtein et une distance simple basée sur le nombre de caractères différents, tiré du papier d'IBM Japonais sur la correction d'ocr
+  On teste notamment la distance de Levenshtein et une distance simple basée sur le nombre de caractères différents, tiré du papier d'IBM Japon sur la correction d'OCR
   Permet aussi de simuler des erreurs sur des mots afin d'exécuter des tests sur cette correctiona
 */
 
@@ -15,66 +15,66 @@ import java.util.stream.*;
 
 class WordCorrector {
   char[] charList = new char[] {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
-  
+
   // Fréquence des différents caracteres dans la langue française
   // Source : Laboratoire CLLE-ERRS (Université de Toulouse)
   // Les lettres accentués ont été accumulé
   // Exemple : pour le a, a : 7.636%, à : 0.486%, â : 0.051%
   float[] letterFrequencies = new float[]{8.173, 0.901, 3.345, 3.669, 16.716, 1.066, 0.866, 0.737, 7.529, 0.613, 0.074, 5.456, 2.968, 7.095, 5.796, 2.521, 1.362, 6.693, 7.948, 7.244, 6.311, 1.838, 0.049, 0.427, 0.128, 0.326};
   float[] letterSpreading = new float[]{0.1, 0.05};
-  
+
   // Modifie l'importance de la correction
   // 0.1 -> énormément de correction / 1 -> pas de correction
-  float fiability = 1; 
-  
+  float fiability = 1;
+
   float probThreshold = 0.2;
   int maxNumberOfCandidates = 30;
-  
+
   int maxCharDiff = 2;
   int maxDist = 4;
-  
+
   int[][] words;
-  
+
   //c
   WordCorrector() {}
-  
+
   //f Importe l'ensemble des mots du fichier _scrabble.txt_ dans la variable _this.words_
   public void ImportWords() {
     String[] wordsList = loadStrings("./AuxiliarFiles/scrabble.txt");
     String[] auxList = loadStrings("./AuxiliarFiles/auxDic.txt");
-    
+
     this.words = new int[wordsList.length + auxList.length][];
-    
+
     for(int k = 0; k < wordsList.length; k++) {
       String w = wordsList[k].strip();
       int[] wordRepresentation = new int[w.length()];
-      
+
       for(int c = 0; c < w.length(); c++) {
         char character = w.charAt(c);
         wordRepresentation[c] = character - 'A';
       }
-      
+
       this.words[k] = wordRepresentation;
     }
-    
+
     for(int k = 0; k < auxList.length; k++) {
       String w = auxList[k].strip();
       int[] wordRepresentation = new int[w.length()];
-      
+
       for(int c = 0; c < w.length(); c++) {
         char character = w.charAt(c);
         wordRepresentation[c] = character - 'A';
       }
-      
+
       this.words[k + wordsList.length] = wordRepresentation;
     }
   }
-  
+
   //s Prend une Integer[] _chars_ (généralement obtenue à partir d'une ArrayList<Integer>)
   public String IntArrayToString(Integer[] chars) {
     return IntArrayToString(Arrays.stream(chars).mapToInt(Integer::intValue).toArray());
   }
-  
+
   //f Réccupère un mot String à partir de leur liste d'indice _chars_
   public String IntArrayToString(int[] chars) {
     String text = "";
@@ -83,7 +83,7 @@ class WordCorrector {
     }
     return text;
   }
-  
+
   //f Renvoie à partir d'un mot _word_ la liste int[] des indices associés
   public int[] StringToIntArray(String word) {
     int[] ret = new int[word.length()];
@@ -95,16 +95,16 @@ class WordCorrector {
     }
     return ret;
   }
-  
+
   //s On utilise la _probThreshold_ par défaut (0.2) et on commence par une profondeur d'appel de 0
   public String WordAutoCorrection(float[][] letterProb) {
     return WordAutoCorrection(letterProb, probThreshold, 0);
   }
-  
+
   //f Correction automatique du mot à partir du dictionnaire
   // On applique ceci aux probabilités de chaque caractère dans _letterProb_
   // On considère qu'un caractère est envisageable si sa probabilité est supérieure à _threshold_
-  // _Depth_ permet de contrôler la profondeur de la pile d'appel 
+  // _Depth_ permet de contrôler la profondeur de la pile d'appel
   public String WordAutoCorrection(float[][] letterProb, float threshold, int depth) {
     // Réccupérer les candidates plausibles par lettre
     HashMap<Integer, Float>[] charCandidates = new HashMap[letterProb.length];
@@ -120,32 +120,32 @@ class WordCorrector {
       //Si ne trouve pas de caractères, part du principe que c'est un e (la lettre la plus fréquente)
       if(charCandidates[letter].size() == 0) charCandidates[letter].put(4, 0.1);
     }
-    
+
     //println(depth, threshold, numberOfWordCandidate);
-    
+
     if(numberOfWordCandidate == 0) {
       /*
       if(threshold < 0.025) {
         cl.pln(this, threshold, "WordAutoCorrection", "Some char isn't available"); Exception e = new Exception(); e.printStackTrace(); return "_";
       }
       */
-      
+
       // Diminue le threshold jusqu'à qu'on soit bon
       // On augmente la variable depth pour arrêter au bout d'une certaine taille de pile d'appels
       if(depth < 50) return WordAutoCorrection(letterProb, threshold - 0.004, depth + 1);
     }
-    
+
     if(abs(numberOfWordCandidate) > 5 * maxNumberOfCandidates && depth < 50) {
       // Augmente le threshold jusqu'à qu'on soit bon
       return WordAutoCorrection(letterProb, threshold + 0.001, depth + 1);
     }
-    
+
     if(numberOfWordCandidate == 0) return "_";
-    
+
     // Réccupérer ainsi les mots bruts plausibles
     HashMap<Integer[], Float> wordCandidates = new HashMap<>();
     Backtrack(charCandidates, 0, new ArrayList<>(), 1, wordCandidates);
-    
+
     // Les trie par probabilité
     HashMap<Integer[], Float> sortedCandidates = wordCandidates.entrySet()
       .stream()
@@ -157,7 +157,7 @@ class WordCorrector {
           (e1, e2) -> e1,
           LinkedHashMap::new // pour garder l'ordre trié
     ));
-    
+
     int minDistance = Integer.MAX_VALUE;
     int[] bestWord = new int[0];
     for(Map.Entry<Integer[], Float> m : sortedCandidates.entrySet()) {
@@ -168,17 +168,17 @@ class WordCorrector {
         bestWord = evaluation[0];
       }
     }
-    
+
     return IntArrayToString(bestWord);
   }
-  
+
 
   //f Trouve le mot le plus proche de _candidate_ dans le dictionnaire en utilisant la fonction de distance _distFunc_ (Levenshtein ou SimpleDistance)
   // Ne considère que les mots dont la différence de longueur est inférieure à _maxGap_ et dont la distance est inférieure à _maxDistance_
   public int[][] FindBestWord(int[] candidate, DistanceFunction distFunc, int maxGap, int maxDistance) {
     int minDistance = maxDistance;
     int[] bestWord = candidate;
-    
+
     for(int[] word : this.words) {
       if(abs(word.length - candidate.length) > maxGap) continue;
       int dist = distFunc.apply(candidate, word);
@@ -187,23 +187,23 @@ class WordCorrector {
         bestWord = word;
       }
     }
-    
+
     return new int[][]{bestWord, {minDistance}};
   }
-  
+
   //f Calcule la distance simple entre deux mots _w1_ et _w2_
   // Basée sur le papier d'IBM Japon de 1990 sur la correction d'ocr, tiré de Pattern Recognition
   public int SimpleDistance(int[] w1, int[] w2) {
     if(w1.length > w2.length) return SimpleDistance(w2, w1); // On a toujours w1 plus petit que w2
     int n = w1.length; int m = w2.length;
-    
+
     /*
     if(w1[0] != w2[0] && w1[n - 1] != w2[m - 1]) {
       //print("too different");
       return Integer.MAX_VALUE;
     }
     */
-    
+
     int distance = Integer.MAX_VALUE;
     if(m != n) {
       for(int k = 0; k < n + 1; k++) { // Position du départ du trou
@@ -211,11 +211,11 @@ class WordCorrector {
         for(int i = 0; i < k; i++) {
           if(w1[i] != w2[i]) kdist += 1;
         }
-        
+
         for(int i = k + m - n; i < m; i++) {
           if(w1[i - m + n] != w2[i]) kdist += 1;
         }
-        
+
         if(kdist < distance) {
           distance = kdist;
         }
@@ -226,72 +226,72 @@ class WordCorrector {
         if(w1[i] != w2[i]) distance++;
       }
     }
-    
+
     return distance;
   }
-  
+
   //f Calcule la distance de Levenshtein entre deux mots _w1_ et _w2_ (de types int[])
   public int LevenshteinDistance(int[] w1, int[] w2) {
     if(w1.length < w2.length) return LevenshteinDistance(w2, w1);
     int[] prevRow = new int[w2.length + 1];
     int[] currentRow = new int[w2.length + 1];
-    
+
     for(int j = 0; j < w2.length + 1; j++) {
       prevRow[j] = j;
     }
-    
+
     for(int i = 1; i < w1.length + 1; i++) {
       currentRow[0] = i;
       for(int j = 1; j < w2.length + 1; j++) {
         currentRow[j] = Math.min(
           Math.min(prevRow[j] + 1,                     // Insertion
           currentRow[j-1] + 1),                // Deletion
-          prevRow[j-1] + (w1[i - 1] != w2[j - 1] ? 1 : 0)   // Substitution   
+          prevRow[j-1] + (w1[i - 1] != w2[j - 1] ? 1 : 0)   // Substitution
         );
       }
-      
+
       int[] temp = prevRow;
       prevRow = currentRow;
       currentRow = temp;
     }
-    
+
     return prevRow[w2.length];
   }
-  
+
   //s Mots _w1_ et _w2_ sous format String
   public int LevenshteinDistance(String w1, String w2) {
     return this.LevenshteinDistance(w1.toCharArray(), w2.toCharArray());
   }
-  
+
   //s Mots _w1_ et _w2_ sous format char[]
   // Cette version ne revient pas à l'encodage int de la session active, c'est pourquoi elle est redondante avec la version int[]
   public int LevenshteinDistance(char[] w1, char[] w2) {
     if(w1.length < w2.length) return LevenshteinDistance(w2, w1);
     int[] prevRow = new int[w2.length + 1];
     int[] currentRow = new int[w2.length + 1];
-    
+
     for(int j = 0; j < w2.length + 1; j++) {
       prevRow[j] = j;
     }
-    
+
     for(int i = 1; i < w1.length + 1; i++) {
       currentRow[0] = i;
       for(int j = 1; j < w2.length + 1; j++) {
         currentRow[j] = Math.min(
           Math.min(prevRow[j] + 1,                     // Insertion
           currentRow[j-1] + 1),                // Deletion
-          prevRow[j-1] + (w1[i - 1] != w2[j - 1] ? 1 : 0)   // Substitution   
+          prevRow[j-1] + (w1[i - 1] != w2[j - 1] ? 1 : 0)   // Substitution
         );
       }
-      
+
       int[] temp = prevRow;
       prevRow = currentRow;
       currentRow = temp;
     }
-    
+
     return prevRow[w2.length];
   }
-  
+
   //f Fonction de backtrack pour générer toutes les combinaisons possibles de mots à partir des caractères plausibles
   // -> _input_ contient pour chaque position les caractères plausibles et leur probabilité
   // -> _index_ est l'index courant dans l'input
@@ -303,45 +303,45 @@ class WordCorrector {
       results.put(current.toArray(new Integer[0]), currentProb);
       return;
     }
-    
+
     input[index].forEach((k, p) -> {
       current.add(k);
-      
+
       this.Backtrack(input, index + 1, current, currentProb * p, results);
-      
+
       current.remove(current.size() - 1);
     });
   }
-  
+
   //s Utilise des proportions uniformes pour chaque lettre (ne considère pas la fréquence des lettres)
   public String OLD_WordAutoCorrection(float[][] letterProb) {
     float[] etalonnedProp = new float[this.charList.length];
-    Arrays.fill(etalonnedProp, 1); 
+    Arrays.fill(etalonnedProp, 1);
     return OLD_WordAutoCorrection(letterProb, etalonnedProp);
   }
-    
+
   //f Donne le mot le plus probable pour une entrée _letterProb_
   // _letterProb_ contient pour chaque emplacement les probabilités de chaque caractère
   // Simule toutes les manipulations possibles de manière probabiliste
   // Premier version de l'algorithme assez (très) naïf
   public String OLD_WordAutoCorrection(float[][] letterProb, float[] etalonnedProp) {
     float[][] processedProb = new float[letterProb.length][this.charList.length];
-    
+
     for(int letter = 0; letter < letterProb.length; letter++) {
       // Permet de normer les probabilités (somme vaut un)
       float sum = 1 - this.fiability;
       for(int k = 0; k < this.charList.length; k++) {
         sum += letterProb[letter][k];
       }
-      
+
       // Détermine les proportions corrigées, en fonction du paramètre _this.fiability_
       for(int k = 0; k < this.charList.length; k++) {
         processedProb[letter][k] = (letterProb[letter][k] + (1 - this.fiability) / this.charList.length) / sum / (float)Math.pow(etalonnedProp[k], 1 - this.fiability);
       }
     }
-    
+
     //println(letterProb[0]);
-    
+
     /*
     // Simule l'insertion / la délétion de lettre
     for(int letter = 0; letter < letterProb.length + this.letterSpreading.length; letter++) {
@@ -353,12 +353,12 @@ class WordCorrector {
       }
     }
     */
-    
-    
-    
+
+
+
     int[] bestWord = new int[processedProb.length];
     float bestProb = 1;
-    
+
     float maxProb = 0;
     int maxChar = 0;
     for(int letter = 0; letter < processedProb.length; letter++) {
@@ -368,41 +368,41 @@ class WordCorrector {
         maxProb = processedProb[letter][k];
         maxChar = k;
       }
-      
+
       bestWord[letter] = maxChar;
       bestProb *= maxProb;
     }
-    
+
     bestProb /= Math.pow(10, processedProb.length);
-    
+
     // println(bestProb);
     // println(bestWord);
-    
+
     if(fiability < 1) {
       for(int[] word : this.words) {
         if(word.length != processedProb.length) continue;
-        
+
         float prob = 1;
         for(int letter = 0; letter < word.length; letter++) {
           prob *= processedProb[letter][word[letter]];
         }
-        
+
         if(prob > bestProb) {
           bestProb = prob;
           bestWord = word;
         }
       }
     }
-    
+
     String ret = "";
     for(int l : bestWord) ret += charList[l];
-    
+
     cl.pln(ret, "\twith prob", String.format("%9.3e", bestProb));
     return ret;
   }
 
   //////////////////////// FONCTIONS DE TESTS //////////////////////////////
-  
+
   //f Corrompt un mot _word_ en appliquant des substitutions, insertions et délétions de caractères
   // La probabilité de substitution est donnée par _substitutionProb_
   // La probabilité d'insertion ou de délétion est donnée par _insertDelProb_
@@ -414,41 +414,41 @@ class WordCorrector {
       corruptedWord.add(random(1) < substitutionProb ? (int)random(0, 25.999) : c); // Substitution
     }
     if(random(1) < insertDelProb / 2) corruptedWord.add((int)random(0, 25.999)); // Insertion
-    
+
     return corruptedWord.stream().mapToInt(Integer::intValue).toArray();
   }
-  
+
   //f Compare différentes fonctions de distance _functions_ sur un nombre _numOfWord_ de mots corrompus
   // La probabilité de substitution est donnée par _substitutionProb_
   // La probabilité d'insertion ou de délétion est donnée par _insertDelProb_
   public void CompareFunctions(DistanceFunction[] functions, int numOfWord, float substitutionProb, float insertDelProb) {
     int[][] wordList = new int[numOfWord][];
     int[][] corruptedWordList = new int[numOfWord][];
-    
+
     for(int i = 0; i < numOfWord; i++) {
       wordList[i] = this.words[int(random(this.words.length))];
       corruptedWordList[i] = this.CorruptWord(wordList[i], substitutionProb, insertDelProb);
     }
-    
+
     int numOfRightWithoutCorr = 0;
     for(int i = 0; i < numOfWord; i++) {
       if(Arrays.equals(corruptedWordList[i], wordList[i])) numOfRightWithoutCorr += 1;
     }
     println("Bonnes réponses sans correction :", numOfRightWithoutCorr, " - Proportion :", (float)numOfRightWithoutCorr/numOfWord);
-    
+
     for(DistanceFunction f : functions) {
       int numOfRight = 0;
       int initTime = millis();
-      
+
       for(int i = 0; i < numOfWord; i++) {
         int[] word = FindBestWord(corruptedWordList[i], f, this.maxCharDiff, this.maxDist)[0];
         if(Arrays.equals(word, wordList[i])) numOfRight += 1;
       }
-      
+
       println("Bonnes réponses :", numOfRight, " - Proportion :", (float)numOfRight/numOfWord, " - Temps :", (float)(millis() - initTime) / 1000);
     }
   }
-  
+
 }
 
 

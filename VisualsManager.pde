@@ -42,7 +42,7 @@ class ScrambleVisual extends PApplet {
           this.h - 2
           )
         );
-    }  
+    }
   }
 
   void draw() {
